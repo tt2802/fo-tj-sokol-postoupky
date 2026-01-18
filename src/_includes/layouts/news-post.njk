@@ -1,0 +1,15 @@
+---
+layout: layouts/base.njk
+---
+
+<main class="container">
+  <article class="prose">
+    <p class="muted">
+      {{ page.date | czDate }}
+    </p>
+
+    <h1>{{ title }}</h1>
+
+    {{ content | safe }}
+  </article>
+</main>

@@ -19,3 +19,154 @@ nav a {
 .container {
   padding: 1rem;
 }
+.section {
+  padding: 3rem 0;
+}
+
+.section h1,
+.section h2 {
+  margin-bottom: 1.5rem;
+}
+
+/* ===== GRID ===== */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid.cards {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.grid.staff {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* ===== KARTY ===== */
+.card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+}
+
+.card--row {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ===== MÉDIA ===== */
+.card__media {
+  aspect-ratio: 1 / 1;
+  background: #eee;
+}
+
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== OBSAH ===== */
+.card__body {
+  padding: 1rem;
+}
+
+.card__title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #6d28d9;
+}
+
+.muted {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .section {
+    padding: 2rem 0;
+  }
+}
+/* ===== DOMŮ: HERO ===== */
+.hero {
+  background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(109,40,217,0.04));
+  padding: 3rem 0;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.hero__cta {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  background: #6d28d9;
+  color: #fff;
+  padding: 0.65rem 0.95rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: #6d28d9;
+  border: 2px solid #6d28d9;
+}
+
+.hero__badgeInner {
+  width: 84px;
+  height: 84px;
+  border-radius: 20px;
+  background: #6d28d9;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+}
+
+/* ===== DOMŮ: KARTY ===== */
+.homeCards {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.homeMatchLine {
+  margin: 0.5rem 0 0.75rem;
+}
+
+.homeNewsList {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.homeNewsList li {
+  margin: 0.35rem 0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+  }
+}
+

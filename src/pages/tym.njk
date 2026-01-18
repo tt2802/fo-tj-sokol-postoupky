@@ -1,2 +1,91 @@
-
+---
 title: Tým
+permalink: /tym/
+layout: layouts/page.njk
+---
+
+<section class="section">
+  <div class="container">
+    <h1>Tým</h1>
+    <p class="muted">Soupiska a realizační tým fotbalového oddílu TJ Sokol Postoupky.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Hráči</h2>
+
+    {% set playersList = players.items | default([]) %}
+
+    {% if playersList | length == 0 %}
+      <p class="muted">Zatím zde nejsou žádní hráči. Doplníš je v administraci v sekci „Data → Tým – hráči“.</p>
+    {% else %}
+      <div class="grid cards">
+        {% for p in playersList %}
+          <article class="card">
+            <div class="card__media">
+              {% if p.photo %}
+                <img
+                  src="{{ p.photo }}"
+                  alt="Fotka hráče {{ p.name | escape }}"
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="600"
+                >
+              {% else %}
+                <div class="card__placeholder" aria-hidden="true"></div>
+              {% endif %}
+            </div>
+
+            <div class="card__body">
+              <h3 class="card__title">
+                {% if p.number %}#{{ p.number }} {% endif %}{{ p.name }}
+              </h3>
+
+              {% if p.position %}
+                <p class="muted">{{ p.position }}</p>
+              {% else %}
+                <p class="muted">Hráč</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Realizační tým</h2>
+
+    {% set staffList = staff.items | default([]) %}
+
+    {% if staffList | length == 0 %}
+      <p class="muted">Zatím zde není žádný realizační tým. Doplníš ho v administraci v sekci „Data → Realizační tým“.</p>
+    {% else %}
+      <div class="grid staff">
+        {% for s in staffList %}
+          <article class="card card--row">
+            <div class="card__body">
+              <h3 class="card__title">{{ s.name }}</h3>
+              <p class="muted">{{ s.role }}</p>
+
+              {% if s.contact %}
+                <p class="muted">
+                  Kontakt:
+                  {% if "@" in s.contact %}
+                    <a href="mailto:{{ s.contact }}">{{ s.contact }}</a>
+                  {% else %}
+                    {{ s.contact }}
+                  {% endif %}
+                </p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

@@ -1,20 +1,114 @@
 ---
 layout: layouts/page.njk
-title: Domů
-permalink: /index.html
+title: TJ Sokol Postoupky
+permalink: /
 ---
 
+<section class="hero">
+  <div class="container">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <h1>TJ Sokol Postoupky</h1>
+        <p class="muted">
+          Fotbalový oddíl pro muže. Tréninky každou středu 18:00–19:00 v Sokolovně Postoupky.
+        </p>
 
-<p>Vítejte na oficiálním webu TJ Sokol Postoupky.</p>
+        <div class="hero__cta">
+          <a class="btn" href="/novinky/">Novinky</a>
+          <a class="btn btn--ghost" href="/nabor/">Nábor</a>
+        </div>
+      </div>
 
-<h2>Tréninky</h2>
-<p>
-{{ site.training.team }} – {{ site.training.day }}
-{{ site.training.time }}, {{ site.training.place }}
-</p>
+      <div class="hero__badge" aria-hidden="true">
+        <div class="hero__badgeInner">⚽</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<h2>Kontakt</h2>
-<p>
-{{ site.contact.name }} ({{ site.contact.role }})  
-<a href="mailto:{{ site.contact.email }}">{{ site.contact.email }}</a>
-</p>
+<section class="section">
+  <div class="container">
+    <div class="homeCards">
+      <article class="card">
+        <div class="card__body">
+          <h2 class="card__title">Nejbližší zápas</h2>
+
+          {% if matchesComputed.nextMatch %}
+            <p class="muted">
+              {{ matchesComputed.nextMatch._dateStr | czDate }}
+              {% if matchesComputed.nextMatch.time %} · {{ matchesComputed.nextMatch.time }}{% endif %}
+            </p>
+
+            <p class="homeMatchLine">
+              <strong>{{ matchesComputed.nextMatch.home }}</strong>
+              vs
+              <strong>{{ matchesComputed.nextMatch.away }}</strong>
+            </p>
+
+            {% if matchesComputed.nextMatch.venue %}
+              <p class="muted">Místo: {{ matchesComputed.nextMatch.venue }}</p>
+            {% endif %}
+
+            <p><a href="/zapasy/">Zobrazit všechny zápasy</a></p>
+          {% else %}
+            <p class="muted">Zatím nemáme vypsaný žádný další zápas.</p>
+            <p><a href="/zapasy/">Přejít na zápasy</a></p>
+          {% endif %}
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <h2 class="card__title">Poslední výsledek</h2>
+
+          {% if matchesComputed.lastResult %}
+            <p class="muted">
+              {{ matchesComputed.lastResult._dateStr | czDate }}
+              {% if matchesComputed.lastResult.competition %} · {{ matchesComputed.lastResult.competition }}{% endif %}
+            </p>
+
+            <p class="homeMatchLine">
+              <strong>{{ matchesComputed.lastResult.home }}</strong>
+              {{ matchesComputed.lastResult.homeScore }} : {{ matchesComputed.lastResult.awayScore }}
+              <strong>{{ matchesComputed.lastResult.away }}</strong>
+            </p>
+
+            {% if matchesComputed.lastResult.venue %}
+              <p class="muted">Místo: {{ matchesComputed.lastResult.venue }}</p>
+            {% endif %}
+
+            <p><a href="/zapasy/">Historie zápasů</a></p>
+          {% else %}
+            <p class="muted">Zatím nemáme zapsaný žádný výsledek.</p>
+            <p><a href="/zapasy/">Doplnit výsledky</a></p>
+          {% endif %}
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <h2 class="card__title">Poslední novinky</h2>
+
+          {% set latest = collections.news | slice(0, 3) %}
+
+          {% if latest.length %}
+            <ol class="homeNewsList">
+              {% for post in latest %}
+                <li>
+                  <a href="{{ post.url }}">{{ post.data.title }}</a>
+                  <span class="muted"> · {{ post.date | czDate }}</span>
+                </li>
+              {% endfor %}
+            </ol>
+
+            <p><a href="/novinky/">Všechny novinky</a></p>
+          {% else %}
+            <p class="muted">Zatím tu nejsou žádné novinky.</p>
+            <p><a href="/admin/">Přidat novinku</a></p>
+          {% endif %}
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
