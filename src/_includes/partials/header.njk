@@ -2,15 +2,22 @@
   <div class="header-inner">
     <a href="/" class="logo">
       <img src="/assets/img/logo.png" alt="TJ Sokol Postoupky">
-      <span>TJ Sokol Postoupky</span>
+      <span class="logo__text">TJ Sokol Postoupky</span>
     </a>
 
-    <nav class="main-nav">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mainNav">
+      <span class="sr-only">Otevřít menu</span>
+      ☰
+    </button>
+
+    <nav id="mainNav" class="main-nav" aria-label="Hlavní navigace">
       <a href="/">Domů</a>
       <a href="/novinky/">Novinky</a>
       <a href="/zapasy/">Zápasy</a>
       <a href="/tym/">Tým</a>
+      <a href="/galerie/">Galerie</a>
       <a href="/kontakty/">Kontakty</a>
+      <a href="/nabor/">Nábor</a>
     </nav>
   </div>
 </header>
