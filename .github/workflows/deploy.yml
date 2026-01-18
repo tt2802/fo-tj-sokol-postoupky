@@ -38,8 +38,6 @@ jobs:
       - name: Build Eleventy site
         run: npx @11ty/eleventy --config=.eleventy.cjs --pathprefix=/fo-tj-sokol-postoupky/
 
-        env:
-          ELEVENTY_PATH_PREFIX: /fo-tj-sokol-postoupky/
 
 
       - name: Setup Pages
