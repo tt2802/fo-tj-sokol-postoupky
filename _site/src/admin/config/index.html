@@ -1,0 +1,94 @@
+backend:
+  name: github
+  repo: tt2802/fo-tj-sokol-postoupky
+  branch: main
+  base_url: https://decap-fo-tj-sokol-postoupky.tomasdanielkubin.workers.dev
+  auth_endpoint: auth
+
+
+media_folder: "src/assets/uploads"
+public_folder: "/assets/uploads"
+
+publish_mode: simple
+
+collections:
+  - name: "news"
+    label: "Novinky"
+    folder: "src/news"
+    create: true
+    slug: ""
+    summary: " ()"
+    fields:
+      - { label: "Titulek", name: "title", widget: "string" }
+      - { label: "Datum", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Text", name: "body", widget: "markdown" }
+
+  - name: "data"
+    label: "Data"
+    files:
+      - label: "Zápasy"
+        name: "matches"
+        file: "src/_data/matches.json"
+        fields:
+          - label: "Zápasy"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Datum", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Čas", name: "time", widget: "string", required: false }
+              - { label: "Soutěž", name: "competition", widget: "string", required: false }
+              - { label: "Domácí", name: "home", widget: "string" }
+              - { label: "Hosté", name: "away", widget: "string" }
+              - { label: "Skóre domácí", name: "homeScore", widget: "number", required: false }
+              - { label: "Skóre hosté", name: "awayScore", widget: "number", required: false }
+              - { label: "Místo", name: "venue", widget: "string", required: false }
+              - { label: "Poznámka", name: "note", widget: "string", required: false }
+
+      - label: "Tým – hráči"
+        name: "players"
+        file: "src/_data/players.json"
+        fields:
+          - label: "Hráči"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string" }
+              - { label: "Číslo", name: "number", widget: "number", required: false }
+              - { label: "Pozice", name: "position", widget: "string", required: false }
+              - { label: "Fotka", name: "photo", widget: "image", required: false }
+
+      - label: "Realizační tým"
+        name: "staff"
+        file: "src/_data/staff.json"
+        fields:
+          - label: "Lidé"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Kontakt", name: "contact", widget: "string", required: false }
+
+      - label: "Partneři"
+        name: "sponsors"
+        file: "src/_data/sponsors.json"
+        fields:
+          - label: "Partneři"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Název", name: "name", widget: "string" }
+              - { label: "Odkaz", name: "url", widget: "string", required: false }
+              - { label: "Logo", name: "logo", widget: "image", required: false }
+
+      - label: "Galerie"
+        name: "galleries"
+        file: "src/_data/galleries.json"
+        fields:
+          - label: "Alba"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Název alba", name: "title", widget: "string" }
+              - { label: "Datum", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
+              - { label: "Fotky", name: "photos", widget: "list", field: { label: "Fotka", name: "photo", widget: "image" } }

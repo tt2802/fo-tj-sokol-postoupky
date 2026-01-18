@@ -1,0 +1,17 @@
+{
+  "clubName": "TJ Sokol Postoupky",
+  "clubShort": "Sokol Postoupky",
+  "facebookUrl": "https://www.facebook.com/groups/509171789420773/user/61581182108947/",
+  "contact": {
+    "name": "Vladimír Opluštil",
+    "role": "Vedoucí oddílu",
+    "email": "oplustil.v@seznam.cz"
+  },
+  "training": {
+    "team": "Muži",
+    "day": "Středa",
+    "time": "18:00–19:00",
+    "place": "Sokolovna Postoupky"
+  },
+  "address": "Postoupky 67"
+}

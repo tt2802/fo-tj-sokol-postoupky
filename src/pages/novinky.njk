@@ -1,0 +1,32 @@
+---
+title: Novinky
+---
+
+<section class="container">
+  <p class="muted">Aktuálně z klubu TJ Sokol Postoupky.</p>
+
+  <label class="search">
+    <span>Hledat v novinkách</span>
+    <input id="newsSearch" type="search" placeholder="Zadej text…">
+  </label>
+
+  <ul id="newsList" class="cards">
+    {% for post in collections.news %}
+      <li class="card" data-title="{{ post.data.title | lower }}">
+        <a class="cardLink" href="{{ post.url }}">
+          <h2 class="cardTitle">{{ post.data.title }}</h2>
+          {% if post.data.date %}
+            <p class="muted">{{ post.data.date | czDate }}</p>
+          {% endif %}
+          {% if post.templateContent %}
+            <p class="excerpt">{{ post.templateContent | striptags | truncate(140) }}</p>
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<script src="/assets/js/news-search.js" defer></script>
+
+

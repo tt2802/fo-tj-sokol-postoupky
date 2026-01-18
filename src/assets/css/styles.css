@@ -1,0 +1,21 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
+  background: #6d28d9;
+  color: white;
+  padding: 1rem;
+}
+
+nav a {
+  color: white;
+  margin-right: 1rem;
+  text-decoration: none;
+}
+
+.container {
+  padding: 1rem;
+}
