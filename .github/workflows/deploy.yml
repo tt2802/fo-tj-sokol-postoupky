@@ -16,9 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  - name: Build site
-    run: npx @11ty/eleventy --config=.eleventy.cjs
-
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
