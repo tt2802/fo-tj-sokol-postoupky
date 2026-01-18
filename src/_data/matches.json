@@ -10,6 +10,17 @@
       "homeScore": 5,
       "home": "Postoupky",
       "competition": "ZKP"
+    },
+    {
+      "awayScore": -1,
+      "time": "9",
+      "away": "EWF",
+      "date": "2026-01-18",
+      "venue": "AEF",
+      "note": "Af",
+      "homeScore": 1,
+      "home": "AEF",
+      "competition": "MMP"
     }
   ]
 }
