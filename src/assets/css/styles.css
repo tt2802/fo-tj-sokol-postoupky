@@ -395,4 +395,47 @@ body {
     height: 72px;
   }
 }
+/* file: src/assets/css/styles.css */
+/* Přidej na konec souboru */
+
+.matches-controls {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 1rem 0 2rem 0;
+}
+
+.matches-controls__field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.matches-controls__field select {
+  padding: 0.55rem 0.6rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+.match-score {
+  margin: 1rem 0;
+}
+
+.match-score__pill {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(109,40,217,0.12);
+}
+
+.video-embed {
+  margin: 0.75rem 0 2rem 0;
+}
+
+@media (max-width: 720px) {
+  .matches-controls {
+    grid-template-columns: 1fr;
+  }
+}
 

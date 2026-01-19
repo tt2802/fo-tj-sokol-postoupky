@@ -1,2 +1,131 @@
+{# file: src/pages/zapasy.njk #}
+---
+title: Zápasy
+layout: layouts/page.njk
+---
 
-title: Zápasy a výsledky
+{% set all = collections.matches or [] %}
+
+{# Rozdělení: upcoming vs played (primárně status, sekundárně datum) #}
+{% set nowTs = ("" | date("x")) %}
+{# Eleventy nemá "date('x')" vždy dostupné v Nunjucks konzistentně, proto to řešíme jednoduše na klientu filtrem.
+   Na serveru uděláme základní rozdělení jen podle statusu. #}
+
+{% set upcoming = [] %}
+{% set played = [] %}
+
+{% for it in all %}
+  {% if it.data.status == "played" %}
+    {% set played = played.concat([it]) %}
+  {% else %}
+    {% set upcoming = upcoming.concat([it]) %}
+  {% endif %}
+{% endfor %}
+
+<section class="section">
+  <div class="container">
+    <h1>Zápasy</h1>
+    <p class="muted">Filtruj podle týmu, sezóny a soutěže. Detail zápasu obsahuje i video (pokud ho doplníš v CMS).</p>
+
+    <div class="matches-controls" data-matches-controls>
+      <label class="matches-controls__field">
+        <span>Tým</span>
+        <select data-filter="team">
+          <option value="">Vše</option>
+          <option value="muzi">Muži</option>
+          <option value="mladez">Mládež</option>
+        </select>
+      </label>
+
+      <label class="matches-controls__field">
+        <span>Sezóna</span>
+        <select data-filter="season">
+          <option value="">Vše</option>
+        </select>
+      </label>
+
+      <label class="matches-controls__field">
+        <span>Soutěž</span>
+        <select data-filter="competition">
+          <option value="">Vše</option>
+        </select>
+      </label>
+    </div>
+
+    <h2>Čeká nás</h2>
+    {% if upcoming.length == 0 %}
+      <p class="muted">Zatím není vypsaný žádný další zápas.</p>
+    {% else %}
+      <div class="grid" data-matches-list data-section="upcoming">
+        {% for it in upcoming %}
+          <article class="card card--row match-card"
+            data-team="{{ it.data.team }}"
+            data-season="{{ it.data.season }}"
+            data-competition="{{ it.data.competition }}"
+            data-status="{{ it.data.status }}"
+            data-datetime="{{ it.data.datetime }}"
+          >
+            <div class="card__body">
+              <h3 class="card__title">
+                {% if it.data.team == "muzi" %}Muži{% else %}Mládež{% endif %}
+                ·
+                {% if it.data.homeAway == "home" %}Postoupky vs {{ it.data.opponent }}{% else %}{{ it.data.opponent }} vs Postoupky{% endif %}
+              </h3>
+              <p class="muted">
+                {{ it.data.datetime | czDate }} · {{ it.data.datetime | czTime }}
+                · {{ it.data.venue }}
+                · {{ it.data.competition }} · {{ it.data.season }}
+                {% if it.data.round %}· {{ it.data.round }}{% endif %}
+              </p>
+              <p><a class="btn btn--ghost" href="{{ it.url }}">Detail</a></p>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <h2>Odehráno</h2>
+    {% if played.length == 0 %}
+      <p class="muted">Zatím tu nejsou žádné výsledky.</p>
+    {% else %}
+      <div class="grid" data-matches-list data-section="played">
+        {% for it in played | reverse %}
+          <article class="card card--row match-card"
+            data-team="{{ it.data.team }}"
+            data-season="{{ it.data.season }}"
+            data-competition="{{ it.data.competition }}"
+            data-status="{{ it.data.status }}"
+            data-datetime="{{ it.data.datetime }}"
+          >
+            <div class="card__body">
+              <h3 class="card__title">
+                {% if it.data.team == "muzi" %}Muži{% else %}Mládež{% endif %}
+                ·
+                {% if it.data.homeAway == "home" %}Postoupky vs {{ it.data.opponent }}{% else %}{{ it.data.opponent }} vs Postoupky{% endif %}
+              </h3>
+              <p class="muted">
+                {{ it.data.datetime | czDate }}
+                · {{ it.data.venue }}
+                · {{ it.data.competition }} · {{ it.data.season }}
+              </p>
+
+              {% if it.data.score and (it.data.score.for is not undefined) and (it.data.score.against is not undefined) %}
+                <p><strong>Výsledek:</strong> {{ it.data.score.for }} : {{ it.data.score.against }}</p>
+              {% else %}
+                <p class="muted">Výsledek zatím není doplněný.</p>
+              {% endif %}
+
+              {% if it.data.video_url %}
+                <p class="muted">🎥 Video je dostupné v detailu zápasu.</p>
+              {% endif %}
+
+              <p><a class="btn btn--ghost" href="{{ it.url }}">Detail</a></p>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script src="/assets/js/matches-filter.js" defer></script>

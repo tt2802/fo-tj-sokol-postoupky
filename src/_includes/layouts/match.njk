@@ -1,0 +1,116 @@
+{# file: src/_includes/layouts/match.njk #}
+---
+layout: layouts/page.njk
+---
+
+{% set m = {
+  team: team,
+  season: season,
+  competition: competition,
+  round: round,
+  datetime: datetime,
+  homeAway: homeAway,
+  opponent: opponent,
+  venue: venue,
+  status: status,
+  score: score,
+  video_url: video_url,
+  referee: referee,
+  lineup: lineup,
+  scorers: scorers,
+  cards: cards,
+  subs: subs
+} %}
+
+<section class="section">
+  <div class="container">
+    <p class="muted"><a href="/zapasy/">← Zpět na zápasy</a></p>
+
+    <h1>
+      {% if m.team == "muzi" %}Muži{% else %}Mládež{% endif %} ·
+      {% if m.homeAway == "home" %}Postoupky{% else %}{{ m.opponent }}{% endif %}
+      vs
+      {% if m.homeAway == "home" %}{{ m.opponent }}{% else %}Postoupky{% endif %}
+    </h1>
+
+    <p class="muted">
+      {{ m.datetime | czDate }}{% if m.datetime %} · {{ m.datetime | czTime }}{% endif %}
+      · {{ m.venue }}
+      · {{ m.competition }} · {{ m.season }}
+      {% if m.round %}· {{ m.round }}{% endif %}
+    </p>
+
+    {% if m.status == "played" and m.score and (m.score.for is not undefined) and (m.score.against is not undefined) %}
+      <div class="match-score">
+        <strong>Výsledek:</strong>
+        <span class="match-score__pill">{{ m.score.for }} : {{ m.score.against }}</span>
+      </div>
+    {% endif %}
+
+    {% if m.video_url %}
+      <h2>Video ze zápasu</h2>
+      <div class="video-embed" data-video-url="{{ m.video_url | escape }}"></div>
+      <noscript>
+        <p><a href="{{ m.video_url }}">Otevřít video</a></p>
+      </noscript>
+    {% endif %}
+
+    {% if m.referee %}
+      <p><strong>Rozhodčí:</strong> {{ m.referee }}</p>
+    {% endif %}
+
+    {% if m.lineup and m.lineup.length %}
+      <h2>Sestava</h2>
+      <ul>
+        {% for p in m.lineup %}
+          <li>{{ p }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if m.scorers and m.scorers.length %}
+      <h2>Střelci</h2>
+      <ul>
+        {% for s in m.scorers %}
+          <li>
+            {{ s.player }}
+            {% if s.minute %} ({{ s.minute }}'){% endif %}
+            {% if s.note %} – {{ s.note }}{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if m.cards and m.cards.length %}
+      <h2>Karty</h2>
+      <ul>
+        {% for c in m.cards %}
+          <li>
+            {% if c.type == "yellow" %}🟨{% else %}🟥{% endif %}
+            {{ c.player }}
+            {% if c.minute %} ({{ c.minute }}'){% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if m.subs and m.subs.length %}
+      <h2>Střídání</h2>
+      <ul>
+        {% for s in m.subs %}
+          <li>
+            {{ s.out }} → {{ s.in }}
+            {% if s.minute %} ({{ s.minute }}'){% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if content %}
+      <h2>Report</h2>
+      <div class="prose">
+        {{ content | safe }}
+      </div>
+    {% endif %}
+  </div>
+</section>
