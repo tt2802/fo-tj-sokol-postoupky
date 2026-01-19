@@ -1,55 +1,13 @@
-// file: src/_data/matches.json
 {
   "items": [
     {
-      "id": "2026-01-25-kromeriz-b-postoupky",
-      "slug": "2026-01-25-kromeriz-b-postoupky",
-      "team": "muzi",
-      "season": "2025/2026",
-      "competition": "OP",
-      "round": "2. kolo",
-      "date": "2026-01-25",
-      "time": "14:00",
-      "isHome": false,
-      "opponent": "Kroměříž B",
-      "venue": "Kroměříž",
-      "home": "Kroměříž B",
-      "away": "Postoupky"
-    },
-    {
-      "id": "2026-01-18-postoupky-bezmerov",
-      "slug": "2026-01-18-postoupky-bezmerov",
-      "team": "muzi",
-      "season": "2025/2026",
-      "competition": "OP",
-      "round": "1. kolo",
-      "date": "2026-01-18",
-      "time": "15:30",
-      "isHome": true,
-      "opponent": "Bezměrov",
-      "venue": "Postoupky",
-      "home": "Postoupky",
-      "away": "Bezměrov",
-      "homeScore": 5,
-      "awayScore": 3,
-      "referee": "Jan Novák",
-      "report": "Krátký report ze zápasu. Doplň později v administraci.",
-      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    },
-    {
-      "id": "2026-02-01-mladez-postoupky-abc",
-      "slug": "2026-02-01-mladez-postoupky-abc",
-      "team": "mladez",
-      "season": "2025/2026",
-      "competition": "Mládež OP",
-      "round": "10. kolo",
-      "date": "2026-02-01",
-      "time": "10:00",
-      "isHome": true,
-      "opponent": "ABC",
-      "venue": "Postoupky",
-      "home": "Postoupky",
-      "away": "ABC"
+      "date": "2026-01-19",
+      "time": "16.30",
+      "competition": "1.Divize",
+      "home": "Sokol Postoupky",
+      "away": "Hulín",
+      "awayScore": -5,
+      "venue": "Postoupky"
     }
   ]
 }
