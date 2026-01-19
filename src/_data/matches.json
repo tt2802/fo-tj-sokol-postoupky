@@ -1,26 +1,55 @@
+// file: src/_data/matches.json
 {
   "items": [
     {
-      "awayScore": 3,
-      "time": "15:30",
-      "away": "Bezměrov",
-      "date": "2026-01-18",
-      "venue": "Postoupky",
-      "note": "Absolutní výhra",
-      "homeScore": 5,
-      "home": "Postoupky",
-      "competition": "ZKP"
+      "id": "2026-01-25-kromeriz-b-postoupky",
+      "slug": "2026-01-25-kromeriz-b-postoupky",
+      "team": "muzi",
+      "season": "2025/2026",
+      "competition": "OP",
+      "round": "2. kolo",
+      "date": "2026-01-25",
+      "time": "14:00",
+      "isHome": false,
+      "opponent": "Kroměříž B",
+      "venue": "Kroměříž",
+      "home": "Kroměříž B",
+      "away": "Postoupky"
     },
     {
-      "awayScore": -1,
-      "time": "9",
-      "away": "EWF",
+      "id": "2026-01-18-postoupky-bezmerov",
+      "slug": "2026-01-18-postoupky-bezmerov",
+      "team": "muzi",
+      "season": "2025/2026",
+      "competition": "OP",
+      "round": "1. kolo",
       "date": "2026-01-18",
-      "venue": "AEF",
-      "note": "Af",
-      "homeScore": 1,
-      "home": "AEF",
-      "competition": "MMP"
+      "time": "15:30",
+      "isHome": true,
+      "opponent": "Bezměrov",
+      "venue": "Postoupky",
+      "home": "Postoupky",
+      "away": "Bezměrov",
+      "homeScore": 5,
+      "awayScore": 3,
+      "referee": "Jan Novák",
+      "report": "Krátký report ze zápasu. Doplň později v administraci.",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+      "id": "2026-02-01-mladez-postoupky-abc",
+      "slug": "2026-02-01-mladez-postoupky-abc",
+      "team": "mladez",
+      "season": "2025/2026",
+      "competition": "Mládež OP",
+      "round": "10. kolo",
+      "date": "2026-02-01",
+      "time": "10:00",
+      "isHome": true,
+      "opponent": "ABC",
+      "venue": "Postoupky",
+      "home": "Postoupky",
+      "away": "ABC"
     }
   ]
 }

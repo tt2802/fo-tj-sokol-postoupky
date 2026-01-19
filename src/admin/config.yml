@@ -27,185 +27,44 @@ collections:
         date_format: "YYYY-MM-DD"
         time_format: false
         picker_utc: true
-      - label: "Text"
-        name: "body"
-        widget: "markdown"
-        media_library:
-          allow_multiple: true
-
-  - name: "matches"
-    label: "Zápasy"
-    folder: "src/matches"
-    create: true
-    slug: "{{slug}}"
-    summary: "{{datetime}} – {{team}} – {{opponent}} ({{status}})"
-    fields:
-      - label: "Tým"
-        name: "team"
-        widget: "select"
-        options:
-          - { label: "Muži", value: "muzi" }
-          - { label: "Mládež", value: "mladez" }
-      - label: "Sezóna"
-        name: "season"
-        widget: "string"
-        hint: "Např. 2025/2026"
-      - label: "Soutěž"
-        name: "competition"
-        widget: "string"
-      - label: "Kolo"
-        name: "round"
-        widget: "string"
-        hint: "Např. 12. kolo"
-      - label: "Datum a čas"
-        name: "datetime"
-        widget: "datetime"
-        format: "YYYY-MM-DDTHH:mm"
-        date_format: "YYYY-MM-DD"
-        time_format: "HH:mm"
-        picker_utc: false
-      - label: "Domácí nebo venku"
-        name: "homeAway"
-        widget: "select"
-        options:
-          - { label: "Domácí", value: "home" }
-          - { label: "Venku", value: "away" }
-      - label: "Soupeř"
-        name: "opponent"
-        widget: "string"
-      - label: "Místo (hřiště)"
-        name: "venue"
-        widget: "string"
-      - label: "Status"
-        name: "status"
-        widget: "select"
-        options:
-          - { label: "Čeká nás", value: "upcoming" }
-          - { label: "Odehráno", value: "played" }
-          - { label: "Odloženo", value: "postponed" }
-
-      - label: "Skóre (vyplň hlavně u odehraných)"
-        name: "score"
-        widget: "object"
-        fields:
-          - { label: "Naše", name: "for", widget: "number", required: false }
-          - { label: "Soupeř", name: "against", widget: "number", required: false }
-
-      - label: "Video ze zápasu (YouTube/Facebook/MP4)"
-        name: "video_url"
-        widget: "string"
-        required: false
-        hint: "Vlož odkaz na YouTube, Facebook video nebo přímé .mp4"
-
-      - label: "Rozhodčí"
-        name: "referee"
-        widget: "string"
-        required: false
-
-      - label: "Sestava"
-        name: "lineup"
-        widget: "list"
-        required: false
-        field: { label: "Hráč", name: "player", widget: "string" }
-
-      - label: "Střelci"
-        name: "scorers"
-        widget: "list"
-        required: false
-        fields:
-          - { label: "Hráč", name: "player", widget: "string" }
-          - { label: "Minuta", name: "minute", widget: "number", required: false }
-          - { label: "Poznámka", name: "note", widget: "string", required: false }
-
-      - label: "Karty"
-        name: "cards"
-        widget: "list"
-        required: false
-        fields:
-          - label: "Typ"
-            name: "type"
-            widget: "select"
-            options:
-              - { label: "Žlutá", value: "yellow" }
-              - { label: "Červená", value: "red" }
-          - { label: "Hráč", name: "player", widget: "string" }
-          - { label: "Minuta", name: "minute", widget: "number", required: false }
-
-      - label: "Střídání"
-        name: "subs"
-        widget: "list"
-        required: false
-        fields:
-          - { label: "Ven", name: "out", widget: "string" }
-          - { label: "Dovnitř", name: "in", widget: "string" }
-          - { label: "Minuta", name: "minute", widget: "number", required: false }
-
-      - label: "Report / poznámky"
-        name: "body"
-        widget: "markdown"
-        required: false
+      - { label: "Perex", name: "excerpt", widget: "text", required: false }
+      - { label: "Obsah", name: "body", widget: "markdown" }
 
   - name: "data"
     label: "Data"
     files:
-      - label: "Tým – hráči"
-        name: "players"
-        file: "src/_data/players.json"
+      - name: "matches"
+        label: "Zápasy"
+        file: "src/_data/matches.json"
         fields:
-          - label: "Hráči"
+          - label: "Zápasy"
             name: "items"
             widget: "list"
+            summary: "{{fields.date}} · {{fields.team}} · {{fields.home}} vs {{fields.away}}"
             fields:
-              - { label: "Jméno", name: "name", widget: "string" }
-              - { label: "Číslo", name: "number", widget: "number", required: false }
-              - { label: "Pozice", name: "position", widget: "string", required: false }
-              - { label: "Fotka", name: "photo", widget: "image", required: false }
-
-      - label: "Realizační tým"
-        name: "staff"
-        file: "src/_data/staff.json"
-        fields:
-          - label: "Lidé"
-            name: "items"
-            widget: "list"
-            fields:
-              - { label: "Jméno", name: "name", widget: "string" }
-              - { label: "Role", name: "role", widget: "string" }
-              - { label: "Kontakt", name: "contact", widget: "string", required: false }
-
-      - label: "Partneři"
-        name: "sponsors"
-        file: "src/_data/sponsors.json"
-        fields:
-          - label: "Partneři"
-            name: "items"
-            widget: "list"
-            fields:
-              - { label: "Název", name: "name", widget: "string" }
-              - { label: "Odkaz", name: "url", widget: "string", required: false }
-              - { label: "Logo", name: "logo", widget: "image", required: false }
-
-      - label: "Galerie"
-        name: "galleries"
-        file: "src/_data/galleries.json"
-        fields:
-          - label: "Alba"
-            name: "items"
-            widget: "list"
-            fields:
-              - { label: "Název alba", name: "title", widget: "string" }
-              - label: "Datum"
-                name: "date"
-                widget: "datetime"
-                format: "YYYY-MM-DD"
-                date_format: "YYYY-MM-DD"
-                time_format: false
-                picker_utc: true
-                required: false
-              - label: "Fotky"
-                name: "photos"
-                widget: "list"
-                field: { label: "Fotka", name: "photo", widget: "image" }
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Slug", name: "slug", widget: "string" }
+              - label: "Tým"
+                name: "team"
+                widget: "select"
+                options:
+                  - { label: "Muži", value: "muzi" }
+                  - { label: "Mládež", value: "mladez" }
+              - { label: "Sezóna", name: "season", widget: "string" }
+              - { label: "Soutěž", name: "competition", widget: "string" }
+              - { label: "Kolo", name: "round", widget: "string" }
+              - { label: "Datum", name: "date", widget: "date", format: "YYYY-MM-DD" }
+              - { label: "Čas", name: "time", widget: "string", required: false }
+              - { label: "Soupeř", name: "opponent", widget: "string" }
+              - { label: "Domácí", name: "home", widget: "string" }
+              - { label: "Hosté", name: "away", widget: "string" }
+              - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true }
+              - { label: "Místo", name: "venue", widget: "string" }
+              - { label: "Skóre domácí", name: "homeScore", widget: "number", required: false, value_type: "int" }
+              - { label: "Skóre hosté", name: "awayScore", widget: "number", required: false, value_type: "int" }
+              - { label: "Rozhodčí", name: "referee", widget: "string", required: false }
+              - { label: "Report", name: "report", widget: "text", required: false }
+              - { label: "Video URL", name: "videoUrl", widget: "string", required: false }
 
 editor:
   preview: false

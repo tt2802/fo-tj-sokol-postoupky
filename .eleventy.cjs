@@ -5,68 +5,72 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
+  eleventyConfig.addPassthroughCopy({ "src/sitemap.xml": "sitemap.xml" });
 
   eleventyConfig.addFilter("czDate", (value) => {
     if (!value) return "";
     if (value instanceof Date) {
-      const dt = DateTime.fromJSDate(value);
+      const dt = DateTime.fromJSDate(value).setZone("Europe/Prague");
       return dt.isValid ? dt.setLocale("cs").toFormat("d. L. yyyy") : "";
     }
-    const str = String(value);
-    const iso = DateTime.fromISO(str);
-    if (iso.isValid) return iso.setLocale("cs").toFormat("d. L. yyyy");
-    const js = DateTime.fromJSDate(new Date(str));
-    if (js.isValid) return js.setLocale("cs").toFormat("d. L. yyyy");
-    return "";
+    const iso = DateTime.fromISO(String(value), { zone: "Europe/Prague" });
+    return iso.isValid ? iso.setLocale("cs").toFormat("d. L. yyyy") : "";
   });
 
   eleventyConfig.addFilter("czTime", (value) => {
     if (!value) return "";
     if (value instanceof Date) {
-      const dt = DateTime.fromJSDate(value);
+      const dt = DateTime.fromJSDate(value).setZone("Europe/Prague");
       return dt.isValid ? dt.setLocale("cs").toFormat("H:mm") : "";
     }
-    const str = String(value);
-    const iso = DateTime.fromISO(str);
-    if (iso.isValid) return iso.setLocale("cs").toFormat("H:mm");
-    const js = DateTime.fromJSDate(new Date(str));
-    if (js.isValid) return js.setLocale("cs").toFormat("H:mm");
-    return "";
+    const iso = DateTime.fromISO(String(value), { zone: "Europe/Prague" });
+    return iso.isValid ? iso.setLocale("cs").toFormat("H:mm") : "";
   });
 
   eleventyConfig.addCollection("news", (api) => {
     return api.getFilteredByGlob("src/news/*.md").sort((a, b) => b.date - a.date);
   });
 
-  // Zápasy (MD soubory v src/matches)
-  eleventyConfig.addCollection("matches", (api) => {
-    const items = api.getFilteredByGlob("src/matches/*.md");
+  return {
+    dir: { input: "src", includes: "_includes", output: "_site" },
+    pathPrefix: process.env.ELEVENTY_PATH_PREFIX || "/"
+  };
+};
+// file: .eleventy.cjs
+const { DateTime } = require("luxon");
 
-    const normalized = items
-      .map((it) => {
-        const dt = it.data?.datetime ? DateTime.fromISO(String(it.data.datetime)) : null;
-        const dtValid = dt && dt.isValid ? dt : null;
-        return {
-          ...it,
-          data: {
-            ...it.data,
-            _dt: dtValid,
-            _ts: dtValid ? dtValid.toMillis() : null
-          }
-        };
-      })
-      .filter((it) => it.data._ts !== null)
-      .sort((a, b) => a.data._ts - b.data._ts);
+module.exports = function (eleventyConfig) {
+  eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+  eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
+  eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
+  eleventyConfig.addPassthroughCopy({ "src/sitemap.xml": "sitemap.xml" });
 
-    return normalized;
+  eleventyConfig.addFilter("czDate", (value) => {
+    if (!value) return "";
+    if (value instanceof Date) {
+      const dt = DateTime.fromJSDate(value).setZone("Europe/Prague");
+      return dt.isValid ? dt.setLocale("cs").toFormat("d. L. yyyy") : "";
+    }
+    const iso = DateTime.fromISO(String(value), { zone: "Europe/Prague" });
+    return iso.isValid ? iso.setLocale("cs").toFormat("d. L. yyyy") : "";
+  });
+
+  eleventyConfig.addFilter("czTime", (value) => {
+    if (!value) return "";
+    if (value instanceof Date) {
+      const dt = DateTime.fromJSDate(value).setZone("Europe/Prague");
+      return dt.isValid ? dt.setLocale("cs").toFormat("H:mm") : "";
+    }
+    const iso = DateTime.fromISO(String(value), { zone: "Europe/Prague" });
+    return iso.isValid ? iso.setLocale("cs").toFormat("H:mm") : "";
+  });
+
+  eleventyConfig.addCollection("news", (api) => {
+    return api.getFilteredByGlob("src/news/*.md").sort((a, b) => b.date - a.date);
   });
 
   return {
-    dir: {
-      input: "src",
-      includes: "_includes",
-      output: "_site"
-    },
+    dir: { input: "src", includes: "_includes", output: "_site" },
     pathPrefix: process.env.ELEVENTY_PATH_PREFIX || "/"
   };
 };

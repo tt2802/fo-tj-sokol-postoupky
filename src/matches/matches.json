@@ -1,0 +1,25 @@
+
+{
+  "items": [
+    {
+      "id": "2026-01-18-postoupky-bezmerov",
+      "slug": "2026-01-18-postoupky-bezmerov",
+      "team": "Muži",
+      "season": "2025/2026",
+      "competition": "ZKP",
+      "round": "1. kolo",
+      "date": "2026-01-18",
+      "time": "15:30",
+      "isHome": true,
+      "opponent": "Bezměrov",
+      "venue": "Postoupky",
+      "home": "Postoupky",
+      "away": "Bezměrov",
+      "homeScore": 5,
+      "awayScore": 3,
+      "referee": "Jan Novák",
+      "report": "Krátký report ze zápasu…",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    }
+  ]
+}

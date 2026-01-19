@@ -1,0 +1,92 @@
+{# file: src/matches/match.njk #}
+---
+layout: layouts/page.njk
+pagination:
+  data: matches.items
+  size: 1
+  alias: match
+permalink: "/zapasy/{{ match.slug }}/index.html"
+---
+
+{% set m = match %}
+
+<nav class="muted" aria-label="Drobečková navigace">
+  <a href="{{ '/zapasy/' | url }}">Zápasy</a>
+  <span aria-hidden="true">›</span>
+  <span>{{ m.home }} vs {{ m.away }}</span>
+</nav>
+
+<h1>{{ m.home }} vs {{ m.away }}</h1>
+
+<p class="muted">
+  {{ m.date | czDate }}{% if m.time %} · {{ m.time }}{% endif %}
+  {% if m.team %} · {% if m.team == "muzi" %}Muži{% else %}Mládež{% endif %}{% endif %}
+  {% if m.season %} · Sezóna {{ m.season }}{% endif %}
+  {% if m.competition %} · {{ m.competition }}{% endif %}
+  {% if m.round %} · {{ m.round }}{% endif %}
+</p>
+
+{% if m.venue %}
+  <p><strong>Místo:</strong> {{ m.venue }}</p>
+{% endif %}
+
+{% if (m.homeScore is number) and (m.awayScore is number) %}
+  <p class="matchLine">
+    <strong>{{ m.home }}</strong>
+    {{ m.homeScore }} : {{ m.awayScore }}
+    <strong>{{ m.away }}</strong>
+  </p>
+{% else %}
+  <p class="muted">Zápas ještě nebyl odehrán.</p>
+{% endif %}
+
+{% if m.report %}
+  <h2>Report</h2>
+  <p>{{ m.report }}</p>
+{% endif %}
+
+{% if m.referee %}
+  <p><strong>Rozhodčí:</strong> {{ m.referee }}</p>
+{% endif %}
+
+{% if m.videoUrl %}
+  <h2>Video ze zápasu</h2>
+
+  {% set url = m.videoUrl | trim %}
+  {% set isMp4 = (".mp4" in url) or (".webm" in url) %}
+  {% set isYoutube = ("youtube.com" in url) or ("youtu.be" in url) %}
+
+  {% if isYoutube %}
+    {% set yt = url %}
+    {% if "youtu.be/" in yt %}
+      {% set id = yt.split("youtu.be/")[1].split("?")[0] %}
+    {% elseif "v=" in yt %}
+      {% set id = yt.split("v=")[1].split("&")[0] %}
+    {% else %}
+      {% set id = "" %}
+    {% endif %}
+
+    {% if id %}
+      <div style="position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/{{ id }}"
+          title="Video ze zápasu"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          style="position:absolute;inset:0;width:100%;height:100%;border:0"
+        ></iframe>
+      </div>
+    {% else %}
+      <p><a href="{{ url }}" rel="noopener">Otevřít video</a></p>
+    {% endif %}
+  {% elseif isMp4 %}
+    <video controls preload="metadata" style="width:100%;border-radius:12px">
+      <source src="{{ url }}" />
+      Tvůj prohlížeč nepodporuje přehrávání videa. <a href="{{ url }}">Otevřít video</a>
+    </video>
+  {% else %}
+    <p><a href="{{ url }}" rel="noopener">Otevřít video</a></p>
+  {% endif %}
+{% endif %}
