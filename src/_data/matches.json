@@ -1,13 +1,21 @@
 {
   "items": [
     {
-      "date": "2026-01-19",
-      "time": "16.30",
-      "competition": "1.Divize",
+      "referee": "Benedikt",
+      "season": "2025/2026",
+      "awayScore": 0,
+      "isHome": true,
+      "slug": "liga-mistrů",
+      "time": "18.00",
+      "round": "1",
+      "away": "FC Barcelona",
+      "venue": "Postoupky",
+      "homeScore": 2,
+      "id": "1",
+      "opponent": "FC Barcelona",
+      "team": "muzi",
       "home": "Sokol Postoupky",
-      "away": "Hulín",
-      "awayScore": "",
-      "venue": "Postoupky"
+      "competition": "Liga mistrů"
     }
   ]
 }
