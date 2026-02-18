@@ -42,29 +42,126 @@ collections:
             widget: "list"
             summary: "{{fields.date}} · {{fields.team}} · {{fields.home}} vs {{fields.away}}"
             fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Slug", name: "slug", widget: "string" }
+              - label: "ID"
+                name: "id"
+                widget: "string"
+                hint: "Unikátní identifikátor, např. 2026-01-19-postoupky-hulin"
+              - label: "Slug"
+                name: "slug"
+                widget: "string"
+                hint: "Použije se v URL, např. 2026-01-19-postoupky-hulin"
               - label: "Tým"
                 name: "team"
                 widget: "select"
                 options:
                   - { label: "Muži", value: "muzi" }
                   - { label: "Mládež", value: "mladez" }
-              - { label: "Sezóna", name: "season", widget: "string" }
+              - { label: "Sezóna", name: "season", widget: "string", hint: "Např. 2025/2026" }
               - { label: "Soutěž", name: "competition", widget: "string" }
-              - { label: "Kolo", name: "round", widget: "string" }
+              - { label: "Kolo", name: "round", widget: "string", required: false }
               - { label: "Datum", name: "date", widget: "date", format: "YYYY-MM-DD" }
-              - { label: "Čas", name: "time", widget: "string", required: false }
-              - { label: "Soupeř", name: "opponent", widget: "string" }
+              - label: "Čas"
+                name: "time"
+                widget: "string"
+                required: false
+                hint: "HH:MM (např. 16:30)"
+              - { label: "Soupeř", name: "opponent", widget: "string", required: false }
               - { label: "Domácí", name: "home", widget: "string" }
               - { label: "Hosté", name: "away", widget: "string" }
               - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true }
               - { label: "Místo", name: "venue", widget: "string" }
-              - { label: "Skóre domácí", name: "homeScore", widget: "number", required: false, value_type: "int" }
-              - { label: "Skóre hosté", name: "awayScore", widget: "number", required: false, value_type: "int" }
+              - label: "Skóre domácí"
+                name: "homeScore"
+                widget: "number"
+                required: false
+                value_type: "int"
+                hint: "Vyplňte pouze u odehraných zápasů"
+              - label: "Skóre hosté"
+                name: "awayScore"
+                widget: "number"
+                required: false
+                value_type: "int"
+                hint: "Vyplňte pouze u odehraných zápasů"
               - { label: "Rozhodčí", name: "referee", widget: "string", required: false }
               - { label: "Report", name: "report", widget: "text", required: false }
-              - { label: "Video URL", name: "videoUrl", widget: "string", required: false }
+              - label: "Video URL"
+                name: "videoUrl"
+                widget: "string"
+                required: false
+                hint: "YouTube, Facebook nebo přímý odkaz na .mp4/.webm"
+      - name: "players"
+        label: "Tým"
+        file: "src/_data/players.json"
+        fields:
+          - label: "Hráči"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.number}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string" }
+              - { label: "Číslo", name: "number", widget: "number", value_type: "int" }
+              - { label: "Pozice", name: "position", widget: "string" }
+      - name: "staff"
+        label: "Realizační tým"
+        file: "src/_data/staff.json"
+        fields:
+          - label: "Členové"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.role}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Kontakt", name: "contact", widget: "string", required: false }
+      - name: "sponsors"
+        label: "Partneři"
+        file: "src/_data/sponsors.json"
+        fields:
+          - label: "Partneři"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Název", name: "name", widget: "string" }
+              - { label: "Web", name: "url", widget: "string", required: false }
+      - name: "galleries"
+        label: "Galerie"
+        file: "src/_data/galleries.json"
+        fields:
+          - label: "Galerie"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}} · {{fields.date}}"
+            fields:
+              - { label: "Název", name: "title", widget: "string" }
+              - { label: "Datum", name: "date", widget: "date", format: "YYYY-MM-DD" }
+              - label: "Fotky"
+                name: "photos"
+                widget: "list"
+                field: { label: "Fotka", name: "photo", widget: "image" }
+      - name: "site"
+        label: "Základní info"
+        file: "src/_data/site.json"
+        fields:
+          - { label: "Název klubu", name: "clubName", widget: "string" }
+          - { label: "Zkrácený název", name: "clubShort", widget: "string" }
+          - { label: "Facebook URL", name: "facebookUrl", widget: "string", required: false }
+          - label: "Kontakt"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "E-mail", name: "email", widget: "string" }
+          - label: "Tréninky"
+            name: "training"
+            widget: "object"
+            fields:
+              - { label: "Tým", name: "team", widget: "string" }
+              - { label: "Den", name: "day", widget: "string" }
+              - { label: "Čas", name: "time", widget: "string" }
+              - { label: "Místo", name: "place", widget: "string" }
+          - { label: "Adresa", name: "address", widget: "string" }
 
 editor:
   preview: false

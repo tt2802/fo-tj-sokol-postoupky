@@ -169,56 +169,6 @@ nav a {
     grid-template-columns: 1fr;
   }
 }
-.site-header {
-  background: #6d28d9;
-  color: white;
-}
-
-.header-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* TADY ZMĚNA: přidej tohle */
-.site-header .header-inner {
-  max-width: none;          /* zruší "centrování do středu" */
-  margin: 0;
-  padding-left: 0.75rem;    /* víc doleva */
-  padding-right: 1.25rem;
-}
-
-.logo img {
-  height: 64px;   /* zvětšení loga (předtím 48) */
-  width: auto;
-}
-
-
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: white;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-
-.main-nav a {
-  color: white;
-  text-decoration: none;
-  margin-left: 1rem;
-  font-weight: 500;
-}
-
-.main-nav a:hover {
-  text-decoration: underline;
-}
 /* ===== A11Y / HELPERS ===== */
 .sr-only {
   position: absolute;
@@ -253,6 +203,11 @@ img, video {
 
 body {
   line-height: 1.55;
+}
+
+.site-header {
+  background: #6d28d9;
+  color: white;
 }
 
 /* ===== HEADER + NAV (MOBIL) ===== */
@@ -312,6 +267,10 @@ body {
   text-decoration: none;
   font-weight: 600;
   padding: 0.25rem 0;
+}
+
+.main-nav a:hover {
+  text-decoration: underline;
 }
 
 .main-nav a:focus-visible,
@@ -438,4 +397,3 @@ body {
     grid-template-columns: 1fr;
   }
 }
-

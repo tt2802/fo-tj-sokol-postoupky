@@ -5,17 +5,27 @@ module.exports = function () {
   const raw = require("./matches.json");
   const items = Array.isArray(raw?.items) ? raw.items : [];
   const zone = "Europe/Prague";
+  const parseScore = (value) => {
+    if (value === null || value === undefined || value === "") return null;
+    const num = Number(value);
+    return Number.isFinite(num) ? num : null;
+  };
 
   const normalized = items
     .map((m) => {
       const date = (m.date || "").slice(0, 10);
-      const time = (m.time || "00:00").trim();
+      const timeRaw = (m.time || "").trim();
+      const time = (timeRaw ? timeRaw.replace(/\./g, ":") : "00:00").trim();
       const dt = DateTime.fromFormat(`${date} ${time}`, "yyyy-MM-dd H:mm", { zone });
       const dtFallback = DateTime.fromISO(date, { zone });
       const finalDt = dt.isValid ? dt : dtFallback;
+      const homeScore = parseScore(m.homeScore);
+      const awayScore = parseScore(m.awayScore);
 
       return {
         ...m,
+        homeScore,
+        awayScore,
         _dateStr: date,
         _dt: finalDt.isValid ? finalDt : null,
         _teamLabel: m.team === "muzi" ? "Muži" : "Mládež"
