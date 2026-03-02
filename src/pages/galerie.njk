@@ -1,2 +1,44 @@
-
+---
 title: Galerie
+permalink: /galerie/
+layout: layouts/page.njk
+---
+
+<section class="section">
+  <div class="container">
+    <h1>Galerie</h1>
+    <p class="muted">Fotky z našich akcí a zápasů.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% set albumsList = gallery.albums | default([]) %}
+
+    {% if albumsList | length == 0 %}
+      <p class="muted">Zatím tu nejsou žádné fotky. Přidejte alba v administraci v sekci „Data → Galerie".</p>
+    {% else %}
+      <div class="grid albums" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+        {% for album in albumsList %}
+          <article class="card" style="cursor: pointer;">
+            <div class="card__media">
+              {% if album.cover %}
+                <img src="{{ album.cover }}" alt="{{ album.title }}" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px 4px 0 0;">
+              {% else %}
+                <div style="width: 100%; aspect-ratio: 16/9; background: #ddd; border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center;">
+                  <span style="color: #999;">Bez fotky</span>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="card__body">
+              <h3 class="card__title">{{ album.title }}</h3>
+              <p class="muted">{{ album.date | czDate }}</p>
+              <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">📷 {{ album.photos | length }} fotek</p>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

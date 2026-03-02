@@ -1,2 +1,32 @@
-
+---
+layout: layouts/page.njk
 title: Partneři
+permalink: /partneri/
+---
+
+<section class="section">
+  <div class="container">
+    <h1>Partneři</h1>
+    <p class="muted">Děkujeme našim sponzorům, kteří nás podporují.</p>
+
+    {% set sponsorsList = sponsors.items | default([]) %}
+
+    {% if sponsorsList | length == 0 %}
+      <p class="muted">Zatím nemáme žádné partnery. Aktualizuj <code>_data/sponsors.json</code>.</p>
+    {% else %}
+      <ul class="sponsorsList">
+        {% for s in sponsorsList %}
+          <li>
+            {% if s.url %}
+              <a href="{{ s.url }}" target="_blank" rel="noopener">
+                {{ s.name | escape }}
+              </a>
+            {% else %}
+              {{ s.name | escape }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>

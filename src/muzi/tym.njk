@@ -1,0 +1,89 @@
+---
+title: Tým Mužů
+permalink: /muzi/tym/index.html
+layout: layouts/page.njk
+---
+
+<nav class="muted" aria-label="Drobečková navigace" style="margin-bottom: 2rem;">
+  <a href="/muzi/">← Zpět na Muži</a>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <h1>Tým Mužů</h1>
+    <p class="muted">Soupiska a realizační tým.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Hráči</h2>
+
+    {% set menPlayers = players.men | default([]) %}
+
+    {% if menPlayers | length == 0 %}
+      <p class="muted">Zatím zde nejsou žádní hráči. Doplníš je v administraci v sekci „Data → Hráči – Muži".</p>
+    {% else %}
+      <div class="grid cards" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
+        {% for p in menPlayers %}
+          <article class="card">
+            <div class="card__media">
+              {% if p.photo %}
+                {% set __alt = "Fotka hráče " ~ p.name %}
+                <img src="{{ p.photo }}" alt="{{ __alt }}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px 4px 0 0;">
+              {% else %}
+                <div style="width: 100%; aspect-ratio: 1; background: #e0e0e0; border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; color: #999;">
+                  Bez fotky
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="card__body">
+              <h3 class="card__title">
+                {% if p.number %}<span style="font-size: 0.8em; color: #999;">#{{ p.number }}</span> {% endif %}{{ p.name }}
+              </h3>
+
+              {% if p.position %}
+                <p class="muted">{{ p.position }}</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" style="background: #f9f9f9;">
+  <div class="container">
+    <h2>Realizační tým</h2>
+
+    {% set staffList = staff.members | default([]) %}
+
+    {% if staffList | length == 0 %}
+      <p class="muted">Zatím zde není žádný realizační tým. Doplníš ho v administraci v sekci „Data → Realizační tým".</p>
+    {% else %}
+      <div class="grid staff" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+        {% for s in staffList %}
+          <article class="card">
+            <div class="card__body">
+              <h3 class="card__title">{{ s.name }}</h3>
+              <p class="muted"><strong>{{ s.role }}</strong></p>
+
+              {% if s.phone or s.email %}
+                <div style="margin-top: 1rem; font-size: 0.9rem;">
+                  {% if s.phone %}
+                    <p>📞 <a href="tel:{{ s.phone }}">{{ s.phone }}</a></p>
+                  {% endif %}
+                  {% if s.email %}
+                    <p>📧 <a href="mailto:{{ s.email }}">{{ s.email }}</a></p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

@@ -1,15 +1,44 @@
 {
   "items": [
     {
-      "season": "2025/2026",
-      "isHome": true,
-      "time": "14.00",
-      "round": "6",
-      "away": "Vsetín",
-      "venue": "Postoupky",
+      "id": "2026-01-19-postoupky-hulin",
+      "slug": "2026-01-19-postoupky-hulin",
       "team": "muzi",
-      "home": "FO Postoupky",
-      "competition": "ZKP"
+      "season": "2025/2026",
+      "competition": "1. Divize",
+      "round": "18. kolo",
+      "date": "2026-01-19",
+      "time": "16:30",
+      "opponent": "Hulín",
+      "home": "Sokol Postoupky",
+      "away": "Hulín",
+      "isHome": true,
+      "venue": "Postoupky",
+      "homeScore": null,
+      "awayScore": null,
+      "referee": "",
+      "report": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "2026-01-12-postoupky-hradiste",
+      "slug": "2026-01-12-postoupky-hradiste",
+      "team": "muzi",
+      "season": "2025/2026",
+      "competition": "1. Divize",
+      "round": "17. kolo",
+      "date": "2026-01-12",
+      "time": "15:00",
+      "opponent": "Hradiště",
+      "home": "Sokol Postoupky",
+      "away": "Hradiště",
+      "isHome": true,
+      "venue": "Postoupky",
+      "homeScore": 2,
+      "awayScore": 1,
+      "referee": "Jan Novák",
+      "report": "Krátký report ze zápasu.",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     }
   ]
 }

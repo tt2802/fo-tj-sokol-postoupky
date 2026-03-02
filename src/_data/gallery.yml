@@ -1,0 +1,18 @@
+# Galerie – alba fotek z akcí a zápasů
+albums:
+  - title: Meziligový turnaj 2026
+    date: "2026-02-15"
+    slug: meziligovy-turnaj-2026
+    cover: /assets/uploads/galerie-turnaj-cover.jpg
+    photos:
+      - /assets/uploads/galerie-turnaj-1.jpg
+      - /assets/uploads/galerie-turnaj-2.jpg
+      - /assets/uploads/galerie-turnaj-3.jpg
+
+  - title: Zápas s Hulínem
+    date: "2026-01-19"
+    slug: zapas-hulinem
+    cover: /assets/uploads/galerie-hulin-cover.jpg
+    photos:
+      - /assets/uploads/galerie-hulin-1.jpg
+      - /assets/uploads/galerie-hulin-2.jpg

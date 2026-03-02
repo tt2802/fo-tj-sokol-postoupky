@@ -1,0 +1,32 @@
+{# basic SEO meta tags #}
+{# description fallback: use page data or truncated content if not set #}
+{% if description is not defined and content %}
+  {% set description = content | striptags | truncate(160) %}
+{% endif %}
+{% if description %}
+<meta name="description" content="{{ description }}">
+{% endif %}
+
+{# canonical URL: override via frontmatter else use page url (with site.url prefix) #}
+{% set canon = canonical or url %}
+<link rel="canonical" href="{{ site.url | default("") }}{{ canon | url }}">
+
+{# Open Graph defaults #}
+<meta property="og:url" content="{{ site.url | default("") }}{{ url | url }}">
+<meta property="og:type" content="website">
+
+{% if ogTitle %}
+<meta property="og:title" content="{{ ogTitle }}">
+{% else %}
+<meta property="og:title" content="{{ title }}">
+{% endif %}
+
+{% if ogDescription %}
+<meta property="og:description" content="{{ ogDescription }}">
+{% endif %}
+
+{% if ogImage %}
+<meta property="og:image" content="{{ ogImage | url }}">
+{% elif site.ogImage %}
+<meta property="og:image" content="{{ site.ogImage | url }}">
+{% endif %}

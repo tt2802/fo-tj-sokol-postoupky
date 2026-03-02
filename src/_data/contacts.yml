@@ -1,0 +1,30 @@
+# Kontakty, tréninky a údaje o klubu
+address: Postoupky 67, 783 25 Postoupky
+mapUrl: https://maps.google.com/?q=Postoupky+67,+783+25+Postoupky
+
+people:
+  - name: Vladimír Opluštil
+    role: Vedoucí oddílu
+    phone: "+420 735 111 111"
+    email: oplustil.v@seznam.cz
+
+  - name: Josef Novotný
+    role: Hospodář
+    phone: "+420 735 222 222"
+    email: novotny.j@seznam.cz
+
+trainings:
+  - team: Muži
+    day: Středa
+    time: "18:00–19:30"
+    place: Sokolovna Postoupky
+
+  - team: Dorostenci
+    day: Úterý
+    time: "17:00–18:00"
+    place: Sokolovna Postoupky
+
+  - team: Starší žáci
+    day: Čtvrtek
+    time: "16:00–17:00"
+    place: Sokolovna Postoupky

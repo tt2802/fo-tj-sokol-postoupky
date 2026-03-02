@@ -169,9 +169,69 @@ nav a {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== PARTNEŘI ===== */
+.sponsorsList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.sponsorsList li {
+  background: #f9f9f9;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
 .site-header {
   background: #6d28d9;
   color: white;
+}
+
+/* dropdown menu */
+nav {
+  position: relative;
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  margin-right: 1rem;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #6d28d9;
+  padding: 0.5rem 0;
+  margin-top: 0.25rem;
+  border-radius: 6px;
+  min-width: 150px;
+  z-index: 100;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.dropdown.open .dropdown-menu {
+  display: block;
 }
 
 .header-inner {
@@ -183,7 +243,6 @@ nav a {
   justify-content: space-between;
 }
 
-/* TADY ZMĚNA: přidej tohle */
 .site-header .header-inner {
   max-width: none;          /* zruší "centrování do středu" */
   margin: 0;

@@ -1,0 +1,76 @@
+---
+title: Muži
+permalink: /muzi/index.html
+layout: layouts/page.njk
+---
+
+<section class="section">
+  <div class="container">
+    <h1>Fotbalový tým Mužů</h1>
+    <p class="muted">Přehled zápasů a soupisky týmu Sokol Postoupky.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <a href="/muzi/zapasy/" class="card" style="cursor: pointer; text-decoration: none; color: inherit;">
+        <div class="card__body" style="padding: 2rem; text-align: center;">
+          <h3 class="card__title">🏆 Zápasy</h3>
+          <p class="muted">Odehrané a nadcházející zápasy</p>
+        </div>
+      </a>
+
+      <a href="/muzi/tym/" class="card" style="cursor: pointer; text-decoration: none; color: inherit;">
+        <div class="card__body" style="padding: 2rem; text-align: center;">
+          <h3 class="card__title">👥 Náš tým</h3>
+          <p class="muted">Soupiska hráčů a realizační tým</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% set menMatches = matchesComputed.upcoming | selectattr('team', 'equalto', 'muzi') | list %}
+{% set menLastResult = matchesComputed.played | selectattr('team', 'equalto', 'muzi') | first %}
+
+{% if menLastResult %}
+  <section class="section">
+    <div class="container">
+      <h2>Poslední zápas</h2>
+      <div class="card">
+        <div class="card__body">
+          <p class="muted">{{ menLastResult._dt | czDate }}</p>
+          <h3>
+            <strong>{{ menLastResult.home }}</strong>
+            {% if menLastResult.homeScore is number and menLastResult.awayScore is number %}
+              {{ menLastResult.homeScore }} : {{ menLastResult.awayScore }}
+            {% endif %}
+            <strong>{{ menLastResult.away }}</strong>
+          </h3>
+          <p class="muted">{{ menLastResult.competition }} · {{ menLastResult.season }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if menMatches | length > 0 %}
+  <section class="section">
+    <div class="container">
+      <h2>Příští zápas</h2>
+      {% set nextMatch = menMatches | first %}
+      <div class="card">
+        <div class="card__body">
+          <p class="muted">{{ nextMatch._dt | czDate }}{% if nextMatch.time %} · {{ nextMatch.time }}{% endif %}</p>
+          <h3>
+            <strong>{{ nextMatch.home }}</strong>
+            vs
+            <strong>{{ nextMatch.away }}</strong>
+          </h3>
+          <p class="muted">{{ nextMatch.venue }} · {{ nextMatch.competition }} · {{ nextMatch.season }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}

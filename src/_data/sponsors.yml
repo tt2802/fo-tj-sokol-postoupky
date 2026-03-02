@@ -1,0 +1,13 @@
+# Partneři a sponzoři klubu
+items:
+  - name: Stavební firma ABC
+    logo: /assets/uploads/sponsor-abc.png
+    url: https://example.com
+
+  - name: Místní hospoda U Pivovaru
+    logo: /assets/uploads/sponsor-hospoda.png
+    url: https://example.com
+
+  - name: Hotel Sokol
+    logo: /assets/uploads/sponsor-hotel.png
+    url: https://example.com

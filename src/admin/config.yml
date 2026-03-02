@@ -6,6 +6,9 @@ backend:
   base_url: https://decap-fo-tj-sokol-postoupky.tomasdanielkubin.workers.dev
   auth_endpoint: auth
 
+site_url: https://tt2802.github.io/fo-tj-sokol-postoupky
+display_url: https://tt2802.github.io/fo-tj-sokol-postoupky
+
 media_folder: "src/assets/uploads"
 public_folder: "/assets/uploads"
 
@@ -14,10 +17,12 @@ publish_mode: simple
 collections:
   - name: "news"
     label: "Novinky"
+    label_singular: "Novinka"
     folder: "src/news"
     create: true
     slug: "{{slug}}"
     summary: "{{title}} ({{date}})"
+    preview_url: "{{site_url}}/novinky/{{slug}}/"
     fields:
       - { label: "Titulek", name: "title", widget: "string" }
       - label: "Datum"
@@ -40,31 +45,257 @@ collections:
           - label: "Zápasy"
             name: "items"
             widget: "list"
+            collapsed: true
             summary: "{{fields.date}} · {{fields.team}} · {{fields.home}} vs {{fields.away}}"
             fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Slug", name: "slug", widget: "string" }
               - label: "Tým"
                 name: "team"
                 widget: "select"
+                default: "muzi"
                 options:
                   - { label: "Muži", value: "muzi" }
                   - { label: "Mládež", value: "mladez" }
-              - { label: "Sezóna", name: "season", widget: "string" }
-              - { label: "Soutěž", name: "competition", widget: "string" }
-              - { label: "Kolo", name: "round", widget: "string" }
-              - { label: "Datum", name: "date", widget: "date", format: "YYYY-MM-DD" }
+
+              - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026", required: true }
+              - { label: "Soutěž", name: "competition", widget: "string", required: true }
+              - { label: "Kolo", name: "round", widget: "string", required: false }
+
+              - label: "Datum"
+                name: "date"
+                widget: "date"
+                format: "YYYY-MM-DD"
+
               - { label: "Čas", name: "time", widget: "string", required: false }
-              - { label: "Soupeř", name: "opponent", widget: "string" }
-              - { label: "Domácí", name: "home", widget: "string" }
-              - { label: "Hosté", name: "away", widget: "string" }
+
               - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true }
               - { label: "Místo", name: "venue", widget: "string" }
+
+              - { label: "Domácí", name: "home", widget: "string", required: true }
+              - { label: "Hosté", name: "away", widget: "string", required: true }
+
               - { label: "Skóre domácí", name: "homeScore", widget: "number", required: false, value_type: "int" }
               - { label: "Skóre hosté", name: "awayScore", widget: "number", required: false, value_type: "int" }
+
               - { label: "Rozhodčí", name: "referee", widget: "string", required: false }
               - { label: "Report", name: "report", widget: "text", required: false }
               - { label: "Video URL", name: "videoUrl", widget: "string", required: false }
+
+              - label: "Sestava"
+                name: "lineup"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Hráč", name: "player", widget: "string" }
+
+              - label: "Střelci"
+                name: "scorers"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Střelec", name: "scorer", widget: "string" }
+
+              - label: "Karty"
+                name: "cards"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Karta", name: "card", widget: "string" }
+
+              - label: "Střídání"
+                name: "substitutions"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Střídání", name: "substitution", widget: "string" }
+
+      - name: "players"
+        label: "Hráči"
+        file: "src/_data/players.yml"
+        fields:
+          - label: "Muži"
+            name: "men"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.number}} · {{fields.name}} ({{fields.position}})"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string", required: true }
+              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+              - label: "Pozice"
+                name: "position"
+                widget: "select"
+                options:
+                  - { label: "Brankář", value: "Brankář" }
+                  - { label: "Obránce", value: "Obránce" }
+                  - { label: "Záložník", value: "Záložník" }
+                  - { label: "Útočník", value: "Útočník" }
+              - { label: "Fotka", name: "photo", widget: "image", required: false }
+
+          - label: "Mládež – Dorostenci"
+            name: "youth.dorostenci"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.number}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string", required: true }
+              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+              - label: "Pozice"
+                name: "position"
+                widget: "select"
+                options:
+                  - { label: "Brankář", value: "Brankář" }
+                  - { label: "Obránce", value: "Obránce" }
+                  - { label: "Záložník", value: "Záložník" }
+                  - { label: "Útočník", value: "Útočník" }
+              - { label: "Fotka", name: "photo", widget: "image", required: false }
+
+          - label: "Mládež – Starší žáci"
+            name: "youth.starsi-zaci"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.number}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string", required: true }
+              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+              - label: "Pozice"
+                name: "position"
+                widget: "select"
+                options:
+                  - { label: "Brankář", value: "Brankář" }
+                  - { label: "Obránce", value: "Obránce" }
+                  - { label: "Záložník", value: "Záložník" }
+                  - { label: "Útočník", value: "Útočník" }
+              - { label: "Fotka", name: "photo", widget: "image", required: false }
+
+          - label: "Mládež – Mladší žáci"
+            name: "youth.mlads-zaci"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.number}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string", required: true }
+              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+              - label: "Pozice"
+                name: "position"
+                widget: "select"
+                options:
+                  - { label: "Brankář", value: "Brankář" }
+                  - { label: "Obránce", value: "Obránce" }
+                  - { label: "Záložník", value: "Záložník" }
+                  - { label: "Útočník", value: "Útočník" }
+              - { label: "Fotka", name: "photo", widget: "image", required: false }
+
+          - label: "Mládež – Miniféra"
+            name: "youth.minifera"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.number}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string", required: true }
+              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+              - label: "Pozice"
+                name: "position"
+                widget: "select"
+                options:
+                  - { label: "Brankář", value: "Brankář" }
+                  - { label: "Obránce", value: "Obránce" }
+                  - { label: "Záložník", value: "Záložník" }
+                  - { label: "Útočník", value: "Útočník" }
+              - { label: "Fotka", name: "photo", widget: "image", required: false }
+
+      - name: "staff"
+        label: "Realizační tým"
+        file: "src/_data/staff.yml"
+        fields:
+          - label: "Osoby"
+            name: "members"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.role}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Telefon", name: "phone", widget: "string", required: false }
+              - { label: "Email", name: "email", widget: "string", required: false }
+              - { label: "Fotka", name: "photo", widget: "image", required: false }
+
+      - name: "gallery"
+        label: "Galerie"
+        file: "src/_data/gallery.yml"
+        fields:
+          - label: "Alba"
+            name: "albums"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.date}} · {{fields.title}}"
+            fields:
+              - { label: "Název alba", name: "title", widget: "string" }
+              - label: "Datum"
+                name: "date"
+                widget: "date"
+                format: "YYYY-MM-DD"
+              - { label: "Slug", name: "slug", widget: "string", hint: "např. soustredeni-2026", required: true }
+              - { label: "Úvodní fotka", name: "cover", widget: "image", required: false }
+              - label: "Fotky"
+                name: "photos"
+                widget: "list"
+                collapsed: true
+                fields:
+                  - { label: "Fotka", name: "photo", widget: "image" }
+
+      - name: "sponsors"
+        label: "Partneři"
+        file: "src/_data/sponsors.yml"
+        fields:
+          - label: "Partneři"
+            name: "items"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Název", name: "name", widget: "string" }
+              - { label: "Logo", name: "logo", widget: "image", required: false }
+              - { label: "Odkaz", name: "url", widget: "string", required: false }
+
+      - name: "contacts"
+        label: "Kontakty"
+        file: "src/_data/contacts.yml"
+        fields:
+          - { label: "Adresa", name: "address", widget: "string", required: false }
+          - { label: "Mapa URL", name: "mapUrl", widget: "string", required: false }
+          - label: "Kontaktní osoby"
+            name: "people"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.role}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Telefon", name: "phone", widget: "string", required: false }
+              - { label: "Email", name: "email", widget: "string", required: false }
+          - label: "Tréninky"
+            name: "trainings"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.team}} · {{fields.day}} {{fields.time}}"
+            fields:
+              - { label: "Tým", name: "team", widget: "string" }
+              - { label: "Den", name: "day", widget: "string" }
+              - { label: "Čas", name: "time", widget: "string" }
+              - { label: "Místo", name: "place", widget: "string", required: false }
+
+      - name: "categories"
+        label: "Kategorie mládeže"
+        file: "src/_data/categories.yml"
+        fields:
+          - label: "Kategorie"
+            name: "items"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.name}} ({{fields.shortName}})"
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: true, hint: "např. dorostenci" }
+              - { label: "Název", name: "name", widget: "string", required: true }
+              - { label: "Zkratka", name: "shortName", widget: "string", required: true, hint: "např. U19" }
 
 editor:
   preview: false

@@ -1,3 +1,4 @@
+
 men:
   - name: Tomáš
     number: 8
@@ -10,3 +11,48 @@ youth.starsi-zaci:
   - name: Tomáš
     number: 8
     position: Záložník
+
+# Hráči oddílu – jsou odděleni podle týmu a kategorie mládeže
+men:
+  - id: player-1
+    name: Karel Svoboda
+    number: 1
+    position: Brankář
+    photo: /assets/uploads/player-placeholder.jpg
+    
+  - id: player-2
+    name: Jan Novotný
+    number: 2
+    position: Obránce
+    photo: ""
+
+youth:
+  dorostenci:
+    - id: youth-1
+      name: Tomáš Hanuš
+      number: 9
+      position: Útočník
+      photo: ""
+      
+    - id: youth-2
+      name: David Králik
+      number: 5
+      position: Záložník
+      photo: ""
+  
+  starsi-zaci:
+    - id: youth-s1
+      name: Marek Polák
+      number: 10
+      position: Útočník
+      photo: ""
+  
+  mlads-zaci:
+    - id: youth-m1
+      name: Pavel Bednárik
+      number: 7
+      position: Záložník
+      photo: ""
+  
+  minifera: []
+

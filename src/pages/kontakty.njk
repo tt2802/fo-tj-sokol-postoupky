@@ -1,2 +1,91 @@
-
+---
 title: Kontakty
+permalink: /kontakty/
+layout: layouts/page.njk
+---
+
+<section class="section">
+  <div class="container">
+    <h1>Kontakty</h1>
+    <p class="muted">Jak nás najít a s kým se domluvit.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% set contactData = contacts %}
+
+    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+      <div>
+        <h2>Adresa klubu</h2>
+        {% if contactData.address %}
+          <p style="font-size: 1.1rem; line-height: 1.6;">
+            {{ contactData.address }}
+          </p>
+        {% endif %}
+
+        {% if contactData.mapUrl %}
+          <p>
+            <a href="{{ contactData.mapUrl }}" target="_blank" rel="noopener">
+              🗺️ Otevřít v mapách
+            </a>
+          </p>
+        {% endif %}
+      </div>
+
+      <div>
+        <h2>Tréninky</h2>
+        {% set trainings = contactData.trainings | default([]) %}
+        {% if trainings | length > 0 %}
+          <ul style="list-style: none; padding: 0;">
+            {% for t in trainings %}
+              <li style="padding-bottom: 1rem;">
+                <strong>{{ t.team }}</strong><br>
+                📅 {{ t.day }} · ⏰ {{ t.time }}<br>
+                📍 {{ t.place }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="muted">Žádné tréninky zatím nejsou naplánované.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: #f9f9f9;">
+  <div class="container">
+    <h2>Kontaktní osoby</h2>
+
+    {% set people = contactData.people | default([]) %}
+
+    {% if people | length == 0 %}
+      <p class="muted">Zatím tu nejsou žádní kontakty.</p>
+    {% else %}
+      <div class="grid contacts" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+        {% for person in people %}
+          <article class="card">
+            <div class="card__body">
+              <h3 class="card__title">{{ person.name }}</h3>
+              <p><strong>{{ person.role }}</strong></p>
+
+              <div style="margin-top: 1rem;">
+                {% if person.phone %}
+                  <p>
+                    📞 <a href="tel:{{ person.phone }}">{{ person.phone }}</a>
+                  </p>
+                {% endif %}
+                {% if person.email %}
+                  <p>
+                    📧 <a href="mailto:{{ person.email }}">{{ person.email }}</a>
+                  </p>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

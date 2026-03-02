@@ -14,9 +14,25 @@
     <nav id="mainNav" class="main-nav" aria-label="Hlavní navigace">
       <a href="{{ '/' | url }}">Domů</a>
       <a href="{{ '/novinky/' | url }}">Novinky</a>
-      <a href="{{ '/zapasy/' | url }}">Zápasy</a>
-      <a href="{{ '/tym/' | url }}">Tým</a>
+
+      <div class="dropdown">
+        <button class="dropdown-toggle" aria-expanded="false">Muži ▾</button>
+        <div class="dropdown-menu">
+          <a href="{{ '/muzi/' | url }}">Přehled</a>
+          <a href="{{ '/muzi/zapasy/' | url }}">Zápasy</a>
+          <a href="{{ '/muzi/tym/' | url }}">Tým</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="dropdown-toggle" aria-expanded="false">Mládež ▾</button>
+        <div class="dropdown-menu">
+          <a href="{{ '/mladez/' | url }}">Přehled kategorií</a>
+        </div>
+      </div>
+
       <a href="{{ '/galerie/' | url }}">Galerie</a>
+      <a href="{{ '/partneri/' | url }}">Partneři</a>
       <a href="{{ '/kontakty/' | url }}">Kontakty</a>
       <a href="{{ '/nabor/' | url }}">Nábor</a>
     </nav>

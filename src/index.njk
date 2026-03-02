@@ -11,7 +11,7 @@ hideTitle: true
       <div class="hero__text">
         <h1>TJ Sokol Postoupky</h1>
         <p class="muted">
-          Fotbalový oddíl pro muže. Tréninky každou středu 18:00–19:00 v Sokolovně Postoupky.
+          Fotbalový oddíl pro muže a mládež. Tréninky několikrát v týdnu v Sokolovně Postoupky.
         </p>
 
         <div class="hero__cta">
@@ -23,6 +23,27 @@ hideTitle: true
       <div class="hero__badge" aria-hidden="true">
         <div class="hero__badgeInner">⚽</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 2rem;">Fotbalové týmy</h2>
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+      <a href="/muzi/" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <div class="card__body" style="text-align: center; padding: 2rem;">
+          <h3 class="card__title">🏆 Muži</h3>
+          <p class="muted">Přehled zápasů a týmu</p>
+        </div>
+      </a>
+
+      <a href="/mladez/" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <div class="card__body" style="text-align: center; padding: 2rem;">
+          <h3 class="card__title">👶 Mládež</h3>
+          <p class="muted">Všechny věkové kategorie</p>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -50,10 +71,16 @@ hideTitle: true
               <p class="muted">Místo: {{ matchesComputed.nextMatch.venue }}</p>
             {% endif %}
 
-            <p><a href="/zapasy/">Zobrazit všechny zápasy</a></p>
+            <p>
+              {% if matchesComputed.nextMatch.team == "muzi" %}
+                <a href="/muzi/zapasy/">Zobrazit všechny zápasy Mužů</a>
+              {% else %}
+                <a href="/mladez/">Zobrazit všechny zápasy Mládeže</a>
+              {% endif %}
+            </p>
           {% else %}
             <p class="muted">Zatím nemáme vypsaný žádný další zápas.</p>
-            <p><a href="/zapasy/">Přejít na zápasy</a></p>
+            <p><a href="/muzi/zapasy/">Přejít na zápasy</a></p>
           {% endif %}
         </div>
       </article>
@@ -78,10 +105,16 @@ hideTitle: true
               <p class="muted">Místo: {{ matchesComputed.lastResult.venue }}</p>
             {% endif %}
 
-            <p><a href="/zapasy/">Historie zápasů</a></p>
+            <p>
+              {% if matchesComputed.lastResult.team == "muzi" %}
+                <a href="/muzi/zapasy/">Historie zápasů Mužů</a>
+              {% else %}
+                <a href="/mladez/">Historie zápasů Mládeže</a>
+              {% endif %}
+            </p>
           {% else %}
             <p class="muted">Zatím nemáme zapsaný žádný výsledek.</p>
-            <p><a href="/zapasy/">Doplnit výsledky</a></p>
+            <p><a href="/muzi/zapasy/">Doplnit výsledky</a></p>
           {% endif %}
         </div>
       </article>

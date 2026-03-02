@@ -25,14 +25,8 @@ layout: layouts/page.njk
           <article class="card">
             <div class="card__media">
               {% if p.photo %}
-                <img
-                  src="{{ p.photo }}"
-                  alt="Fotka hráče {{ p.name | escape }}"
-                  loading="lazy"
-                  decoding="async"
-                  width="600"
-                  height="600"
-                >
+                {% set __alt = "Fotka hráče " ~ p.name %}
+                {% image p.photo, __alt, "(max-width: 280px) 100vw, 280px", "player-photo" %}
               {% else %}
                 <div class="card__placeholder" aria-hidden="true"></div>
               {% endif %}
