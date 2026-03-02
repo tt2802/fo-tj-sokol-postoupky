@@ -1,21 +1,15 @@
 {
   "items": [
     {
-      "referee": "Benedikt",
       "season": "2025/2026",
-      "awayScore": 0,
       "isHome": true,
-      "slug": "liga-mistrů",
-      "time": "18.00",
-      "round": "1",
-      "away": "FC Barcelona",
+      "time": "14.00",
+      "round": "6",
+      "away": "Vsetín",
       "venue": "Postoupky",
-      "homeScore": 2,
-      "id": "1",
-      "opponent": "FC Barcelona",
       "team": "muzi",
-      "home": "Sokol Postoupky",
-      "competition": "Liga mistrů"
+      "home": "FO Postoupky",
+      "competition": "ZKP"
     }
   ]
 }
