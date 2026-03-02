@@ -5,12 +5,16 @@ backend:
   branch: main
   base_url: https://decap-fo-tj-sokol-postoupky.tomasdanielkubin.workers.dev
   auth_endpoint: auth
+  
+# Enable local backend for local testing (no auth required when running the proxy)
+local_backend: true
 
 site_url: https://tt2802.github.io/fo-tj-sokol-postoupky
 display_url: https://tt2802.github.io/fo-tj-sokol-postoupky
 
-media_folder: "src/assets/uploads"
-public_folder: "/assets/uploads"
+# Store uploaded images inside the site's source assets so Eleventy can pick them up
+media_folder: "src/assets/img/uploads"
+public_folder: "/assets/img/uploads"
 
 publish_mode: simple
 
@@ -41,6 +45,7 @@ collections:
       - name: "matches"
         label: "Zápasy"
         file: "src/_data/matches.json"
+        preview_url: "{{site_url}}/zapasy/"
         fields:
           - label: "Zápasy"
             name: "items"
@@ -55,6 +60,17 @@ collections:
                 options:
                   - { label: "Muži", value: "muzi" }
                   - { label: "Mládež", value: "mladez" }
+
+              - label: "Kategorie (pouze pro Mládež)"
+                name: "category"
+                widget: "select"
+                required: false
+                hint: "Vyber kategorii mládeže, pokud se jedná o mládež"
+                options:
+                  - { label: "Dorostenci", value: "dorostenci" }
+                  - { label: "Starší žáci", value: "starsi-zaci" }
+                  - { label: "Mladší žáci", value: "mlads-zaci" }
+                  - { label: "Školička", value: "skolicka" }
 
               - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026", required: true }
               - { label: "Soutěž", name: "competition", widget: "string", required: true }
@@ -111,6 +127,7 @@ collections:
       - name: "players"
         label: "Hráči"
         file: "src/_data/players.yml"
+        preview_url: "{{site_url}}/muzi/tym/"
         fields:
           - label: "Muži"
             name: "men"
@@ -130,77 +147,82 @@ collections:
                   - { label: "Útočník", value: "Útočník" }
               - { label: "Fotka", name: "photo", widget: "image", required: false }
 
-          - label: "Mládež – Dorostenci"
-            name: "youth.dorostenci"
-            widget: "list"
-            collapsed: true
-            summary: "{{fields.number}} · {{fields.name}}"
+          - label: "Mládež"
+            name: "youth"
+            widget: "object"
+            collapsed: false
             fields:
-              - { label: "Jméno", name: "name", widget: "string", required: true }
-              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
-              - label: "Pozice"
-                name: "position"
-                widget: "select"
-                options:
-                  - { label: "Brankář", value: "Brankář" }
-                  - { label: "Obránce", value: "Obránce" }
-                  - { label: "Záložník", value: "Záložník" }
-                  - { label: "Útočník", value: "Útočník" }
-              - { label: "Fotka", name: "photo", widget: "image", required: false }
+              - label: "Dorostenci"
+                name: "dorostenci"
+                widget: "list"
+                collapsed: true
+                summary: "{{fields.number}} · {{fields.name}}"
+                fields:
+                  - { label: "Jméno", name: "name", widget: "string", required: true }
+                  - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+                  - label: "Pozice"
+                    name: "position"
+                    widget: "select"
+                    options:
+                      - { label: "Brankář", value: "Brankář" }
+                      - { label: "Obránce", value: "Obránce" }
+                      - { label: "Záložník", value: "Záložník" }
+                      - { label: "Útočník", value: "Útočník" }
+                  - { label: "Fotka", name: "photo", widget: "image", required: false }
 
-          - label: "Mládež – Starší žáci"
-            name: "youth.starsi-zaci"
-            widget: "list"
-            collapsed: true
-            summary: "{{fields.number}} · {{fields.name}}"
-            fields:
-              - { label: "Jméno", name: "name", widget: "string", required: true }
-              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
-              - label: "Pozice"
-                name: "position"
-                widget: "select"
-                options:
-                  - { label: "Brankář", value: "Brankář" }
-                  - { label: "Obránce", value: "Obránce" }
-                  - { label: "Záložník", value: "Záložník" }
-                  - { label: "Útočník", value: "Útočník" }
-              - { label: "Fotka", name: "photo", widget: "image", required: false }
+              - label: "Starší žáci"
+                name: "starsi-zaci"
+                widget: "list"
+                collapsed: true
+                summary: "{{fields.number}} · {{fields.name}}"
+                fields:
+                  - { label: "Jméno", name: "name", widget: "string", required: true }
+                  - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+                  - label: "Pozice"
+                    name: "position"
+                    widget: "select"
+                    options:
+                      - { label: "Brankář", value: "Brankář" }
+                      - { label: "Obránce", value: "Obránce" }
+                      - { label: "Záložník", value: "Záložník" }
+                      - { label: "Útočník", value: "Útočník" }
+                  - { label: "Fotka", name: "photo", widget: "image", required: false }
 
-          - label: "Mládež – Mladší žáci"
-            name: "youth.mlads-zaci"
-            widget: "list"
-            collapsed: true
-            summary: "{{fields.number}} · {{fields.name}}"
-            fields:
-              - { label: "Jméno", name: "name", widget: "string", required: true }
-              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
-              - label: "Pozice"
-                name: "position"
-                widget: "select"
-                options:
-                  - { label: "Brankář", value: "Brankář" }
-                  - { label: "Obránce", value: "Obránce" }
-                  - { label: "Záložník", value: "Záložník" }
-                  - { label: "Útočník", value: "Útočník" }
-              - { label: "Fotka", name: "photo", widget: "image", required: false }
+              - label: "Mladší žáci"
+                name: "mlads-zaci"
+                widget: "list"
+                collapsed: true
+                summary: "{{fields.number}} · {{fields.name}}"
+                fields:
+                  - { label: "Jméno", name: "name", widget: "string", required: true }
+                  - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+                  - label: "Pozice"
+                    name: "position"
+                    widget: "select"
+                    options:
+                      - { label: "Brankář", value: "Brankář" }
+                      - { label: "Obránce", value: "Obránce" }
+                      - { label: "Záložník", value: "Záložník" }
+                      - { label: "Útočník", value: "Útočník" }
+                  - { label: "Fotka", name: "photo", widget: "image", required: false }
 
-          - label: "Mládež – Miniféra"
-            name: "youth.minifera"
-            widget: "list"
-            collapsed: true
-            summary: "{{fields.number}} · {{fields.name}}"
-            fields:
-              - { label: "Jméno", name: "name", widget: "string", required: true }
-              - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
-              - label: "Pozice"
-                name: "position"
-                widget: "select"
-                options:
-                  - { label: "Brankář", value: "Brankář" }
-                  - { label: "Obránce", value: "Obránce" }
-                  - { label: "Záložník", value: "Záložník" }
-                  - { label: "Útočník", value: "Útočník" }
-              - { label: "Fotka", name: "photo", widget: "image", required: false }
+              - label: "Školička"
+                name: "skolicka"
+                widget: "list"
+                collapsed: true
+                summary: "{{fields.number}} · {{fields.name}}"
+                fields:
+                  - { label: "Jméno", name: "name", widget: "string", required: true }
+                  - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+                  - label: "Pozice"
+                    name: "position"
+                    widget: "select"
+                    options:
+                      - { label: "Brankář", value: "Brankář" }
+                      - { label: "Obránce", value: "Obránce" }
+                      - { label: "Záložník", value: "Záložník" }
+                      - { label: "Útočník", value: "Útočník" }
+                  - { label: "Fotka", name: "photo", widget: "image", required: false }
 
       - name: "staff"
         label: "Realizační tým"
@@ -221,6 +243,7 @@ collections:
       - name: "gallery"
         label: "Galerie"
         file: "src/_data/gallery.yml"
+        preview_url: "{{site_url}}/galerie/"
         fields:
           - label: "Alba"
             name: "albums"

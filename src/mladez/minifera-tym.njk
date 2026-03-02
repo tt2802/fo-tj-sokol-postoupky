@@ -1,11 +1,11 @@
 ---
-title: Tým Miniféry
-permalink: /mladez/minifera/tym/index.html
+title: Tým Školičky
+permalink: /mladez/skolicka/tym/index.html
 layout: layouts/page.njk
 ---
 
 <nav class="muted" aria-label="Drobečková navigace" style="margin-bottom: 2rem;">
-  <a href="/mladez/minifera/">← Zpět na Miniferu</a>
+  <a href="/mladez/skolicka/">← Zpět na Školičku</a>
 </nav>
 
 <section class="section">
@@ -17,15 +17,42 @@ layout: layouts/page.njk
 
 <section class="section">
   <div class="container">
+    {% set catUpcoming = matchesComputed.upcoming | selectattr('team', 'equalto', 'mladez') | selectattr('category', 'equalto', 'skolicka') | list %}
+    {% set catPlayed = matchesComputed.played | selectattr('team', 'equalto', 'mladez') | selectattr('category', 'equalto', 'skolicka') | list %}
+
+    {% if catUpcoming | length > 0 %}
+      <h2>Nadcházející zápas</h2>
+      {% set next = catUpcoming[0] %}
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card__body">
+          <p class="muted">{{ next._dt | czDate }}{% if next.time %} · {{ next.time }}{% endif %}</p>
+          <h3><strong>{{ next.home }}</strong> vs <strong>{{ next.away }}</strong></h3>
+          <p class="muted">{{ next.venue }} · {{ next.competition }}</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if catPlayed | length > 0 %}
+      <h2>Poslední výsledek</h2>
+      {% set last = catPlayed[0] %}
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card__body">
+          <p class="muted">{{ last._dt | czDate }}</p>
+          <h3><strong>{{ last.home }}</strong> <span style="color:#666">{{ last.homeScore }} : {{ last.awayScore }}</span> <strong>{{ last.away }}</strong></h3>
+          <p class="muted">{{ last.competition }}</p>
+        </div>
+      </div>
+    {% endif %}
+
     <h2>Hráči</h2>
 
-    {% set miniferaPlayers = players.youth["minifera"] | default([]) %}
+    {% set skolickaPlayers = players.youth["skolicka"] | default([]) %}
 
-    {% if miniferaPlayers | length == 0 %}
-      <p class="muted">Zatím zde nejsou žádní hráči. Doplníš je v administraci v sekci „Data → Hráči – Mládež - Miniféra".</p>
+    {% if skolickaPlayers | length == 0 %}
+      <p class="muted">Zatím zde nejsou žádní hráči. Doplníš je v administraci v sekci „Data → Hráči – Mládež - Školička".</p>
     {% else %}
       <div class="grid cards" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
-        {% for p in miniferaPlayers %}
+        {% for p in skolickaPlayers %}
           <article class="card">
             <div class="card__media">
               {% if p.photo %}

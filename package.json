@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "npx @11ty/eleventy --serve --config=.eleventy.cjs",
     "build": "npx @11ty/eleventy --config=.eleventy.cjs",
+    "cms": "npx netlify-cms-proxy-server",
     "lint": "eslint \"src/assets/js/**/*.js\""
   },
   "dependencies": {

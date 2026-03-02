@@ -27,7 +27,15 @@
       <div class="dropdown">
         <button class="dropdown-toggle" aria-expanded="false">Mládež ▾</button>
         <div class="dropdown-menu">
-          <a href="{{ '/mladez/' | url }}">Přehled kategorií</a>
+          {% set youthCats = categories.items | default([]) %}
+
+          {% if youthCats | length == 0 %}
+            <a href="{{ '/mladez/' | url }}">Přehled kategorií</a>
+          {% else %}
+            {% for cat in youthCats %}
+              <a href="{{ ('/mladez/' ~ cat.id ~ '/') | url }}">{{ cat.name }}</a>
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
 
