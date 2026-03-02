@@ -1,0 +1,12 @@
+men:
+  - name: Tomáš
+    number: 8
+    position: Obránce
+youth.dorostenci:
+  - name: Tomáš
+    number: 7
+    position: Obránce
+youth.starsi-zaci:
+  - name: Tomáš
+    number: 8
+    position: Záložník
