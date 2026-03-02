@@ -32,12 +32,3 @@ youth:
       number: 3
       position: "Obránce"
       photo: "/assets/img/uploads/filip-dvok-6.svg"
-men:
-  - name: Tomáš Kubín
-    number: 88
-    position: Záložník
-youth:
-  starsi-zaci:
-    - name: Jindra
-      number: 54
-      position: Útočník
