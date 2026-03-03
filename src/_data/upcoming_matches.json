@@ -1,0 +1,47 @@
+{
+  "items": [
+    {
+      "season": "2025/2026",
+      "isHome": true,
+      "slug": "2026-01-19-postoupky-hulin",
+      "time": "16:30",
+      "round": "18. kolo",
+      "away": "Hulín",
+      "date": "2026-01-19",
+      "venue": "Postoupky",
+      "id": "2026-01-19-postoupky-hulin",
+      "opponent": "Hulín",
+      "team": "muzi",
+      "home": "Sokol Postoupky",
+      "competition": "1. Divize"
+    },
+    {
+      "season": "2025/2026",
+      "isHome": true,
+      "slug": "2026-03-10-postoupky-dorostenci-opponent",
+      "time": "14:00",
+      "round": "10. kolo",
+      "away": "Rival FC U19",
+      "date": "2026-03-10",
+      "venue": "Postoupky",
+      "id": "2026-03-10-postoupky-dorostenci-opponent",
+      "opponent": "Rival FC",
+      "team": "mladez",
+      "category": "dorostenci",
+      "home": "Sokol Postoupky U19",
+      "competition": "Okresní liga U19"
+    },
+    {
+      "season": "2025/2026",
+      "isHome": true,
+      "round": "15",
+      "away": "Hulín",
+      "date": "2026-02-20",
+      "venue": "Postoupky",
+      "team": "mladez",
+      "category": "dorostenci",
+      "home": "FO Postoupky",
+      "competition": "ZKP"
+    }
+  ]
+}

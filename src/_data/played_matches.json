@@ -1,0 +1,71 @@
+{
+  "items": [
+    {
+      "referee": "Jan Novák",
+      "season": "2025/2026",
+      "awayScore": 1,
+      "isHome": true,
+      "slug": "2026-01-12-postoupky-hradiste",
+      "round": "17. kolo",
+      "away": "Hradiště",
+      "date": "2026-01-12",
+      "venue": "Postoupky",
+      "homeScore": 2,
+      "report": "Krátký report ze zápasu.",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "id": "2026-01-12-postoupky-hradiste",
+      "opponent": "Hradiště",
+      "team": "muzi",
+      "home": "Sokol Postoupky",
+      "competition": "1. Divize"
+    },
+    {
+      "referee": "Petr Svoboda",
+      "season": "2025/2026",
+      "awayScore": 1,
+      "isHome": true,
+      "slug": "2026-02-15-dorostenci-barcelona",
+      "round": "11. kolo",
+      "away": "FC Barcelona",
+      "date": "2026-02-15",
+      "venue": "Postoupky",
+      "homeScore": 3,
+      "report": "Vítězství dorosteňců! Skvělý výkon.",
+      "videoUrl": "https://www.youtube.com/watch?v=IGfvDVDbv3M",
+      "id": "2026-02-15-dorostenci-barcelona",
+      "opponent": "FC Barcelona",
+      "team": "mladez",
+      "category": "dorostenci",
+      "home": "Sokol Postoupky U19",
+      "competition": "Okresní liga U19",
+      "lineup": [],
+      "scorers": [],
+      "cards": [],
+      "substitutions": []
+    },
+    {
+      "referee": "Thomas James McEvoy",
+      "season": "2025/2026",
+      "awayScore": 0,
+      "isHome": true,
+      "round": "5",
+      "away": "Zlín",
+      "date": "2026-01-05",
+      "venue": "Postoupky",
+      "homeScore": 2,
+      "report": "Parádní výkon. Kluci nechali na hrišti všechno.",
+      "videoUrl": "https://www.youtube.com/watch?v=h97kLNPujI4",
+      "team": "muzi",
+      "home": "Postoupky",
+      "competition": "ZKP",
+      "lineup": [],
+      "scorers": [
+        {
+          "scorer": "Petr Novák"
+        }
+      ],
+      "cards": [],
+      "substitutions": []
+    }
+  ]
+}
