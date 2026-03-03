@@ -126,7 +126,7 @@ collections:
 
       - name: "players"
         label: "Hráči"
-        file: "src/_data/players.yml"
+        file: "src/_data/players.json"
         preview_url: "{{site_url}}/muzi/tym/"
         fields:
           - label: "Muži"
