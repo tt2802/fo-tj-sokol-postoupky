@@ -39,6 +39,19 @@
       "team": "muzi",
       "home": "Přerov",
       "competition": "ZKP"
+    },
+    {
+      "season": "2025/2026",
+      "isHome": true,
+      "time": "16.00",
+      "round": "3",
+      "away": "Kroměříž",
+      "date": "2026-03-03",
+      "venue": "Postoupky",
+      "team": "mladez",
+      "category": "dorostenky-d19",
+      "home": "Posotupky",
+      "competition": "8.liga"
     }
   ]
 }
