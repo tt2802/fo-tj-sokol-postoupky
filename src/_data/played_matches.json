@@ -66,6 +66,27 @@
       ],
       "cards": [],
       "substitutions": []
+    },
+    {
+      "slug": "2026-01-19-postoupky-hulin",
+      "team": "muzi",
+      "season": "2025/2026",
+      "competition": "1. Divize",
+      "round": "18. kolo",
+      "date": "2026-01-19",
+      "home": "Sokol Postoupky",
+      "away": "Hulín",
+      "isHome": true,
+      "venue": "Postoupky",
+      "homeScore": null,
+      "awayScore": null,
+      "referee": "",
+      "report": "",
+      "videoUrl": "",
+      "lineup": [],
+      "scorers": [],
+      "cards": [],
+      "substitutions": []
     }
   ]
 }

@@ -6,6 +6,7 @@
     "dev": "npx @11ty/eleventy --serve --port=8080 --config=.eleventy.cjs",
     "build": "npx @11ty/eleventy --config=.eleventy.cjs",
     "cms": "npx netlify-cms-proxy-server --port 8081",
+    "convert-match": "node src/scripts/convert-match.js",
     "lint": "eslint \"src/assets/js/**/*.js\""
   },
   "dependencies": {
