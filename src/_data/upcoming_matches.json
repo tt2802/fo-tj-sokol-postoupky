@@ -19,6 +19,7 @@
     {
       "season": "2025/2026",
       "isHome": true,
+      "slug": "2026-02-20-fo-postoupky-hulin",
       "round": "15",
       "away": "Hulín",
       "date": "2026-02-20",
@@ -31,6 +32,7 @@
     {
       "season": "2025/2026",
       "isHome": false,
+      "slug": "2026-03-03-perov-postoupky",
       "time": "16.00",
       "round": "10",
       "away": "Postoupky",
@@ -39,6 +41,20 @@
       "team": "muzi",
       "home": "Přerov",
       "competition": "ZKP"
+    },
+    {
+      "season": "2025/2026",
+      "isHome": true,
+      "slug": "2026-03-03-postoupky-kromeriz",
+      "time": "16.00",
+      "round": "9",
+      "away": "Kroměříž",
+      "date": "2026-03-03",
+      "venue": "Postoupky",
+      "team": "mladez",
+      "category": "dorostenci",
+      "home": "Postoupky",
+      "competition": "8.Liga"
     }
   ]
 }
