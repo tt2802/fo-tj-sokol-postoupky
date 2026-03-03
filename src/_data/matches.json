@@ -66,17 +66,17 @@
       "season": "2025/2026",
       "awayScore": 1,
       "isHome": true,
-      "slug": "2026-02-15-dorostenci-rival",
+      "slug": "2026-02-15-dorostenci-barcelona",
       "time": "14:00",
       "round": "11. kolo",
-      "away": "Rival FC",
+      "away": "FC Barcelona",
       "date": "2026-02-15",
       "venue": "Postoupky",
       "homeScore": 3,
       "report": "Vítězství dorosteňců! Skvělý výkon.",
-      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "id": "2026-02-15-dorostenci-rival",
-      "opponent": "Rival FC",
+      "videoUrl": "https://www.youtube.com/watch?v=IGfvDVDbv3M",
+      "id": "2026-02-15-dorostenci-barcelona",
+      "opponent": "FC Barcelona",
       "team": "mladez",
       "category": "dorostenci",
       "home": "Sokol Postoupky U19",
@@ -96,7 +96,7 @@
       "competition": "ZKP"
     },
     {
-      "referee": "Pavel Opluštil",
+      "referee": "Thomas James McEvoy",
       "season": "2025/2026",
       "awayScore": 0,
       "isHome": true,
@@ -108,12 +108,12 @@
       "venue": "Postoupky",
       "scorers": [
         {
-          "scorer": "Branislav Jeník"
+          "scorer": "Petr Novák"
         }
       ],
       "homeScore": 2,
       "report": "Parádní výkon. Kluci nechali na hrišti všechno.",
-      "videoUrl": "https://www.youtube.com/watch?v=sko8H-7eMCg",
+      "videoUrl": "https://www.youtube.com/watch?v=h97kLNPujI4",
       "team": "muzi",
       "home": "Postoupky",
       "competition": "ZKP"

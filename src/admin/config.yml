@@ -89,6 +89,15 @@ collections:
               - { label: "Soutěž", name: "competition", widget: "string", required: true }
               - { label: "Kolo", name: "round", widget: "string", required: false }
 
+              - label: "Typ zápasu"
+                name: "matchType"
+                widget: "select"
+                default: "upcoming"
+                options:
+                  - { label: "🟢 Nadcházející", value: "upcoming" }
+                  - { label: "⚪ Odehrané", value: "played" }
+                hint: "Vyber, jestli je to budoucí nebo již odehrané utkání"
+
               - label: "Datum"
                 name: "date"
                 widget: "datetime"
@@ -105,38 +114,67 @@ collections:
               - { label: "Domácí", name: "home", widget: "string", required: true }
               - { label: "Hosté", name: "away", widget: "string", required: true }
 
-              - { label: "Skóre domácí", name: "homeScore", widget: "number", required: false, value_type: "int" }
-              - { label: "Skóre hosté", name: "awayScore", widget: "number", required: false, value_type: "int" }
+              - label: "Skóre domácí"
+                name: "homeScore"
+                widget: "number"
+                required: false
+                value_type: "int"
+                hint: "Zadej pouze pro odehrané zápasy"
 
-              - { label: "Rozhodčí", name: "referee", widget: "string", required: false }
-              - { label: "Report", name: "report", widget: "text", required: false }
-              - { label: "Video URL", name: "videoUrl", widget: "string", required: false }
+              - label: "Skóre hosté"
+                name: "awayScore"
+                widget: "number"
+                required: false
+                value_type: "int"
+                hint: "Zadej pouze pro odehrané zápasy"
+
+              - label: "Rozhodčí"
+                name: "referee"
+                widget: "string"
+                required: false
+                hint: "Jméno rozhodčího (jen odehrané)"
+
+              - label: "Report ze zápasu"
+                name: "report"
+                widget: "text"
+                required: false
+                hint: "Stručný popis/zhodnocení (jen odehrané)"
+
+              - label: "Video URL"
+                name: "videoUrl"
+                widget: "string"
+                required: false
+                hint: "Odkaz na YouTube nebo video (je-li k dispozici)"
 
               - label: "Sestava"
                 name: "lineup"
                 widget: "list"
                 required: false
+                hint: "Hráči v základní sestavě (jen odehrané)"
                 fields:
                   - { label: "Hráč", name: "player", widget: "string" }
 
-              - label: "Střelci"
+              - label: "Střelci (odehrané)"
                 name: "scorers"
                 widget: "list"
                 required: false
+                hint: "Kdo všechno skóroval a kolikrát"
                 fields:
                   - { label: "Střelec", name: "scorer", widget: "string" }
 
-              - label: "Karty"
+              - label: "Karty (odehrané)"
                 name: "cards"
                 widget: "list"
                 required: false
+                hint: "Žluté/červené karty"
                 fields:
                   - { label: "Karta", name: "card", widget: "string" }
 
-              - label: "Střídání"
+              - label: "Střídání (odehrané)"
                 name: "substitutions"
                 widget: "list"
                 required: false
+                hint: "Střídání hráčů během zápasu"
                 fields:
                   - { label: "Střídání", name: "substitution", widget: "string" }
 
