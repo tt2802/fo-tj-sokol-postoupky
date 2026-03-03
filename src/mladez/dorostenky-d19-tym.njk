@@ -1,0 +1,53 @@
+---
+title: Tým Dorostenek D19
+permalink: /mladez/dorostenky-d19/tym/index.html
+layout: layouts/page.njk
+---
+
+<nav class="muted" aria-label="Drobečková navigace" style="margin-bottom: 2rem;">
+  <a href="{{ '/mladez/dorostenky-d19/' | url }}">← Zpět na Dorostenkyně</a>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <h1>Tým Dorostenek (D19)</h1>
+    <p class="muted">Soupiska hráček kategorie Dorostenkyně D19.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Hráčky</h2>
+
+    {% set playersD19 = players.youth["dorostenky-d19"] | default([]) %}
+
+    {% if playersD19 | length == 0 %}
+      <p class="muted">Zatím zde nejsou žádné hráčky. Doplníš je v administraci v sekci „Data → Hráči – Mládež - Dorostenkyně D19".</p>
+    {% else %}
+      <div class="grid cards" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
+        {% for p in playersD19 %}
+          <article class="card">
+            <div class="card__media">
+              {% if p.photo %}
+                <img src="{{ p.photo }}" alt="Fotka hráčky {{ p.name }}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px 4px 0 0;">
+              {% else %}
+                <div style="width: 100%; aspect-ratio: 1; background: #e0e0e0; border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; color: #999;">
+                  Bez fotky
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="card__body">
+              <h3 class="card__title">
+                {% if p.number %}<span style="font-size: 0.8em; color: #999;">#{{ p.number }}</span> {% endif %}{{ p.name }}
+              </h3>
+              {% if p.position %}
+                <p class="muted">{{ p.position }}</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

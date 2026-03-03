@@ -1,16 +1,16 @@
 items:
-  - id: dorostenci
-    name: Dorostenci
-    shortName: U19
-  - id: starsi-zaci
-    name: Starší žáci
-    shortName: U15
-  - id: mlads-zaci
-    name: Mladší žáci
-    shortName: U12
-  - id: skolicka
-    name: Školička
-    shortName: U8
-  - id: dorostenkyně
-    name: Dorostenkyně
-    shortName: D19
+  - id: "dorostenci"
+    name: "Dorostenci"
+    shortName: "U19"
+  - id: "dorostenky-d19"
+    name: "Dorostenkyně"
+    shortName: "D19"
+  - id: "starsi-zaci"
+    name: "Starší žáci"
+    shortName: "U15"
+  - id: "mlads-zaci"
+    name: "Mladší žáci"
+    shortName: "U12"
+  - id: "skolicka"
+    name: "Školička"
+    shortName: "U8"

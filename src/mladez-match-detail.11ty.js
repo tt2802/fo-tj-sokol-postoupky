@@ -57,6 +57,7 @@ module.exports = class {
 
     const categoryNames = {
       'dorostenci': 'Dorostenci',
+      'dorostenky-d19': 'Dorostenkyně D19',
       'starsi-zaci': 'Starší žáci',
       'mlads-zaci': 'Mladší žáci',
       'skolicka': 'Školička'

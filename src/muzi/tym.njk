@@ -58,7 +58,7 @@ layout: layouts/page.njk
   <div class="container">
     <h2>Realizační tým</h2>
 
-    {% set staffList = staff.members | default([]) %}
+    {% set staffList = staff.items | default(staff.members) | default([]) %}
 
     {% if staffList | length == 0 %}
       <p class="muted">Zatím zde není žádný realizační tým. Doplníš ho v administraci v sekci „Data → Realizační tým".</p>
@@ -70,8 +70,11 @@ layout: layouts/page.njk
               <h3 class="card__title">{{ s.name }}</h3>
               <p class="muted"><strong>{{ s.role }}</strong></p>
 
-              {% if s.phone or s.email %}
+              {% if s.phone or s.email or s.contact %}
                 <div style="margin-top: 1rem; font-size: 0.9rem;">
+                  {% if s.contact %}
+                    <p>📌 {{ s.contact }}</p>
+                  {% endif %}
                   {% if s.phone %}
                     <p>📞 <a href="tel:{{ s.phone }}">{{ s.phone }}</a></p>
                   {% endif %}

@@ -79,6 +79,7 @@ collections:
                 hint: "Vyber kategorii mládeže, pokud se jedná o mládež"
                 options:
                   - { label: "Dorostenci", value: "dorostenci" }
+                  - { label: "Dorostenkyně D19", value: "dorostenky-d19" }
                   - { label: "Starší žáci", value: "starsi-zaci" }
                   - { label: "Mladší žáci", value: "mlads-zaci" }
                   - { label: "Školička", value: "skolicka" }
@@ -184,6 +185,24 @@ collections:
                       - { label: "Útočník", value: "Útočník" }
                   - { label: "Fotka", name: "photo", widget: "image", required: false }
 
+              - label: "Dorostenkyně D19"
+                name: "dorostenky-d19"
+                widget: "list"
+                collapsed: true
+                summary: "{{fields.number}} · {{fields.name}}"
+                fields:
+                  - { label: "Jméno", name: "name", widget: "string", required: true }
+                  - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+                  - label: "Pozice"
+                    name: "position"
+                    widget: "select"
+                    options:
+                      - { label: "Brankář", value: "Brankář" }
+                      - { label: "Obránce", value: "Obránce" }
+                      - { label: "Záložník", value: "Záložník" }
+                      - { label: "Útočník", value: "Útočník" }
+                  - { label: "Fotka", name: "photo", widget: "image", required: false }
+
               - label: "Starší žáci"
                 name: "starsi-zaci"
                 widget: "list"
@@ -240,16 +259,17 @@ collections:
 
       - name: "staff"
         label: "Realizační tým"
-        file: "src/_data/staff.yml"
+        file: "src/_data/staff.json"
         fields:
           - label: "Osoby"
-            name: "members"
+            name: "items"
             widget: "list"
             collapsed: true
             summary: "{{fields.role}} · {{fields.name}}"
             fields:
               - { label: "Jméno", name: "name", widget: "string" }
               - { label: "Role", name: "role", widget: "string" }
+              - { label: "Kontakt", name: "contact", widget: "string", required: false }
               - { label: "Telefon", name: "phone", widget: "string", required: false }
               - { label: "Email", name: "email", widget: "string", required: false }
               - { label: "Fotka", name: "photo", widget: "image", required: false }
@@ -281,7 +301,7 @@ collections:
 
       - name: "sponsors"
         label: "Partneři"
-        file: "src/_data/sponsors.yml"
+        file: "src/_data/sponsors.json"
         fields:
           - label: "Partneři"
             name: "items"
@@ -322,7 +342,7 @@ collections:
 
       - name: "categories"
         label: "Kategorie mládeže"
-        file: "src/_data/categories.yml"
+        file: "src/_data/categories.json"
         fields:
           - label: "Kategorie"
             name: "items"
