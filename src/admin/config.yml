@@ -53,6 +53,17 @@ collections:
             collapsed: true
             summary: "{{fields.date}} · {{fields.team}} · {{fields.home}} vs {{fields.away}}"
             fields:
+              - label: "Slug (URL identifikátor)"
+                name: "slug"
+                widget: "string"
+                required: false
+                hint: "Automaticky se vygeneruje z data a týmů, pokud necháte prázdné"
+                
+              - label: "ID"
+                name: "id"
+                widget: "hidden"
+                required: false
+                
               - label: "Tým"
                 name: "team"
                 widget: "select"

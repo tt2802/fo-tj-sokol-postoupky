@@ -55,7 +55,7 @@ layout: layouts/page.njk
       <h2>Odehrané zápasy</h2>
       <div style="display: grid; gap: 1rem;">
         {% for m in menPlayed %}
-          <a href="/muzi/zapasy/{{ m.slug }}/" class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi" style="text-decoration: none; color: inherit; cursor: pointer;">
+          <a href="{{ '/muzi/zapasy/' ~ m.slug ~ '/' | url }}" class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi" style="text-decoration: none; color: inherit; cursor: pointer;">
             <div class="card__body">
               <p class="muted">{{ m._dt | czDate }}</p>
               <h3>

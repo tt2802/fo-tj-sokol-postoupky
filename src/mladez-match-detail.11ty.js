@@ -91,6 +91,30 @@ ${videoHtml}
 
 ${m.report ? `<h2>Zpráva ze zápasu</h2><div class="content">${m.report || ''}</div>` : ''}
 
+${m.lineup && m.lineup.length > 0 ? `
+<h2>⚽ Sestava</h2>
+<ul>
+${m.lineup.map(p => `  <li>${p.player || p}</li>`).join('\n')}
+</ul>` : ''}
+
+${m.scorers && m.scorers.length > 0 ? `
+<h2>🎯 Střelci</h2>
+<ul>
+${m.scorers.map(s => `  <li>${s.scorer || s}</li>`).join('\n')}
+</ul>` : ''}
+
+${m.cards && m.cards.length > 0 ? `
+<h2>🟨 Karty</h2>
+<ul>
+${m.cards.map(c => `  <li>${c.card || c}</li>`).join('\n')}
+</ul>` : ''}
+
+${m.substitutions && m.substitutions.length > 0 ? `
+<h2>🔄 Střídání</h2>
+<ul>
+${m.substitutions.map(s => `  <li>${s.substitution || s}</li>`).join('\n')}
+</ul>` : ''}
+
 ${m.referee ? `<p class="muted"><strong>Rozhodčí:</strong> ${m.referee}</p>` : ''}
 `;
   }
