@@ -60,6 +60,7 @@ module.exports = class {
       'dorostenky-d19': 'Dorostenkyně D19',
       'starsi-zaci': 'Starší žáci',
       'mlads-zaci': 'Mladší žáci',
+      'mlads-zaci-b': 'Mladší žáci B',
       'skolicka': 'Školička'
     };
     const catName = categoryNames[m.category] || m.category;

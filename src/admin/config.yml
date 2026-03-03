@@ -82,6 +82,7 @@ collections:
                   - { label: "Dorostenkyně D19", value: "dorostenky-d19" }
                   - { label: "Starší žáci", value: "starsi-zaci" }
                   - { label: "Mladší žáci", value: "mlads-zaci" }
+                  - { label: "Mladší žáci B", value: "mlads-zaci-b" }
                   - { label: "Školička", value: "skolicka" }
 
               - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026", required: true }
@@ -223,6 +224,24 @@ collections:
 
               - label: "Mladší žáci"
                 name: "mlads-zaci"
+                widget: "list"
+                collapsed: true
+                summary: "{{fields.number}} · {{fields.name}}"
+                fields:
+                  - { label: "Jméno", name: "name", widget: "string", required: true }
+                  - { label: "Číslo", name: "number", widget: "number", value_type: "int", required: false }
+                  - label: "Pozice"
+                    name: "position"
+                    widget: "select"
+                    options:
+                      - { label: "Brankář", value: "Brankář" }
+                      - { label: "Obránce", value: "Obránce" }
+                      - { label: "Záložník", value: "Záložník" }
+                      - { label: "Útočník", value: "Útočník" }
+                  - { label: "Fotka", name: "photo", widget: "image", required: false }
+
+              - label: "Mladší žáci B"
+                name: "mlads-zaci-b"
                 widget: "list"
                 collapsed: true
                 summary: "{{fields.number}} · {{fields.name}}"
