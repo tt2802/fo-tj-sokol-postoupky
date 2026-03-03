@@ -170,6 +170,15 @@ collections:
               - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true }
               - { label: "Místo utkání", name: "venue", widget: "string" }
 
+              - label: "Prevzít z nadcházejícího zápasu"
+                name: "relatedUpcoming"
+                widget: "relation"
+                required: false
+                collection: "upcoming_matches"
+                search_fields: ["fields.opponent", "fields.date"]
+                display_fields: ["fields.date", "fields.home", "fields.away"]
+                value_field: "fields.slug"
+
               - label: "Skóre domácích"
                 name: "homeScore"
                 widget: "number"

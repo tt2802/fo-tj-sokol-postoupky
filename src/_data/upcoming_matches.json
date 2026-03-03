@@ -42,6 +42,18 @@
       "category": "dorostenci",
       "home": "FO Postoupky",
       "competition": "ZKP"
+    },
+    {
+      "season": "2025/2026",
+      "isHome": false,
+      "time": "16.00",
+      "round": "10",
+      "away": "Postoupky",
+      "date": "2026-03-03",
+      "venue": "Přerov",
+      "team": "muzi",
+      "home": "Přerov",
+      "competition": "ZKP"
     }
   ]
 }
