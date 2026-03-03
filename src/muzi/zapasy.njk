@@ -35,7 +35,7 @@ layout: layouts/page.njk
       <h2>Nadcházející zápasy</h2>
       <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
         {% for m in menMatches %}
-          <div class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi">
+          <a href="{{ '/muzi/zapasy/' ~ m.slug ~ '/' | url }}" class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi" style="text-decoration: none; color: inherit; cursor: pointer;">
             <div class="card__body">
               <p class="muted">{{ m._dt | czDate }}{% if m.time %} · {{ m.time }}{% endif %}</p>
               <h3>
@@ -44,8 +44,9 @@ layout: layouts/page.njk
                 <strong>{{ m.away }}</strong>
               </h3>
               <p class="muted">{{ m.venue }} · {{ m.competition }}</p>
+              {% if m.videoUrl %}<p style="margin-top: 0.5rem; font-size: 0.9rem;">🎥 Video dostupné</p>{% endif %}
             </div>
-          </div>
+          </a>
         {% endfor %}
       </div>
     {% endif %}
