@@ -1,0 +1,50 @@
+{
+  "men": [
+    {
+      "name": "Jan Novák",
+      "number": 10,
+      "position": "Útočník",
+      "photo": "/assets/img/uploads/jan-novk-1.svg"
+    },
+    {
+      "name": "Martin Novák",
+      "number": 5,
+      "position": "Obránce",
+      "photo": "/assets/img/uploads/martin-novk-4.svg"
+    }
+  ],
+  "youth": {
+    "dorostenci": [
+      {
+        "name": "Tomáš Kučera",
+        "number": 8,
+        "position": "Brankář",
+        "photo": "/assets/img/uploads/tom-kuera-2.svg"
+      }
+    ],
+    "starsi-zaci": [
+      {
+        "name": "Petr Svoboda",
+        "number": 11,
+        "position": "Záložník",
+        "photo": "/assets/img/uploads/petr-svoboda-3.svg"
+      }
+    ],
+    "mlads-zaci": [
+      {
+        "name": "David Horák",
+        "number": 7,
+        "position": "Záložník",
+        "photo": "/assets/img/uploads/david-hork-5.svg"
+      }
+    ],
+    "skolicka": [
+      {
+        "name": "Filip Dvořák",
+        "number": 3,
+        "position": "Obránce",
+        "photo": "/assets/img/uploads/filip-dvok-6.svg"
+      }
+    ]
+  }
+}
