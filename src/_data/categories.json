@@ -24,6 +24,11 @@
       "id": "skolicka",
       "name": "Školička",
       "shortName": "U8"
+    },
+    {
+      "id": "mladši žáci b",
+      "name": "Mladší žáci B",
+      "shortName": "U12 B"
     }
   ]
 }
