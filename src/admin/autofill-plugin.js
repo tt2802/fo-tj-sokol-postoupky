@@ -10,7 +10,7 @@
       upcomingMatches = data.items || [];
       setupAutoFillListener();
     } catch (err) {
-      console.log('Could not load upcoming matches:', err);
+      console.error('Could not load upcoming matches:', err);
     }
   }
 
@@ -22,43 +22,77 @@
   }
 
   function setupAutoFillListener() {
-    // Check periodically for the relation field (Decap CMS renders fields dynamically)
-    const checkInterval = setInterval(() => {
-      const relationField = findRelationField();
-      if (relationField && !relationField._autoFillSetup) {
-        relationField._autoFillSetup = true;
-        relationField.addEventListener('change', handleAutoFill);
-        clearInterval(checkInterval);
-      }
-    }, 300);
+    // Use MutationObserver to watch for changes in the form
+    const observer = new MutationObserver(() => {
+      attachListenersToFields();
+    });
 
-    // Stop checking after 10 seconds
-    setTimeout(() => clearInterval(checkInterval), 10000);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['value']
+    });
+
+    // Also try immediately
+    setTimeout(attachListenersToFields, 500);
   }
 
-  function findRelationField() {
-    // Try to find by name attribute
-    let field = document.querySelector('[name="relatedUpcoming"]');
-    if (field) return field;
-
-    // Try to find by aria-label (Decap CMS uses accessibility attributes)
-    const allInputs = document.querySelectorAll('input[role="combobox"], input[type="text"]');
-    for (let input of allInputs) {
-      if (input.getAttribute('aria-label')?.includes('Převzít') ||
-          input.getAttribute('placeholder')?.includes('Převzít')) {
-        return input;
+  function attachListenersToFields() {
+    // Look for the relation field container
+    const labels = document.querySelectorAll('label');
+    for (let label of labels) {
+      if (label.textContent.includes('Převzít')) {
+        const parent = label.closest('[class*="field"]') || label.closest('div');
+        if (parent) {
+          // Look for any input/select in the parent
+          const inputs = parent.querySelectorAll('input, select');
+          for (let input of inputs) {
+            if (!input._autoFillAttached) {
+              input._autoFillAttached = true;
+              // Monitor for changes
+              input.addEventListener('change', handleAutoFill);
+              input.addEventListener('blur', handleAutoFill);
+              // Also watch for value changes (for combobox)
+              const observer = new MutationObserver(() => {
+                if (input.value) handleAutoFill();
+              });
+              observer.observe(input, { attributes: true, attributeFilter: ['value'] });
+            }
+          }
+        }
       }
     }
-    return null;
   }
 
-  function handleAutoFill(e) {
-    const slug = e.target.value;
-    if (!slug || slug.trim() === '') return;
+  function handleAutoFill() {
+    // Find the input with the selected slug value
+    const labels = document.querySelectorAll('label');
+    let selectedSlug = null;
+
+    for (let label of labels) {
+      if (label.textContent.includes('Převzít')) {
+        const parent = label.closest('[class*="field"]') || label.closest('div');
+        if (parent) {
+          const input = parent.querySelector('input, select');
+          if (input && input.value) {
+            selectedSlug = input.value;
+            break;
+          }
+        }
+      }
+    }
+
+    if (!selectedSlug || selectedSlug.trim() === '') return;
 
     // Find the matching upcoming match
-    const match = upcomingMatches.find(m => m.slug === slug);
-    if (!match) return;
+    const match = upcomingMatches.find(m => m.slug === selectedSlug);
+    if (!match) {
+      console.log('No match found for slug:', selectedSlug);
+      return;
+    }
+
+    console.log('Auto-filling with match:', match);
 
     // Wait a bit for Decap to render fields, then fill them
     setTimeout(() => {
@@ -78,26 +112,33 @@
   function fillField(fieldName, value) {
     if (value === null || value === undefined) return;
 
-    // Try different selectors for different field types
-    const selectors = [
-      `input[name="${fieldName}"]`,
-      `select[name="${fieldName}"]`,
-      `textarea[name="${fieldName}"]`,
-      `[name="${fieldName}"]`
-    ];
-
-    let field = null;
-    for (const selector of selectors) {
-      field = document.querySelector(selector);
-      if (field) break;
+    // For Decap CMS, we need to find inputs by looking at parent containers
+    const labels = document.querySelectorAll('label');
+    for (let label of labels) {
+      if (label.textContent.trim().toLowerCase().includes(fieldName.toLowerCase()) ||
+          label.textContent.includes('Domácí') && fieldName === 'home' ||
+          label.textContent.includes('Hosté') && fieldName === 'away') {
+        
+        const field = label.closest('[class*="field"]')?.querySelector('input, select, textarea');
+        if (field) {
+          field.value = value;
+          field.dispatchEvent(new Event('change', { bubbles: true }));
+          field.dispatchEvent(new Event('input', { bubbles: true }));
+          field.dispatchEvent(new Event('blur', { bubbles: true }));
+          console.log(`Filled ${fieldName}:`, value);
+          return;
+        }
+      }
     }
 
+    // Fallback: try by name attribute
+    const field = document.querySelector(`[name="${fieldName}"]`);
     if (field) {
       field.value = value;
-      // Trigger events so Decap CMS recognizes the change
       field.dispatchEvent(new Event('change', { bubbles: true }));
       field.dispatchEvent(new Event('input', { bubbles: true }));
       field.dispatchEvent(new Event('blur', { bubbles: true }));
+      console.log(`Filled ${fieldName}:`, value);
     }
   }
 })();
