@@ -89,8 +89,11 @@ collections:
 
               - label: "Datum"
                 name: "date"
-                widget: "date"
+                widget: "datetime"
                 format: "YYYY-MM-DD"
+                date_format: "DD.MM.YYYY"
+                time_format: false
+                picker_utc: false
 
               - { label: "Čas", name: "time", widget: "string", required: false }
 

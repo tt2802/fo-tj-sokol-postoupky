@@ -15,8 +15,8 @@ hideTitle: true
         </p>
 
         <div class="hero__cta">
-          <a class="btn" href="/novinky/">Novinky</a>
-          <a class="btn btn--ghost" href="/nabor/">Nábor</a>
+          <a class="btn" href="{{ '/novinky/' | url }}">Novinky</a>
+          <a class="btn btn--ghost" href="{{ '/nabor/' | url }}">Nábor</a>
         </div>
       </div>
 
@@ -31,14 +31,14 @@ hideTitle: true
   <div class="container">
     <h2 style="text-align: center; margin-bottom: 2rem;">Fotbalové týmy</h2>
     <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-      <a href="/muzi/" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
+      <a href="{{ '/muzi/' | url }}" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
         <div class="card__body" style="text-align: center; padding: 2rem;">
           <h3 class="card__title">🏆 Muži</h3>
           <p class="muted">Přehled zápasů a týmu</p>
         </div>
       </a>
 
-      <a href="/mladez/" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
+      <a href="{{ '/mladez/' | url }}" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
         <div class="card__body" style="text-align: center; padding: 2rem;">
           <h3 class="card__title">👶 Mládež</h3>
           <p class="muted">Všechny věkové kategorie</p>
@@ -73,14 +73,14 @@ hideTitle: true
 
             <p>
               {% if matchesComputed.nextMatch.team == "muzi" %}
-                <a href="/muzi/zapasy/">Zobrazit všechny zápasy Mužů</a>
+                <a href="{{ '/muzi/zapasy/' | url }}">Zobrazit všechny zápasy Mužů</a>
               {% else %}
-                <a href="/mladez/">Zobrazit všechny zápasy Mládeže</a>
+                <a href="{{ '/mladez/' | url }}">Zobrazit všechny zápasy Mládeže</a>
               {% endif %}
             </p>
           {% else %}
             <p class="muted">Zatím nemáme vypsaný žádný další zápas.</p>
-            <p><a href="/muzi/zapasy/">Přejít na zápasy</a></p>
+            <p><a href="{{ '/muzi/zapasy/' | url }}">Přejít na zápasy</a></p>
           {% endif %}
         </div>
       </article>
@@ -107,14 +107,14 @@ hideTitle: true
 
             <p>
               {% if matchesComputed.lastResult.team == "muzi" %}
-                <a href="/muzi/zapasy/">Historie zápasů Mužů</a>
+                <a href="{{ '/muzi/zapasy/' | url }}">Historie zápasů Mužů</a>
               {% else %}
-                <a href="/mladez/">Historie zápasů Mládeže</a>
+                <a href="{{ '/mladez/' | url }}">Historie zápasů Mládeže</a>
               {% endif %}
             </p>
           {% else %}
             <p class="muted">Zatím nemáme zapsaný žádný výsledek.</p>
-            <p><a href="/muzi/zapasy/">Doplnit výsledky</a></p>
+            <p><a href="{{ '/muzi/zapasy/' | url }}">Doplnit výsledky</a></p>
           {% endif %}
         </div>
       </article>
@@ -135,10 +135,10 @@ hideTitle: true
               {% endfor %}
             </ol>
 
-            <p><a href="/novinky/">Všechny novinky</a></p>
+            <p><a href="{{ '/novinky/' | url }}">Všechny novinky</a></p>
           {% else %}
             <p class="muted">Zatím tu nejsou žádné novinky.</p>
-            <p><a href="/admin/">Přidat novinku</a></p>
+            <p><a href="{{ '/admin/' | url }}">Přidat novinku</a></p>
           {% endif %}
         </div>
       </article>
