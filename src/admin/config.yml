@@ -53,19 +53,8 @@ collections:
             collapsed: true
             summary: "{{fields.date}} · {{fields.team}} · {{fields.home}} vs {{fields.away}}"
             fields:
-              - label: "Slug (URL identifikátor)"
-                name: "slug"
-                widget: "string"
-                required: false
-                hint: "Automaticky se vygeneruje z data a týmů, pokud necháte prázdné"
-                
-              - label: "ID"
-                name: "id"
-                widget: "hidden"
-                required: false
-
               ################################################################
-              # NEJDŘÍV VYBER TYP ZÁPASU - TO URČUJE KTERÁ POLE VIDISH
+              # NEJDŘÍV VYBER TYP ZÁPASU - TO URČUJE KTERÁ POLE VIDÍŠ
               ################################################################
               - label: "🎯 Typ zápasu"
                 name: "matchType"
@@ -74,8 +63,17 @@ collections:
                 options:
                   - { label: "🟢 Nadcházející zápas", value: "upcoming" }
                   - { label: "⚪ Odehrané (skončené)", value: "played" }
-                hint: "Vyber NEJDŘÍV! Určuje, která pole se budou vyplňovat."
+
+              - label: "Slug (URL identifikátor)"
+                name: "slug"
+                widget: "string"
+                required: false
                 
+              - label: "ID"
+                name: "id"
+                widget: "hidden"
+                required: false
+
               - label: "Tým"
                 name: "team"
                 widget: "select"
@@ -88,7 +86,6 @@ collections:
                 name: "category"
                 widget: "select"
                 required: false
-                hint: "Vyber kategorii mládeže, pokud se jedná o mládež"
                 options:
                   - { label: "Dorostenci", value: "dorostenci" }
                   - { label: "Dorostenkyně D19", value: "dorostenky-d19" }
@@ -126,25 +123,23 @@ collections:
               - { label: "Místo utkání", name: "venue", widget: "string" }
 
               ################################################################
-              # POLE PRO NADCHÁZEJÍCÍ ZÁPASY (😃 jen když typ = upcoming)
+              # POLE PRO NADCHÁZEJÍCÍ ZÁPASY
               ################################################################
               - label: "Čas zápasu"
                 name: "time"
                 widget: "string"
                 required: false
-                hint: "Např. 18:00 (pro nadcházející zápas)"
                 show_when:
                   field: "matchType"
                   value: "upcoming"
 
               ################################################################
-              # POLE PRO ODEHRANÉ ZÁPASY (⚪ jen když typ = played)
+              # POLE PRO ODEHRANÉ ZÁPASY
               ################################################################
-              - label: "💾 Konvertovat z nadcházejícího"
-                name: "convertedFromSlug"
+              - label: "Převzít údaje ze zápasu"
+                name: "relatedUpcomingSlug"
                 widget: "string"
                 required: false
-                hint: "Pokud jsi kopíroval/a info z nadcházejícího - napiš jeho slug, aby se zmazal"
                 show_when:
                   field: "matchType"
                   value: "played"
@@ -154,7 +149,6 @@ collections:
                 widget: "number"
                 required: false
                 value_type: "int"
-                hint: "Počet gólů domácích"
                 show_when:
                   field: "matchType"
                   value: "played"
@@ -164,7 +158,6 @@ collections:
                 widget: "number"
                 required: false
                 value_type: "int"
-                hint: "Počet gólů hostů"
                 show_when:
                   field: "matchType"
                   value: "played"
@@ -173,7 +166,6 @@ collections:
                 name: "referee"
                 widget: "string"
                 required: false
-                hint: "Jméno rozhodčího"
                 show_when:
                   field: "matchType"
                   value: "played"
@@ -182,7 +174,6 @@ collections:
                 name: "report"
                 widget: "text"
                 required: false
-                hint: "Zhodnocení, zajímavosti, klíčové chvíle..."
                 show_when:
                   field: "matchType"
                   value: "played"
@@ -191,13 +182,11 @@ collections:
                 name: "videoUrl"
                 widget: "string"
                 required: false
-                hint: "Odkaz na YouTube nebo video (je-li k dispozici)"
 
               - label: "Sestava"
                 name: "lineup"
                 widget: "list"
                 required: false
-                hint: "Hráči v základní sestavě"
                 show_when:
                   field: "matchType"
                   value: "played"
@@ -208,7 +197,6 @@ collections:
                 name: "scorers"
                 widget: "list"
                 required: false
-                hint: "Kdo skóroval a kolikrát"
                 show_when:
                   field: "matchType"
                   value: "played"
@@ -219,7 +207,6 @@ collections:
                 name: "cards"
                 widget: "list"
                 required: false
-                hint: "Žluté/červené karty"
                 show_when:
                   field: "matchType"
                   value: "played"
@@ -230,7 +217,6 @@ collections:
                 name: "substitutions"
                 widget: "list"
                 required: false
-                hint: "Střídání hráčů během zápasu"
                 show_when:
                   field: "matchType"
                   value: "played"
