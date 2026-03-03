@@ -14,14 +14,14 @@ layout: layouts/page.njk
 <section class="section">
   <div class="container">
     <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-      <a href="/muzi/zapasy/" class="card" style="cursor: pointer; text-decoration: none; color: inherit;">
+      <a href="{{ '/muzi/zapasy/' | url }}" class="card" style="cursor: pointer; text-decoration: none; color: inherit;">
         <div class="card__body" style="padding: 2rem; text-align: center;">
           <h3 class="card__title">🏆 Zápasy</h3>
           <p class="muted">Odehrané a nadcházející zápasy</p>
         </div>
       </a>
 
-      <a href="/muzi/tym/" class="card" style="cursor: pointer; text-decoration: none; color: inherit;">
+      <a href="{{ '/muzi/tym/' | url }}" class="card" style="cursor: pointer; text-decoration: none; color: inherit;">
         <div class="card__body" style="padding: 2rem; text-align: center;">
           <h3 class="card__title">👥 Náš tým</h3>
           <p class="muted">Soupiska hráčů a realizační tým</p>
