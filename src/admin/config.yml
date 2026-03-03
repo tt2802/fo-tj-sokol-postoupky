@@ -63,6 +63,16 @@ collections:
                 widget: "hidden"
                 required: false
 
+              - label: "Převzít z nadcházejícího zápasu"
+                name: "relatedUpcoming"
+                widget: "relation"
+                required: false
+                collection: "data"
+                file: "upcoming_matches"
+                search_fields: ["items.*.date", "items.*.home", "items.*.away", "items.*.team", "items.*.category"]
+                display_fields: ["items.*.date", "items.*.home", "items.*.away"]
+                value_field: "items.*.slug"
+
               - label: "Tým"
                 name: "team"
                 widget: "select"
@@ -169,15 +179,6 @@ collections:
                 required: true
               - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true }
               - { label: "Místo utkání", name: "venue", widget: "string" }
-
-              - label: "Prevzít z nadcházejícího zápasu"
-                name: "relatedUpcoming"
-                widget: "relation"
-                required: false
-                collection: "upcoming_matches"
-                search_fields: ["fields.opponent", "fields.date"]
-                display_fields: ["fields.date", "fields.home", "fields.away"]
-                value_field: "fields.slug"
 
               - label: "Skóre domácích"
                 name: "homeScore"
