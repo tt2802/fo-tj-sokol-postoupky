@@ -28,8 +28,8 @@ layout: layouts/page.njk
       </div>
     </div>
 
-    {% set menMatches = matchesComputed.upcoming | selectattr('team', 'equalto', 'muzi') | list %}
-    {% set menPlayed = matchesComputed.played | selectattr('team', 'equalto', 'muzi') | list %}
+    {% set menMatches = matchesComputed.upcoming | where('team', 'muzi') %}
+    {% set menPlayed = matchesComputed.played | where('team', 'muzi') %}
 
     {% if menMatches | length > 0 %}
       <h2>Nadcházející zápasy</h2>

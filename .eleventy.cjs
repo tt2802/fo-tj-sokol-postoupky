@@ -71,6 +71,10 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("striptags", stripTags);
   eleventyConfig.addFilter("truncate", truncateText);
+  eleventyConfig.addFilter("where", (arr, key, value) => {
+    if (!Array.isArray(arr)) return [];
+    return arr.filter((item) => item && item[key] === value);
+  });
 
   eleventyConfig.addFilter("youtubeId", extractYouTubeId);
   eleventyConfig.addFilter("videoKind", videoKind);

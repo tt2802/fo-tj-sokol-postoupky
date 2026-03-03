@@ -2,8 +2,7 @@
 const { DateTime } = require("luxon");
 
 module.exports = function () {
-  const raw = require("./matches.json");
-  const items = Array.isArray(raw?.items) ? raw.items : [];
+  const items = require("./matchesArray.js");
   const zone = "Europe/Prague";
 
   const normalized = items

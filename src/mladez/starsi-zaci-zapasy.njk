@@ -17,8 +17,8 @@ layout: layouts/page.njk
 
 <section class="section">
   <div class="container">
-    {% set youthMatches = matchesComputed.upcoming | selectattr('team', 'equalto', 'mladez') | selectattr('category', 'equalto', 'starsi-zaci') | list %}
-    {% set youthPlayed = matchesComputed.played | selectattr('team', 'equalto', 'mladez') | selectattr('category', 'equalto', 'starsi-zaci') | list %}
+    {% set youthMatches = matchesComputed.upcoming | where('team', 'mladez') | where('category', 'starsi-zaci') %}
+    {% set youthPlayed = matchesComputed.played | where('team', 'mladez') | where('category', 'starsi-zaci') %}
 
     {% if youthMatches | length > 0 %}
       <h2>Nadcházející zápasy</h2>
