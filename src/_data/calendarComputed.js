@@ -123,13 +123,29 @@ module.exports = function () {
       });
     }
 
+    // Build rows of 7 cells for easy table rendering
+    const rows = [];
+    let row = [];
+    for (let i = 0; i < cells.length; i++) {
+      row.push(cells[i]);
+      if (row.length === 7) {
+        rows.push(row);
+        row = [];
+      }
+    }
+    // Pad last row with empty cells
+    while (row.length > 0 && row.length < 7) {
+      row.push({ empty: true });
+    }
+    if (row.length) rows.push(row);
+
     months.push({
       key: monthKey,
       label,
       year,
       month,
-      cells,
-      offset
+      rows,
+      active: offset === 0
     });
   }
 
