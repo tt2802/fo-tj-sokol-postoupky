@@ -5,9 +5,9 @@
     upcomingMatches: [],
     matchKeys: new Map(),
     attachedInputs: new WeakSet(),
-    controlsAttached: new WeakSet(),
     inputScopes: new WeakMap(),
     lastValueByInput: new WeakMap(),
+    lastMatchKeyByScope: new WeakMap(),
     initialized: false,
     intervalId: null
   };
@@ -316,15 +316,84 @@
     return "";
   }
 
+  function resolveMatchFromScope(scopeRoot) {
+    if (!scopeRoot || scopeRoot === document) return null;
+
+    const relationCandidates = [
+      ...scopeRoot.querySelectorAll('select[id*="relatedUpcoming"], input[id*="relatedUpcoming"], textarea[id*="relatedUpcoming"]'),
+      ...scopeRoot.querySelectorAll('select[name*="relatedUpcoming"], input[name*="relatedUpcoming"], textarea[name*="relatedUpcoming"]'),
+      ...scopeRoot.querySelectorAll('[data-value]'),
+      ...scopeRoot.querySelectorAll('[role="combobox"], [aria-haspopup="listbox"]')
+    ];
+
+    for (const el of relationCandidates) {
+      const value = String(el.value || el.getAttribute?.("data-value") || el.textContent || "").trim();
+      const match = resolveMatchFromSelection(value);
+      if (match) return match;
+    }
+
+    const scopeText = normalizeText(scopeRoot.textContent || "");
+    if (!scopeText) return null;
+
+    let best = null;
+    let bestScore = -1;
+
+    for (const m of state.upcomingMatches) {
+      const home = normalizeText(m.home);
+      const away = normalizeText(m.away);
+      const dateIso = normalizeText(normalizeDate(m.date));
+      const dateCz = normalizeText(formatDateToCz(m.date));
+      let score = 0;
+      if (home && scopeText.includes(home)) score += 4;
+      if (away && scopeText.includes(away)) score += 4;
+      if (dateIso && scopeText.includes(dateIso)) score += 2;
+      if (dateCz && scopeText.includes(dateCz)) score += 2;
+      if (score > bestScore) {
+        bestScore = score;
+        best = m;
+      }
+    }
+
+    return bestScore >= 8 ? best : null;
+  }
+
+  function autoFillFromScope(scopeRoot, sourceInput = null) {
+    const match = resolveMatchFromScope(scopeRoot);
+    if (!match) return false;
+
+    const matchKey = String(match.slug || match.id || buildFallbackMatchKey(match));
+    const previousKey = String(state.lastMatchKeyByScope.get(scopeRoot) || "");
+    if (matchKey && previousKey === matchKey) return false;
+
+    const ok = autoFillFromSlug(matchKey, sourceInput);
+    if (ok && scopeRoot && scopeRoot !== document) {
+      state.lastMatchKeyByScope.set(scopeRoot, matchKey);
+    }
+    return ok;
+  }
+
   function onRelationChanged(event) {
     const sourceInput = event?.target || null;
     if (!sourceInput) return;
     const currentValue = String(event?.target?.value || "").trim();
     const previousValue = String(state.lastValueByInput.get(sourceInput) || "").trim();
-    if (!currentValue || currentValue === previousValue) return;
+    const scopeRoot = state.inputScopes.get(sourceInput) || findEntryScope(sourceInput);
+
+    if (!currentValue) {
+      autoFillFromScope(scopeRoot, sourceInput);
+      return;
+    }
+
+    if (currentValue === previousValue) {
+      autoFillFromScope(scopeRoot, sourceInput);
+      return;
+    }
+
     state.lastValueByInput.set(sourceInput, currentValue);
     log("Relation changed:", currentValue);
-    autoFillFromSlug(currentValue, sourceInput);
+    if (!autoFillFromSlug(currentValue, sourceInput)) {
+      autoFillFromScope(scopeRoot, sourceInput);
+    }
   }
 
   function attachRelationListeners() {
@@ -342,71 +411,6 @@
     });
   }
 
-  function getRelationValueForInput(input) {
-    const direct = String(input?.value || "").trim();
-    if (direct) return direct;
-
-    const scope = state.inputScopes.get(input) || findEntryScope(input);
-    const candidates = [
-      ...scope.querySelectorAll('select[id*="relatedUpcoming"], input[id*="relatedUpcoming"], textarea[id*="relatedUpcoming"]'),
-      ...scope.querySelectorAll('select[name*="relatedUpcoming"], input[name*="relatedUpcoming"], textarea[name*="relatedUpcoming"]')
-    ];
-
-    for (const c of candidates) {
-      const v = String(c.value || "").trim();
-      if (v) return v;
-    }
-
-    return getCurrentRelationValue();
-  }
-
-  function attachManualApplyControls() {
-    const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
-    const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
-
-    inputs.forEach((input) => {
-      if (state.controlsAttached.has(input)) return;
-      state.controlsAttached.add(input);
-
-      const scope = state.inputScopes.get(input) || findEntryScope(input);
-      state.inputScopes.set(input, scope);
-
-      const controlsWrap = document.createElement("div");
-      controlsWrap.style.marginTop = "8px";
-      controlsWrap.style.display = "flex";
-      controlsWrap.style.alignItems = "center";
-      controlsWrap.style.gap = "8px";
-
-      const button = document.createElement("button");
-      button.type = "button";
-      button.textContent = "Převzít údaje";
-      button.style.padding = "4px 10px";
-      button.style.border = "1px solid #0a7f2e";
-      button.style.borderRadius = "4px";
-      button.style.background = "#e9f7ee";
-      button.style.color = "#0a7f2e";
-      button.style.cursor = "pointer";
-      button.style.fontWeight = "600";
-
-      button.addEventListener("click", () => {
-        const value = getRelationValueForInput(input);
-        if (!value) {
-          setStatus(scope, "⚠️ Nejprve vyber zápas v poli Převzít z nadcházejícího.", "error");
-          return;
-        }
-
-        const ok = autoFillFromSlug(value, input);
-        if (!ok) {
-          setStatus(scope, "⚠️ Nepodařilo se převzít údaje. Zkus vybrat položku znovu.", "error");
-        }
-      });
-
-      controlsWrap.appendChild(button);
-      scope.appendChild(controlsWrap);
-      log("Attached manual apply button");
-    });
-  }
-
   function startPollingFallback() {
     if (state.intervalId) return;
     state.intervalId = window.setInterval(() => {
@@ -416,10 +420,23 @@
       inputs.forEach((input) => {
         const currentValue = String(input.value || "").trim();
         const previousValue = String(state.lastValueByInput.get(input) || "").trim();
-        if (!currentValue || currentValue === previousValue) return;
+        const scopeRoot = state.inputScopes.get(input) || findEntryScope(input);
+
+        if (!currentValue) {
+          autoFillFromScope(scopeRoot, input);
+          return;
+        }
+
+        if (currentValue === previousValue) {
+          autoFillFromScope(scopeRoot, input);
+          return;
+        }
+
         state.lastValueByInput.set(input, currentValue);
         log("Polling detected relation value:", currentValue);
-        autoFillFromSlug(currentValue, input);
+        if (!autoFillFromSlug(currentValue, input)) {
+          autoFillFromScope(scopeRoot, input);
+        }
       });
 
       // Global fallback for widgets that are not exposed as normal inputs.
@@ -537,13 +554,18 @@
     }
 
     attachRelationListeners();
-    attachManualApplyControls();
     startPollingFallback();
     ensurePreSaveHookRegistered();
 
     const observer = new MutationObserver(() => {
       attachRelationListeners();
-      attachManualApplyControls();
+
+      const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
+      const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
+      inputs.forEach((input) => {
+        const scopeRoot = state.inputScopes.get(input) || findEntryScope(input);
+        autoFillFromScope(scopeRoot, input);
+      });
     });
 
     observer.observe(document.body, {
