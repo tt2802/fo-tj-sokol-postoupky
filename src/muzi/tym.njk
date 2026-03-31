@@ -15,6 +15,41 @@ layout: layouts/page.njk
   </div>
 </section>
 
+{% if formationComputed.hasFormation %}
+<section class="section formation-section">
+  <div class="container">
+    <h2 style="text-align:center; margin-bottom:.5rem;">Sestava</h2>
+    <p class="muted" style="text-align:center; margin-bottom:1.5rem;">Rozestavení <strong>{{ formationComputed.name }}</strong></p>
+
+    <div class="pitch">
+      {# Pitch markings drawn via CSS #}
+      <div class="pitch__lines">
+        <div class="pitch__half"></div>
+        <div class="pitch__circle"></div>
+        <div class="pitch__box pitch__box--top"></div>
+        <div class="pitch__box pitch__box--bot"></div>
+        <div class="pitch__goal pitch__goal--top"></div>
+        <div class="pitch__goal pitch__goal--bot"></div>
+        <div class="pitch__arc pitch__arc--top"></div>
+        <div class="pitch__arc pitch__arc--bot"></div>
+        <div class="pitch__spot pitch__spot--top"></div>
+        <div class="pitch__spot pitch__spot--bot"></div>
+      </div>
+
+      {# Player markers #}
+      {% for p in formationComputed.players %}
+        <div class="pitch__player" style="top:{{ p.top }}%;left:{{ p.left }}%;">
+          <div class="pitch__avatar{% if p.slot == 'GK' %} pitch__avatar--gk{% endif %}">
+            {% if p.number %}<span>{{ p.number }}</span>{% else %}<span>?</span>{% endif %}
+          </div>
+          <div class="pitch__name">{{ p.name if p.name else p.slot }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <section class="section">
   <div class="container">
     <h2>Hráči</h2>

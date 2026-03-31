@@ -498,6 +498,182 @@ body {
   }
 }
 
+/* ===== FORMATION PITCH (FIFA style) ===== */
+.formation-section {
+  background: linear-gradient(135deg, rgba(109,40,217,0.04), rgba(16,185,129,0.03));
+}
+
+.pitch {
+  position: relative;
+  max-width: 520px;
+  margin: 0 auto;
+  aspect-ratio: 68 / 105;
+  background: linear-gradient(180deg,
+    #1a6b30 0%, #1e7a36 8%, #1a6b30 8%,
+    #1e7a36 16%, #1a6b30 16%,
+    #1e7a36 24%, #1a6b30 24%,
+    #1e7a36 32%, #1a6b30 32%,
+    #1e7a36 40%, #1a6b30 40%,
+    #1e7a36 48%, #1a6b30 48%,
+    #1e7a36 56%, #1a6b30 56%,
+    #1e7a36 64%, #1a6b30 64%,
+    #1e7a36 72%, #1a6b30 72%,
+    #1e7a36 80%, #1a6b30 80%,
+    #1e7a36 88%, #1a6b30 88%,
+    #1e7a36 96%, #1a6b30 96%
+  );
+  border-radius: 12px;
+  border: 3px solid rgba(255,255,255,0.35);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+/* Pitch line container */
+.pitch__lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Half line */
+.pitch__half {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.35);
+}
+
+/* Center circle */
+.pitch__circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.35);
+  transform: translate(-50%, -50%);
+}
+
+/* Penalty boxes */
+.pitch__box {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  height: 16%;
+  border: 2px solid rgba(255,255,255,0.35);
+}
+.pitch__box--top { top: 0; border-top: none; }
+.pitch__box--bot { bottom: 0; border-bottom: none; }
+
+/* Goal areas (6-yard box) */
+.pitch__goal {
+  position: absolute;
+  left: 30%;
+  right: 30%;
+  height: 6%;
+  border: 2px solid rgba(255,255,255,0.35);
+}
+.pitch__goal--top { top: 0; border-top: none; }
+.pitch__goal--bot { bottom: 0; border-bottom: none; }
+
+/* Penalty arc */
+.pitch__arc {
+  position: absolute;
+  left: 50%;
+  width: 18%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.35);
+  transform: translateX(-50%);
+}
+.pitch__arc--top { top: 12.5%; clip-path: inset(50% 0 0 0); }
+.pitch__arc--bot { bottom: 12.5%; clip-path: inset(0 0 50% 0); }
+
+/* Penalty spot */
+.pitch__spot {
+  position: absolute;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+.pitch__spot--top { top: 11.5%; }
+.pitch__spot--bot { bottom: 11.5%; }
+
+/* Player markers */
+.pitch__player {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+  width: 60px;
+}
+
+.pitch__avatar {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%);
+  border: 2px solid rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+  transition: transform 0.2s;
+}
+
+.pitch__avatar--gk {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+}
+
+.pitch__player:hover .pitch__avatar {
+  transform: scale(1.15);
+}
+
+.pitch__name {
+  margin-top: 3px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7), 0 0 2px rgba(0,0,0,0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.15;
+}
+
+/* Mobile pitch adjustments */
+@media (max-width: 480px) {
+  .pitch {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  .pitch__player {
+    width: 48px;
+  }
+
+  .pitch__avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 0.8rem;
+    border-width: 1.5px;
+  }
+
+  .pitch__name {
+    font-size: 0.55rem;
+  }
+}
+
 /* ===== KALENDÁŘ WIDGET ===== */
 .calendar-section {
   background: linear-gradient(135deg, rgba(109,40,217,0.06), rgba(109,40,217,0.01));

@@ -1,0 +1,16 @@
+{
+  "formation": "4-4-2",
+  "positions": [
+    { "slot": "GK", "player": "Jan Novák" },
+    { "slot": "LB", "player": "" },
+    { "slot": "CB1", "player": "Martin Novák" },
+    { "slot": "CB2", "player": "Tomáš Kubín" },
+    { "slot": "RB", "player": "" },
+    { "slot": "LM", "player": "" },
+    { "slot": "CM1", "player": "" },
+    { "slot": "CM2", "player": "" },
+    { "slot": "RM", "player": "" },
+    { "slot": "ST1", "player": "" },
+    { "slot": "ST2", "player": "" }
+  ]
+}

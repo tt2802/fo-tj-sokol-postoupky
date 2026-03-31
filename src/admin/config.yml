@@ -400,6 +400,59 @@ collections:
               - { label: "Email", name: "email", widget: "string", required: false }
               - { label: "Fotka", name: "photo", widget: "image", required: false }
 
+      - name: "formation"
+        label: "Sestava (formace)"
+        file: "src/_data/formation.json"
+        preview_url: "{{site_url}}/muzi/tym/"
+        fields:
+          - label: "Rozestavení"
+            name: "formation"
+            widget: "select"
+            options:
+              - { label: "4-4-2", value: "4-4-2" }
+              - { label: "4-3-3", value: "4-3-3" }
+              - { label: "4-2-3-1", value: "4-2-3-1" }
+              - { label: "3-5-2", value: "3-5-2" }
+              - { label: "3-4-3", value: "3-4-3" }
+              - { label: "5-3-2", value: "5-3-2" }
+              - { label: "5-4-1", value: "5-4-1" }
+              - { label: "4-1-4-1", value: "4-1-4-1" }
+              - { label: "4-5-1", value: "4-5-1" }
+            default: "4-4-2"
+          - label: "Pozice"
+            name: "positions"
+            widget: "list"
+            collapsed: true
+            max: 11
+            summary: "{{fields.slot}} → {{fields.player}}"
+            fields:
+              - label: "Slot"
+                name: "slot"
+                widget: "select"
+                options:
+                  - { label: "GK (Brankář)", value: "GK" }
+                  - { label: "LB (Levý bek)", value: "LB" }
+                  - { label: "CB1 (Stoper 1)", value: "CB1" }
+                  - { label: "CB2 (Stoper 2)", value: "CB2" }
+                  - { label: "CB3 (Stoper 3)", value: "CB3" }
+                  - { label: "RB (Pravý bek)", value: "RB" }
+                  - { label: "LWB (Levý wingback)", value: "LWB" }
+                  - { label: "RWB (Pravý wingback)", value: "RWB" }
+                  - { label: "CDM (Defenzivní záložník)", value: "CDM" }
+                  - { label: "CDM2 (Def. záložník 2)", value: "CDM2" }
+                  - { label: "LM (Levý záložník)", value: "LM" }
+                  - { label: "CM1 (Střední záložník 1)", value: "CM1" }
+                  - { label: "CM2 (Střední záložník 2)", value: "CM2" }
+                  - { label: "CM3 (Střední záložník 3)", value: "CM3" }
+                  - { label: "RM (Pravý záložník)", value: "RM" }
+                  - { label: "CAM (Ofenzivní záložník)", value: "CAM" }
+                  - { label: "LW (Levé křídlo)", value: "LW" }
+                  - { label: "RW (Pravé křídlo)", value: "RW" }
+                  - { label: "ST1 (Útočník 1)", value: "ST1" }
+                  - { label: "ST2 (Útočník 2)", value: "ST2" }
+                  - { label: "CF (Střední útočník)", value: "CF" }
+              - { label: "Hráč", name: "player", widget: "string", required: false, hint: "Jméno hráče" }
+
       - name: "calendar_events"
         label: "Kalendář akcí"
         file: "src/_data/calendar_events.json"
