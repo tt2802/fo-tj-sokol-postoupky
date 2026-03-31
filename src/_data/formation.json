@@ -6,31 +6,31 @@
       "player": "Jan Novák"
     },
     {
-      "slot": "LB",
+      "slot": "LWB",
       "player": "Jeník"
     },
     {
-      "slot": "CB2",
+      "slot": "CB1",
       "player": "Kubín"
     },
     {
-      "slot": "RB",
+      "slot": "RWB",
       "player": "Vrzal"
     },
     {
-      "slot": "LM",
+      "slot": "LW",
       "player": "Gothim"
     },
     {
-      "slot": "CM1",
+      "slot": "CAM",
       "player": "Opluštil"
     },
     {
-      "slot": "CM2",
+      "slot": "CDM",
       "player": "Morkus"
     },
     {
-      "slot": "RM",
+      "slot": "RW",
       "player": "John Doe"
     },
     {
@@ -42,7 +42,7 @@
       "player": "Svačina"
     },
     {
-      "slot": "CAM",
+      "slot": "CDM2",
       "player": "Francessco"
     }
   ]
