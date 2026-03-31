@@ -90,4 +90,33 @@ const allMatches = [
   }))
 ].map(generateSlug);
 
-module.exports = allMatches;
+// Remove duplicates that would generate identical detail URLs.
+// Preference: played match overrides upcoming match with same team/category/slug.
+const dedupedMatches = [];
+const indexByKey = new Map();
+
+allMatches.forEach((m) => {
+  const team = String(m?.team || '');
+  const category = String(m?.category || '');
+  const slug = String(m?.slug || '');
+  if (!slug || !team) {
+    dedupedMatches.push(m);
+    return;
+  }
+
+  const key = `${team}|${category}|${slug}`;
+  const existingIndex = indexByKey.get(key);
+
+  if (existingIndex === undefined) {
+    indexByKey.set(key, dedupedMatches.length);
+    dedupedMatches.push(m);
+    return;
+  }
+
+  const existing = dedupedMatches[existingIndex];
+  if (existing?.matchType !== 'played' && m?.matchType === 'played') {
+    dedupedMatches[existingIndex] = m;
+  }
+});
+
+module.exports = dedupedMatches;
