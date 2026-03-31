@@ -104,6 +104,50 @@
       "team": "muzi",
       "home": "Postoupky",
       "competition": "ZKP"
+    },
+    {
+      "referee": "McEvoy",
+      "season": "2025/2026",
+      "cards": [
+        {
+          "player": "Jan Novák"
+        }
+      ],
+      "awayScore": 1,
+      "relatedUpcoming": "2026-03-31-postoupky-bezmerov",
+      "isHome": true,
+      "slug": "2026-03-31-postoupky-bezmerov",
+      "round": "1",
+      "away": "Bezměrov",
+      "date": "2026-03-31",
+      "lineup": [
+        {
+          "player": "Tomáš Kubín"
+        },
+        {
+          "player": "Martin Novák"
+        },
+        {
+          "player": "Jan Novák"
+        }
+      ],
+      "venue": "Postoupky",
+      "scorers": [
+        {
+          "scorer": "Tomáš Kubín"
+        }
+      ],
+      "homeScore": 2,
+      "report": "Kluci nechali na hristi vsechno",
+      "substitutions": [
+        {
+          "playerOut": "Jan Novák",
+          "playerIn": "Martin Novák"
+        }
+      ],
+      "team": "muzi",
+      "home": "Postoupky",
+      "competition": "ZKP"
     }
   ]
 }
