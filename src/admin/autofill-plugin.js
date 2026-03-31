@@ -5,7 +5,8 @@
     upcomingMatches: [],
     attachedInputs: new WeakSet(),
     relationValue: "",
-    initialized: false
+    initialized: false,
+    intervalId: null
   };
 
   function log(...args) {
@@ -28,6 +29,13 @@
       }
     }
     return { data: null, url: null };
+  }
+
+  function getPathPrefixFromAdminUrl() {
+    const path = String(window.location.pathname || "");
+    const adminIndex = path.indexOf("/admin/");
+    if (adminIndex === -1) return "";
+    return path.slice(0, adminIndex);
   }
 
   function normalizeDate(value) {
@@ -147,8 +155,20 @@
   function getRelationInputCandidates() {
     return [
       ...document.querySelectorAll('select[id*="relatedUpcoming"], input[id*="relatedUpcoming"]'),
-      ...document.querySelectorAll('select[name*="relatedUpcoming"], input[name*="relatedUpcoming"]')
+      ...document.querySelectorAll('select[name*="relatedUpcoming"], input[name*="relatedUpcoming"], textarea[name*="relatedUpcoming"]')
     ];
+  }
+
+  function getCurrentRelationValue() {
+    const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
+    const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
+
+    for (const input of inputs) {
+      const value = String(input.value || "").trim();
+      if (value) return value;
+    }
+
+    return "";
   }
 
   function onRelationChanged(event) {
@@ -167,17 +187,33 @@
       state.attachedInputs.add(input);
       input.addEventListener("change", onRelationChanged);
       input.addEventListener("input", onRelationChanged);
+      input.addEventListener("blur", onRelationChanged);
       log("Attached listener to relation field");
     });
+  }
+
+  function startPollingFallback() {
+    if (state.intervalId) return;
+    state.intervalId = window.setInterval(() => {
+      const currentValue = getCurrentRelationValue();
+      if (!currentValue || currentValue === state.relationValue) return;
+      state.relationValue = currentValue;
+      autoFillFromSlug(currentValue);
+    }, 400);
   }
 
   async function initialize() {
     if (state.initialized) return;
     state.initialized = true;
 
+    const pathPrefix = getPathPrefixFromAdminUrl();
+    const prefixedDataUrl = pathPrefix ? `${pathPrefix}/_data/upcoming_matches.json` : "";
+
     const { data, url } = await fetchJsonWithFallback([
+      prefixedDataUrl,
+      "../_data/upcoming_matches.json",
       "/_data/upcoming_matches.json"
-    ]);
+    ].filter(Boolean));
 
     state.upcomingMatches = Array.isArray(data?.items) ? data.items : [];
     if (!state.upcomingMatches.length) {
@@ -187,6 +223,7 @@
     }
 
     attachRelationListeners();
+    startPollingFallback();
 
     const observer = new MutationObserver(() => {
       attachRelationListeners();
