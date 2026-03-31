@@ -423,7 +423,7 @@ collections:
             name: "positions"
             widget: "list"
             collapsed: true
-            max: 11
+            max: 13
             summary: "{{fields.slot}} → {{fields.player}}"
             fields:
               - label: "Slot"
@@ -451,7 +451,9 @@ collections:
                   - { label: "ST1 (Útočník 1)", value: "ST1" }
                   - { label: "ST2 (Útočník 2)", value: "ST2" }
                   - { label: "CF (Střední útočník)", value: "CF" }
-              - { label: "Hráč", name: "player", widget: "string", required: false, hint: "Jméno hráče" }
+                  - { label: "🧴 Třídačka", value: "TRIDACKA" }
+                  - { label: "🎓 Trenér", value: "TRENER" }
+              - { label: "Hráč", name: "player", widget: "player-select", required: false, hint: "Vyberte hráče ze seznamu" }
 
       - name: "calendar_events"
         label: "Kalendář akcí"

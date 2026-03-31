@@ -133,6 +133,12 @@ module.exports = function () {
 
   const layout = layouts[formationName] || layouts["4-4-2"];
 
+  // Bench / sideline roles (not on the pitch grid)
+  const benchSlots = {
+    TRIDACKA: { label: "Třídačka" },
+    TRENER:   { label: "Trenér" }
+  };
+
   // Build player lookup by name
   const byName = {};
   for (const p of players) {
@@ -141,24 +147,33 @@ module.exports = function () {
 
   // Map each slot to positioned player
   const positioned = [];
+  const bench = [];
   for (const s of slots) {
-    const pos = layout[s.slot];
-    if (!pos) continue;
     const p = s.player ? byName[s.player] : null;
-    positioned.push({
+    const info = {
       slot: s.slot,
-      top: pos.top,
-      left: pos.left,
       name: s.player || "",
       number: p ? p.number : null,
       photo: p ? p.photo : null,
       position: p ? p.position : null
-    });
+    };
+
+    if (benchSlots[s.slot]) {
+      info.roleLabel = benchSlots[s.slot].label;
+      bench.push(info);
+    } else {
+      const pos = layout[s.slot];
+      if (!pos) continue;
+      info.top = pos.top;
+      info.left = pos.left;
+      positioned.push(info);
+    }
   }
 
   return {
     name: formationName,
     players: positioned,
+    bench: bench,
     hasFormation: positioned.length > 0
   };
 };

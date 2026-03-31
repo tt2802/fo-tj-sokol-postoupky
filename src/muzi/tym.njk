@@ -46,6 +46,21 @@ layout: layouts/page.njk
         </div>
       {% endfor %}
     </div>
+
+    {# Bench / sideline roles #}
+    {% if formationComputed.bench | length %}
+    <div class="pitch-bench">
+      {% for b in formationComputed.bench %}
+        <div class="pitch-bench__item">
+          <div class="pitch-bench__icon">{% if b.slot == 'TRENER' %}🎓{% else %}🧴{% endif %}</div>
+          <div class="pitch-bench__info">
+            <span class="pitch-bench__role">{{ b.roleLabel }}</span>
+            <span class="pitch-bench__name">{{ b.name if b.name else '—' }}</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
 </section>
 {% endif %}
