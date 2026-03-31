@@ -1,16 +1,49 @@
 {
-  "formation": "4-4-2",
+  "formation": "3-5-2",
   "positions": [
-    { "slot": "GK", "player": "Jan Novák" },
-    { "slot": "LB", "player": "" },
-    { "slot": "CB1", "player": "Martin Novák" },
-    { "slot": "CB2", "player": "Tomáš Kubín" },
-    { "slot": "RB", "player": "" },
-    { "slot": "LM", "player": "" },
-    { "slot": "CM1", "player": "" },
-    { "slot": "CM2", "player": "" },
-    { "slot": "RM", "player": "" },
-    { "slot": "ST1", "player": "" },
-    { "slot": "ST2", "player": "" }
+    {
+      "slot": "GK",
+      "player": "Jan Novák"
+    },
+    {
+      "slot": "LB",
+      "player": ""
+    },
+    {
+      "slot": "CB1",
+      "player": "Martin Novák"
+    },
+    {
+      "slot": "CB2",
+      "player": "Kubín"
+    },
+    {
+      "slot": "RB",
+      "player": ""
+    },
+    {
+      "slot": "LM",
+      "player": "Gothim"
+    },
+    {
+      "slot": "CM1",
+      "player": "Opluštil"
+    },
+    {
+      "slot": "CM2",
+      "player": "Morkus"
+    },
+    {
+      "slot": "RM",
+      "player": ""
+    },
+    {
+      "slot": "ST1",
+      "player": "Vrzal"
+    },
+    {
+      "slot": "ST2",
+      "player": "Svačina"
+    }
   ]
 }
