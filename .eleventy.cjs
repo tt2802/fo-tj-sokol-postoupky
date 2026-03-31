@@ -2,7 +2,7 @@
 const { DateTime } = require("luxon");
 let pluginSitemap;
 try {
-  pluginSitemap = require("@11ty/eleventy-plugin-sitemap");
+  pluginSitemap = require("@quasibit/eleventy-plugin-sitemap");
 } catch (e) {
   console.warn("Sitemap plugin not installed, skipping");
 }
@@ -68,6 +68,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/upcoming_matches.json": "_data/upcoming_matches.json" });
 
   eleventyConfig.addFilter("striptags", stripTags);
   eleventyConfig.addFilter("truncate", truncateText);

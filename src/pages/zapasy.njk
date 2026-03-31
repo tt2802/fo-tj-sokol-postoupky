@@ -33,7 +33,13 @@ permalink: /zapasy/
               <p class="muted">Místo: {{ m.venue }}</p>
             {% endif %}
 
-            <p><a href="{{ ('/zapasy/' + m.slug + '/') | url }}">Detail zápasu</a></p>
+            {% if m.team == 'muzi' %}
+              <p><a href="{{ ('/muzi/zapasy/' + m.slug + '/') | url }}">Detail zápasu</a></p>
+            {% elseif m.team == 'mladez' and m.category %}
+              <p><a href="{{ ('/mladez/' + m.category + '/zapasy/' + m.slug + '/') | url }}">Detail zápasu</a></p>
+            {% else %}
+              <p class="muted">Detail zápasu není dostupný.</p>
+            {% endif %}
           </div>
         </li>
       {% endfor %}
@@ -69,7 +75,13 @@ permalink: /zapasy/
               <p class="muted">🎥 Video je k dispozici</p>
             {% endif %}
 
-            <p><a href="{{ ('/zapasy/' + m.slug + '/') | url }}">Detail zápasu</a></p>
+            {% if m.team == 'muzi' %}
+              <p><a href="{{ ('/muzi/zapasy/' + m.slug + '/') | url }}">Detail zápasu</a></p>
+            {% elseif m.team == 'mladez' and m.category %}
+              <p><a href="{{ ('/mladez/' + m.category + '/zapasy/' + m.slug + '/') | url }}">Detail zápasu</a></p>
+            {% else %}
+              <p class="muted">Detail zápasu není dostupný.</p>
+            {% endif %}
           </div>
         </li>
       {% endfor %}

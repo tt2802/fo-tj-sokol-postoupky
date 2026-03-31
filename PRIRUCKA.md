@@ -12,6 +12,24 @@ Vítej! Tady návod jak editovat obsah webu pomocí administrace.
 
 ---
 
+## 🌍 Kdy se změna projeví na veřejném webu
+
+Po kliknutí na **Uložit** v adminu se stane toto:
+
+1. Admin vytvoří commit do větve `main` na GitHubu.
+2. Automaticky se spustí GitHub Actions workflow (`Deploy to GitHub Pages`).
+3. Proběhne build webu a nasazení na veřejný web.
+
+Obvykle to trvá **1–3 minuty** (někdy déle podle fronty GitHubu).
+
+Pokud změna není vidět:
+
+- zkontroluj záložku **Actions** na GitHubu (zda deploy doběhl úspěšně),
+- obnov stránku na webu přes `Ctrl + F5`,
+- ověř, že byl obsah opravdu uložený (v adminu i na GitHubu v historii commitů).
+
+---
+
 ## 📰 Novinky – Jak napsat článek
 
 1. V adminu klkni na: **Novinky**
