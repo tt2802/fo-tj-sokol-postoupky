@@ -5,6 +5,7 @@
     upcomingMatches: [],
     matchKeys: new Map(),
     attachedInputs: new WeakSet(),
+    controlsAttached: new WeakSet(),
     inputScopes: new WeakMap(),
     lastValueByInput: new WeakMap(),
     initialized: false,
@@ -196,6 +197,22 @@
     });
   }
 
+  function setStatus(scopeRoot, message, kind = "ok") {
+    if (!scopeRoot || scopeRoot === document) return;
+    let statusEl = scopeRoot.querySelector('[data-autofill-status="true"]');
+    if (!statusEl) {
+      statusEl = document.createElement("div");
+      statusEl.setAttribute("data-autofill-status", "true");
+      statusEl.style.marginTop = "6px";
+      statusEl.style.fontSize = "12px";
+      statusEl.style.fontWeight = "600";
+      scopeRoot.appendChild(statusEl);
+    }
+
+    statusEl.textContent = message;
+    statusEl.style.color = kind === "error" ? "#b00020" : "#0a7f2e";
+  }
+
   function fillField(fieldName, value, scopeRoot = document) {
     if (value === null || value === undefined || value === "") return;
 
@@ -229,14 +246,15 @@
 
   function autoFillFromSlug(slug, sourceInput = null) {
     const safeSlug = String(slug || "").trim();
-    if (!safeSlug) return;
+    if (!safeSlug) return false;
 
     const scopeRoot = sourceInput ? (state.inputScopes.get(sourceInput) || findEntryScope(sourceInput)) : document;
 
     const match = resolveMatchFromSelection(safeSlug);
     if (!match) {
       warn("No upcoming match found for selection:", safeSlug);
-      return;
+      setStatus(scopeRoot, "⚠️ Zvolený zápas se nepodařilo najít.", "error");
+      return false;
     }
 
     log("Applying autofill from:", safeSlug);
@@ -257,6 +275,12 @@
     fieldsToFill.forEach(([fieldName, value], index) => {
       setTimeout(() => fillField(fieldName, value, scopeRoot), index * 40);
     });
+
+    setTimeout(() => {
+      setStatus(scopeRoot, "✅ Údaje převzaty z nadcházejícího zápasu.", "ok");
+    }, fieldsToFill.length * 45);
+
+    return true;
   }
 
   function getRelationInputCandidates() {
@@ -315,6 +339,71 @@
       input.addEventListener("input", onRelationChanged);
       input.addEventListener("blur", onRelationChanged);
       log("Attached listener to relation field");
+    });
+  }
+
+  function getRelationValueForInput(input) {
+    const direct = String(input?.value || "").trim();
+    if (direct) return direct;
+
+    const scope = state.inputScopes.get(input) || findEntryScope(input);
+    const candidates = [
+      ...scope.querySelectorAll('select[id*="relatedUpcoming"], input[id*="relatedUpcoming"], textarea[id*="relatedUpcoming"]'),
+      ...scope.querySelectorAll('select[name*="relatedUpcoming"], input[name*="relatedUpcoming"], textarea[name*="relatedUpcoming"]')
+    ];
+
+    for (const c of candidates) {
+      const v = String(c.value || "").trim();
+      if (v) return v;
+    }
+
+    return getCurrentRelationValue();
+  }
+
+  function attachManualApplyControls() {
+    const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
+    const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
+
+    inputs.forEach((input) => {
+      if (state.controlsAttached.has(input)) return;
+      state.controlsAttached.add(input);
+
+      const scope = state.inputScopes.get(input) || findEntryScope(input);
+      state.inputScopes.set(input, scope);
+
+      const controlsWrap = document.createElement("div");
+      controlsWrap.style.marginTop = "8px";
+      controlsWrap.style.display = "flex";
+      controlsWrap.style.alignItems = "center";
+      controlsWrap.style.gap = "8px";
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = "Převzít údaje";
+      button.style.padding = "4px 10px";
+      button.style.border = "1px solid #0a7f2e";
+      button.style.borderRadius = "4px";
+      button.style.background = "#e9f7ee";
+      button.style.color = "#0a7f2e";
+      button.style.cursor = "pointer";
+      button.style.fontWeight = "600";
+
+      button.addEventListener("click", () => {
+        const value = getRelationValueForInput(input);
+        if (!value) {
+          setStatus(scope, "⚠️ Nejprve vyber zápas v poli Převzít z nadcházejícího.", "error");
+          return;
+        }
+
+        const ok = autoFillFromSlug(value, input);
+        if (!ok) {
+          setStatus(scope, "⚠️ Nepodařilo se převzít údaje. Zkus vybrat položku znovu.", "error");
+        }
+      });
+
+      controlsWrap.appendChild(button);
+      scope.appendChild(controlsWrap);
+      log("Attached manual apply button");
     });
   }
 
@@ -448,11 +537,13 @@
     }
 
     attachRelationListeners();
+    attachManualApplyControls();
     startPollingFallback();
     ensurePreSaveHookRegistered();
 
     const observer = new MutationObserver(() => {
       attachRelationListeners();
+      attachManualApplyControls();
     });
 
     observer.observe(document.body, {
