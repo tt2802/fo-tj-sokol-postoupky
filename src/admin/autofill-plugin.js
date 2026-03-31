@@ -303,6 +303,91 @@
     }, 400);
   }
 
+  function fillItemFromRelatedUpcoming(item) {
+    if (!item || typeof item !== "object") return item;
+
+    const relationValue = String(item.relatedUpcoming || "").trim();
+    if (!relationValue) return item;
+
+    const match = resolveMatchFromSelection(relationValue);
+    if (!match) return item;
+
+    const next = { ...item };
+    const fieldMap = {
+      team: match.team,
+      category: match.category,
+      season: match.season,
+      competition: match.competition,
+      round: match.round,
+      date: normalizeDate(match.date),
+      home: match.home,
+      away: match.away,
+      isHome: match.isHome,
+      venue: match.venue
+    };
+
+    Object.entries(fieldMap).forEach(([key, value]) => {
+      // Fill only empty fields so manual edits are preserved.
+      if ((next[key] === undefined || next[key] === null || next[key] === "") && value !== undefined && value !== null && value !== "") {
+        next[key] = value;
+      }
+    });
+
+    return next;
+  }
+
+  function registerPreSaveAutofillHook() {
+    if (!window.CMS || typeof window.CMS.registerEventListener !== "function") {
+      return false;
+    }
+
+    window.CMS.registerEventListener({
+      name: "preSave",
+      handler: ({ entry }) => {
+        try {
+          if (!entry || typeof entry.get !== "function") return entry;
+
+          const path = String(entry.get("path") || "");
+          if (!path.endsWith("src/_data/played_matches.json")) return entry;
+
+          const items = entry.getIn(["data", "items"]);
+          if (!items || typeof items.map !== "function") return entry;
+
+          const updatedItems = items.map((itemMap) => {
+            const itemJs = typeof itemMap?.toJS === "function" ? itemMap.toJS() : itemMap;
+            const updatedJs = fillItemFromRelatedUpcoming(itemJs);
+            if (typeof itemMap?.merge === "function") {
+              return itemMap.merge(updatedJs);
+            }
+            return itemMap;
+          });
+
+          log("preSave autofill applied for played_matches");
+          return entry.setIn(["data", "items"], updatedItems);
+        } catch (err) {
+          warn("preSave autofill failed:", err?.message || err);
+          return entry;
+        }
+      }
+    });
+
+    log("Registered preSave autofill hook");
+    return true;
+  }
+
+  function ensurePreSaveHookRegistered() {
+    if (registerPreSaveAutofillHook()) return;
+
+    let attempts = 0;
+    const maxAttempts = 40;
+    const timer = window.setInterval(() => {
+      attempts += 1;
+      if (registerPreSaveAutofillHook() || attempts >= maxAttempts) {
+        window.clearInterval(timer);
+      }
+    }, 250);
+  }
+
   async function initialize() {
     if (state.initialized) return;
     state.initialized = true;
@@ -326,6 +411,7 @@
 
     attachRelationListeners();
     startPollingFallback();
+    ensurePreSaveHookRegistered();
 
     const observer = new MutationObserver(() => {
       attachRelationListeners();
