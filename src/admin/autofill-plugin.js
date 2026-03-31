@@ -6,7 +6,7 @@
     matchKeys: new Map(),
     attachedInputs: new WeakSet(),
     inputScopes: new WeakMap(),
-    relationValue: "",
+    lastValueByInput: new WeakMap(),
     initialized: false,
     intervalId: null
   };
@@ -294,9 +294,12 @@
 
   function onRelationChanged(event) {
     const sourceInput = event?.target || null;
+    if (!sourceInput) return;
     const currentValue = String(event?.target?.value || "").trim();
-    if (!currentValue || currentValue === state.relationValue) return;
-    state.relationValue = currentValue;
+    const previousValue = String(state.lastValueByInput.get(sourceInput) || "").trim();
+    if (!currentValue || currentValue === previousValue) return;
+    state.lastValueByInput.set(sourceInput, currentValue);
+    log("Relation changed:", currentValue);
     autoFillFromSlug(currentValue, sourceInput);
   }
 
@@ -318,10 +321,23 @@
   function startPollingFallback() {
     if (state.intervalId) return;
     state.intervalId = window.setInterval(() => {
-      const currentValue = getCurrentRelationValue();
-      if (!currentValue || currentValue === state.relationValue) return;
-      state.relationValue = currentValue;
-      autoFillFromSlug(currentValue);
+      const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
+      const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
+
+      inputs.forEach((input) => {
+        const currentValue = String(input.value || "").trim();
+        const previousValue = String(state.lastValueByInput.get(input) || "").trim();
+        if (!currentValue || currentValue === previousValue) return;
+        state.lastValueByInput.set(input, currentValue);
+        log("Polling detected relation value:", currentValue);
+        autoFillFromSlug(currentValue, input);
+      });
+
+      // Global fallback for widgets that are not exposed as normal inputs.
+      const globalValue = getCurrentRelationValue();
+      if (globalValue) {
+        autoFillFromSlug(globalValue, null);
+      }
     }, 400);
   }
 
