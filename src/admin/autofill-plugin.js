@@ -3,6 +3,7 @@
   const logPrefix = "[CMS AutoFill]";
   const state = {
     upcomingMatches: [],
+    matchKeys: new Map(),
     attachedInputs: new WeakSet(),
     relationValue: "",
     initialized: false,
@@ -42,6 +43,36 @@
     if (!value) return value;
     const str = String(value);
     return str.length >= 10 ? str.slice(0, 10) : str;
+  }
+
+  function slugify(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .replace(/-{2,}/g, "-");
+  }
+
+  function buildFallbackMatchKey(match) {
+    const date = normalizeDate(match?.date || "");
+    const home = slugify(match?.home || "");
+    const away = slugify(match?.away || "");
+    if (!date || !home || !away) return "";
+    return `${date}-${home}-${away}`;
+  }
+
+  function indexMatches(matches) {
+    state.matchKeys = new Map();
+    (matches || []).forEach((m) => {
+      if (!m) return;
+      const keys = [m.slug, m.id, buildFallbackMatchKey(m)]
+        .map((k) => String(k || "").trim())
+        .filter(Boolean);
+
+      keys.forEach((key) => state.matchKeys.set(key, m));
+    });
   }
 
   function findFieldByLabel(labelText) {
@@ -126,9 +157,9 @@
     const safeSlug = String(slug || "").trim();
     if (!safeSlug) return;
 
-    const match = state.upcomingMatches.find((m) => m && m.slug === safeSlug);
+    const match = state.matchKeys.get(safeSlug) || state.upcomingMatches.find((m) => m && m.slug === safeSlug);
     if (!match) {
-      warn("No upcoming match found for slug:", safeSlug);
+      warn("No upcoming match found for key:", safeSlug);
       return;
     }
 
@@ -159,9 +190,23 @@
     ];
   }
 
+  function valueLooksLikeMatchKey(value) {
+    const v = String(value || "").trim();
+    if (!v) return false;
+    if (state.matchKeys.has(v)) return true;
+    // Common relation display string often contains separators; skip these
+    if (v.includes(" · ")) return false;
+    return /^[a-z0-9][a-z0-9-]{5,}$/i.test(v);
+  }
+
   function getCurrentRelationValue() {
     const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
     const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
+
+    for (const input of inputs) {
+      const value = String(input.value || "").trim();
+      if (valueLooksLikeMatchKey(value)) return value;
+    }
 
     for (const input of inputs) {
       const value = String(input.value || "").trim();
@@ -216,6 +261,7 @@
     ].filter(Boolean));
 
     state.upcomingMatches = Array.isArray(data?.items) ? data.items : [];
+    indexMatches(state.upcomingMatches);
     if (!state.upcomingMatches.length) {
       warn("No upcoming matches available for auto-fill.");
     } else {
