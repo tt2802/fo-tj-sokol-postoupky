@@ -5,6 +5,7 @@
     upcomingMatches: [],
     matchKeys: new Map(),
     attachedInputs: new WeakSet(),
+    inputScopes: new WeakMap(),
     relationValue: "",
     initialized: false,
     intervalId: null
@@ -131,8 +132,8 @@
     return null;
   }
 
-  function findFieldByLabel(labelText) {
-    const labels = Array.from(document.querySelectorAll("label, span"));
+  function findFieldByLabel(labelText, scopeRoot = document) {
+    const labels = Array.from(scopeRoot.querySelectorAll("label, span"));
     for (const label of labels) {
       if ((label.textContent || "").includes(labelText)) {
         const container = label.closest('[class*="field"]') || label.closest("div");
@@ -144,15 +145,32 @@
     return null;
   }
 
-  function findFormField(fieldName) {
+  function findFormField(fieldName, scopeRoot = document) {
     return (
-      document.querySelector(`input[id*="${fieldName}"]`) ||
-      document.querySelector(`select[id*="${fieldName}"]`) ||
-      document.querySelector(`textarea[id*="${fieldName}"]`) ||
-      document.querySelector(`input[name="${fieldName}"]`) ||
-      document.querySelector(`select[name="${fieldName}"]`) ||
-      document.querySelector(`textarea[name="${fieldName}"]`)
+      scopeRoot.querySelector(`input[id*="${fieldName}"]`) ||
+      scopeRoot.querySelector(`select[id*="${fieldName}"]`) ||
+      scopeRoot.querySelector(`textarea[id*="${fieldName}"]`) ||
+      scopeRoot.querySelector(`input[name="${fieldName}"]`) ||
+      scopeRoot.querySelector(`select[name="${fieldName}"]`) ||
+      scopeRoot.querySelector(`textarea[name="${fieldName}"]`)
     );
+  }
+
+  function findEntryScope(sourceInput) {
+    if (!sourceInput) return document;
+
+    let node = sourceInput;
+    while (node && node !== document.body) {
+      const hasRelated = node.querySelector('input[name*="relatedUpcoming"], select[name*="relatedUpcoming"], input[id*="relatedUpcoming"], select[id*="relatedUpcoming"]');
+      const hasHome = node.querySelector('input[name*="home"], input[id*="home"], textarea[name*="home"]');
+      const hasAway = node.querySelector('input[name*="away"], input[id*="away"], textarea[name*="away"]');
+      if (hasRelated && (hasHome || hasAway)) {
+        return node;
+      }
+      node = node.parentElement;
+    }
+
+    return document;
   }
 
   function setReactFieldValue(element, value) {
@@ -178,7 +196,7 @@
     });
   }
 
-  function fillField(fieldName, value) {
+  function fillField(fieldName, value, scopeRoot = document) {
     if (value === null || value === undefined || value === "") return;
 
     const labelMap = {
@@ -194,9 +212,9 @@
       venue: "Místo utkání"
     };
 
-    let input = findFormField(fieldName);
+    let input = findFormField(fieldName, scopeRoot);
     if (!input && labelMap[fieldName]) {
-      input = findFieldByLabel(labelMap[fieldName]);
+      input = findFieldByLabel(labelMap[fieldName], scopeRoot);
     }
 
     if (!input) {
@@ -209,9 +227,11 @@
     log(`Filled ${fieldName}:`, finalValue);
   }
 
-  function autoFillFromSlug(slug) {
+  function autoFillFromSlug(slug, sourceInput = null) {
     const safeSlug = String(slug || "").trim();
     if (!safeSlug) return;
+
+    const scopeRoot = sourceInput ? (state.inputScopes.get(sourceInput) || findEntryScope(sourceInput)) : document;
 
     const match = resolveMatchFromSelection(safeSlug);
     if (!match) {
@@ -235,7 +255,7 @@
     ];
 
     fieldsToFill.forEach(([fieldName, value], index) => {
-      setTimeout(() => fillField(fieldName, value), index * 40);
+      setTimeout(() => fillField(fieldName, value, scopeRoot), index * 40);
     });
   }
 
@@ -273,10 +293,11 @@
   }
 
   function onRelationChanged(event) {
+    const sourceInput = event?.target || null;
     const currentValue = String(event?.target?.value || "").trim();
     if (!currentValue || currentValue === state.relationValue) return;
     state.relationValue = currentValue;
-    autoFillFromSlug(currentValue);
+    autoFillFromSlug(currentValue, sourceInput);
   }
 
   function attachRelationListeners() {
@@ -286,6 +307,7 @@
     inputs.forEach((input) => {
       if (state.attachedInputs.has(input)) return;
       state.attachedInputs.add(input);
+      state.inputScopes.set(input, findEntryScope(input));
       input.addEventListener("change", onRelationChanged);
       input.addEventListener("input", onRelationChanged);
       input.addEventListener("blur", onRelationChanged);
