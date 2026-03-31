@@ -7,11 +7,7 @@
     },
     {
       "slot": "LB",
-      "player": ""
-    },
-    {
-      "slot": "CB1",
-      "player": "Martin Novák"
+      "player": "Jeník"
     },
     {
       "slot": "CB2",
@@ -19,7 +15,7 @@
     },
     {
       "slot": "RB",
-      "player": ""
+      "player": "Vrzal"
     },
     {
       "slot": "LM",
@@ -35,15 +31,19 @@
     },
     {
       "slot": "RM",
-      "player": ""
+      "player": "John Doe"
     },
     {
       "slot": "ST1",
-      "player": "Vrzal"
+      "player": "Sklenář"
     },
     {
       "slot": "ST2",
       "player": "Svačina"
+    },
+    {
+      "slot": "CAM",
+      "player": "Francessco"
     }
   ]
 }
