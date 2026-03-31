@@ -410,7 +410,7 @@
 
   var PlayerSelectControl = createClass({
     getInitialState: function () {
-      return { players: [], loaded: false, customMode: false };
+      return { players: [], loaded: false, customMode: false, teamLabel: "" };
     },
 
     componentDidMount: function () {
@@ -428,6 +428,21 @@
       var el = document.getElementById(this.props.forID);
       var info = readTeamFromDOM(el);
       var roster = getPlayersForCategory(info.team, info.category);
+
+      // Build human readable team label
+      var tl = info.team === "muzi" ? "Muži" : "Mládež";
+      if (info.category) {
+        var catNames = {
+          "dorostenci": "Dorostenci",
+          "dorostenky-d19": "Dorostenkyně D19",
+          "starsi-zaci": "Starší žáci",
+          "mlads-zaci": "Mladší žáci",
+          "mlads-zaci-b": "Mladší žáci B",
+          "skolicka": "Školička"
+        };
+        tl = catNames[info.category] || info.category;
+      }
+
       log("PlayerSelect: team=", info.team, "cat=", info.category, "players=", roster.length);
 
       // Check if current value is a custom entry not in roster
@@ -437,8 +452,14 @@
       this.setState({
         players: roster,
         loaded: true,
-        customMode: currentVal && !inRoster
+        customMode: currentVal && !inRoster,
+        teamLabel: tl
       });
+    },
+
+    handleFocus: function () {
+      // Re-read team/category every time the dropdown is opened
+      this._refreshPlayers();
     },
 
     handleChange: function (e) {
@@ -457,6 +478,7 @@
     },
 
     handleBackToSelect: function () {
+      this._refreshPlayers();
       this.setState({ customMode: false });
       this.props.onChange("");
     },
@@ -496,7 +518,9 @@
       // Dropdown mode
       var options = [
         h("option", { value: "", key: "_empty" },
-          st.loaded ? "— Vyberte hráče —" : "Načítám…")
+          st.loaded
+            ? "— Vyberte hráče" + (st.teamLabel ? " (" + st.teamLabel + ")" : "") + " —"
+            : "Načítám…")
       ];
 
       st.players.forEach(function (p) {
@@ -513,6 +537,7 @@
         className: this.props.classNameWrapper,
         value: value,
         onChange: this.handleChange,
+        onFocus: this.handleFocus,
         style: {
           display: "block", width: "100%", padding: "10px 12px",
           fontSize: "15px", border: "2px solid #dfdfe3", borderRadius: "0 5px 5px 0",
