@@ -59,33 +59,63 @@
    */
   function findScope(startEl) {
     var el = startEl;
-    for (var i = 0; i < 40 && el && el !== document.body; i++) {
+    var candidate = null;
+    for (var i = 0; i < 60 && el && el !== document.body; i++) {
       el = el.parentElement;
       if (!el) break;
       var txt = el.textContent || "";
-      if (txt.indexOf("Domácí") > -1 && txt.indexOf("Hosté") > -1 && txt.indexOf("Skóre") > -1) {
-        return el;
+      // Look for the list item wrapper that contains the field labels
+      var hasDomaci = txt.indexOf("Domácí") > -1;
+      var hasHoste = txt.indexOf("Hosté") > -1;
+      if (hasDomaci && hasHoste) {
+        candidate = el;
+        // Keep going up a bit more to find the widest item wrapper
+        // but stop once we hit the entire list (contains multiple slugs)
+        var slugCount = (txt.match(/Slug/gi) || []).length;
+        if (slugCount <= 1) {
+          // This is a single item — good scope
+          return el;
+        } else {
+          // Multiple items — we went too far, return previous candidate
+          break;
+        }
       }
     }
-    return null;
+    return candidate;
   }
 
   /**
    * Inside a scope, find the <input>/<select>/<textarea> that sits next to
-   * a label whose text starts with `labelText`.
+   * a label whose text contains `labelText`.
+   *
+   * Decap CMS DOM structure (styled-components) typically:
+   *   <div>                   ← field wrapper (grandparent or higher)
+   *     <div><label>...</div> ← label wrapper
+   *     <div><input /></div>  ← input wrapper
+   *   </div>
+   *
+   * So we walk up several levels from the label to find the wrapper
+   * that also contains an input/select/textarea.
    */
   function findInputNearLabel(scope, labelText) {
     var elems = scope.querySelectorAll("label, span");
+    var ltLower = labelText.toLowerCase();
+
     for (var i = 0; i < elems.length; i++) {
       var t = (elems[i].textContent || "").trim();
-      if (t === labelText || t.indexOf(labelText) === 0) {
-        var wrap =
-          elems[i].closest('[class*="Field"]') ||
-          elems[i].closest('[class*="field"]') ||
-          elems[i].parentElement;
-        if (wrap) {
-          var inp = wrap.querySelector("input, select, textarea");
-          if (inp) return inp;
+      // Case-insensitive check: label starts with search text
+      if (t.toLowerCase().indexOf(ltLower) !== 0) continue;
+
+      // Walk up 1..5 parent levels until we find a container that has an input
+      var node = elems[i];
+      for (var lvl = 0; lvl < 5; lvl++) {
+        node = node.parentElement;
+        if (!node || node === scope) break;
+        var inp = node.querySelector("input, select, textarea");
+        if (inp) {
+          // Make sure it's not our own <select> widget
+          if (inp.id && inp.id.indexOf("relatedUpcoming") > -1) continue;
+          return inp;
         }
       }
     }
@@ -126,7 +156,7 @@
    */
   function fillSiblings(scope, match) {
     var fields = [
-      ["Slug (URL)", match.slug],
+      ["Slug", match.slug],
       ["Sezóna", match.season],
       ["Soutěž", match.competition],
       ["Kolo", match.round],
@@ -139,20 +169,32 @@
       ["Datum", normalizeDate(match.date)]
     ];
 
+    log("fillSiblings: scope tag =", scope.tagName, ", children =", scope.children.length);
+
     var filled = 0;
+    var notFound = [];
+    var total = fields.length;
     fields.forEach(function (pair, idx) {
       setTimeout(function () {
         var label = pair[0], val = pair[1];
-        if (val === undefined || val === null || val === "") return;
+        if (val === undefined || val === null || val === "") {
+          total--;
+          return;
+        }
         var inp = findInputNearLabel(scope, label);
         if (inp) {
           setNativeValue(inp, val);
           filled++;
-          log("Filled", label, "→", val);
+          log("Filled", label, "→", val, "(", inp.tagName, inp.type || "", ")");
         } else {
+          notFound.push(label);
           warn("Not found:", label);
         }
-      }, idx * 60);
+        // After last field, log summary
+        if (idx === fields.length - 1) {
+          log("Summary: filled", filled, "/", total, "| not found:", notFound.join(", ") || "(none)");
+        }
+      }, idx * 80);
     });
   }
 
@@ -203,7 +245,7 @@
       // Give React a moment to re-render, then fill sibling fields via DOM
       setTimeout(function () {
         var el = document.getElementById(self.props.forID);
-        if (!el) { warn("Own element not found"); return; }
+        if (!el) { warn("Own element not found, forID =", self.props.forID); return; }
 
         var scope = findScope(el);
         if (!scope) {
@@ -212,9 +254,10 @@
           return;
         }
 
+        log("Scope found:", scope.tagName, "class=", (scope.className || "").slice(0, 60));
         fillSiblings(scope, match);
         self.setState({ status: "ok" });
-      }, 400);
+      }, 600);
     },
 
     render: function () {
