@@ -498,108 +498,244 @@ body {
   }
 }
 
-/* ===== KALENDÁŘ AKCÍ ===== */
+/* ===== KALENDÁŘ ===== */
 .calendar-section {
-  background: linear-gradient(135deg, rgba(109,40,217,0.04), rgba(109,40,217,0.01));
+  background: linear-gradient(135deg, rgba(109,40,217,0.06), rgba(109,40,217,0.01));
 }
 
-.calendar-list {
+/* Tabs */
+.cal-tabs {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  max-width: 700px;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.cal-tab {
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.5rem 1.15rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cal-tab:hover {
+  border-color: #6d28d9;
+  color: #6d28d9;
+}
+
+.cal-tab.is-active {
+  background: #6d28d9;
+  border-color: #6d28d9;
+  color: #fff;
+}
+
+/* Month grid visibility */
+.cal-month {
+  display: none;
+  max-width: 560px;
   margin: 0 auto;
 }
 
-.calendar-item {
-  display: flex;
-  gap: 1rem;
+.cal-month.is-active {
+  display: block;
+}
+
+/* Grid */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-grid--header {
+  margin-bottom: 4px;
+}
+
+.cal-hdr {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #6d28d9;
+  padding: 0.35rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Cells */
+.cal-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
   background: #fff;
-  border-radius: 14px;
-  padding: 1rem 1.25rem;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-  border-left: 4px solid #6d28d9;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.calendar-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.10);
-}
-
-.calendar-item--training { border-left-color: #16a34a; }
-.calendar-item--tournament { border-left-color: #d97706; }
-.calendar-item--camp { border-left-color: #0891b2; }
-.calendar-item--meeting { border-left-color: #7c3aed; }
-.calendar-item--match { border-left-color: #6d28d9; }
-.calendar-item--other { border-left-color: #64748b; }
-
-.calendar-item__date {
-  min-width: 100px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-.calendar-item__day {
+.cal-cell--empty {
+  background: transparent;
+  box-shadow: none;
+}
+
+.cal-cell--past {
+  opacity: 0.45;
+}
+
+.cal-cell--weekend {
+  background: #f8fafc;
+}
+
+.cal-cell--today {
+  background: #6d28d9;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(109,40,217,0.35);
+  transform: scale(1.05);
+}
+
+.cal-cell--today .cal-day {
+  color: #fff;
+}
+
+.cal-cell--has-events {
+  cursor: default;
+}
+
+.cal-cell--has-events:not(.cal-cell--past):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.cal-day {
   font-weight: 700;
   font-size: 0.95rem;
   color: #1e293b;
+  line-height: 1;
 }
 
-.calendar-item__time {
-  font-size: 0.85rem;
-  color: #6d28d9;
-  font-weight: 600;
-}
-
-.calendar-item__body {
+/* Event dots */
+.cal-dots {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  gap: 3px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.calendar-item__badge {
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: #6d28d9;
+.cal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
-.calendar-item--training .calendar-item__badge { color: #16a34a; }
-.calendar-item--tournament .calendar-item__badge { color: #d97706; }
-.calendar-item--camp .calendar-item__badge { color: #0891b2; }
-.calendar-item--meeting .calendar-item__badge { color: #7c3aed; }
-.calendar-item--match .calendar-item__badge { color: #6d28d9; }
-.calendar-item--other .calendar-item__badge { color: #64748b; }
+.cal-dot--match { background: #6d28d9; }
+.cal-dot--training { background: #16a34a; }
+.cal-dot--tournament { background: #d97706; }
+.cal-dot--camp { background: #0891b2; }
+.cal-dot--meeting { background: #7c3aed; }
+.cal-dot--other { background: #64748b; }
 
-.calendar-item__title {
-  font-size: 1rem;
-  color: #1e293b;
-}
-
-.calendar-item__location {
-  font-size: 0.85rem;
+/* Legend */
+.cal-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1.25rem 0;
+  font-size: 0.82rem;
   color: #475569;
 }
 
-.calendar-item__desc {
-  font-size: 0.85rem;
+.cal-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
-@media (max-width: 600px) {
-  .calendar-item {
-    flex-direction: column;
-    gap: 0.4rem;
+.cal-legend .cal-dot {
+  width: 10px;
+  height: 10px;
+}
+
+/* Event list below calendar */
+.cal-events {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cal-events__title {
+  font-size: 1.05rem;
+  margin: 0 0 0.75rem;
+  color: #1e293b;
+  text-align: center;
+}
+
+.cal-ev {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  background: #fff;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-left: 4px solid #6d28d9;
+  align-items: center;
+}
+
+.cal-ev--training { border-left-color: #16a34a; }
+.cal-ev--tournament { border-left-color: #d97706; }
+.cal-ev--camp { border-left-color: #0891b2; }
+.cal-ev--meeting { border-left-color: #7c3aed; }
+.cal-ev--match { border-left-color: #6d28d9; }
+.cal-ev--other { border-left-color: #64748b; }
+
+.cal-ev__left {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.cal-ev__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.9rem;
+}
+
+.cal-ev__body strong {
+  color: #1e293b;
+}
+
+@media (max-width: 480px) {
+  .cal-cell {
+    border-radius: 6px;
   }
 
-  .calendar-item__date {
-    min-width: auto;
-    flex-direction: row;
-    gap: 0.5rem;
-    align-items: baseline;
+  .cal-day {
+    font-size: 0.82rem;
+  }
+
+  .cal-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .cal-dots {
+    margin-top: 2px;
+  }
+
+  .cal-tab {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.85rem;
   }
 }
 

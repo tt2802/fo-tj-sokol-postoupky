@@ -29,33 +29,97 @@ hideTitle: true
 
 <section class="section calendar-section">
   <div class="container">
-    <h2 style="text-align: center; margin-bottom: 2rem;">📅 Kalendář akcí</h2>
+    <h2 style="text-align: center; margin-bottom: 1.5rem;">📅 Kalendář</h2>
 
-    {% if calendarComputed.length %}
-      <div class="calendar-list">
-        {% for event in calendarComputed %}
-        {% if loop.index0 < 10 %}
-          <div class="calendar-item calendar-item--{{ event.type }}">
-            <div class="calendar-item__date">
-              <span class="calendar-item__day">{{ event.date | czDate }}</span>
-              {% if event.time %}
-                <span class="calendar-item__time">{{ event.time }}{% if event.endTime %} – {{ event.endTime }}{% endif %}</span>
-              {% endif %}
+    {% if calendarComputed.months.length %}
+
+      {# Month tabs #}
+      <div class="cal-tabs">
+        {% for m in calendarComputed.months %}
+          <button class="cal-tab{% if loop.index0 === 0 %} is-active{% endif %}"
+                  data-cal-month="{{ m.key }}">{{ m.label }}</button>
+        {% endfor %}
+      </div>
+
+      {# Month grids #}
+      {% for m in calendarComputed.months %}
+      <div class="cal-month{% if loop.index0 === 0 %} is-active{% endif %}"
+           data-cal-grid="{{ m.key }}">
+
+        {# Day-of-week headers #}
+        <div class="cal-grid cal-grid--header">
+          {% for dh in calendarComputed.dayHeaders %}
+            <div class="cal-hdr">{{ dh }}</div>
+          {% endfor %}
+        </div>
+
+        {# Day cells #}
+        <div class="cal-grid">
+          {% for cell in m.cells %}
+            {% if cell.empty %}
+              <div class="cal-cell cal-cell--empty"></div>
+            {% else %}
+              <div class="cal-cell{% if cell.isToday %} cal-cell--today{% endif %}{% if cell.isPast %} cal-cell--past{% endif %}{% if cell.isWeekend %} cal-cell--weekend{% endif %}{% if cell.events.length %} cal-cell--has-events{% endif %}">
+                <span class="cal-day">{{ cell.day }}</span>
+                {% if cell.events.length %}
+                  <div class="cal-dots">
+                    {% for ev in cell.events %}
+                      <span class="cal-dot cal-dot--{{ ev.type }}" title="{{ ev.icon }} {{ ev.title }}{% if ev.time %} · {{ ev.time }}{% endif %}"></span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+      {# Legend #}
+      <div class="cal-legend">
+        <span class="cal-legend__item"><span class="cal-dot cal-dot--match"></span> Zápas</span>
+        <span class="cal-legend__item"><span class="cal-dot cal-dot--training"></span> Trénink</span>
+        <span class="cal-legend__item"><span class="cal-dot cal-dot--tournament"></span> Turnaj</span>
+        <span class="cal-legend__item"><span class="cal-dot cal-dot--camp"></span> Soustředění</span>
+        <span class="cal-legend__item"><span class="cal-dot cal-dot--meeting"></span> Schůze</span>
+      </div>
+
+      {# Event list below calendar #}
+      <div class="cal-events" id="calEvents">
+        <h3 class="cal-events__title">Nadcházející akce</h3>
+        {% for event in calendarComputed.allEvents %}
+        {% if loop.index0 < 8 %}
+          <div class="cal-ev cal-ev--{{ event.type }}">
+            <div class="cal-ev__left">
+              <span class="cal-ev__icon">{{ event.icon }}</span>
             </div>
-            <div class="calendar-item__body">
-              <span class="calendar-item__badge">{{ event.icon }} {{ event.typeLabel }}</span>
-              <strong class="calendar-item__title">{{ event.title }}</strong>
-              {% if event.location %}
-                <span class="calendar-item__location">📍 {{ event.location }}</span>
-              {% endif %}
-              {% if event.description %}
-                <span class="calendar-item__desc muted">{{ event.description }}</span>
-              {% endif %}
+            <div class="cal-ev__body">
+              <strong>{{ event.title }}</strong>
+              <span class="muted">{{ event.date | czDate }}{% if event.time %} · {{ event.time }}{% if event.endTime %} – {{ event.endTime }}{% endif %}{% endif %}</span>
+              {% if event.location %}<span class="muted">📍 {{ event.location }}</span>{% endif %}
             </div>
           </div>
         {% endif %}
         {% endfor %}
       </div>
+
+      <script>
+      (function(){
+        var tabs=document.querySelectorAll('.cal-tab');
+        var grids=document.querySelectorAll('.cal-month');
+        tabs.forEach(function(t){
+          t.addEventListener('click',function(){
+            var mk=t.getAttribute('data-cal-month');
+            tabs.forEach(function(b){b.classList.remove('is-active')});
+            grids.forEach(function(g){g.classList.remove('is-active')});
+            t.classList.add('is-active');
+            var g=document.querySelector('[data-cal-grid="'+mk+'"]');
+            if(g) g.classList.add('is-active');
+          });
+        });
+      })();
+      </script>
+
     {% else %}
       <p class="muted" style="text-align: center;">Zatím nejsou naplánovány žádné akce.</p>
     {% endif %}

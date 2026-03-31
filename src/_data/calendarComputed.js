@@ -7,6 +7,13 @@ module.exports = function () {
   const zone = "Europe/Prague";
   const now = DateTime.now().setZone(zone).startOf("day");
 
+  const czMonths = [
+    "", "Leden", "Únor", "Březen", "Duben", "Květen", "Červen",
+    "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"
+  ];
+
+  const czDaysShort = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"];
+
   const typeLabels = {
     training: "Trénink",
     tournament: "Turnaj",
@@ -35,6 +42,7 @@ module.exports = function () {
       typeLabel: typeLabels[e.type] || typeLabels.other,
       icon: typeIcons[e.type] || typeIcons.other,
       date,
+      day: dt.isValid ? dt.day : 0,
       time: e.time || "",
       endTime: e.endTime || "",
       location: e.location || "",
@@ -55,6 +63,7 @@ module.exports = function () {
       typeLabel: typeLabels.match,
       icon: typeIcons.match,
       date,
+      day: dt.isValid ? dt.day : 0,
       time: m.time || "",
       endTime: "",
       location: m.venue || "",
@@ -65,8 +74,68 @@ module.exports = function () {
   });
 
   const all = [...events, ...matches]
-    .filter((e) => e._dt && e._dt >= now)
+    .filter((e) => e._dt)
     .sort((a, b) => a._dt.toMillis() - b._dt.toMillis());
 
-  return all;
+  // Group by month key "YYYY-MM"
+  const eventsByDate = {};
+  all.forEach((e) => {
+    const key = e.date; // "YYYY-MM-DD"
+    if (!eventsByDate[key]) eventsByDate[key] = [];
+    eventsByDate[key].push(e);
+  });
+
+  // Build months: current month + next 2 months
+  const months = [];
+  for (let offset = 0; offset < 3; offset++) {
+    const monthStart = now.startOf("month").plus({ months: offset });
+    const year = monthStart.year;
+    const month = monthStart.month;
+    const daysInMonth = monthStart.daysInMonth;
+    // weekday: 1=Mon ... 7=Sun (ISO)
+    const firstWeekday = monthStart.weekday; // 1-based, Mon=1
+
+    const monthKey = `${year}-${String(month).padStart(2, "0")}`;
+    const label = `${czMonths[month]} ${year}`;
+
+    // Build grid cells: leading empty + days
+    const cells = [];
+    // Empty cells before first day (Mon=1 means 0 empties, Tue=2 means 1 empty, etc.)
+    for (let i = 1; i < firstWeekday; i++) {
+      cells.push({ empty: true });
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+      const dayDt = DateTime.fromISO(dateStr, { zone });
+      const isToday = dateStr === now.toISODate();
+      const isPast = dayDt < now;
+      const isWeekend = dayDt.weekday >= 6;
+      const dayEvents = eventsByDate[dateStr] || [];
+      cells.push({
+        empty: false,
+        day: d,
+        date: dateStr,
+        isToday,
+        isPast,
+        isWeekend,
+        events: dayEvents
+      });
+    }
+
+    months.push({
+      key: monthKey,
+      label,
+      year,
+      month,
+      cells,
+      offset
+    });
+  }
+
+  return {
+    months,
+    dayHeaders: czDaysShort,
+    allEvents: all
+  };
 };
