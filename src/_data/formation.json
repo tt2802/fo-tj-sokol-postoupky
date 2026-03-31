@@ -1,49 +1,49 @@
 {
-  "formation": "3-5-2",
+  "formation": "4-4-2",
   "positions": [
     {
       "slot": "GK",
       "player": "Jan Novák"
     },
     {
-      "slot": "LWB",
+      "slot": "LB",
       "player": "Jeník"
     },
     {
       "slot": "CB1",
+      "player": "Doe"
+    },
+    {
+      "slot": "CB2",
       "player": "Kubín"
     },
     {
-      "slot": "RWB",
+      "slot": "RB",
       "player": "Vrzal"
-    },
-    {
-      "slot": "LW",
-      "player": "Gothim"
-    },
-    {
-      "slot": "CAM",
-      "player": "Opluštil"
     },
     {
       "slot": "CDM",
       "player": "Morkus"
     },
     {
-      "slot": "RW",
-      "player": "John Doe"
+      "slot": "CDM2",
+      "player": "Opluštil"
     },
     {
-      "slot": "ST1",
-      "player": "Sklenář"
+      "slot": "LW",
+      "player": "Gothin"
+    },
+    {
+      "slot": "RW",
+      "player": "Francessco"
     },
     {
       "slot": "ST2",
-      "player": "Svačina"
+      "player": "Sklenář"
     },
     {
-      "slot": "CDM2",
-      "player": "Francessco"
+      "slot": "ST1",
+      "player": "Svačina"
     }
   ]
 }
