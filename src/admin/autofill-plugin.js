@@ -1,582 +1,397 @@
-// Robust auto-fill for Decap CMS: copy fields from selected upcoming match to played match form.
+/**
+ * Decap CMS – custom "match-selector" widget + preSave hook.
+ *
+ * Instead of the built-in relation widget (whose internal React state is
+ * inaccessible from external JS), we register a CUSTOM widget that renders
+ * a native <select>.  Because WE own the widget, we know exactly when the
+ * user picks a match and can fill sibling form fields immediately.
+ */
 (function () {
-  const logPrefix = "[CMS AutoFill]";
-  const state = {
-    upcomingMatches: [],
-    matchKeys: new Map(),
-    attachedInputs: new WeakSet(),
-    inputScopes: new WeakMap(),
-    lastValueByInput: new WeakMap(),
-    lastMatchKeyByScope: new WeakMap(),
-    initialized: false,
-    intervalId: null
-  };
+  var LOG = "[CMS AutoFill]";
+  var upcomingMatches = [];
 
-  function log(...args) {
-    console.log(logPrefix, ...args);
+  function log() { console.log.apply(console, [LOG].concat([].slice.call(arguments))); }
+  function warn() { console.warn.apply(console, [LOG].concat([].slice.call(arguments))); }
+
+  /* ───────────── helpers ───────────── */
+
+  function normalizeDate(v) {
+    var s = String(v || "");
+    return s.length >= 10 ? s.slice(0, 10) : s;
   }
 
-  function warn(...args) {
-    console.warn(logPrefix, ...args);
+  function getPathPrefix() {
+    var p = window.location.pathname || "";
+    var i = p.indexOf("/admin/");
+    return i < 0 ? "" : p.slice(0, i);
   }
 
-  async function fetchJsonWithFallback(urls) {
-    for (const url of urls) {
-      try {
-        const response = await fetch(url, { cache: "no-store" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        return { data, url };
-      } catch (err) {
-        warn(`Fetch failed for ${url}:`, err.message || err);
+  /* ───────────── data fetch ───────────── */
+
+  function fetchMatches() {
+    var prefix = getPathPrefix();
+    var urls = [
+      prefix ? prefix + "/_data/upcoming_matches.json" : null,
+      "../_data/upcoming_matches.json",
+      "/_data/upcoming_matches.json"
+    ].filter(Boolean);
+    return chainFetch(urls);
+  }
+
+  function chainFetch(urls) {
+    if (!urls.length) return Promise.resolve([]);
+    return fetch(urls[0], { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) {
+        var items = Array.isArray(d && d.items) ? d.items : [];
+        log("Loaded", items.length, "upcoming matches from", urls[0]);
+        return items;
+      })
+      .catch(function () { return chainFetch(urls.slice(1)); });
+  }
+
+  /* ───────────── DOM field filling ───────────── */
+
+  /**
+   * Walk UP from the widget's own DOM element to find the list-item scope —
+   * the nearest ancestor that contains labels for Domácí, Hosté, Skóre
+   * (i.e. a single played-match item inside the CMS list).
+   */
+  function findScope(startEl) {
+    var el = startEl;
+    for (var i = 0; i < 40 && el && el !== document.body; i++) {
+      el = el.parentElement;
+      if (!el) break;
+      var txt = el.textContent || "";
+      if (txt.indexOf("Domácí") > -1 && txt.indexOf("Hosté") > -1 && txt.indexOf("Skóre") > -1) {
+        return el;
       }
     }
-    return { data: null, url: null };
-  }
-
-  function getPathPrefixFromAdminUrl() {
-    const path = String(window.location.pathname || "");
-    const adminIndex = path.indexOf("/admin/");
-    if (adminIndex === -1) return "";
-    return path.slice(0, adminIndex);
-  }
-
-  function normalizeDate(value) {
-    if (!value) return value;
-    const str = String(value);
-    return str.length >= 10 ? str.slice(0, 10) : str;
-  }
-
-  function slugify(value) {
-    return String(value || "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .replace(/-{2,}/g, "-");
-  }
-
-  function normalizeText(value) {
-    return String(value || "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, " ")
-      .trim();
-  }
-
-  function formatDateToCz(dateValue) {
-    const date = normalizeDate(dateValue);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return "";
-    const [y, m, d] = date.split("-");
-    return `${d}.${m}.${y}`;
-  }
-
-  function buildFallbackMatchKey(match) {
-    const date = normalizeDate(match?.date || "");
-    const home = slugify(match?.home || "");
-    const away = slugify(match?.away || "");
-    if (!date || !home || !away) return "";
-    return `${date}-${home}-${away}`;
-  }
-
-  function indexMatches(matches) {
-    state.matchKeys = new Map();
-    (matches || []).forEach((m) => {
-      if (!m) return;
-      const keys = [m.slug, m.id, buildFallbackMatchKey(m)]
-        .map((k) => String(k || "").trim())
-        .filter(Boolean);
-
-      keys.forEach((key) => state.matchKeys.set(key, m));
-    });
-  }
-
-  function resolveMatchFromSelection(rawSelection) {
-    const selection = String(rawSelection || "").trim();
-    if (!selection) return null;
-
-    // 1) Exact key lookup (slug/id/fallback key)
-    const byKey = state.matchKeys.get(selection);
-    if (byKey) return byKey;
-
-    // 2) Fuzzy lookup from display text (date + home + away)
-    const selectionNorm = normalizeText(selection);
-    if (!selectionNorm) return null;
-
-    let bestMatch = null;
-    let bestScore = -1;
-
-    for (const m of state.upcomingMatches) {
-      if (!m) continue;
-
-      const homeNorm = normalizeText(m.home);
-      const awayNorm = normalizeText(m.away);
-      const isoNorm = normalizeText(normalizeDate(m.date));
-      const czNorm = normalizeText(formatDateToCz(m.date));
-
-      let score = 0;
-      if (homeNorm && selectionNorm.includes(homeNorm)) score += 3;
-      if (awayNorm && selectionNorm.includes(awayNorm)) score += 3;
-      if (isoNorm && selectionNorm.includes(isoNorm)) score += 2;
-      if (czNorm && selectionNorm.includes(czNorm)) score += 2;
-
-      if (score > bestScore) {
-        bestScore = score;
-        bestMatch = m;
-      }
-    }
-
-    // Require at least teams match (3+3) or strong combined score
-    if (bestScore >= 6) return bestMatch;
     return null;
   }
 
-  function findFieldByLabel(labelText, scopeRoot = document) {
-    const labels = Array.from(scopeRoot.querySelectorAll("label, span"));
-    for (const label of labels) {
-      if ((label.textContent || "").includes(labelText)) {
-        const container = label.closest('[class*="field"]') || label.closest("div");
-        if (container) {
-          return container.querySelector("input, select, textarea");
+  /**
+   * Inside a scope, find the <input>/<select>/<textarea> that sits next to
+   * a label whose text starts with `labelText`.
+   */
+  function findInputNearLabel(scope, labelText) {
+    var elems = scope.querySelectorAll("label, span");
+    for (var i = 0; i < elems.length; i++) {
+      var t = (elems[i].textContent || "").trim();
+      if (t === labelText || t.indexOf(labelText) === 0) {
+        var wrap =
+          elems[i].closest('[class*="Field"]') ||
+          elems[i].closest('[class*="field"]') ||
+          elems[i].parentElement;
+        if (wrap) {
+          var inp = wrap.querySelector("input, select, textarea");
+          if (inp) return inp;
         }
       }
     }
     return null;
   }
 
-  function findFormField(fieldName, scopeRoot = document) {
-    return (
-      scopeRoot.querySelector(`input[id*="${fieldName}"]`) ||
-      scopeRoot.querySelector(`select[id*="${fieldName}"]`) ||
-      scopeRoot.querySelector(`textarea[id*="${fieldName}"]`) ||
-      scopeRoot.querySelector(`input[name="${fieldName}"]`) ||
-      scopeRoot.querySelector(`select[name="${fieldName}"]`) ||
-      scopeRoot.querySelector(`textarea[name="${fieldName}"]`)
-    );
-  }
+  /**
+   * Set a React-controlled element's value using the native property setter
+   * so that React picks up the change via the synthetic event system.
+   */
+  function setNativeValue(el, value) {
+    if (!el) return;
 
-  function findEntryScope(sourceInput) {
-    if (!sourceInput) return document;
-
-    let node = sourceInput;
-    while (node && node !== document.body) {
-      const hasRelated = node.querySelector('input[name*="relatedUpcoming"], select[name*="relatedUpcoming"], input[id*="relatedUpcoming"], select[id*="relatedUpcoming"]');
-      const hasHome = node.querySelector('input[name*="home"], input[id*="home"], textarea[name*="home"]');
-      const hasAway = node.querySelector('input[name*="away"], input[id*="away"], textarea[name*="away"]');
-      if (hasRelated && (hasHome || hasAway)) {
-        return node;
-      }
-      node = node.parentElement;
+    // Native <select>
+    if (el.tagName === "SELECT") {
+      el.value = String(value);
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+      return;
     }
-
-    return document;
+    // Checkbox / toggle
+    if (el.type === "checkbox") {
+      var want = Boolean(value);
+      if (el.checked !== want) el.click();
+      return;
+    }
+    // Text / number / date inputs
+    var setter =
+      (Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value") || {}).set ||
+      (Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value") || {}).set;
+    if (setter) setter.call(el, String(value));
+    else el.value = String(value);
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
-  function setReactFieldValue(element, value) {
-    if (!element) return;
+  /**
+   * Fill all sibling fields in a played-match list item.
+   */
+  function fillSiblings(scope, match) {
+    var fields = [
+      ["Slug (URL)", match.slug],
+      ["Sezóna", match.season],
+      ["Soutěž", match.competition],
+      ["Kolo", match.round],
+      ["Domácí", match.home],
+      ["Hosté", match.away],
+      ["Místo utkání", match.venue],
+      ["Tým", match.team],
+      ["Kategorie", match.category],
+      ["Jsme doma", match.isHome],
+      ["Datum", normalizeDate(match.date)]
+    ];
 
-    if (element.type === "checkbox") {
-      element.checked = Boolean(value);
-    } else {
-      const valueSetter =
-        Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set ||
-        Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, "value")?.set ||
-        Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value")?.set;
+    var filled = 0;
+    fields.forEach(function (pair, idx) {
+      setTimeout(function () {
+        var label = pair[0], val = pair[1];
+        if (val === undefined || val === null || val === "") return;
+        var inp = findInputNearLabel(scope, label);
+        if (inp) {
+          setNativeValue(inp, val);
+          filled++;
+          log("Filled", label, "→", val);
+        } else {
+          warn("Not found:", label);
+        }
+      }, idx * 60);
+    });
+  }
 
-      if (valueSetter) {
-        valueSetter.call(element, value);
+  /* ───────────── Custom Widget: match-selector ───────────── */
+
+  var MatchSelectorControl = createClass({
+    getInitialState: function () {
+      return { matches: [], loaded: false, selected: null, status: "" };
+    },
+
+    componentDidMount: function () {
+      var self = this;
+      if (upcomingMatches.length) {
+        self.setState({
+          matches: upcomingMatches,
+          loaded: true,
+          selected: self._find(self.props.value)
+        });
       } else {
-        element.value = value;
+        fetchMatches().then(function (items) {
+          upcomingMatches = items;
+          self.setState({
+            matches: items,
+            loaded: true,
+            selected: self._find(self.props.value)
+          });
+        });
       }
-    }
+    },
 
-    ["input", "change", "blur"].forEach((eventType) => {
-      element.dispatchEvent(new Event(eventType, { bubbles: true }));
-    });
-  }
-
-  function setStatus(scopeRoot, message, kind = "ok") {
-    if (!scopeRoot || scopeRoot === document) return;
-    let statusEl = scopeRoot.querySelector('[data-autofill-status="true"]');
-    if (!statusEl) {
-      statusEl = document.createElement("div");
-      statusEl.setAttribute("data-autofill-status", "true");
-      statusEl.style.marginTop = "6px";
-      statusEl.style.fontSize = "12px";
-      statusEl.style.fontWeight = "600";
-      scopeRoot.appendChild(statusEl);
-    }
-
-    statusEl.textContent = message;
-    statusEl.style.color = kind === "error" ? "#b00020" : "#0a7f2e";
-  }
-
-  function fillField(fieldName, value, scopeRoot = document) {
-    if (value === null || value === undefined || value === "") return;
-
-    const labelMap = {
-      team: "Tým",
-      category: "Kategorie",
-      season: "Sezóna",
-      competition: "Soutěž",
-      round: "Kolo",
-      date: "Datum",
-      home: "Domácí",
-      away: "Hosté",
-      isHome: "Jsme doma",
-      venue: "Místo utkání"
-    };
-
-    let input = findFormField(fieldName, scopeRoot);
-    if (!input && labelMap[fieldName]) {
-      input = findFieldByLabel(labelMap[fieldName], scopeRoot);
-    }
-
-    if (!input) {
-      warn(`Field not found: ${fieldName}`);
-      return;
-    }
-
-    const finalValue = fieldName === "date" ? normalizeDate(value) : value;
-    setReactFieldValue(input, finalValue);
-    log(`Filled ${fieldName}:`, finalValue);
-  }
-
-  function autoFillFromSlug(slug, sourceInput = null) {
-    const safeSlug = String(slug || "").trim();
-    if (!safeSlug) return false;
-
-    const scopeRoot = sourceInput ? (state.inputScopes.get(sourceInput) || findEntryScope(sourceInput)) : document;
-
-    const match = resolveMatchFromSelection(safeSlug);
-    if (!match) {
-      warn("No upcoming match found for selection:", safeSlug);
-      setStatus(scopeRoot, "⚠️ Zvolený zápas se nepodařilo najít.", "error");
-      return false;
-    }
-
-    log("Applying autofill from:", safeSlug);
-
-    const fieldsToFill = [
-      ["team", match.team],
-      ["category", match.category],
-      ["season", match.season],
-      ["competition", match.competition],
-      ["round", match.round],
-      ["date", match.date],
-      ["home", match.home],
-      ["away", match.away],
-      ["isHome", match.isHome],
-      ["venue", match.venue]
-    ];
-
-    fieldsToFill.forEach(([fieldName, value], index) => {
-      setTimeout(() => fillField(fieldName, value, scopeRoot), index * 40);
-    });
-
-    setTimeout(() => {
-      setStatus(scopeRoot, "✅ Údaje převzaty z nadcházejícího zápasu.", "ok");
-    }, fieldsToFill.length * 45);
-
-    return true;
-  }
-
-  function getRelationInputCandidates() {
-    return [
-      ...document.querySelectorAll('select[id*="relatedUpcoming"], input[id*="relatedUpcoming"]'),
-      ...document.querySelectorAll('select[name*="relatedUpcoming"], input[name*="relatedUpcoming"], textarea[name*="relatedUpcoming"]')
-    ];
-  }
-
-  function valueLooksLikeMatchKey(value) {
-    const v = String(value || "").trim();
-    if (!v) return false;
-    if (state.matchKeys.has(v)) return true;
-    // Common relation display string often contains separators; skip these
-    if (v.includes(" · ")) return false;
-    return /^[a-z0-9][a-z0-9-]{5,}$/i.test(v);
-  }
-
-  function getCurrentRelationValue() {
-    const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
-    const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
-
-    for (const input of inputs) {
-      const value = String(input.value || "").trim();
-      if (valueLooksLikeMatchKey(value)) return value;
-    }
-
-    for (const input of inputs) {
-      const value = String(input.value || "").trim();
-      if (value) return value;
-    }
-
-    return "";
-  }
-
-  function resolveMatchFromScope(scopeRoot) {
-    if (!scopeRoot || scopeRoot === document) return null;
-
-    const relationCandidates = [
-      ...scopeRoot.querySelectorAll('select[id*="relatedUpcoming"], input[id*="relatedUpcoming"], textarea[id*="relatedUpcoming"]'),
-      ...scopeRoot.querySelectorAll('select[name*="relatedUpcoming"], input[name*="relatedUpcoming"], textarea[name*="relatedUpcoming"]'),
-      ...scopeRoot.querySelectorAll('[data-value]'),
-      ...scopeRoot.querySelectorAll('[role="combobox"], [aria-haspopup="listbox"]')
-    ];
-
-    for (const el of relationCandidates) {
-      const value = String(el.value || el.getAttribute?.("data-value") || el.textContent || "").trim();
-      const match = resolveMatchFromSelection(value);
-      if (match) return match;
-    }
-
-    const scopeText = normalizeText(scopeRoot.textContent || "");
-    if (!scopeText) return null;
-
-    let best = null;
-    let bestScore = -1;
-
-    for (const m of state.upcomingMatches) {
-      const home = normalizeText(m.home);
-      const away = normalizeText(m.away);
-      const dateIso = normalizeText(normalizeDate(m.date));
-      const dateCz = normalizeText(formatDateToCz(m.date));
-      let score = 0;
-      if (home && scopeText.includes(home)) score += 4;
-      if (away && scopeText.includes(away)) score += 4;
-      if (dateIso && scopeText.includes(dateIso)) score += 2;
-      if (dateCz && scopeText.includes(dateCz)) score += 2;
-      if (score > bestScore) {
-        bestScore = score;
-        best = m;
+    _find: function (slug) {
+      if (!slug) return null;
+      for (var i = 0; i < upcomingMatches.length; i++) {
+        if (upcomingMatches[i].slug === slug) return upcomingMatches[i];
       }
-    }
+      return null;
+    },
 
-    return bestScore >= 8 ? best : null;
-  }
+    handleChange: function (e) {
+      var slug = e.target.value;
+      this.props.onChange(slug || "");
 
-  function autoFillFromScope(scopeRoot, sourceInput = null) {
-    const match = resolveMatchFromScope(scopeRoot);
-    if (!match) return false;
+      var match = this._find(slug);
+      this.setState({ selected: match, status: "" });
+      if (!match) return;
 
-    const matchKey = String(match.slug || match.id || buildFallbackMatchKey(match));
-    const previousKey = String(state.lastMatchKeyByScope.get(scopeRoot) || "");
-    if (matchKey && previousKey === matchKey) return false;
+      var self = this;
+      // Give React a moment to re-render, then fill sibling fields via DOM
+      setTimeout(function () {
+        var el = document.getElementById(self.props.forID);
+        if (!el) { warn("Own element not found"); return; }
 
-    const ok = autoFillFromSlug(matchKey, sourceInput);
-    if (ok && scopeRoot && scopeRoot !== document) {
-      state.lastMatchKeyByScope.set(scopeRoot, matchKey);
-    }
-    return ok;
-  }
-
-  function onRelationChanged(event) {
-    const sourceInput = event?.target || null;
-    if (!sourceInput) return;
-    const currentValue = String(event?.target?.value || "").trim();
-    const previousValue = String(state.lastValueByInput.get(sourceInput) || "").trim();
-    const scopeRoot = state.inputScopes.get(sourceInput) || findEntryScope(sourceInput);
-
-    if (!currentValue) {
-      autoFillFromScope(scopeRoot, sourceInput);
-      return;
-    }
-
-    if (currentValue === previousValue) {
-      autoFillFromScope(scopeRoot, sourceInput);
-      return;
-    }
-
-    state.lastValueByInput.set(sourceInput, currentValue);
-    log("Relation changed:", currentValue);
-    if (!autoFillFromSlug(currentValue, sourceInput)) {
-      autoFillFromScope(scopeRoot, sourceInput);
-    }
-  }
-
-  function attachRelationListeners() {
-    const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
-    const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
-
-    inputs.forEach((input) => {
-      if (state.attachedInputs.has(input)) return;
-      state.attachedInputs.add(input);
-      state.inputScopes.set(input, findEntryScope(input));
-      input.addEventListener("change", onRelationChanged);
-      input.addEventListener("input", onRelationChanged);
-      input.addEventListener("blur", onRelationChanged);
-      log("Attached listener to relation field");
-    });
-  }
-
-  function startPollingFallback() {
-    if (state.intervalId) return;
-    state.intervalId = window.setInterval(() => {
-      const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
-      const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
-
-      inputs.forEach((input) => {
-        const currentValue = String(input.value || "").trim();
-        const previousValue = String(state.lastValueByInput.get(input) || "").trim();
-        const scopeRoot = state.inputScopes.get(input) || findEntryScope(input);
-
-        if (!currentValue) {
-          autoFillFromScope(scopeRoot, input);
+        var scope = findScope(el);
+        if (!scope) {
+          log("Scope not found — fields will be filled on save");
+          self.setState({ status: "save" });
           return;
         }
 
-        if (currentValue === previousValue) {
-          autoFillFromScope(scopeRoot, input);
-          return;
-        }
+        fillSiblings(scope, match);
+        self.setState({ status: "ok" });
+      }, 400);
+    },
 
-        state.lastValueByInput.set(input, currentValue);
-        log("Polling detected relation value:", currentValue);
-        if (!autoFillFromSlug(currentValue, input)) {
-          autoFillFromScope(scopeRoot, input);
-        }
+    render: function () {
+      var st = this.state;
+      var value = this.props.value || "";
+
+      // Build <option> list
+      var options = [
+        h("option", { value: "", key: "_empty" },
+          st.loaded ? "— Vyberte nadcházející zápas —" : "Načítám zápasy…")
+      ];
+      st.matches.forEach(function (m) {
+        var txt =
+          (m.date || "?") + "  ·  " +
+          (m.home || "?") + "  vs  " +
+          (m.away || "?") + "  (" + (m.competition || "") + ")";
+        options.push(h("option", { value: m.slug, key: m.slug }, txt));
       });
 
-      // Global fallback for widgets that are not exposed as normal inputs.
-      const globalValue = getCurrentRelationValue();
-      if (globalValue) {
-        autoFillFromSlug(globalValue, null);
+      var parts = [];
+
+      // The <select> dropdown
+      parts.push(
+        h("select", {
+          id: this.props.forID,
+          className: this.props.classNameWrapper,
+          value: value,
+          onChange: this.handleChange,
+          style: {
+            display: "block", width: "100%", padding: "12px 14px",
+            fontSize: "15px", border: "2px solid #dfdfe3", borderRadius: "0 5px 5px 0",
+            background: "#fff", cursor: "pointer"
+          }
+        }, options)
+      );
+
+      // Preview card showing match details
+      if (st.selected) {
+        var m = st.selected;
+        var teamLabel = m.team === "muzi" ? "Muži" : "Mládež";
+        if (m.category) teamLabel += " – " + m.category;
+
+        parts.push(
+          h("div", {
+            key: "preview",
+            style: {
+              marginTop: "10px", padding: "12px 14px", background: "#f0f7ff",
+              border: "1px solid #b8d4f0", borderRadius: "5px",
+              fontSize: "13px", lineHeight: "1.7"
+            }
+          }, [
+            h("strong", { key: "hd" }, "📋 Údaje z nadcházejícího zápasu:"),
+            h("br", { key: "b1" }),
+            h("span", { key: "s1" }, teamLabel),
+            h("br", { key: "b2" }),
+            h("span", { key: "s2" }, m.home + "  vs  " + m.away),
+            h("br", { key: "b3" }),
+            h("span", { key: "s3" },
+              "Datum: " + (m.date || "–") +
+              "  ·  Soutěž: " + (m.competition || "–") +
+              (m.round ? "  ·  Kolo: " + m.round : "")),
+            h("br", { key: "b4" }),
+            h("span", { key: "s4" }, "Místo: " + (m.venue || "–"))
+          ])
+        );
       }
-    }, 400);
-  }
 
-  function fillItemFromRelatedUpcoming(item) {
-    if (!item || typeof item !== "object") return item;
-
-    const relationValue = String(item.relatedUpcoming || "").trim();
-    if (!relationValue) return item;
-
-    const match = resolveMatchFromSelection(relationValue);
-    if (!match) return item;
-
-    const next = { ...item };
-    const fieldMap = {
-      team: match.team,
-      category: match.category,
-      season: match.season,
-      competition: match.competition,
-      round: match.round,
-      date: normalizeDate(match.date),
-      home: match.home,
-      away: match.away,
-      isHome: match.isHome,
-      venue: match.venue
-    };
-
-    Object.entries(fieldMap).forEach(([key, value]) => {
-      // Fill only empty fields so manual edits are preserved.
-      if ((next[key] === undefined || next[key] === null || next[key] === "") && value !== undefined && value !== null && value !== "") {
-        next[key] = value;
+      // Status message
+      if (st.status === "ok") {
+        parts.push(h("div", {
+          key: "status",
+          style: { marginTop: "8px", color: "#0a7f2e", fontWeight: "bold", fontSize: "13px" }
+        }, "✅ Pole ve formuláři byla automaticky vyplněna."));
+      } else if (st.status === "save") {
+        parts.push(h("div", {
+          key: "status",
+          style: { marginTop: "8px", color: "#555", fontSize: "12px" }
+        }, "ℹ️ Údaje budou automaticky doplněny při uložení."));
       }
-    });
 
-    return next;
-  }
-
-  function registerPreSaveAutofillHook() {
-    if (!window.CMS || typeof window.CMS.registerEventListener !== "function") {
-      return false;
+      return h("div", null, parts);
     }
+  });
+
+  /* ───────────── preSave hook (safety net) ───────────── */
+
+  var preSaveRegistered = false;
+
+  function registerPreSave() {
+    if (preSaveRegistered) return true;
+    if (!window.CMS || !window.CMS.registerEventListener) return false;
 
     window.CMS.registerEventListener({
       name: "preSave",
-      handler: ({ entry }) => {
+      handler: function (arg) {
         try {
-          if (!entry || typeof entry.get !== "function") return entry;
+          var entry = arg.entry;
+          if (!entry || !entry.get) return entry;
+          var p = String(entry.get("path") || "");
+          if (p.indexOf("played_matches") < 0) return entry;
 
-          const path = String(entry.get("path") || "");
-          if (!path.endsWith("src/_data/played_matches.json")) return entry;
+          var items = entry.getIn(["data", "items"]);
+          if (!items || !items.map) return entry;
 
-          const items = entry.getIn(["data", "items"]);
-          if (!items || typeof items.map !== "function") return entry;
+          var updated = items.map(function (im) {
+            var obj = im && im.toJS ? im.toJS() : im;
+            var slug = String((obj && obj.relatedUpcoming) || "").trim();
+            if (!slug) return im;
 
-          const updatedItems = items.map((itemMap) => {
-            const itemJs = typeof itemMap?.toJS === "function" ? itemMap.toJS() : itemMap;
-            const updatedJs = fillItemFromRelatedUpcoming(itemJs);
-            if (typeof itemMap?.merge === "function") {
-              return itemMap.merge(updatedJs);
+            var match = null;
+            for (var i = 0; i < upcomingMatches.length; i++) {
+              if (upcomingMatches[i].slug === slug) { match = upcomingMatches[i]; break; }
             }
-            return itemMap;
+            if (!match) return im;
+
+            var fills = {};
+            var keys = ["team", "category", "season", "competition", "round",
+                        "home", "away", "isHome", "venue", "slug"];
+            keys.forEach(function (k) {
+              var mv = match[k];
+              var cv = obj[k];
+              if ((cv === undefined || cv === null || cv === "") &&
+                  mv !== undefined && mv !== null && mv !== "") {
+                fills[k] = mv;
+              }
+            });
+            // Always fill date if available
+            if (match.date && (!obj.date || obj.date === "")) {
+              fills.date = normalizeDate(match.date);
+            }
+
+            if (Object.keys(fills).length && im.merge) {
+              log("preSave fill:", Object.keys(fills).join(", "));
+              return im.merge(fills);
+            }
+            return im;
           });
 
-          log("preSave autofill applied for played_matches");
-          return entry.setIn(["data", "items"], updatedItems);
-        } catch (err) {
-          warn("preSave autofill failed:", err?.message || err);
-          return entry;
+          return entry.setIn(["data", "items"], updated);
+        } catch (e) {
+          warn("preSave error:", e);
+          return arg.entry;
         }
       }
     });
 
-    log("Registered preSave autofill hook");
+    preSaveRegistered = true;
+    log("preSave hook registered");
     return true;
   }
 
-  function ensurePreSaveHookRegistered() {
-    if (registerPreSaveAutofillHook()) return;
+  /* ───────────── bootstrap ───────────── */
 
-    let attempts = 0;
-    const maxAttempts = 40;
-    const timer = window.setInterval(() => {
-      attempts += 1;
-      if (registerPreSaveAutofillHook() || attempts >= maxAttempts) {
-        window.clearInterval(timer);
-      }
-    }, 250);
-  }
+  function boot() {
+    // Start fetching data immediately
+    fetchMatches().then(function (items) { upcomingMatches = items; });
 
-  async function initialize() {
-    if (state.initialized) return;
-    state.initialized = true;
+    // Register the custom widget BEFORE CMS.init()
+    window.CMS.registerWidget("match-selector", MatchSelectorControl);
+    log('Widget "match-selector" registered');
 
-    const pathPrefix = getPathPrefixFromAdminUrl();
-    const prefixedDataUrl = pathPrefix ? `${pathPrefix}/_data/upcoming_matches.json` : "";
+    // Now initialize CMS (we set CMS_MANUAL_INIT=true in index.njk)
+    window.CMS.init();
+    log("CMS.init() called");
 
-    const { data, url } = await fetchJsonWithFallback([
-      prefixedDataUrl,
-      "../_data/upcoming_matches.json",
-      "/_data/upcoming_matches.json"
-    ].filter(Boolean));
-
-    state.upcomingMatches = Array.isArray(data?.items) ? data.items : [];
-    indexMatches(state.upcomingMatches);
-    if (!state.upcomingMatches.length) {
-      warn("No upcoming matches available for auto-fill.");
-    } else {
-      log(`Loaded ${state.upcomingMatches.length} upcoming matches from ${url}`);
+    // Register preSave hook (retry until CMS event system is ready)
+    if (!registerPreSave()) {
+      var n = 0;
+      var t = setInterval(function () {
+        if (registerPreSave() || ++n > 40) clearInterval(t);
+      }, 300);
     }
-
-    attachRelationListeners();
-    startPollingFallback();
-    ensurePreSaveHookRegistered();
-
-    const observer = new MutationObserver(() => {
-      attachRelationListeners();
-
-      const relationInputByLabel = findFieldByLabel("Převzít z nadcházejícího");
-      const inputs = [...getRelationInputCandidates(), relationInputByLabel].filter(Boolean);
-      inputs.forEach((input) => {
-        const scopeRoot = state.inputScopes.get(input) || findEntryScope(input);
-        autoFillFromScope(scopeRoot, input);
-      });
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initialize);
+    document.addEventListener("DOMContentLoaded", boot);
   } else {
-    initialize();
+    boot();
   }
 })();

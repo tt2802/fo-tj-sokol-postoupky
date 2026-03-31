@@ -142,13 +142,8 @@ collections:
 
               - label: "Převzít z nadcházejícího zápasu"
                 name: "relatedUpcoming"
-                widget: "relation"
+                widget: "match-selector"
                 required: false
-                collection: "data"
-                file: "upcoming_matches"
-                search_fields: ["items.*.date", "items.*.home", "items.*.away", "items.*.team", "items.*.category"]
-                display_fields: ["items.*.date", "items.*.home", "items.*.away"]
-                value_field: "items.*.slug"
 
               - label: "Tým"
                 name: "team"
