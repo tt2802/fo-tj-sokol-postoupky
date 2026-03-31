@@ -507,14 +507,15 @@ body {
 .cal-layout {
   display: flex;
   gap: 1.5rem;
-  max-width: 820px;
+  max-width: 960px;
   margin: 0 auto;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .cal-widget {
-  flex: 0 0 420px;
-  max-width: 420px;
+  flex: 0 0 auto;
+  width: 420px;
+  min-width: 320px;
   background: #1e1b2e;
   border-radius: 18px;
   overflow: hidden;
@@ -524,15 +525,16 @@ body {
 
 /* Sidebar with upcoming events */
 .cal-sidebar {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 0%;
+  min-width: 220px;
   background: #1e1b2e;
   border-radius: 18px;
-  padding: 1rem 1rem 0.6rem;
+  padding: 1rem 1.15rem 0.6rem;
   box-shadow: 0 12px 40px rgba(0,0,0,0.18);
   color: #fff;
-  max-height: 440px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .cal-sidebar__head {
@@ -544,6 +546,7 @@ body {
   margin-bottom: 0.6rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
 }
 
 /* Header */
@@ -768,14 +771,14 @@ body {
   height: 7px;
 }
 
-@media (max-width: 860px) {
+/* Tablet: stack vertically */
+@media (max-width: 740px) {
   .cal-layout {
     flex-direction: column;
     align-items: center;
   }
 
   .cal-widget {
-    flex: none;
     width: 100%;
     max-width: 420px;
   }
@@ -783,16 +786,25 @@ body {
   .cal-sidebar {
     width: 100%;
     max-width: 420px;
-    max-height: none;
   }
 }
 
+/* Small phone */
 @media (max-width: 480px) {
+  .cal-layout {
+    gap: 1rem;
+  }
+
   .cal-widget,
   .cal-sidebar {
     max-width: 100%;
     border-radius: 14px;
     margin: 0 -0.25rem;
+  }
+
+  .cal-widget {
+    width: auto;
+    min-width: 0;
   }
 
   .cal-header {
