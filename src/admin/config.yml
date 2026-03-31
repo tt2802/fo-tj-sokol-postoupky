@@ -219,14 +219,14 @@ collections:
                 widget: "list"
                 required: false
                 fields:
-                  - { label: "Hráč", name: "player", widget: "string" }
+                  - { label: "Hráč", name: "player", widget: "player-select" }
 
               - label: "Střelci gólů"
                 name: "scorers"
                 widget: "list"
                 required: false
                 fields:
-                  - { label: "Střelec", name: "scorer", widget: "string" }
+                  - { label: "Střelec", name: "scorer", widget: "player-select" }
 
               - label: "Karty"
                 name: "cards"

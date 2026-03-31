@@ -9,6 +9,7 @@
 (function () {
   var LOG = "[CMS AutoFill]";
   var upcomingMatches = [];
+  var playersData = null; // { men: [...], youth: { dorostenci: [...], ... } }
 
   function log() { console.log.apply(console, [LOG].concat([].slice.call(arguments))); }
   function warn() { console.warn.apply(console, [LOG].concat([].slice.call(arguments))); }
@@ -48,6 +49,41 @@
         return items;
       })
       .catch(function () { return chainFetch(urls.slice(1)); });
+  }
+
+  function fetchPlayers() {
+    var prefix = getPathPrefix();
+    var urls = [
+      prefix ? prefix + "/_data/players.json" : null,
+      "../_data/players.json",
+      "/_data/players.json"
+    ].filter(Boolean);
+    return chainFetchRaw(urls);
+  }
+
+  function chainFetchRaw(urls) {
+    if (!urls.length) return Promise.resolve(null);
+    return fetch(urls[0], { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) {
+        log("Loaded players from", urls[0]);
+        return d;
+      })
+      .catch(function () { return chainFetchRaw(urls.slice(1)); });
+  }
+
+  /**
+   * Get roster for a given team + category.
+   * team = "muzi" | "mladez"
+   * category = "dorostenci" | "starsi-zaci" | ... (only for mladez)
+   */
+  function getPlayersForCategory(team, category) {
+    if (!playersData) return [];
+    if (team === "muzi") return playersData.men || [];
+    if (team === "mladez" && category && playersData.youth) {
+      return playersData.youth[category] || [];
+    }
+    return [];
   }
 
   /* ───────────── DOM field filling ───────────── */
@@ -342,6 +378,150 @@
     }
   });
 
+  /* ───────────── Custom Widget: player-select ───────────── */
+
+  /**
+   * Read the team and category from sibling fields in the DOM.
+   * Walks up from the widget element to find the match item scope,
+   * then reads the Tým <select> and Kategorie <select>.
+   */
+  function readTeamFromDOM(startEl) {
+    var result = { team: "muzi", category: "" };
+    if (!startEl) return result;
+
+    // Walk up to match item scope
+    var el = startEl;
+    for (var i = 0; i < 60 && el && el !== document.body; i++) {
+      el = el.parentElement;
+      if (!el) break;
+      var txt = el.textContent || "";
+      if (txt.indexOf("Domácí") > -1 && txt.indexOf("Hosté") > -1) {
+        // Found the match item scope
+        var teamSel = findInputNearLabel(el, "Tým");
+        if (teamSel && teamSel.value) result.team = teamSel.value;
+
+        var catSel = findInputNearLabel(el, "Kategorie");
+        if (catSel && catSel.value) result.category = catSel.value;
+        break;
+      }
+    }
+    return result;
+  }
+
+  var PlayerSelectControl = createClass({
+    getInitialState: function () {
+      return { players: [], loaded: false, customMode: false };
+    },
+
+    componentDidMount: function () {
+      var self = this;
+      var loadPlayers = playersData
+        ? Promise.resolve(playersData)
+        : fetchPlayers().then(function (d) { playersData = d; return d; });
+
+      loadPlayers.then(function () {
+        self._refreshPlayers();
+      });
+    },
+
+    _refreshPlayers: function () {
+      var el = document.getElementById(this.props.forID);
+      var info = readTeamFromDOM(el);
+      var roster = getPlayersForCategory(info.team, info.category);
+      log("PlayerSelect: team=", info.team, "cat=", info.category, "players=", roster.length);
+
+      // Check if current value is a custom entry not in roster
+      var currentVal = this.props.value || "";
+      var inRoster = !currentVal || roster.some(function (p) { return p.name === currentVal; });
+
+      this.setState({
+        players: roster,
+        loaded: true,
+        customMode: currentVal && !inRoster
+      });
+    },
+
+    handleChange: function (e) {
+      var val = e.target.value;
+      if (val === "__custom__") {
+        this.setState({ customMode: true });
+        this.props.onChange("");
+      } else {
+        this.setState({ customMode: false });
+        this.props.onChange(val);
+      }
+    },
+
+    handleCustomInput: function (e) {
+      this.props.onChange(e.target.value);
+    },
+
+    handleBackToSelect: function () {
+      this.setState({ customMode: false });
+      this.props.onChange("");
+    },
+
+    render: function () {
+      var st = this.state;
+      var value = this.props.value || "";
+
+      if (st.customMode) {
+        // Free text input + back button
+        return h("div", { style: { display: "flex", gap: "8px", alignItems: "center" } }, [
+          h("input", {
+            key: "inp",
+            id: this.props.forID,
+            className: this.props.classNameWrapper,
+            type: "text",
+            value: value,
+            onChange: this.handleCustomInput,
+            placeholder: "Jméno hráče…",
+            style: {
+              flex: 1, padding: "10px 12px", fontSize: "15px",
+              border: "2px solid #dfdfe3", borderRadius: "5px"
+            }
+          }),
+          h("button", {
+            key: "btn",
+            type: "button",
+            onClick: this.handleBackToSelect,
+            style: {
+              padding: "8px 14px", fontSize: "13px", cursor: "pointer",
+              border: "1px solid #ccc", borderRadius: "5px", background: "#f5f5f5"
+            }
+          }, "← Seznam")
+        ]);
+      }
+
+      // Dropdown mode
+      var options = [
+        h("option", { value: "", key: "_empty" },
+          st.loaded ? "— Vyberte hráče —" : "Načítám…")
+      ];
+
+      st.players.forEach(function (p) {
+        var label = p.name;
+        if (p.number) label = p.number + " · " + label;
+        if (p.position) label += " (" + p.position + ")";
+        options.push(h("option", { value: p.name, key: p.name }, label));
+      });
+
+      options.push(h("option", { value: "__custom__", key: "__custom__" }, "✏️ Jiný hráč…"));
+
+      return h("select", {
+        id: this.props.forID,
+        className: this.props.classNameWrapper,
+        value: value,
+        onChange: this.handleChange,
+        style: {
+          display: "block", width: "100%", padding: "10px 12px",
+          fontSize: "15px", border: "2px solid #dfdfe3", borderRadius: "0 5px 5px 0",
+          background: "#fff", cursor: "pointer"
+        }
+      }, options);
+    }
+  });
+
   /* ───────────── preSave hook (safety net) ───────────── */
 
   var preSaveRegistered = false;
@@ -414,10 +594,12 @@
   function boot() {
     // Start fetching data immediately
     fetchMatches().then(function (items) { upcomingMatches = items; });
+    fetchPlayers().then(function (d) { playersData = d; });
 
-    // Register the custom widget BEFORE CMS.init()
+    // Register custom widgets BEFORE CMS.init()
     window.CMS.registerWidget("match-selector", MatchSelectorControl);
-    log('Widget "match-selector" registered');
+    window.CMS.registerWidget("player-select", PlayerSelectControl);
+    log('Widgets "match-selector" + "player-select" registered');
 
     // Now initialize CMS (we set CMS_MANUAL_INIT=true in index.njk)
     window.CMS.init();
