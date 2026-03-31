@@ -171,7 +171,7 @@ collections:
                   - { label: "Školička", value: "skolicka" }
 
               - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026", required: true }
-              - { label: "Soutěž", name: "competition", widget: "string", required: true }
+              - { label: "Soutěž", name: "competition", widget: "string", required: false }
               - { label: "Kolo", name: "round", widget: "string", required: false }
               - label: "Datum"
                 name: "date"
@@ -180,14 +180,15 @@ collections:
                 date_format: "DD.MM.YYYY"
                 time_format: false
                 picker_utc: false
+                required: false
               - label: "Domácí"
                 name: "home"
                 widget: "string"
-                required: true
+                required: false
               - label: "Hosté"
                 name: "away"
                 widget: "string"
-                required: true
+                required: false
               - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true }
               - { label: "Místo utkání", name: "venue", widget: "string" }
 
