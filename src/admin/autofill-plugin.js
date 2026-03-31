@@ -55,6 +55,22 @@
       .replace(/-{2,}/g, "-");
   }
 
+  function normalizeText(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  }
+
+  function formatDateToCz(dateValue) {
+    const date = normalizeDate(dateValue);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return "";
+    const [y, m, d] = date.split("-");
+    return `${d}.${m}.${y}`;
+  }
+
   function buildFallbackMatchKey(match) {
     const date = normalizeDate(match?.date || "");
     const home = slugify(match?.home || "");
@@ -73,6 +89,46 @@
 
       keys.forEach((key) => state.matchKeys.set(key, m));
     });
+  }
+
+  function resolveMatchFromSelection(rawSelection) {
+    const selection = String(rawSelection || "").trim();
+    if (!selection) return null;
+
+    // 1) Exact key lookup (slug/id/fallback key)
+    const byKey = state.matchKeys.get(selection);
+    if (byKey) return byKey;
+
+    // 2) Fuzzy lookup from display text (date + home + away)
+    const selectionNorm = normalizeText(selection);
+    if (!selectionNorm) return null;
+
+    let bestMatch = null;
+    let bestScore = -1;
+
+    for (const m of state.upcomingMatches) {
+      if (!m) continue;
+
+      const homeNorm = normalizeText(m.home);
+      const awayNorm = normalizeText(m.away);
+      const isoNorm = normalizeText(normalizeDate(m.date));
+      const czNorm = normalizeText(formatDateToCz(m.date));
+
+      let score = 0;
+      if (homeNorm && selectionNorm.includes(homeNorm)) score += 3;
+      if (awayNorm && selectionNorm.includes(awayNorm)) score += 3;
+      if (isoNorm && selectionNorm.includes(isoNorm)) score += 2;
+      if (czNorm && selectionNorm.includes(czNorm)) score += 2;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestMatch = m;
+      }
+    }
+
+    // Require at least teams match (3+3) or strong combined score
+    if (bestScore >= 6) return bestMatch;
+    return null;
   }
 
   function findFieldByLabel(labelText) {
@@ -157,9 +213,9 @@
     const safeSlug = String(slug || "").trim();
     if (!safeSlug) return;
 
-    const match = state.matchKeys.get(safeSlug) || state.upcomingMatches.find((m) => m && m.slug === safeSlug);
+    const match = resolveMatchFromSelection(safeSlug);
     if (!match) {
-      warn("No upcoming match found for key:", safeSlug);
+      warn("No upcoming match found for selection:", safeSlug);
       return;
     }
 
