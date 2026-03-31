@@ -498,3 +498,108 @@ body {
   }
 }
 
+/* ===== KALENDÁŘ AKCÍ ===== */
+.calendar-section {
+  background: linear-gradient(135deg, rgba(109,40,217,0.04), rgba(109,40,217,0.01));
+}
+
+.calendar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.calendar-item {
+  display: flex;
+  gap: 1rem;
+  background: #fff;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  border-left: 4px solid #6d28d9;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.calendar-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+}
+
+.calendar-item--training { border-left-color: #16a34a; }
+.calendar-item--tournament { border-left-color: #d97706; }
+.calendar-item--camp { border-left-color: #0891b2; }
+.calendar-item--meeting { border-left-color: #7c3aed; }
+.calendar-item--match { border-left-color: #6d28d9; }
+.calendar-item--other { border-left-color: #64748b; }
+
+.calendar-item__date {
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.calendar-item__day {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.calendar-item__time {
+  font-size: 0.85rem;
+  color: #6d28d9;
+  font-weight: 600;
+}
+
+.calendar-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.calendar-item__badge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #6d28d9;
+}
+
+.calendar-item--training .calendar-item__badge { color: #16a34a; }
+.calendar-item--tournament .calendar-item__badge { color: #d97706; }
+.calendar-item--camp .calendar-item__badge { color: #0891b2; }
+.calendar-item--meeting .calendar-item__badge { color: #7c3aed; }
+.calendar-item--match .calendar-item__badge { color: #6d28d9; }
+.calendar-item--other .calendar-item__badge { color: #64748b; }
+
+.calendar-item__title {
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.calendar-item__location {
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.calendar-item__desc {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .calendar-item {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .calendar-item__date {
+    min-width: auto;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+}
+

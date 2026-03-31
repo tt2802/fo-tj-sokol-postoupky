@@ -27,6 +27,41 @@ hideTitle: true
   </div>
 </section>
 
+<section class="section calendar-section">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 2rem;">📅 Kalendář akcí</h2>
+
+    {% if calendarComputed.length %}
+      <div class="calendar-list">
+        {% for event in calendarComputed %}
+        {% if loop.index0 < 10 %}
+          <div class="calendar-item calendar-item--{{ event.type }}">
+            <div class="calendar-item__date">
+              <span class="calendar-item__day">{{ event.date | czDate }}</span>
+              {% if event.time %}
+                <span class="calendar-item__time">{{ event.time }}{% if event.endTime %} – {{ event.endTime }}{% endif %}</span>
+              {% endif %}
+            </div>
+            <div class="calendar-item__body">
+              <span class="calendar-item__badge">{{ event.icon }} {{ event.typeLabel }}</span>
+              <strong class="calendar-item__title">{{ event.title }}</strong>
+              {% if event.location %}
+                <span class="calendar-item__location">📍 {{ event.location }}</span>
+              {% endif %}
+              {% if event.description %}
+                <span class="calendar-item__desc muted">{{ event.description }}</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="muted" style="text-align: center;">Zatím nejsou naplánovány žádné akce.</p>
+    {% endif %}
+  </div>
+</section>
+
 <section class="section">
   <div class="container">
     <h2 style="text-align: center; margin-bottom: 2rem;">Fotbalové týmy</h2>

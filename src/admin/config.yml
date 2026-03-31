@@ -400,6 +400,47 @@ collections:
               - { label: "Email", name: "email", widget: "string", required: false }
               - { label: "Fotka", name: "photo", widget: "image", required: false }
 
+      - name: "calendar_events"
+        label: "Kalendář akcí"
+        file: "src/_data/calendar_events.json"
+        fields:
+          - label: "Události"
+            name: "items"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.date}} · {{fields.type}} · {{fields.title}}"
+            fields:
+              - { label: "Název", name: "title", widget: "string", required: true }
+              - label: "Typ"
+                name: "type"
+                widget: "select"
+                options:
+                  - { label: "Trénink", value: "training" }
+                  - { label: "Turnaj", value: "tournament" }
+                  - { label: "Soustředění", value: "camp" }
+                  - { label: "Schůze", value: "meeting" }
+                  - { label: "Jiné", value: "other" }
+              - label: "Datum"
+                name: "date"
+                widget: "datetime"
+                format: "YYYY-MM-DD"
+                date_format: "DD.MM.YYYY"
+                time_format: false
+                picker_utc: false
+              - { label: "Čas od", name: "time", widget: "string", required: false, hint: "Např. 18:00" }
+              - { label: "Čas do", name: "endTime", widget: "string", required: false, hint: "Např. 19:30" }
+              - { label: "Místo", name: "location", widget: "string", required: false }
+              - { label: "Popis", name: "description", widget: "text", required: false }
+              - label: "Tým"
+                name: "team"
+                widget: "select"
+                required: false
+                default: ""
+                options:
+                  - { label: "Všechny", value: "" }
+                  - { label: "Muži", value: "muzi" }
+                  - { label: "Mládež", value: "mladez" }
+
       - name: "gallery"
         label: "Galerie"
         file: "src/_data/gallery.yml"
