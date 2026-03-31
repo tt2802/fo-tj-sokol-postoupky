@@ -768,38 +768,91 @@ body {
   height: 7px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 860px) {
   .cal-layout {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
   }
 
   .cal-widget {
     flex: none;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .cal-sidebar {
+    width: 100%;
+    max-width: 420px;
+    max-height: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .cal-widget,
+  .cal-sidebar {
     max-width: 100%;
     border-radius: 14px;
     margin: 0 -0.25rem;
   }
 
-  .cal-sidebar {
-    border-radius: 14px;
-    margin: 0 -0.25rem;
-    max-height: none;
+  .cal-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .cal-header__title {
+    font-size: 1rem;
+  }
+
+  .cal-nav {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
   }
 
   .cal-num {
-    width: 32px;
-    height: 32px;
-    font-size: 0.82rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.78rem;
+  }
+
+  .cal-table {
+    padding: 0.3rem 0.4rem 0.15rem;
+    border-spacing: 2px;
+  }
+
+  .cal-table th {
+    font-size: 0.6rem;
   }
 
   .cal-table td {
-    height: 40px;
+    height: 36px;
   }
 
   .cal-dot {
     width: 5px;
     height: 5px;
+  }
+
+  .cal-legend {
+    gap: 0.5rem;
+    font-size: 0.65rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .cal-sidebar {
+    padding: 0.75rem 0.75rem 0.4rem;
+  }
+
+  .cal-up__day {
+    font-size: 0.95rem;
+  }
+
+  .cal-up__title {
+    font-size: 0.78rem;
+  }
+
+  .cal-up__meta {
+    font-size: 0.65rem;
   }
 }
 
