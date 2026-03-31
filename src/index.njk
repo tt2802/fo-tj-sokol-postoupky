@@ -33,74 +33,78 @@ hideTitle: true
     {% if calendarComputed.months.length %}
 
       {% set firstMonth = calendarComputed.months[0] %}
-      <div class="cal-widget">
-        {# Header with month nav #}
-        <div class="cal-header">
-          <button class="cal-nav" data-cal-dir="prev" aria-label="Předchozí měsíc">&#9664;</button>
-          <span class="cal-header__title" id="calTitle">{{ firstMonth.label }}</span>
-          <button class="cal-nav" data-cal-dir="next" aria-label="Další měsíc">&#9654;</button>
-        </div>
+      <div class="cal-layout">
 
-        {# Month grids #}
-        {% for m in calendarComputed.months %}
-        <table class="cal-table{% if m.active %} is-active{% endif %}"
-               data-cal-grid="{{ m.key }}" data-cal-label="{{ m.label }}">
-          <thead>
-            <tr>
-              {% for dh in calendarComputed.dayHeaders %}
-                <th>{{ dh }}</th>
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in m.rows %}
-            <tr>
-              {% for cell in row %}
-                {% if cell.empty %}
-                  <td class="cal-empty"></td>
-                {% else %}
-                  <td class="cal-day{% if cell.isToday %} cal-today{% endif %}{% if cell.isPast %} cal-past{% endif %}{% if cell.isWeekend %} cal-weekend{% endif %}{% if cell.events.length %} cal-has-ev{% endif %}"{% if cell.events.length %} title="{% for ev in cell.events %}{{ ev.icon }} {{ ev.title }}{% if ev.time %} · {{ ev.time }}{% endif %}{% if not loop.last %}&#10;{% endif %}{% endfor %}"{% endif %}>
-                    <span class="cal-num">{{ cell.day }}</span>
-                    {% if cell.events.length %}
-                      <span class="cal-dots">{% for ev in cell.events %}<i class="cal-dot cal-dot--{{ ev.type }}"></i>{% endfor %}</span>
-                    {% endif %}
-                  </td>
-                {% endif %}
-              {% endfor %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        {% endfor %}
-
-        {# Legend #}
-        <div class="cal-legend">
-          <span><i class="cal-dot cal-dot--match"></i> Zápas</span>
-          <span><i class="cal-dot cal-dot--training"></i> Trénink</span>
-          <span><i class="cal-dot cal-dot--tournament"></i> Turnaj</span>
-          <span><i class="cal-dot cal-dot--camp"></i> Soustředění</span>
-          <span><i class="cal-dot cal-dot--meeting"></i> Schůze</span>
-        </div>
-
-      {# Compact event list inside widget #}
-      <div class="cal-upcoming">
-        <div class="cal-upcoming__head">Nadcházející akce</div>
-        {% for event in calendarComputed.allEvents %}
-        {% if loop.index0 < 6 %}
-          <div class="cal-up cal-up--{{ event.type }}">
-            <div class="cal-up__date">
-              <span class="cal-up__day">{{ event.date | czDateDay }}</span>
-              <span class="cal-up__mon">{{ event.date | czDateMonth }}</span>
-            </div>
-            <div class="cal-up__info">
-              <span class="cal-up__title">{{ event.title }}</span>
-              <span class="cal-up__meta">{% if event.time %}{{ event.time }}{% if event.endTime %}–{{ event.endTime }}{% endif %}{% endif %}{% if event.location %}{% if event.time %} · {% endif %}{{ event.location }}{% endif %}</span>
-            </div>
-            <i class="cal-dot cal-dot--{{ event.type }}"></i>
+        <div class="cal-widget">
+          {# Header with month nav #}
+          <div class="cal-header">
+            <button class="cal-nav" data-cal-dir="prev" aria-label="Předchozí měsíc">&#9664;</button>
+            <span class="cal-header__title" id="calTitle">{{ firstMonth.label }}</span>
+            <button class="cal-nav" data-cal-dir="next" aria-label="Další měsíc">&#9654;</button>
           </div>
-        {% endif %}
-        {% endfor %}
-      </div>
+
+          {# Month grids #}
+          {% for m in calendarComputed.months %}
+          <table class="cal-table{% if m.active %} is-active{% endif %}"
+                 data-cal-grid="{{ m.key }}" data-cal-label="{{ m.label }}">
+            <thead>
+              <tr>
+                {% for dh in calendarComputed.dayHeaders %}
+                  <th>{{ dh }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in m.rows %}
+              <tr>
+                {% for cell in row %}
+                  {% if cell.empty %}
+                    <td class="cal-empty"></td>
+                  {% else %}
+                    <td class="cal-day{% if cell.isToday %} cal-today{% endif %}{% if cell.isPast %} cal-past{% endif %}{% if cell.isWeekend %} cal-weekend{% endif %}{% if cell.events.length %} cal-has-ev{% endif %}"{% if cell.events.length %} title="{% for ev in cell.events %}{{ ev.icon }} {{ ev.title }}{% if ev.time %} · {{ ev.time }}{% endif %}{% if not loop.last %}&#10;{% endif %}{% endfor %}"{% endif %}>
+                      <span class="cal-num">{{ cell.day }}</span>
+                      {% if cell.events.length %}
+                        <span class="cal-dots">{% for ev in cell.events %}<i class="cal-dot cal-dot--{{ ev.type }}"></i>{% endfor %}</span>
+                      {% endif %}
+                    </td>
+                  {% endif %}
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endfor %}
+
+          {# Legend #}
+          <div class="cal-legend">
+            <span><i class="cal-dot cal-dot--match"></i> Zápas</span>
+            <span><i class="cal-dot cal-dot--training"></i> Trénink</span>
+            <span><i class="cal-dot cal-dot--tournament"></i> Turnaj</span>
+            <span><i class="cal-dot cal-dot--camp"></i> Soustředění</span>
+            <span><i class="cal-dot cal-dot--meeting"></i> Schůze</span>
+          </div>
+        </div>
+
+        {# Upcoming events – side panel #}
+        <div class="cal-sidebar">
+          <div class="cal-sidebar__head">Nadcházející akce</div>
+          {% for event in calendarComputed.allEvents %}
+          {% if loop.index0 < 8 %}
+            <div class="cal-up cal-up--{{ event.type }}">
+              <div class="cal-up__date">
+                <span class="cal-up__day">{{ event.date | czDateDay }}</span>
+                <span class="cal-up__mon">{{ event.date | czDateMonth }}</span>
+              </div>
+              <div class="cal-up__info">
+                <span class="cal-up__title">{{ event.title }}</span>
+                <span class="cal-up__meta">{% if event.time %}{{ event.time }}{% if event.endTime %}–{{ event.endTime }}{% endif %}{% endif %}{% if event.location %}{% if event.time %} · {% endif %}{{ event.location }}{% endif %}</span>
+              </div>
+              <i class="cal-dot cal-dot--{{ event.type }}"></i>
+            </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+
       </div>
 
       <script>
