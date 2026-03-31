@@ -14,7 +14,7 @@
     {
       "name": "Branko Jeník",
       "number": 7,
-      "position": "Záložník"
+      "position": "Obránce"
     },
     {
       "name": "Matyáš Morkus",
@@ -28,13 +28,33 @@
     },
     {
       "name": "Jakub Svačina",
-      "number": 10,
+      "number": 11,
       "position": "Útočník"
     },
     {
       "name": "Filip Vrzal",
       "number": 4,
-      "position": "Útočník"
+      "position": "Obránce"
+    },
+    {
+      "name": "Hesham Gothim",
+      "number": 12,
+      "position": "Záložník"
+    },
+    {
+      "name": "Brankář",
+      "number": 1,
+      "position": "Brankář"
+    },
+    {
+      "name": "Francessco",
+      "number": 14,
+      "position": "Záložník"
+    },
+    {
+      "name": "Marek Šimčák",
+      "number": 3,
+      "position": "Obránce"
     }
   ],
   "youth": {
