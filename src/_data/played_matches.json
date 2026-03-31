@@ -91,6 +91,12 @@
     {
       "referee": "Thomas James McEvoy",
       "season": "2025/2026",
+      "cards": [
+        {
+          "player": "Jan Novák",
+          "cardType": "red"
+        }
+      ],
       "awayScore": 1,
       "relatedUpcoming": "2026-03-31-postoupky-bezmerov",
       "isHome": true,
@@ -98,8 +104,23 @@
       "round": "1",
       "away": "Bezměrov",
       "date": "2026-03-31",
-      "lineup": [],
+      "lineup": [
+        {
+          "player": "Jan Novák"
+        },
+        {
+          "player": "Tomáš Kubín"
+        },
+        {
+          "player": "Martin Novák"
+        }
+      ],
       "venue": "Postoupky",
+      "scorers": [
+        {
+          "scorer": "Martin Novák"
+        }
+      ],
       "homeScore": 2,
       "team": "muzi",
       "home": "Postoupky",
