@@ -81,23 +81,26 @@ hideTitle: true
           <span><i class="cal-dot cal-dot--camp"></i> Soustředění</span>
           <span><i class="cal-dot cal-dot--meeting"></i> Schůze</span>
         </div>
-      </div>
 
-      {# Event list below #}
-      <div class="cal-events">
-        <h3 class="cal-events__title">Nadcházející akce</h3>
+      {# Compact event list inside widget #}
+      <div class="cal-upcoming">
+        <div class="cal-upcoming__head">Nadcházející akce</div>
         {% for event in calendarComputed.allEvents %}
-        {% if loop.index0 < 8 %}
-          <div class="cal-ev cal-ev--{{ event.type }}">
-            <span class="cal-ev__icon">{{ event.icon }}</span>
-            <div class="cal-ev__body">
-              <strong>{{ event.title }}</strong>
-              <span class="muted">{{ event.date | czDate }}{% if event.time %} · {{ event.time }}{% if event.endTime %} – {{ event.endTime }}{% endif %}{% endif %}</span>
-              {% if event.location %}<span class="muted">📍 {{ event.location }}</span>{% endif %}
+        {% if loop.index0 < 6 %}
+          <div class="cal-up cal-up--{{ event.type }}">
+            <div class="cal-up__date">
+              <span class="cal-up__day">{{ event.date | czDateDay }}</span>
+              <span class="cal-up__mon">{{ event.date | czDateMonth }}</span>
             </div>
+            <div class="cal-up__info">
+              <span class="cal-up__title">{{ event.title }}</span>
+              <span class="cal-up__meta">{% if event.time %}{{ event.time }}{% if event.endTime %}–{{ event.endTime }}{% endif %}{% endif %}{% if event.location %}{% if event.time %} · {% endif %}{{ event.location }}{% endif %}</span>
+            </div>
+            <i class="cal-dot cal-dot--{{ event.type }}"></i>
           </div>
         {% endif %}
         {% endfor %}
+      </div>
       </div>
 
       <script>

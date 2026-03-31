@@ -672,52 +672,79 @@ body {
   height: 8px;
 }
 
-/* Event list below widget */
-.cal-events {
-  max-width: 420px;
-  margin: 1.5rem auto 0;
+/* Compact upcoming events – inside dark widget */
+.cal-upcoming {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 0.6rem 0.8rem 0.4rem;
 }
 
-.cal-events__title {
-  font-size: 1rem;
-  margin: 0 0 0.65rem;
-  color: #1e293b;
-  text-align: center;
-}
-
-.cal-ev {
-  display: flex;
-  gap: 0.65rem;
-  padding: 0.6rem 0.85rem;
-  border-radius: 12px;
-  background: #fff;
+.cal-upcoming__head {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.45);
   margin-bottom: 0.45rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  border-left: 4px solid #6d28d9;
-  align-items: center;
 }
 
-.cal-ev--training { border-left-color: #16a34a; }
-.cal-ev--tournament { border-left-color: #d97706; }
-.cal-ev--camp { border-left-color: #0891b2; }
-.cal-ev--meeting { border-left-color: #7c3aed; }
-.cal-ev--match { border-left-color: #6d28d9; }
-.cal-ev--other { border-left-color: #64748b; }
-
-.cal-ev__icon {
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-
-.cal-ev__body {
+.cal-up {
   display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  font-size: 0.85rem;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.cal-ev__body strong {
-  color: #1e293b;
+.cal-up:last-child {
+  border-bottom: none;
+}
+
+.cal-up__date {
+  flex-shrink: 0;
+  width: 36px;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.cal-up__day {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.cal-up__mon {
+  display: block;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.04em;
+}
+
+.cal-up__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cal-up__title {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-up__meta {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.cal-up .cal-dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
 }
 
 @media (max-width: 480px) {

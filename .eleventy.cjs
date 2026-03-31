@@ -95,6 +95,32 @@ module.exports = function (eleventyConfig) {
     return "";
   });
 
+  // Helper to parse date string to Luxon DateTime
+  function parseCzDT(value) {
+    if (!value) return null;
+    if (value instanceof Date) {
+      const dt = DateTime.fromJSDate(value).setZone("Europe/Prague");
+      return dt.isValid ? dt : null;
+    }
+    const str = String(value);
+    const iso = DateTime.fromISO(str, { zone: "Europe/Prague" });
+    if (iso.isValid) return iso;
+    const js = DateTime.fromJSDate(new Date(str)).setZone("Europe/Prague");
+    return js.isValid ? js : null;
+  }
+
+  eleventyConfig.addFilter("czDateDay", (value) => {
+    const dt = parseCzDT(value);
+    return dt ? dt.toFormat("d") : "";
+  });
+
+  eleventyConfig.addFilter("czDateMonth", (value) => {
+    const dt = parseCzDT(value);
+    if (!dt) return "";
+    const months = ["led","úno","bře","dub","kvě","čvn","čvc","srp","zář","říj","lis","pro"];
+    return months[dt.month - 1] || "";
+  });
+
   eleventyConfig.addFilter("czTime", (value) => {
     if (!value) return "";
     if (value instanceof Date) {
