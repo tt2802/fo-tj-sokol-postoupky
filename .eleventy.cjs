@@ -69,6 +69,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/_data/upcoming_matches.json": "_data/upcoming_matches.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/players.json": "_data/players.json" });
 
   eleventyConfig.addFilter("striptags", stripTags);
   eleventyConfig.addFilter("truncate", truncateText);
