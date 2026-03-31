@@ -408,6 +408,227 @@
     return result;
   }
 
+  /* ───────────── Custom Widget: lineup-picker (checkboxes) ───────────── */
+
+  var LineupPickerControl = createClass({
+    getInitialState: function () {
+      return { players: [], loaded: false, teamLabel: "", customName: "" };
+    },
+
+    componentDidMount: function () {
+      var self = this;
+      var loadPlayers = playersData
+        ? Promise.resolve(playersData)
+        : fetchPlayers().then(function (d) { playersData = d; return d; });
+      loadPlayers.then(function () { self._refresh(); });
+    },
+
+    _refresh: function () {
+      var el = document.getElementById(this.props.forID);
+      var info = readTeamFromDOM(el);
+      var roster = getPlayersForCategory(info.team, info.category);
+      var catNames = {
+        "dorostenci": "Dorostenci", "dorostenky-d19": "Dorostenkyně D19",
+        "starsi-zaci": "Starší žáci", "mlads-zaci": "Mladší žáci",
+        "mlads-zaci-b": "Mladší žáci B", "skolicka": "Školička"
+      };
+      var tl = info.team === "muzi" ? "Muži" : (catNames[info.category] || "Mládež");
+      this.setState({ players: roster, loaded: true, teamLabel: tl });
+    },
+
+    _getSelected: function () {
+      var val = this.props.value;
+      if (!val) return [];
+      // Value is an Immutable List or plain array of {player:"..."} or plain strings
+      var arr = val.toJS ? val.toJS() : (Array.isArray(val) ? val : []);
+      return arr.map(function (item) {
+        return typeof item === "string" ? item : (item.player || "");
+      }).filter(Boolean);
+    },
+
+    _setSelected: function (names) {
+      // Store as array of {player: name} objects for compatibility
+      var list = names.map(function (n) { return { player: n }; });
+      this.props.onChange(list);
+    },
+
+    handleToggle: function (name) {
+      var sel = this._getSelected();
+      var idx = sel.indexOf(name);
+      if (idx >= 0) {
+        sel.splice(idx, 1);
+      } else {
+        sel.push(name);
+      }
+      this._setSelected(sel);
+    },
+
+    handleSelectAll: function () {
+      var allNames = this.state.players.map(function (p) { return p.name; });
+      this._setSelected(allNames);
+    },
+
+    handleDeselectAll: function () {
+      this._setSelected([]);
+    },
+
+    handleAddCustom: function () {
+      var name = (this.state.customName || "").trim();
+      if (!name) return;
+      var sel = this._getSelected();
+      if (sel.indexOf(name) < 0) sel.push(name);
+      this._setSelected(sel);
+      this.setState({ customName: "" });
+    },
+
+    handleCustomInput: function (e) {
+      this.setState({ customName: e.target.value });
+    },
+
+    handleCustomKeyDown: function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        this.handleAddCustom();
+      }
+    },
+
+    handleRemoveCustom: function (name) {
+      var sel = this._getSelected();
+      var idx = sel.indexOf(name);
+      if (idx >= 0) sel.splice(idx, 1);
+      this._setSelected(sel);
+    },
+
+    render: function () {
+      var self = this;
+      var st = this.state;
+      var selected = this._getSelected();
+      var rosterNames = st.players.map(function (p) { return p.name; });
+      // Custom names = selected but not in roster
+      var customNames = selected.filter(function (n) { return rosterNames.indexOf(n) < 0; });
+
+      var parts = [];
+
+      // Header with team label and buttons
+      parts.push(h("div", {
+        key: "hdr",
+        style: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }
+      }, [
+        h("strong", { key: "lbl", style: { fontSize: "13px" } },
+          st.loaded ? "Soupiska: " + st.teamLabel + " (" + selected.length + " vybráno)" : "Načítám…"),
+        h("button", {
+          key: "all", type: "button", onClick: this.handleSelectAll,
+          style: btnStyle("#e8f5e9", "#2e7d32")
+        }, "Vybrat vše"),
+        h("button", {
+          key: "none", type: "button", onClick: this.handleDeselectAll,
+          style: btnStyle("#fce4ec", "#c62828")
+        }, "Zrušit vše")
+      ]));
+
+      // Player checkboxes grid
+      var checkboxes = st.players.map(function (p) {
+        var checked = selected.indexOf(p.name) >= 0;
+        var label = p.name;
+        if (p.number) label = p.number + " · " + label;
+        if (p.position) label += " (" + p.position + ")";
+
+        return h("label", {
+          key: p.name,
+          style: {
+            display: "flex", alignItems: "center", gap: "6px",
+            padding: "6px 10px", fontSize: "14px", cursor: "pointer",
+            background: checked ? "#e3f2fd" : "#fafafa",
+            border: checked ? "1px solid #90caf9" : "1px solid #e0e0e0",
+            borderRadius: "4px", transition: "all 0.15s"
+          }
+        }, [
+          h("input", {
+            key: "cb",
+            type: "checkbox",
+            checked: checked,
+            onChange: function () { self.handleToggle(p.name); },
+            style: { width: "16px", height: "16px", cursor: "pointer" }
+          }),
+          h("span", { key: "txt" }, label)
+        ]);
+      });
+
+      parts.push(h("div", {
+        key: "grid", id: this.props.forID,
+        style: {
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+          gap: "6px", maxHeight: "300px", overflowY: "auto",
+          padding: "8px", border: "1px solid #e0e0e0", borderRadius: "5px",
+          background: "#fff"
+        }
+      }, checkboxes));
+
+      // Custom player badges (names not in roster)
+      if (customNames.length) {
+        parts.push(h("div", {
+          key: "custom-list",
+          style: { display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "8px" }
+        }, customNames.map(function (n) {
+          return h("span", {
+            key: n,
+            style: {
+              display: "inline-flex", alignItems: "center", gap: "4px",
+              padding: "4px 10px", background: "#fff3e0", border: "1px solid #ffb74d",
+              borderRadius: "12px", fontSize: "13px"
+            }
+          }, [
+            h("span", { key: "t" }, n),
+            h("button", {
+              key: "x", type: "button",
+              onClick: function () { self.handleRemoveCustom(n); },
+              style: {
+                border: "none", background: "transparent", cursor: "pointer",
+                fontWeight: "bold", fontSize: "14px", color: "#e65100", padding: "0 2px"
+              }
+            }, "×")
+          ]);
+        })));
+      }
+
+      // Add custom player input
+      parts.push(h("div", {
+        key: "add",
+        style: { display: "flex", gap: "6px", marginTop: "8px", alignItems: "center" }
+      }, [
+        h("input", {
+          key: "inp", type: "text",
+          value: st.customName || "",
+          onChange: this.handleCustomInput,
+          onKeyDown: this.handleCustomKeyDown,
+          placeholder: "Jiný hráč…",
+          style: {
+            flex: 1, padding: "7px 10px", fontSize: "14px",
+            border: "1px solid #ccc", borderRadius: "4px"
+          }
+        }),
+        h("button", {
+          key: "btn", type: "button",
+          onClick: this.handleAddCustom,
+          style: btnStyle("#e8eaf6", "#283593")
+        }, "+ Přidat")
+      ]));
+
+      return h("div", null, parts);
+    }
+  });
+
+  function btnStyle(bg, color) {
+    return {
+      padding: "4px 12px", fontSize: "12px", cursor: "pointer",
+      border: "1px solid " + color, borderRadius: "4px",
+      background: bg, color: color, fontWeight: "600"
+    };
+  }
+
+  /* ───────────── Custom Widget: player-select (single dropdown) ───────────── */
+
   var PlayerSelectControl = createClass({
     getInitialState: function () {
       return { players: [], loaded: false, customMode: false, teamLabel: "" };
@@ -624,7 +845,8 @@
     // Register custom widgets BEFORE CMS.init()
     window.CMS.registerWidget("match-selector", MatchSelectorControl);
     window.CMS.registerWidget("player-select", PlayerSelectControl);
-    log('Widgets "match-selector" + "player-select" registered');
+    window.CMS.registerWidget("lineup-picker", LineupPickerControl);
+    log('Widgets "match-selector" + "player-select" + "lineup-picker" registered');
 
     // Now initialize CMS (we set CMS_MANUAL_INIT=true in index.njk)
     window.CMS.init();

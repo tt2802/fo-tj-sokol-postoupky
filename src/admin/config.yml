@@ -216,10 +216,8 @@ collections:
 
               - label: "Sestava"
                 name: "lineup"
-                widget: "list"
+                widget: "lineup-picker"
                 required: false
-                fields:
-                  - { label: "Hráč", name: "player", widget: "player-select" }
 
               - label: "Střelci gólů"
                 name: "scorers"
