@@ -65,7 +65,7 @@ collections:
                 widget: "string"
                 pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Použij jen malá písmena, čísla a pomlčky (např. 2026-03-10-postoupky-hulin)"]
                 hint: "Pouze malá písmena, čísla a pomlčky. Bez mezer a diakritiky."
-                required: false
+                required: true
                 
               - label: "ID"
                 name: "id"

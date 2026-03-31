@@ -59,11 +59,13 @@
     {
       "season": "2025/2026",
       "isHome": true,
+      "slug": "2026-03-31-postoupky-bezmerov",
       "time": "16.00",
       "round": "1",
-      "away": "Bez,ěrov",
+      "away": "Bezměrov",
       "date": "2026-03-31",
       "venue": "Postoupky",
+      "id": "2026-03-31-postoupky-bezmerov",
       "team": "muzi",
       "home": "Postoupky",
       "competition": "ZKP"
