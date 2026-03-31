@@ -233,14 +233,21 @@ collections:
                 widget: "list"
                 required: false
                 fields:
-                  - { label: "Karta", name: "card", widget: "string" }
+                  - { label: "Hráč", name: "player", widget: "player-select" }
+                  - label: "Typ karty"
+                    name: "cardType"
+                    widget: "select"
+                    options:
+                      - { label: "Žlutá karta", value: "yellow" }
+                      - { label: "Červená karta", value: "red" }
 
               - label: "Střídání"
                 name: "substitutions"
                 widget: "list"
                 required: false
                 fields:
-                  - { label: "Střídání", name: "substitution", widget: "string" }
+                  - { label: "Střídá (ven)", name: "playerOut", widget: "player-select" }
+                  - { label: "Za (dovnitř)", name: "playerIn", widget: "player-select" }
 
       - name: "players"
         label: "Hráči"
