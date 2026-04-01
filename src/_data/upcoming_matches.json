@@ -12,6 +12,19 @@
       "team": "muzi",
       "home": "Postoupky",
       "competition": "9.liga"
+    },
+    {
+      "season": "2025/2026",
+      "isHome": true,
+      "slug": "postoupky-holesov",
+      "time": "16.00",
+      "round": "2",
+      "away": "Holešov",
+      "date": "2026-04-04",
+      "venue": "Potoupky",
+      "team": "muzi",
+      "home": "Postoupky",
+      "competition": "ZKP"
     }
   ]
 }
