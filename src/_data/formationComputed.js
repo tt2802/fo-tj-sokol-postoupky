@@ -139,17 +139,35 @@ module.exports = function () {
     TRENER:   { label: "Trenér" }
   };
 
-  // Build player lookup by name
+  // Build player lookup by full name AND by last-name / partial match
   const byName = {};
   for (const p of players) {
-    if (p.name) byName[p.name] = p;
+    if (!p.name) continue;
+    byName[p.name] = p;                          // full name
+    const parts = p.name.trim().split(/\s+/);
+    if (parts.length > 1) {
+      byName[parts[parts.length - 1]] = p;       // last name
+      byName[parts[0]] = p;                      // first name
+    }
+  }
+
+  /**  Find player by exact or partial match  */
+  function findPlayer(name) {
+    if (!name) return null;
+    if (byName[name]) return byName[name];
+    // fuzzy: check if any player's full name contains the given string
+    const lower = name.toLowerCase();
+    for (const p of players) {
+      if (p.name && p.name.toLowerCase().includes(lower)) return p;
+    }
+    return null;
   }
 
   // Map each slot to positioned player
   const positioned = [];
   const bench = [];
   for (const s of slots) {
-    const p = s.player ? byName[s.player] : null;
+    const p = findPlayer(s.player);
     const info = {
       slot: s.slot,
       name: s.player || "",

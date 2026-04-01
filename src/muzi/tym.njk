@@ -69,7 +69,7 @@ layout: layouts/page.njk
   <div class="container">
     <h2>Hráči</h2>
 
-    {% set menPlayers = players.men | default([]) %}
+    {% set menPlayers = players.men | default([]) | sort(false, false, 'number') %}
 
     {% if menPlayers | length == 0 %}
       <p class="muted">Zatím zde nejsou žádní hráči. Doplníš je v administraci v sekci „Data → Hráči – Muži".</p>
