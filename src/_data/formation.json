@@ -44,6 +44,14 @@
     {
       "slot": "ST1",
       "player": "Svačina"
+    },
+    {
+      "slot": "TRENER",
+      "player": "Laďa Opluštil"
+    },
+    {
+      "slot": "TRIDACKA",
+      "player": "McEvoy"
     }
   ]
 }
