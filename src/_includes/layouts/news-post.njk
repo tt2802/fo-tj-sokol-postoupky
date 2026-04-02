@@ -64,9 +64,16 @@ layout: layouts/base.njk
   var countEl   = document.getElementById('commentsCount');
   var loginBtn  = document.getElementById('commentLogin');
 
+  var provider = new firebase.auth.GoogleAuthProvider();
+
   /* ── Auth ── */
   loginBtn.addEventListener('click', function() {
-    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    auth.signInWithRedirect(provider);
+  });
+
+  auth.getRedirectResult().catch(function(err) {
+    console.error('Auth error:', err);
+    alert('Přihlášení selhalo: ' + err.message);
   });
 
   auth.onAuthStateChanged(function(user) {

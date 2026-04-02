@@ -75,9 +75,16 @@ layout: layouts/base.njk
   var loginBtn   = document.getElementById('chatLogin');
   var userEl     = document.getElementById('chatUser');
 
+  var provider = new firebase.auth.GoogleAuthProvider();
+
   /* ── Auth ── */
   loginBtn.addEventListener('click', function() {
-    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    auth.signInWithRedirect(provider);
+  });
+
+  auth.getRedirectResult().catch(function(err) {
+    console.error('Auth error:', err);
+    alert('Přihlášení selhalo: ' + err.message);
   });
 
   auth.onAuthStateChanged(function(user) {
@@ -101,7 +108,7 @@ layout: layouts/base.njk
         '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="18" height="18">' +
         ' Přihlásit se</button>';
       document.getElementById('chatLogin').addEventListener('click', function() {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        auth.signInWithRedirect(provider);
       });
     }
   });
