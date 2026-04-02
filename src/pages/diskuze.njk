@@ -77,15 +77,17 @@ layout: layouts/base.njk
 
   var provider = new firebase.auth.GoogleAuthProvider();
 
-  /* ── Auth ── */
-  loginBtn.addEventListener('click', function() {
-    auth.signInWithRedirect(provider);
-  });
+  function doLogin() {
+    auth.signInWithPopup(provider).catch(function(err) {
+      console.error('Auth error:', err.code, err.message);
+      var msgEl = document.getElementById('chatWelcome');
+      msgEl.innerHTML = '<div style="color:#dc2626;font-weight:600;">⚠️ Chyba přihlášení: ' + err.code + '<br><small>' + err.message + '</small></div>';
+      msgEl.style.display = '';
+    });
+  }
 
-  auth.getRedirectResult().catch(function(err) {
-    console.error('Auth error:', err);
-    alert('Přihlášení selhalo: ' + err.message);
-  });
+  /* ── Auth ── */
+  loginBtn.addEventListener('click', doLogin);
 
   auth.onAuthStateChanged(function(user) {
     currentUser = user;
@@ -107,9 +109,7 @@ layout: layouts/base.njk
         '<button id="chatLogin" class="chat-google-btn">' +
         '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="18" height="18">' +
         ' Přihlásit se</button>';
-      document.getElementById('chatLogin').addEventListener('click', function() {
-        auth.signInWithRedirect(provider);
-      });
+      document.getElementById('chatLogin').addEventListener('click', doLogin);
     }
   });
 

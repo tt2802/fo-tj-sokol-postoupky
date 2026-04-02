@@ -68,12 +68,10 @@ layout: layouts/base.njk
 
   /* ── Auth ── */
   loginBtn.addEventListener('click', function() {
-    auth.signInWithRedirect(provider);
-  });
-
-  auth.getRedirectResult().catch(function(err) {
-    console.error('Auth error:', err);
-    alert('Přihlášení selhalo: ' + err.message);
+    auth.signInWithPopup(provider).catch(function(err) {
+      console.error('Auth error:', err.code, err.message);
+      authEl.innerHTML = '<div style="color:#dc2626;font-weight:600;">⚠️ Chyba: ' + err.code + '<br><small>' + err.message + '</small></div>';
+    });
   });
 
   auth.onAuthStateChanged(function(user) {
