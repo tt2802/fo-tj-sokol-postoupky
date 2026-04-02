@@ -760,6 +760,38 @@ body {
   color: #dc2626;
 }
 
+/* ===== DISKUZE FORM ===== */
+.diskuze-form .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.diskuze-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  font-size: 0.92rem;
+}
+
+.diskuze-form input[type="text"],
+.diskuze-form input[type="email"],
+.diskuze-form textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.diskuze-form input:focus,
+.diskuze-form textarea:focus {
+  outline: none;
+  border-color: #1877f2;
+  box-shadow: 0 0 0 3px rgba(24,119,242,0.15);
+}
+
 /* ===== KALENDÁŘ WIDGET ===== */
 .calendar-section {
   background: linear-gradient(135deg, rgba(109,40,217,0.06), rgba(109,40,217,0.01));

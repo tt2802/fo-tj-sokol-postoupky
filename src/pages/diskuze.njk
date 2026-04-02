@@ -7,25 +7,69 @@ layout: layouts/page.njk
 <section class="section">
   <div class="container">
     <h1>Diskuze</h1>
-    <p class="muted" style="margin-bottom: 2rem;">Máte dotaz, názor nebo chcete něco probrat? Napište příspěvek níže — přihlásit se můžete přes Facebook, Google nebo e-mail.</p>
-
-    <div id="disqus_thread"></div>
-
-    <noscript>Pro zobrazení diskuze je potřeba zapnout JavaScript.</noscript>
+    <p class="muted" style="margin-bottom: 2rem;">Zapojte se do diskuze na naší Facebook skupině nebo napište přímo z webu.</p>
   </div>
 </section>
 
-<script>
-  var disqus_config = function () {
-    this.page.url = '{{ site.url }}/diskuze/';
-    this.page.identifier = 'diskuze';
-    this.page.title = 'Diskuze – TJ Sokol Postoupky';
-  };
+{# ── Facebook skupina ── #}
+<section class="section" style="background: #f0f2f5;">
+  <div class="container" style="text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 0.5rem;">💬</div>
+    <h2>Facebook skupina</h2>
+    <p class="muted" style="margin-bottom: 1.5rem;">Hlavní diskuze probíhá na Facebooku — přidejte se a pište příspěvky, sdílejte fotky a komentujte.</p>
+    <a href="https://www.facebook.com/groups/509171789420773"
+       target="_blank" rel="noopener noreferrer"
+       style="display: inline-block; background: #1877f2; color: #fff; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 1.05rem;">
+      📘 Otevřít Facebook skupinu
+    </a>
+  </div>
+</section>
 
-  (function () {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sokolpostoupky.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-</script>
+{# ── Formulář přímo z webu ── #}
+<section class="section">
+  <div class="container" style="max-width: 640px;">
+    <h2 style="text-align: center;">Napište nám z webu</h2>
+    <p class="muted" style="text-align: center; margin-bottom: 1.5rem;">Nemáte Facebook? Nevadí — napište dotaz nebo vzkaz přímo zde. Odpovíme vám na e-mail.</p>
+
+    <form action="https://formsubmit.co/{{ site.contact.email }}" method="POST" class="diskuze-form">
+      {# Anti-spam #}
+      <input type="hidden" name="_captcha" value="true">
+      <input type="hidden" name="_subject" value="Nová zpráva z webu – Diskuze">
+      <input type="hidden" name="_next" value="{{ site.url }}/diskuze/?odesláno=1">
+      <input type="text" name="_honey" style="display:none">
+
+      <div class="form-group">
+        <label for="name">Jméno</label>
+        <input type="text" id="name" name="name" required placeholder="Vaše jméno">
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required placeholder="vas@email.cz">
+      </div>
+
+      <div class="form-group">
+        <label for="message">Zpráva</label>
+        <textarea id="message" name="message" rows="5" required placeholder="Váš dotaz, nápad nebo vzkaz…"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn--primary" style="width: 100%; padding: 0.85rem; font-size: 1rem;">
+        ✉️ Odeslat zprávu
+      </button>
+    </form>
+
+    <script>
+      (function() {
+        if (window.location.search.indexOf('odesláno') > -1) {
+          var f = document.querySelector('.diskuze-form');
+          if (f) {
+            var msg = document.createElement('div');
+            msg.style.cssText = 'background:#059669;color:#fff;padding:1rem;border-radius:8px;text-align:center;margin-bottom:1rem;font-weight:600;';
+            msg.textContent = '✅ Zpráva odeslána! Odpovíme vám co nejdříve.';
+            f.parentNode.insertBefore(msg, f);
+          }
+        }
+      })();
+    </script>
+  </div>
+</section>
