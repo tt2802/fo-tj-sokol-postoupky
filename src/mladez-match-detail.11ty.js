@@ -83,8 +83,8 @@ module.exports = class {
 ${m.venue ? `<p><strong>Místo:</strong> ${m.venue}</p>` : ''}
 
 ${m.homeScore !== null && m.homeScore !== undefined && m.awayScore !== null && m.awayScore !== undefined ? `
-<div class="card" style="--card-bg: #e8f5e9; margin: 2rem 0; padding: 1.5rem; text-align: center;">
-  <h2 style="margin: 0; font-size: 2.5rem; color: #2e7d32;">
+<div class="card" style="margin: 2rem 0; padding: 1.5rem; text-align: center; background: var(--primary-light);">
+  <h2 style="margin: 0; font-size: 2.5rem; color: var(--primary);">
     ${m.homeScore} : ${m.awayScore}
   </h2>
 </div>` : '<p class="muted">Výsledek zatím není k dispozici</p>'}

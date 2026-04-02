@@ -34,7 +34,7 @@ layout: layouts/page.njk
             <div class="card__body">
               <h3 class="card__title">{{ album.title }}</h3>
               <p class="muted">{{ album.date | czDate }}</p>
-              <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">📷 {{ album.photos | length }} fotek</p>
+              <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">📷 {{ album.photos | length }} fotek</p>
             </div>
           </article>
         {% endfor %}
