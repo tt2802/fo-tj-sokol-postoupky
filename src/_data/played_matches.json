@@ -16,6 +16,32 @@
       "category": "mlads-zaci",
       "home": "Morkovice",
       "competition": "Okresní přebor"
+    },
+    {
+      "season": "2025/2026",
+      "cards": [
+        {
+          "player": "Filip Vrzal",
+          "cardType": "yellow"
+        }
+      ],
+      "awayScore": 1,
+      "relatedUpcoming": "postoupky-vsetin",
+      "isHome": true,
+      "slug": "postoupky-vsetin",
+      "round": "3",
+      "away": "Vsetín",
+      "date": "2026-04-12",
+      "venue": "Postoupky",
+      "scorers": [
+        {
+          "scorer": "Tomáš Kubín"
+        }
+      ],
+      "homeScore": 3,
+      "team": "muzi",
+      "home": "Postoupky",
+      "competition": "ZKP"
     }
   ]
 }
