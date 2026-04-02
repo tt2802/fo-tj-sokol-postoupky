@@ -19,6 +19,10 @@ module.exports = class {
   render(data) {
     const m = data.match;
     const pathPrefix = process.env.ELEVENTY_PATH_PREFIX || '/';
+    const fb = data.firebase || {};
+    const players = (data.players && data.players.men) || [];
+    const playerNames = players.map(p => p.name);
+    const hasScore = m.homeScore !== null && m.homeScore !== undefined && m.awayScore !== null && m.awayScore !== undefined;
     
     let videoHtml = '';
     if (m.videoUrl) {
@@ -55,6 +59,143 @@ module.exports = class {
       }
     }
 
+    // Build voting section HTML (only for played matches with a score)
+    let votingHtml = '';
+    if (hasScore && fb.apiKey && fb.apiKey !== 'FIREBASE_API_KEY') {
+      const optionsHtml = playerNames.map(n => {
+        const escaped = n.replace(/"/g, '&quot;').replace(/</g, '&lt;');
+        return `<option value="${escaped}">${escaped}</option>`;
+      }).join('');
+      const slug = (m.slug || '').replace(/"/g, '');
+
+      votingHtml = `
+<section class="motm-section" id="motmSection">
+  <h2>⭐ Hráč zápasu — hlasování</h2>
+
+  <div id="motmAuth">
+    <button id="motmLogin" class="chat-google-btn">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="18" height="18">
+      Přihlásit se pro hlasování
+    </button>
+  </div>
+
+  <div id="motmVoteForm" style="display:none;" class="motm-form">
+    <select id="motmSelect" class="motm-select">
+      <option value="">— Vyber hráče —</option>
+      ${optionsHtml}
+    </select>
+    <button id="motmVoteBtn" class="btn btn--sm">Hlasovat</button>
+    <span id="motmStatus" class="muted"></span>
+  </div>
+
+  <div id="motmResults" class="motm-results"></div>
+</section>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+(function() {
+  var cfg = ${JSON.stringify(fb)};
+  firebase.initializeApp(cfg);
+  var auth = firebase.auth();
+  var db = firebase.firestore();
+  var matchSlug = "${slug}";
+  var currentUser = null;
+
+  var loginBtn = document.getElementById('motmLogin');
+  var authEl = document.getElementById('motmAuth');
+  var formEl = document.getElementById('motmVoteForm');
+  var selectEl = document.getElementById('motmSelect');
+  var voteBtn = document.getElementById('motmVoteBtn');
+  var statusEl = document.getElementById('motmStatus');
+  var resultsEl = document.getElementById('motmResults');
+  var provider = new firebase.auth.GoogleAuthProvider();
+
+  function escapeHtml(s) {
+    var d = document.createElement('div');
+    d.appendChild(document.createTextNode(s || ''));
+    return d.innerHTML;
+  }
+
+  loginBtn.addEventListener('click', function() {
+    auth.signInWithPopup(provider).catch(function(err) {
+      authEl.innerHTML = '<div style="color:#dc2626;">⚠️ ' + escapeHtml(err.message) + '</div>';
+    });
+  });
+
+  auth.onAuthStateChanged(function(user) {
+    currentUser = user;
+    if (user) {
+      authEl.style.display = 'none';
+      formEl.style.display = 'flex';
+      // Check if already voted
+      db.collection('matchVotes').doc(matchSlug)
+        .collection('votes').doc(user.uid).get()
+        .then(function(doc) {
+          if (doc.exists) {
+            statusEl.textContent = 'Hlasoval/a jsi za: ' + doc.data().player;
+            selectEl.disabled = true;
+            voteBtn.disabled = true;
+            voteBtn.style.opacity = '0.5';
+          }
+        });
+    } else {
+      authEl.style.display = '';
+      formEl.style.display = 'none';
+    }
+  });
+
+  voteBtn.addEventListener('click', function() {
+    var player = selectEl.value;
+    if (!player || !currentUser) return;
+    voteBtn.disabled = true;
+    db.collection('matchVotes').doc(matchSlug)
+      .collection('votes').doc(currentUser.uid).set({
+        player: player,
+        userName: currentUser.displayName,
+        ts: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function() {
+        statusEl.textContent = 'Hlasoval/a jsi za: ' + player;
+        selectEl.disabled = true;
+        voteBtn.style.opacity = '0.5';
+      }).catch(function(err) {
+        statusEl.textContent = 'Chyba: ' + err.message;
+        voteBtn.disabled = false;
+      });
+  });
+
+  // Live results
+  db.collection('matchVotes').doc(matchSlug)
+    .collection('votes').onSnapshot(function(snap) {
+      var counts = {};
+      var total = 0;
+      snap.forEach(function(doc) {
+        var p = doc.data().player;
+        counts[p] = (counts[p] || 0) + 1;
+        total++;
+      });
+      if (total === 0) {
+        resultsEl.innerHTML = '<p class="muted">Zatím nikdo nehlasoval.</p>';
+        return;
+      }
+      var sorted = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
+      var html = '<div class="motm-bars">';
+      sorted.forEach(function(item, i) {
+        var pct = Math.round(item[1] / total * 100);
+        html += '<div class="motm-bar-row">' +
+          '<span class="motm-bar-name">' + (i === 0 ? '⭐ ' : '') + escapeHtml(item[0]) + '</span>' +
+          '<div class="motm-bar-track"><div class="motm-bar-fill' + (i === 0 ? ' motm-bar-fill--top' : '') + '" style="width:' + pct + '%"></div></div>' +
+          '<span class="motm-bar-count">' + item[1] + ' (' + pct + '%)</span>' +
+          '</div>';
+      });
+      html += '<p class="muted" style="margin-top:0.5rem;">Celkem hlasů: ' + total + '</p></div>';
+      resultsEl.innerHTML = html;
+    });
+})();
+</script>`;
+    }
+
     return `
 <nav class="muted" aria-label="Drobečková navigace">
   <a href="${pathPrefix}muzi/zapasy/">Zápasy Mužů</a>
@@ -72,7 +213,7 @@ module.exports = class {
 
 ${m.venue ? `<p><strong>Místo:</strong> ${m.venue}</p>` : ''}
 
-${m.homeScore !== null && m.homeScore !== undefined && m.awayScore !== null && m.awayScore !== undefined ? `
+${hasScore ? `
 <div class="card" style="--card-bg: #e8f5e9; margin: 2rem 0; padding: 1.5rem; text-align: center;">
   <h2 style="margin: 0; font-size: 2.5rem; color: #2e7d32;">
     ${m.homeScore} : ${m.awayScore}
@@ -108,6 +249,8 @@ ${m.substitutions.map(s => `  <li>${s.substitution || s}</li>`).join('\n')}
 </ul>` : ''}
 
 ${m.referee ? `<p class="muted"><strong>Rozhodčí:</strong> ${m.referee}</p>` : ''}
+
+${votingHtml}
 `;
   }
 };

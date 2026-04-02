@@ -602,6 +602,29 @@ collections:
               - { label: "Název", name: "name", widget: "string", required: true }
               - { label: "Zkratka", name: "shortName", widget: "string", required: true, hint: "např. U19" }
 
+      - name: "league_table"
+        label: "Tabulka soutěže"
+        file: "src/_data/league_table.json"
+        preview_url: "{{site_url}}/muzi/"
+        fields:
+          - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026" }
+          - { label: "Soutěž", name: "competition", widget: "string", default: "ZKP" }
+          - label: "Týmy"
+            name: "teams"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.pos}}. {{fields.name}} — {{fields.points}} b."
+            fields:
+              - { label: "Pořadí", name: "pos", widget: "number", value_type: "int" }
+              - { label: "Název týmu", name: "name", widget: "string" }
+              - { label: "Zápasy", name: "played", widget: "number", value_type: "int", default: 0 }
+              - { label: "Výhry", name: "wins", widget: "number", value_type: "int", default: 0 }
+              - { label: "Remízy", name: "draws", widget: "number", value_type: "int", default: 0 }
+              - { label: "Prohry", name: "losses", widget: "number", value_type: "int", default: 0 }
+              - { label: "Skóre +", name: "goalsFor", widget: "number", value_type: "int", default: 0 }
+              - { label: "Skóre −", name: "goalsAgainst", widget: "number", value_type: "int", default: 0 }
+              - { label: "Body", name: "points", widget: "number", value_type: "int", default: 0 }
+
       - name: "site"
         label: "Nastavení webu"
         file: "src/_data/site.json"

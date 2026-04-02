@@ -31,6 +31,44 @@ layout: layouts/page.njk
   </div>
 </section>
 
+{% if league_table.teams | length > 0 %}
+  <section class="section">
+    <div class="container">
+      <h2>📊 Tabulka – {{ league_table.competition }} {{ league_table.season }}</h2>
+      <div class="stats-table-wrap">
+        <table class="stats-table league-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tým</th>
+              <th>Z</th>
+              <th>V</th>
+              <th>R</th>
+              <th>P</th>
+              <th>Skóre</th>
+              <th>B</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in league_table.teams %}
+              <tr{% if team.name == "Postoupky" or team.name == "Sokol Postoupky" or team.name == "TJ Sokol Postoupky" %} class="league-table__highlight"{% endif %}>
+                <td>{{ team.pos }}</td>
+                <td>{{ team.name }}</td>
+                <td>{{ team.played }}</td>
+                <td>{{ team.wins }}</td>
+                <td>{{ team.draws }}</td>
+                <td>{{ team.losses }}</td>
+                <td>{{ team.goalsFor }}:{{ team.goalsAgainst }}</td>
+                <td><strong>{{ team.points }}</strong></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
 {% set menMatches = matchesComputed.upcoming | selectattr('team', 'equalto', 'muzi') | list %}
 {% set menLastResult = matchesComputed.played | selectattr('team', 'equalto', 'muzi') | first %}
 
