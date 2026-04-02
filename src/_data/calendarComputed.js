@@ -94,6 +94,10 @@ module.exports = function () {
     .filter((e) => e._dt)
     .sort((a, b) => a._dt.toMillis() - b._dt.toMillis());
 
+  // Upcoming events: today + 7 days
+  const weekAhead = now.plus({ days: 7 });
+  const upcomingEvents = all.filter((e) => e._dt >= now && e._dt <= weekAhead);
+
   // Group by month key "YYYY-MM"
   const eventsByDate = {};
   all.forEach((e) => {
@@ -169,6 +173,7 @@ module.exports = function () {
   return {
     months,
     dayHeaders: czDaysShort,
-    allEvents: all
+    allEvents: all,
+    upcomingEvents
   };
 };
