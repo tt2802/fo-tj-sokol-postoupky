@@ -214,8 +214,8 @@ module.exports = class {
 ${m.venue ? `<p><strong>Místo:</strong> ${m.venue}</p>` : ''}
 
 ${hasScore ? `
-<div class="card" style="--card-bg: #e8f5e9; margin: 2rem 0; padding: 1.5rem; text-align: center;">
-  <h2 style="margin: 0; font-size: 2.5rem; color: #2e7d32;">
+<div class="card" style="margin: 2rem 0; padding: 1.5rem; text-align: center; background: var(--primary-light);">
+  <h2 style="margin: 0; font-size: 2.5rem; color: var(--primary);">
     ${m.homeScore} : ${m.awayScore}
   </h2>
 </div>` : '<p class="muted">Výsledek zatím není k dispozici</p>'}
@@ -239,13 +239,20 @@ ${m.scorers.map(s => `  <li>${s.scorer || s}</li>`).join('\n')}
 ${m.cards && m.cards.length > 0 ? `
 <h2>🟨 Karty</h2>
 <ul>
-${m.cards.map(c => `  <li>${c.card || c}</li>`).join('\n')}
+${m.cards.map(c => {
+  if (typeof c === 'string') return `  <li>${c}</li>`;
+  const emoji = c.cardType === 'red' ? '🟥' : '🟨';
+  return `  <li>${emoji} ${c.player}</li>`;
+}).join('\n')}
 </ul>` : ''}
 
 ${m.substitutions && m.substitutions.length > 0 ? `
 <h2>🔄 Střídání</h2>
 <ul>
-${m.substitutions.map(s => `  <li>${s.substitution || s}</li>`).join('\n')}
+${m.substitutions.map(s => {
+  if (typeof s === 'string') return `  <li>${s}</li>`;
+  return `  <li>${s.playerOut} ➜ ${s.playerIn}</li>`;
+}).join('\n')}
 </ul>` : ''}
 
 ${m.referee ? `<p class="muted"><strong>Rozhodčí:</strong> ${m.referee}</p>` : ''}

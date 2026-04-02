@@ -9,22 +9,24 @@
   --shadow: rgba(0,0,0,0.08);
   --shadow-lg: rgba(0,0,0,0.12);
   --primary: #6d28d9;
+  --primary-dark: #6d28d9;
   --primary-light: rgba(109,40,217,0.12);
   --primary-faint: rgba(109,40,217,0.04);
 }
 
 [data-theme="dark"] {
-  --bg: #111827;
+  --bg: #181c25;
   --bg-alt: #1f2937;
-  --bg-card: #1f2937;
-  --text: #f3f4f6;
+  --bg-card: #232a36;
+  --text: #e5e7eb;
   --text-muted: #9ca3af;
   --border: #374151;
   --shadow: rgba(0,0,0,0.3);
   --shadow-lg: rgba(0,0,0,0.4);
-  --primary: #8b5cf6;
-  --primary-light: rgba(139,92,246,0.15);
-  --primary-faint: rgba(139,92,246,0.06);
+  --primary: #a78bfa;
+  --primary-dark: #4c1d95;
+  --primary-light: rgba(139,92,246,0.18);
+  --primary-faint: rgba(139,92,246,0.08);
 }
 
 body {
@@ -37,11 +39,13 @@ body {
 }
 
 header, footer {
-  background: var(--primary);
+  background: var(--primary-dark);
   color: white;
   padding: 1rem;
 }
 
+.site-header a,
+footer a,
 nav a {
   color: white;
   margin-right: 1rem;
@@ -217,7 +221,7 @@ nav a {
 }
 
 .site-header {
-  background: var(--primary);
+  background: var(--primary-dark);
   color: white;
 }
 
@@ -243,7 +247,7 @@ nav {
 .dropdown-menu {
   display: none;
   position: absolute;
-  background: var(--primary);
+  background: var(--primary-dark);
   padding: 0.5rem 0;
   margin-top: 0.25rem;
   border-radius: 6px;
@@ -450,7 +454,7 @@ body {
     left: 0;
     right: 0;
     top: 100%;
-    background: var(--primary);
+    background: var(--primary-dark);
     padding: 0.75rem 0.9rem;
     flex-direction: column;
     align-items: stretch;
@@ -772,7 +776,7 @@ body {
 }
 
 .stats-table thead th {
-  background: var(--primary);
+  background: var(--primary-dark);
   color: #fff;
   font-weight: 600;
   font-size: 0.82rem;
@@ -915,7 +919,7 @@ body {
 }
 [data-theme="dark"] .chat-google-btn {
   background: #374151;
-  color: #f3f4f6;
+  color: #e5e7eb;
 }
 [data-theme="dark"] .stats-table__yellow {
   color: #eab308;
@@ -923,8 +927,14 @@ body {
 [data-theme="dark"] .stats-table__red {
   color: #f87171;
 }
-[data-theme="dark"] a {
+[data-theme="dark"] .container a,
+[data-theme="dark"] .section a {
   color: var(--primary);
+}
+[data-theme="dark"] .site-header a,
+[data-theme="dark"] footer a,
+[data-theme="dark"] .main-nav a {
+  color: #fff;
 }
 [data-theme="dark"] .card__title {
   color: var(--primary);
@@ -932,6 +942,22 @@ body {
 [data-theme="dark"] .motm-bar-name,
 [data-theme="dark"] .motm-bar-count {
   color: var(--text-muted);
+}
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3 {
+  color: #f3f4f6;
+}
+[data-theme="dark"] .hero {
+  background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(139,92,246,0.04));
+}
+[data-theme="dark"] .btn {
+  background: var(--primary);
+  color: #fff;
+}
+[data-theme="dark"] .btn--ghost {
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 /* ===== CHAT ROOM ===== */
@@ -1305,7 +1331,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  background: var(--primary);
+  background: var(--primary-dark);
 }
 
 .cal-header__title {
