@@ -151,16 +151,41 @@ module.exports = function () {
     }
   }
 
-  /**  Find player by exact or partial match  */
+  /** Simple Levenshtein distance */
+  function levenshtein(a, b) {
+    const m = a.length, n = b.length;
+    const d = Array.from({ length: m + 1 }, (_, i) => [i]);
+    for (let j = 1; j <= n; j++) d[0][j] = j;
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        d[i][j] = a[i - 1] === b[j - 1]
+          ? d[i - 1][j - 1]
+          : 1 + Math.min(d[i - 1][j], d[i][j - 1], d[i - 1][j - 1]);
+      }
+    }
+    return d[m][n];
+  }
+
+  /**  Find player by exact, partial, or approximate match  */
   function findPlayer(name) {
     if (!name) return null;
     if (byName[name]) return byName[name];
-    // fuzzy: check if any player's full name contains the given string
     const lower = name.toLowerCase();
+    // contains check
     for (const p of players) {
       if (p.name && p.name.toLowerCase().includes(lower)) return p;
     }
-    return null;
+    // approximate match: allow edit distance ≤ 2 on any name part
+    let best = null, bestDist = 3;
+    for (const p of players) {
+      if (!p.name) continue;
+      const parts = p.name.toLowerCase().split(/\s+/);
+      for (const part of parts) {
+        const dist = levenshtein(lower, part);
+        if (dist < bestDist) { bestDist = dist; best = p; }
+      }
+    }
+    return best;
   }
 
   // Map each slot to positioned player

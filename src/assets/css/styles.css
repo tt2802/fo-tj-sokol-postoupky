@@ -716,6 +716,46 @@ body {
   color: #fff;
 }
 
+/* ===== PLAYER STATS (card) ===== */
+.player-stats {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.player-stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 38px;
+  padding: 0.3rem 0.4rem;
+  background: #f3f4f6;
+  border-radius: 6px;
+}
+
+.player-stats__val {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111;
+}
+
+.player-stats__lbl {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #777;
+}
+
+.player-stats__item--yellow .player-stats__val {
+  color: #ca8a04;
+}
+
+.player-stats__item--red .player-stats__val {
+  color: #dc2626;
+}
+
 /* ===== KALENDÁŘ WIDGET ===== */
 .calendar-section {
   background: linear-gradient(135deg, rgba(109,40,217,0.06), rgba(109,40,217,0.01));

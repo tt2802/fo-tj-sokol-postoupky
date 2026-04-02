@@ -96,6 +96,16 @@ layout: layouts/page.njk
               {% if p.position %}
                 <p class="muted">{{ p.position }}</p>
               {% endif %}
+
+              {% if p.stats %}
+              <div class="player-stats">
+                <div class="player-stats__item"><span class="player-stats__val">{{ p.stats.matches | default(0) }}</span><span class="player-stats__lbl">Zápasy</span></div>
+                <div class="player-stats__item"><span class="player-stats__val">{{ p.stats.goals | default(0) }}</span><span class="player-stats__lbl">Góly</span></div>
+                <div class="player-stats__item"><span class="player-stats__val">{{ p.stats.assists | default(0) }}</span><span class="player-stats__lbl">Asistence</span></div>
+                <div class="player-stats__item player-stats__item--yellow"><span class="player-stats__val">{{ p.stats.yellow_cards | default(0) }}</span><span class="player-stats__lbl">ŽK</span></div>
+                <div class="player-stats__item player-stats__item--red"><span class="player-stats__val">{{ p.stats.red_cards | default(0) }}</span><span class="player-stats__lbl">ČK</span></div>
+              </div>
+              {% endif %}
             </div>
           </article>
         {% endfor %}
