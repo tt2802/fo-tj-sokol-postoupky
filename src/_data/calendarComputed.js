@@ -4,8 +4,14 @@ const { DateTime } = require("luxon");
 module.exports = function () {
   const calendarEvents = require("./calendar_events.json");
   const upcomingMatches = require("./upcoming_matches.json");
+  const playedMatches = require("./played_matches.json");
   const zone = "Europe/Prague";
   const now = DateTime.now().setZone(zone).startOf("day");
+
+  // Slugs of already played matches — exclude from upcoming
+  const playedSlugs = new Set(
+    (playedMatches.items || []).map((m) => m.slug).filter(Boolean)
+  );
 
   const czMonths = [
     "", "Leden", "Únor", "Březen", "Duben", "Květen", "Červen",
@@ -69,8 +75,10 @@ module.exports = function () {
     } while (cursor <= maxDate);
   }
 
-  // Upcoming matches as calendar items
-  const matches = (upcomingMatches.items || []).map((m) => {
+  // Upcoming matches as calendar items (exclude already played)
+  const matches = (upcomingMatches.items || [])
+    .filter((m) => !playedSlugs.has(m.slug))
+    .map((m) => {
     const date = (m.date || "").slice(0, 10);
     const dt = DateTime.fromISO(date, { zone });
     const title = `${m.home || "?"} vs ${m.away || "?"}`;

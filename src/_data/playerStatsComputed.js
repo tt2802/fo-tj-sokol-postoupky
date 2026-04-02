@@ -140,11 +140,10 @@ module.exports = function () {
     }
   }
 
-  // Return as sorted array (by number, then name)
+  // Return sorted by goals (desc), then assists, then name
   const list = Object.values(stats).sort((a, b) => {
-    if (a.number && b.number) return a.number - b.number;
-    if (a.number) return -1;
-    if (b.number) return 1;
+    if (b.goals !== a.goals) return b.goals - a.goals;
+    if (b.assists !== a.assists) return b.assists - a.assists;
     return a.name.localeCompare(b.name, "cs");
   });
 
