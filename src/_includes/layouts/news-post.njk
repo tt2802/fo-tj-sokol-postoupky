@@ -140,6 +140,42 @@ layout: layouts/base.njk
         listEl.appendChild(div);
       });
       countEl.textContent = count > 0 ? '(' + count + ')' : '';
+    }, function(err) {
+      console.error('Firestore comments error:', err);
+      if (err.code === 'failed-precondition') {
+        // Index needed – fall back to simple query
+        db.collection('comments')
+          .where('postSlug', '==', postSlug)
+          .get().then(function(snap) {
+            var docs = [];
+            snap.forEach(function(doc) { docs.push(doc); });
+            docs.sort(function(a,b) {
+              var ta = a.data().createdAt, tb = b.data().createdAt;
+              if (!ta || !tb) return 0;
+              return ta.toMillis() - tb.toMillis();
+            });
+            listEl.innerHTML = '';
+            var count = 0;
+            docs.forEach(function(doc) {
+              var d = doc.data();
+              if (!d.createdAt) return;
+              count++;
+              var time = d.createdAt.toDate();
+              var dd = time.getDate(), mo = time.getMonth()+1, yyyy = time.getFullYear();
+              var hh = String(time.getHours()).padStart(2,'0');
+              var mm = String(time.getMinutes()).padStart(2,'0');
+              var div = document.createElement('div');
+              div.className = 'comment';
+              div.innerHTML =
+                '<img src="' + (d.userPhoto || '') + '" alt="" class="comment__avatar">' +
+                '<div class="comment__body"><div class="comment__meta"><strong>' + escapeHtml(d.userName) + '</strong>' +
+                '<span class="comment__time">' + dd + '.' + mo + '.' + yyyy + ' ' + hh + ':' + mm + '</span></div>' +
+                '<div class="comment__text">' + escapeHtml(d.text) + '</div></div>';
+              listEl.appendChild(div);
+            });
+            countEl.textContent = count > 0 ? '(' + count + ')' : '';
+          });
+      }
     });
 
   function escapeHtml(str) {
