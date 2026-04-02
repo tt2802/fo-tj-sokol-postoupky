@@ -102,10 +102,10 @@ module.exports = function () {
     .filter((e) => e._dt)
     .sort((a, b) => a._dt.toMillis() - b._dt.toMillis());
 
-  // Upcoming events: matches always, others only 7 days ahead
+  // Upcoming events: trainings only 7 days ahead, everything else always
   const weekAhead = now.plus({ days: 7 });
   const upcomingEvents = all.filter((e) =>
-    e._dt >= now && (e.type === "match" || e._dt <= weekAhead)
+    e._dt >= now && (e.type !== "training" || e._dt <= weekAhead)
   );
 
   // Group by month key "YYYY-MM"
