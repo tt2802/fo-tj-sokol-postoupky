@@ -24,7 +24,7 @@ layout: layouts/page.njk
       <h2>Nadcházející zápasy</h2>
       <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
         {% for m in youthMatches %}
-          <a href="{{ ('/mladez/dorostenky-d19/zapasy/' ~ m.slug ~ '/') | url }}" class="card" style="border-left: 4px solid #4CAF50; text-decoration: none; color: inherit; cursor: pointer;">
+          <a href="{{ ('/mladez/dorostenky-d19/zapasy/' ~ m.slug ~ '/') | url }}" class="card" style="border-left: 4px solid #4CAF50; text-decoration: none; color: var(--text); cursor: pointer;">
             <div class="card__body">
               <p class="muted">{{ m._dt | czDate }}{% if m.time %} · {{ m.time }}{% endif %}</p>
               <h3><strong>{{ m.home }}</strong> vs <strong>{{ m.away }}</strong></h3>
@@ -46,7 +46,7 @@ layout: layouts/page.njk
               <h3>
                 <strong>{{ m.home }}</strong>
                 {% if m.homeScore is number and m.awayScore is number %}
-                  <span style="color: #666;">{{ m.homeScore }} : {{ m.awayScore }}</span>
+                  <span style="color: var(--text-muted);">{{ m.homeScore }} : {{ m.awayScore }}</span>
                 {% endif %}
                 <strong>{{ m.away }}</strong>
               </h3>

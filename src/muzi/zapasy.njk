@@ -19,10 +19,10 @@ layout: layouts/page.njk
   <div class="container">
     <div data-matches-controls>
       <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
-        <select data-filter="season" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+        <select data-filter="season" style="padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); color: var(--text);">
           <option value="">Všechny sezóny</option>
         </select>
-        <select data-filter="competition" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+        <select data-filter="competition" style="padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); color: var(--text);">
           <option value="">Všechny soutěže</option>
         </select>
       </div>
@@ -61,7 +61,7 @@ layout: layouts/page.njk
               <h3>
                 <strong>{{ m.home }}</strong>
                 {% if m.homeScore is number and m.awayScore is number %}
-                  <span style="color: #666;">{{ m.homeScore }} : {{ m.awayScore }}</span>
+                  <span style="color: var(--text-muted);">{{ m.homeScore }} : {{ m.awayScore }}</span>
                 {% endif %}
                 <strong>{{ m.away }}</strong>
               </h3>

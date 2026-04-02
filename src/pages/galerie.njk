@@ -25,8 +25,8 @@ layout: layouts/page.njk
               {% if album.cover %}
                 <img src="{{ album.cover }}" alt="{{ album.title }}" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px 4px 0 0;">
               {% else %}
-                <div style="width: 100%; aspect-ratio: 16/9; background: #ddd; border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center;">
-                  <span style="color: #999;">Bez fotky</span>
+                <div style="width: 100%; aspect-ratio: 16/9; background: var(--bg-alt); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center;">
+                  <span style="color: var(--text-muted);">Bez fotky</span>
                 </div>
               {% endif %}
             </div>

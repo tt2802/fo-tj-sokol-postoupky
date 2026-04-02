@@ -40,12 +40,10 @@
   // ===== DARK MODE TOGGLE =====
   const themeBtn = document.getElementById("themeToggle");
   if (themeBtn) {
-    // Restore saved preference or respect system preference
+    // Restore saved preference (default is light)
     const saved = localStorage.getItem("theme");
     if (saved) {
       document.documentElement.setAttribute("data-theme", saved);
-    } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      document.documentElement.setAttribute("data-theme", "dark");
     }
     // Update icon
     function updateIcon() {

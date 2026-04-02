@@ -82,7 +82,7 @@ layout: layouts/page.njk
                 {% set __alt = "Fotka hráče " ~ p.name %}
                 <img src="{{ p.photo }}" alt="{{ __alt }}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px 4px 0 0;">
               {% else %}
-                <div style="width: 100%; aspect-ratio: 1; background: #e0e0e0; border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; color: #999;">
+                <div style="width: 100%; aspect-ratio: 1; background: var(--bg-alt); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
                   Bez fotky
                 </div>
               {% endif %}
@@ -90,7 +90,7 @@ layout: layouts/page.njk
 
             <div class="card__body">
               <h3 class="card__title">
-                {% if p.number %}<span style="font-size: 0.8em; color: #999;">#{{ p.number }}</span> {% endif %}{{ p.name }}
+                {% if p.number %}<span style="font-size: 0.8em; color: var(--text-muted);">#{{ p.number }}</span> {% endif %}{{ p.name }}
               </h3>
 
               {% if p.position %}
@@ -147,7 +147,7 @@ layout: layouts/page.njk
   </div>
 </section>
 
-<section class="section" style="background: #f9f9f9;">
+<section class="section" style="background: var(--bg-alt);">
   <div class="container">
     <h2>Realizační tým</h2>
 
