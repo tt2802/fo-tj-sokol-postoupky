@@ -1,8 +1,8 @@
 {
-  "apiKey": "FIREBASE_API_KEY",
-  "authDomain": "FIREBASE_PROJECT.firebaseapp.com",
-  "projectId": "FIREBASE_PROJECT_ID",
-  "storageBucket": "FIREBASE_PROJECT.appspot.com",
-  "messagingSenderId": "FIREBASE_SENDER_ID",
-  "appId": "FIREBASE_APP_ID"
+  "apiKey": "AIzaSyCPXDKp0AYDLr0IsKc5Dyus_OfHW0CyYdU",
+  "authDomain": "sokol-postoupky.firebaseapp.com",
+  "projectId": "sokol-postoupky",
+  "storageBucket": "sokol-postoupky.firebasestorage.app",
+  "messagingSenderId": "4679231847",
+  "appId": "1:4679231847:web:2795e5297d7eacb451a7c2"
 }
