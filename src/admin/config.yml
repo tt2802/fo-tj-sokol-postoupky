@@ -226,6 +226,13 @@ collections:
                 fields:
                   - { label: "Střelec", name: "scorer", widget: "player-select" }
 
+              - label: "Asistence"
+                name: "assists"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Nahrávač", name: "player", widget: "player-select" }
+
               - label: "Karty"
                 name: "cards"
                 widget: "list"
@@ -269,17 +276,6 @@ collections:
                   - { label: "Záložník", value: "Záložník" }
                   - { label: "Útočník", value: "Útočník" }
               - { label: "Fotka", name: "photo", widget: "image", required: false }
-              - label: "Statistiky"
-                name: "stats"
-                widget: "object"
-                collapsed: true
-                required: false
-                fields:
-                  - { label: "Zápasy", name: "matches", widget: "number", value_type: "int", required: false, default: 0, hint: "Počet odehraných zápasů" }
-                  - { label: "Góly", name: "goals", widget: "number", value_type: "int", required: false, default: 0 }
-                  - { label: "Asistence", name: "assists", widget: "number", value_type: "int", required: false, default: 0 }
-                  - { label: "Žluté karty", name: "yellow_cards", widget: "number", value_type: "int", required: false, default: 0 }
-                  - { label: "Červené karty", name: "red_cards", widget: "number", value_type: "int", required: false, default: 0 }
 
           - label: "Mládež"
             name: "youth"

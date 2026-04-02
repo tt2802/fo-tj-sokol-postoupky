@@ -96,19 +96,52 @@ layout: layouts/page.njk
               {% if p.position %}
                 <p class="muted">{{ p.position }}</p>
               {% endif %}
-
-              {% if p.stats %}
-              <div class="player-stats">
-                <div class="player-stats__item"><span class="player-stats__val">{{ p.stats.matches | default(0) }}</span><span class="player-stats__lbl">Zápasy</span></div>
-                <div class="player-stats__item"><span class="player-stats__val">{{ p.stats.goals | default(0) }}</span><span class="player-stats__lbl">Góly</span></div>
-                <div class="player-stats__item"><span class="player-stats__val">{{ p.stats.assists | default(0) }}</span><span class="player-stats__lbl">Asistence</span></div>
-                <div class="player-stats__item player-stats__item--yellow"><span class="player-stats__val">{{ p.stats.yellow_cards | default(0) }}</span><span class="player-stats__lbl">ŽK</span></div>
-                <div class="player-stats__item player-stats__item--red"><span class="player-stats__val">{{ p.stats.red_cards | default(0) }}</span><span class="player-stats__lbl">ČK</span></div>
-              </div>
-              {% endif %}
             </div>
           </article>
         {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Statistiky hráčů</h2>
+    <p class="muted" style="margin-bottom:1rem;">Automaticky počítáno z odehraných zápasů.</p>
+
+    {% set stats = playerStatsComputed.men %}
+    {% if stats | length == 0 %}
+      <p class="muted">Zatím žádné statistiky – přidejte odehrané zápasy v administraci.</p>
+    {% else %}
+      <div style="overflow-x:auto;">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Hráč</th>
+              <th>Pozice</th>
+              <th>Zápasy</th>
+              <th>Góly</th>
+              <th>Asistence</th>
+              <th>ŽK</th>
+              <th>ČK</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in stats %}
+              <tr>
+                <td>{{ p.number if p.number else '—' }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.position if p.position else '—' }}</td>
+                <td>{{ p.matches }}</td>
+                <td>{{ p.goals }}</td>
+                <td>{{ p.assists }}</td>
+                <td class="stats-table__yellow">{{ p.yellowCards }}</td>
+                <td class="stats-table__red">{{ p.redCards }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     {% endif %}
   </div>

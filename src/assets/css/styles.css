@@ -716,43 +716,47 @@ body {
   color: #fff;
 }
 
-/* ===== PLAYER STATS (card) ===== */
-.player-stats {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  flex-wrap: wrap;
+/* ===== STATS TABLE ===== */
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
 }
 
-.player-stats__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 38px;
-  padding: 0.3rem 0.4rem;
-  background: #f3f4f6;
-  border-radius: 6px;
+.stats-table th,
+.stats-table td {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.player-stats__val {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: #111;
-}
-
-.player-stats__lbl {
-  font-size: 0.6rem;
+.stats-table thead th {
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: #777;
+  letter-spacing: 0.04em;
 }
 
-.player-stats__item--yellow .player-stats__val {
+.stats-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.stats-table td:nth-child(n+4) {
+  text-align: center;
+  font-weight: 600;
+}
+
+.stats-table th:nth-child(n+4) {
+  text-align: center;
+}
+
+.stats-table__yellow {
   color: #ca8a04;
 }
 
-.player-stats__item--red .player-stats__val {
+.stats-table__red {
   color: #dc2626;
 }
 
