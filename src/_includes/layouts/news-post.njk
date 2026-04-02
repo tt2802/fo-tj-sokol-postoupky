@@ -12,4 +12,135 @@ layout: layouts/base.njk
 
     {{ content | safe }}
   </article>
+
+  {# ── Komentáře ── #}
+  <section class="comments-section" id="commentsSection">
+    <h2 class="comments-title">Komentáře <span class="comments-count" id="commentsCount"></span></h2>
+
+    <div id="commentAuth" class="comments-auth">
+      <button id="commentLogin" class="chat-google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="18" height="18">
+        Přihlásit se pro komentování
+      </button>
+    </div>
+
+    <form id="commentForm" class="comment-form" style="display:none;">
+      <div class="comment-form__user" id="commentUser"></div>
+      <textarea id="commentText" class="comment-input" rows="3" placeholder="Napište komentář…" maxlength="1000" required></textarea>
+      <div class="comment-form__actions">
+        <button type="submit" class="btn btn--primary btn--sm">Odeslat komentář</button>
+      </div>
+    </form>
+
+    <div class="comments-list" id="commentsList"></div>
+  </section>
 </main>
+
+{# ── Firebase SDK ── #}
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+(function() {
+  var cfg = {{ firebase | dump | safe }};
+  if (!cfg.apiKey || cfg.apiKey === 'FIREBASE_API_KEY') {
+    document.getElementById('commentsSection').innerHTML =
+      '<p class="muted">Komentáře budou dostupné brzy.</p>';
+    return;
+  }
+
+  firebase.initializeApp(cfg);
+  var auth = firebase.auth();
+  var db = firebase.firestore();
+  var postSlug = '{{ page.fileSlug }}';
+  var currentUser = null;
+
+  var authEl    = document.getElementById('commentAuth');
+  var formEl    = document.getElementById('commentForm');
+  var userEl    = document.getElementById('commentUser');
+  var textEl    = document.getElementById('commentText');
+  var listEl    = document.getElementById('commentsList');
+  var countEl   = document.getElementById('commentsCount');
+  var loginBtn  = document.getElementById('commentLogin');
+
+  /* ── Auth ── */
+  loginBtn.addEventListener('click', function() {
+    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  });
+
+  auth.onAuthStateChanged(function(user) {
+    currentUser = user;
+    if (user) {
+      authEl.style.display = 'none';
+      formEl.style.display = 'block';
+      userEl.innerHTML =
+        '<img src="' + user.photoURL + '" alt="" class="chat-avatar-sm">' +
+        '<span>' + user.displayName + '</span>' +
+        '<button type="button" id="commentLogout" class="chat-logout-btn" title="Odhlásit">✕</button>';
+      document.getElementById('commentLogout').addEventListener('click', function() {
+        auth.signOut();
+      });
+    } else {
+      authEl.style.display = '';
+      formEl.style.display = 'none';
+    }
+  });
+
+  /* ── Submit comment ── */
+  formEl.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var text = textEl.value.trim();
+    if (!text || !currentUser) return;
+    textEl.value = '';
+    db.collection('comments').add({
+      postSlug: postSlug,
+      text: text,
+      userName: currentUser.displayName,
+      userPhoto: currentUser.photoURL,
+      userId: currentUser.uid,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  });
+
+  /* ── Listen for comments ── */
+  db.collection('comments')
+    .where('postSlug', '==', postSlug)
+    .orderBy('createdAt', 'asc')
+    .onSnapshot(function(snap) {
+      listEl.innerHTML = '';
+      var count = 0;
+      snap.forEach(function(doc) {
+        var d = doc.data();
+        if (!d.createdAt) return;
+        count++;
+        var time = d.createdAt.toDate();
+        var dd = time.getDate();
+        var mo = time.getMonth() + 1;
+        var yyyy = time.getFullYear();
+        var hh = String(time.getHours()).padStart(2,'0');
+        var mm = String(time.getMinutes()).padStart(2,'0');
+
+        var div = document.createElement('div');
+        div.className = 'comment';
+        div.innerHTML =
+          '<img src="' + (d.userPhoto || '') + '" alt="" class="comment__avatar">' +
+          '<div class="comment__body">' +
+            '<div class="comment__meta">' +
+              '<strong>' + escapeHtml(d.userName) + '</strong>' +
+              '<span class="comment__time">' + dd + '.' + mo + '.' + yyyy + ' ' + hh + ':' + mm + '</span>' +
+            '</div>' +
+            '<div class="comment__text">' + escapeHtml(d.text) + '</div>' +
+          '</div>';
+        listEl.appendChild(div);
+      });
+      countEl.textContent = count > 0 ? '(' + count + ')' : '';
+    });
+
+  function escapeHtml(str) {
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+})();
+</script>

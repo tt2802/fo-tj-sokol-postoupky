@@ -1,0 +1,8 @@
+{
+  "apiKey": "FIREBASE_API_KEY",
+  "authDomain": "FIREBASE_PROJECT.firebaseapp.com",
+  "projectId": "FIREBASE_PROJECT_ID",
+  "storageBucket": "FIREBASE_PROJECT.appspot.com",
+  "messagingSenderId": "FIREBASE_SENDER_ID",
+  "appId": "FIREBASE_APP_ID"
+}
