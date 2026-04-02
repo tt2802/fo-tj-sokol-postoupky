@@ -40,7 +40,7 @@ jobs:
       - name: Build Eleventy site
         run: |
           # set production flag so transforms (minify) are applied
-          ELEVENTY_ENV=production ELEVENTY_PATH_PREFIX=/fo-tj-sokol-postoupky/ npx @11ty/eleventy --config=.eleventy.cjs
+          ELEVENTY_ENV=production npx @11ty/eleventy --config=.eleventy.cjs
 
 
 

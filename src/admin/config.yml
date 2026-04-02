@@ -9,8 +9,8 @@ backend:
 # Enable local backend for local testing (no auth required when running the proxy)
 local_backend: true
 
-site_url: https://tt2802.github.io/fo-tj-sokol-postoupky
-display_url: https://tt2802.github.io/fo-tj-sokol-postoupky
+site_url: https://sokolpostoupky.cz
+display_url: https://sokolpostoupky.cz
 
 # Store uploaded images inside the site's source assets so Eleventy can pick them up
 media_folder: "src/assets/img/uploads"
