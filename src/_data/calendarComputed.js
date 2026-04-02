@@ -32,25 +32,42 @@ module.exports = function () {
     other: "📅"
   };
 
-  // Calendar events
-  const events = (calendarEvents.items || []).map((e) => {
+  // Calendar events — expand recurring ones
+  const rawItems = calendarEvents.items || [];
+  const events = [];
+  for (const e of rawItems) {
     const date = (e.date || "").slice(0, 10);
     const dt = DateTime.fromISO(date, { zone });
-    return {
-      title: e.title,
-      type: e.type || "other",
-      typeLabel: typeLabels[e.type] || typeLabels.other,
-      icon: typeIcons[e.type] || typeIcons.other,
-      date,
-      day: dt.isValid ? dt.day : 0,
-      time: e.time || "",
-      endTime: e.endTime || "",
-      location: e.location || "",
-      description: e.description || "",
-      team: e.team || "",
-      _dt: dt.isValid ? dt : null
-    };
-  });
+    if (!dt.isValid) continue;
+
+    const repeat = e.repeat || "none";
+    const repeatUntilStr = (e.repeatUntil || "").slice(0, 10);
+    const repeatUntil = repeatUntilStr ? DateTime.fromISO(repeatUntilStr, { zone }) : null;
+    const step = repeat === "weekly" ? 7 : repeat === "biweekly" ? 14 : 0;
+
+    // Generate occurrences
+    let cursor = dt;
+    const maxDate = repeatUntil && repeatUntil.isValid ? repeatUntil : cursor; // single occurrence when no repeat
+    do {
+      const oDate = cursor.toISODate();
+      events.push({
+        title: e.title,
+        type: e.type || "other",
+        typeLabel: typeLabels[e.type] || typeLabels.other,
+        icon: typeIcons[e.type] || typeIcons.other,
+        date: oDate,
+        day: cursor.day,
+        time: e.time || "",
+        endTime: e.endTime || "",
+        location: e.location || "",
+        description: e.description || "",
+        team: e.team || "",
+        _dt: cursor
+      });
+      if (!step) break;
+      cursor = cursor.plus({ days: step });
+    } while (cursor <= maxDate);
+  }
 
   // Upcoming matches as calendar items
   const matches = (upcomingMatches.items || []).map((m) => {

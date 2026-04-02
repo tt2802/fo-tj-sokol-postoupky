@@ -8,7 +8,9 @@
       "endTime": "19:30",
       "location": "Sokolovna Postoupky",
       "description": "Pravidelný trénink mužského týmu",
-      "team": "muzi"
+      "team": "muzi",
+      "repeat": "weekly",
+      "repeatUntil": "2026-06-30"
     },
     {
       "title": "Trénink mládeže – mladší žáci",
@@ -18,7 +20,9 @@
       "endTime": "17:30",
       "location": "Sokolovna Postoupky",
       "description": "Trénink mladších žáků",
-      "team": "mladez"
+      "team": "mladez",
+      "repeat": "weekly",
+      "repeatUntil": "2026-06-30"
     }
   ]
 }

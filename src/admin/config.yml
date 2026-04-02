@@ -502,8 +502,25 @@ collections:
                   - { label: "Všechny", value: "" }
                   - { label: "Muži", value: "muzi" }
                   - { label: "Mládež", value: "mladez" }
-
-      - name: "gallery"
+              - label: "Opakování"
+                name: "repeat"
+                widget: "select"
+                required: false
+                default: "none"
+                hint: "Vyber jak často se akce opakuje"
+                options:
+                  - { label: "Neopakuje se", value: "none" }
+                  - { label: "Každý týden", value: "weekly" }
+                  - { label: "Každé 2 týdny", value: "biweekly" }
+              - label: "Opakovat do"
+                name: "repeatUntil"
+                widget: "datetime"
+                format: "YYYY-MM-DD"
+                date_format: "DD.MM.YYYY"
+                time_format: false
+                picker_utc: false
+                required: false
+                hint: "Datum, do kdy se akce opakuje (včetně). Potřeba jen pokud je zvoleno opakování."
         label: "Galerie"
         file: "src/_data/gallery.yml"
         preview_url: "{{site_url}}/galerie/"

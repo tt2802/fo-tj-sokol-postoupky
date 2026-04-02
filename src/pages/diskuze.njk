@@ -1,0 +1,31 @@
+---
+title: Diskuze
+permalink: /diskuze/index.html
+layout: layouts/page.njk
+---
+
+<section class="section">
+  <div class="container">
+    <h1>Diskuze</h1>
+    <p class="muted" style="margin-bottom: 2rem;">Máte dotaz, názor nebo chcete něco probrat? Napište příspěvek níže — přihlásit se můžete přes Facebook, Google nebo e-mail.</p>
+
+    <div id="disqus_thread"></div>
+
+    <noscript>Pro zobrazení diskuze je potřeba zapnout JavaScript.</noscript>
+  </div>
+</section>
+
+<script>
+  var disqus_config = function () {
+    this.page.url = '{{ site.url }}/diskuze/';
+    this.page.identifier = 'diskuze';
+    this.page.title = 'Diskuze – TJ Sokol Postoupky';
+  };
+
+  (function () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sokolpostoupky.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
