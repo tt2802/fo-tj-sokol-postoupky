@@ -32,6 +32,7 @@
   function fetchMatches() {
     var prefix = getPathPrefix();
     var urls = [
+      "https://raw.githubusercontent.com/tt2802/fo-tj-sokol-postoupky/main/src/_data/upcoming_matches.json",
       prefix ? prefix + "/_data/upcoming_matches.json" : null,
       "../_data/upcoming_matches.json",
       "/_data/upcoming_matches.json"
@@ -243,22 +244,15 @@
 
     componentDidMount: function () {
       var self = this;
-      if (upcomingMatches.length) {
+      // Always re-fetch to get latest data after CMS publish
+      fetchMatches().then(function (items) {
+        upcomingMatches = items;
         self.setState({
-          matches: upcomingMatches,
+          matches: items,
           loaded: true,
           selected: self._find(self.props.value)
         });
-      } else {
-        fetchMatches().then(function (items) {
-          upcomingMatches = items;
-          self.setState({
-            matches: items,
-            loaded: true,
-            selected: self._find(self.props.value)
-          });
-        });
-      }
+      });
     },
 
     _find: function (slug) {
