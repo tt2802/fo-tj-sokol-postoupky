@@ -14,9 +14,26 @@
   drops.forEach((d) => {
     const toggle = d.querySelector(".dropdown-toggle");
     if (!toggle) return;
-    toggle.addEventListener("click", () => {
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      drops.forEach((other) => {
+        if (other !== d) {
+          other.classList.remove("open");
+          const ot = other.querySelector(".dropdown-toggle");
+          if (ot) ot.setAttribute("aria-expanded", "false");
+        }
+      });
       const open = d.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  });
+
+  // close dropdowns on outside click
+  document.addEventListener("click", () => {
+    drops.forEach((d) => {
+      d.classList.remove("open");
+      const t = d.querySelector(".dropdown-toggle");
+      if (t) t.setAttribute("aria-expanded", "false");
     });
   });
 })();

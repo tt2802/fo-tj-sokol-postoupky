@@ -80,8 +80,8 @@ layout: layouts/base.njk
       authEl.style.display = 'none';
       formEl.style.display = 'block';
       userEl.innerHTML =
-        '<img src="' + user.photoURL + '" alt="" class="chat-avatar-sm">' +
-        '<span>' + user.displayName + '</span>' +
+        '<img src="' + escapeHtml(user.photoURL || '') + '" alt="" class="chat-avatar-sm">' +
+        '<span>' + escapeHtml(user.displayName) + '</span>' +
         '<button type="button" id="commentLogout" class="chat-logout-btn" title="Odhlásit">✕</button>';
       document.getElementById('commentLogout').addEventListener('click', function() {
         auth.signOut();

@@ -15,7 +15,7 @@ layout: layouts/page.njk
   <div class="container">
     {% set contactData = contacts %}
 
-    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
       <div>
         <h2>Adresa klubu</h2>
         {% if contactData.address %}

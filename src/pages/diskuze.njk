@@ -77,11 +77,17 @@ layout: layouts/base.njk
 
   var provider = new firebase.auth.GoogleAuthProvider();
 
+  function escapeHtml(str) {
+    var d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
   function doLogin() {
     auth.signInWithPopup(provider).catch(function(err) {
       console.error('Auth error:', err.code, err.message);
       var msgEl = document.getElementById('chatWelcome');
-      msgEl.innerHTML = '<div style="color:#dc2626;font-weight:600;">⚠️ Chyba přihlášení: ' + err.code + '<br><small>' + err.message + '</small></div>';
+      msgEl.innerHTML = '<div style="color:#dc2626;font-weight:600;">⚠️ Chyba přihlášení: ' + escapeHtml(err.code) + '<br><small>' + escapeHtml(err.message) + '</small></div>';
       msgEl.style.display = '';
     });
   }
@@ -95,8 +101,8 @@ layout: layouts/base.njk
       welcomeEl.style.display = 'none';
       inputArea.style.display = 'flex';
       userEl.innerHTML =
-        '<img src="' + user.photoURL + '" alt="" class="chat-avatar-sm">' +
-        '<span class="chat-username">' + user.displayName + '</span>' +
+        '<img src="' + escapeHtml(user.photoURL || '') + '" alt="" class="chat-avatar-sm">' +
+        '<span class="chat-username">' + escapeHtml(user.displayName) + '</span>' +
         '<button id="chatLogout" class="chat-logout-btn" title="Odhlásit">✕</button>';
       document.getElementById('chatLogout').addEventListener('click', function() {
         auth.signOut();
@@ -157,7 +163,7 @@ layout: layouts/base.njk
         var div = document.createElement('div');
         div.className = 'chat-msg' + (isOwn ? ' chat-msg--own' : '');
         div.innerHTML =
-          '<img src="' + (d.userPhoto || '') + '" alt="" class="chat-msg__avatar">' +
+          '<img src="' + escapeHtml(d.userPhoto || '') + '" alt="" class="chat-msg__avatar">' +
           '<div class="chat-msg__body">' +
             '<div class="chat-msg__meta">' +
               '<strong>' + escapeHtml(d.userName) + '</strong>' +
@@ -170,11 +176,5 @@ layout: layouts/base.njk
 
       messagesEl.scrollTop = messagesEl.scrollHeight;
     });
-
-  function escapeHtml(str) {
-    var d = document.createElement('div');
-    d.textContent = str;
-    return d.innerHTML;
-  }
 })();
 </script>

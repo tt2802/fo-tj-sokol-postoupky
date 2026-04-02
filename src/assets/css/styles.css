@@ -717,10 +717,17 @@ body {
 }
 
 /* ===== STATS TABLE ===== */
+.stats-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
 .stats-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.95rem;
+  min-width: 500px;
 }
 
 .stats-table th,
@@ -768,7 +775,7 @@ body {
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
-  height: 600px;
+  height: min(600px, 75vh);
   background: #fff;
 }
 .chat-header {
@@ -1065,7 +1072,7 @@ body {
 }
 
 @media (max-width: 640px) {
-  .chat-container { height: 500px; }
+  .chat-container { height: min(500px, 70vh); }
   .chat-header__title { font-size: 0.9rem; }
   .chat-msg { max-width: 90%; }
 }
