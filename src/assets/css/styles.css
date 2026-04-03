@@ -144,6 +144,8 @@ nav a {
 .hero {
   background: rgba(255,255,255,0.5);
   padding: 3rem 0;
+  margin: -1rem;
+  margin-bottom: 0;
 }
 
 .hero__inner {
