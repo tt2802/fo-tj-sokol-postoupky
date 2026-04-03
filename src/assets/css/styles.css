@@ -69,22 +69,19 @@ main > .container {
 }
 .section {
   padding: 3rem 0;
-  background: rgba(255,255,255,0.9);
-  border-radius: 12px;
-  margin-bottom: 1rem;
+  background: rgba(255,255,255,0.85);
 }
 .section--no-bg {
   background: transparent;
 }
 main {
   flex: 1;
-  padding: 1rem;
 }
 [data-theme="dark"] .section {
-  background: rgba(15,18,25,0.9);
+  background: rgba(15,18,25,0.85);
 }
 [data-theme="dark"] .hero {
-  background: rgba(15,18,25,0.9);
+  background: rgba(15,18,25,0.85);
 }
 
 .section h1,
@@ -161,9 +158,7 @@ main {
 }
 /* ===== DOMŮ: HERO ===== */
 .hero {
-  background: rgba(255,255,255,0.9);
-  border-radius: 12px;
-  margin-bottom: 1rem;
+  background: rgba(255,255,255,0.85);
   padding: 2rem 0 3rem 0;
 }
 
