@@ -43,6 +43,9 @@ header, footer {
   color: white;
   padding: 1rem;
 }
+footer .container {
+  background: transparent;
+}
 
 .site-header a,
 footer a,
