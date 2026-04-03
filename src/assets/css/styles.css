@@ -54,9 +54,11 @@ nav a {
 
 .container {
   padding: 1rem;
+  background: var(--bg);
 }
 .section {
   padding: 3rem 0;
+  background: var(--bg);
 }
 
 .section h1,
@@ -133,7 +135,7 @@ nav a {
 }
 /* ===== DOMŮ: HERO ===== */
 .hero {
-  background: linear-gradient(135deg, var(--primary-light), var(--primary-faint));
+  background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(109,40,217,0.04)), var(--bg);
   padding: 3rem 0;
 }
 
