@@ -36,6 +36,9 @@ body {
   background: var(--bg);
   color: var(--text);
   transition: background 0.3s, color 0.3s;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header, footer {
@@ -71,6 +74,7 @@ main > .container {
 }
 main {
   background: rgba(255,255,255,0.5);
+  flex: 1;
 }
 [data-theme="dark"] main {
   background: rgba(15,18,25,0.5);
