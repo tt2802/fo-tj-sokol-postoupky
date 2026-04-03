@@ -1,4 +1,19 @@
 /* ===== THEME VARIABLES ===== */
+/* ===== SKIP LINK (accessibility) ===== */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 9999;
+  background: var(--primary-dark);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+.skip-link:focus {
+  left: 0;
+}
+
 :root {
   --bg: #ffffff;
   --bg-alt: #f9fafb;

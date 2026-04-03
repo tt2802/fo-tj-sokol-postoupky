@@ -4,8 +4,9 @@
   {% include "partials/head.njk" %}
 </head>
 <body>
+  <a href="#mainContent" class="skip-link">Přeskočit na obsah</a>
   {% include "partials/header.njk" %}
-  <main>
+  <main id="mainContent">
     {{ content | safe }}
   </main>
   {% include "partials/footer.njk" %}

@@ -139,7 +139,7 @@ module.exports = function (eleventyConfig) {
   if (pluginSitemap) {
     eleventyConfig.addPlugin(pluginSitemap, {
       sitemap: {
-        hostname: process.env.SITE_URL || "https://example.com/fo-tj-sokol-postoupky"
+        hostname: process.env.SITE_URL || "https://tt2802.github.io/fo-tj-sokol-postoupky"
       }
     });
   }
@@ -188,7 +188,7 @@ module.exports = function (eleventyConfig) {
   }
 
   // after build hook: minify static CSS/JS assets in output folder (only if libs exist)
-  eleventyConfig.on("afterBuild", () => {
+  eleventyConfig.on("afterBuild", async () => {
     if (!CleanCSS && !terser) return;
     const fs = require("fs");
     const path = require("path");
@@ -212,18 +212,17 @@ module.exports = function (eleventyConfig) {
     if (terser) {
       const jsDir = path.join(outDir, "assets/js");
       if (fs.existsSync(jsDir)) {
-        fs.readdirSync(jsDir).forEach((name) => {
-          if (name.endsWith(".js")) {
-            const filePath = path.join(jsDir, name);
-            try {
-              const jsIn = fs.readFileSync(filePath, "utf8");
-              const min = terser.minify(jsIn);
-              if (min && min.code) fs.writeFileSync(filePath, min.code);
-            } catch (err) {
-              console.error("Error minifying JS in afterBuild", err);
-            }
+        const files = fs.readdirSync(jsDir).filter((n) => n.endsWith(".js"));
+        for (const name of files) {
+          const filePath = path.join(jsDir, name);
+          try {
+            const jsIn = fs.readFileSync(filePath, "utf8");
+            const min = await terser.minify(jsIn);
+            if (min && min.code) fs.writeFileSync(filePath, min.code);
+          } catch (err) {
+            console.error("Error minifying JS in afterBuild", err);
           }
-        });
+        }
       }
     }
   });
