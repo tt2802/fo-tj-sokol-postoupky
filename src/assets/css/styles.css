@@ -916,23 +916,20 @@ body {
 .card-icon--yellow { background: #facc15; }
 .card-icon--red { background: #ef4444; }
 
-/* ===== FOOTBALL BACKGROUND PATTERN ===== */
+/* ===== SUBTLE FOOTBALL BACKGROUND ===== */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(109,40,217,0.045) 0%, transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='96'%3E%3Cpath d='M30 0L60 16v32L30 64 0 48V16z' fill='none' stroke='%236d28d9' stroke-width='.4' opacity='.35'/%3E%3Cpath d='M30 32L60 48v32L30 96 0 80V48z' fill='none' stroke='%236d28d9' stroke-width='.4' opacity='.35'/%3E%3C/svg%3E");
-  background-size: cover, 60px 96px;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3Cg id='b'%3E%3Ccircle r='1' fill='none' stroke='%23000' stroke-width='.06'/%3E%3Cpath d='M0-.38L.36-.12.22.31H-.22L-.36-.12Z' fill='%23000' opacity='.6'/%3E%3Cline x1='0' y1='-.38' x2='0' y2='-1' stroke='%23000' stroke-width='.04'/%3E%3Cline x1='.36' y1='-.12' x2='.95' y2='-.31' stroke='%23000' stroke-width='.04'/%3E%3Cline x1='.22' y1='.31' x2='.59' y2='.81' stroke='%23000' stroke-width='.04'/%3E%3Cline x1='-.22' y1='.31' x2='-.59' y2='.81' stroke='%23000' stroke-width='.04'/%3E%3Cline x1='-.36' y1='-.12' x2='-.95' y2='-.31' stroke='%23000' stroke-width='.04'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23b' transform='translate(60,70) scale(30)'/%3E%3Cuse href='%23b' transform='translate(200,40) scale(18) rotate(15)'/%3E%3Cuse href='%23b' transform='translate(340,90) scale(24) rotate(-10)'/%3E%3Cuse href='%23b' transform='translate(100,200) scale(22) rotate(25)'/%3E%3Cuse href='%23b' transform='translate(300,220) scale(16) rotate(-20)'/%3E%3Cuse href='%23b' transform='translate(50,330) scale(20) rotate(5)'/%3E%3Cuse href='%23b' transform='translate(220,310) scale(26) rotate(-8)'/%3E%3Cuse href='%23b' transform='translate(370,350) scale(19) rotate(18)'/%3E%3C/svg%3E");
+  background-size: 400px 400px;
 }
 [data-theme="dark"] body::before {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.08) 0%, transparent 55%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='96'%3E%3Cpath d='M30 0L60 16v32L30 64 0 48V16z' fill='none' stroke='%237c3aed' stroke-width='.4' opacity='.18'/%3E%3Cpath d='M30 32L60 48v32L30 96 0 80V48z' fill='none' stroke='%237c3aed' stroke-width='.4' opacity='.18'/%3E%3C/svg%3E");
-  background-size: cover, 60px 96px;
+  opacity: 0.05;
+  filter: invert(1);
 }
 
 /* ===== DARK MODE OVERRIDES (only for elements that need special treatment) ===== */
