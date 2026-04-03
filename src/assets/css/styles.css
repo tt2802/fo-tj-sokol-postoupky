@@ -54,11 +54,15 @@ nav a {
 
 .container {
   padding: 1rem;
-  background: var(--bg);
+  background: rgba(255,255,255,0.85);
 }
 .section {
   padding: 3rem 0;
-  background: var(--bg);
+  background: rgba(255,255,255,0.85);
+}
+[data-theme="dark"] .container,
+[data-theme="dark"] .section {
+  background: rgba(15,18,25,0.85);
 }
 
 .section h1,
@@ -135,7 +139,7 @@ nav a {
 }
 /* ===== DOMŮ: HERO ===== */
 .hero {
-  background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(109,40,217,0.04)), var(--bg);
+  background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(109,40,217,0.04)), rgba(255,255,255,0.85);
   padding: 3rem 0;
 }
 
@@ -986,6 +990,9 @@ body::before {
 }
 
 /* ===== DARK MODE OVERRIDES (only for elements that need special treatment) ===== */
+[data-theme="dark"] .hero {
+  background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(109,40,217,0.04)), rgba(15,18,25,0.85);
+}
 [data-theme="dark"] .chat-msg--own .chat-msg__body {
   background: #065f46;
   border-color: #047857;
