@@ -76,7 +76,7 @@ layout: layouts/page.njk
   <section class="section">
     <div class="container">
       <h2>Poslední zápas</h2>
-      <div class="card">
+      <a href="{{ ('/muzi/zapasy/' ~ menLastResult.slug ~ '/') | url }}" class="card" style="text-decoration:none; color:inherit; display:block; cursor:pointer;">
         <div class="card__body">
           <p class="muted">{{ menLastResult._dt | czDate }}</p>
           <h3>
@@ -88,7 +88,7 @@ layout: layouts/page.njk
           </h3>
           <p class="muted">{{ menLastResult.competition }} · {{ menLastResult.season }}</p>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 {% endif %}
@@ -98,7 +98,7 @@ layout: layouts/page.njk
     <div class="container">
       <h2>Příští zápas</h2>
       {% set nextMatch = menMatches | first %}
-      <div class="card">
+      <a href="{{ ('/muzi/zapasy/' ~ nextMatch.slug ~ '/') | url }}" class="card" style="text-decoration:none; color:inherit; display:block; cursor:pointer;">
         <div class="card__body">
           <p class="muted">{{ nextMatch._dt | czDate }}{% if nextMatch.time %} · {{ nextMatch.time }}{% endif %}</p>
           <h3>
@@ -108,7 +108,7 @@ layout: layouts/page.njk
           </h3>
           <p class="muted">{{ nextMatch.venue }} · {{ nextMatch.competition }} · {{ nextMatch.season }}</p>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 {% endif %}
