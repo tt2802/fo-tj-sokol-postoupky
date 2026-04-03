@@ -73,6 +73,9 @@ main > .container {
   border-radius: 12px;
   margin-bottom: 1rem;
 }
+.section--no-bg {
+  background: transparent;
+}
 main {
   flex: 1;
   padding: 1rem;
