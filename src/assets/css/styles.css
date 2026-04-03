@@ -139,7 +139,7 @@ nav a {
 }
 /* ===== DOMŮ: HERO ===== */
 .hero {
-  background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(109,40,217,0.04)), rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.5);
   padding: 3rem 0;
 }
 
@@ -595,7 +595,7 @@ body {
 
 /* ===== FORMATION PITCH (FIFA style) ===== */
 .formation-section {
-  background: linear-gradient(135deg, rgba(109,40,217,0.04), rgba(16,185,129,0.03));
+  background: rgba(255,255,255,0.5);
 }
 
 .pitch {
@@ -991,14 +991,17 @@ body::before {
 
 /* ===== DARK MODE OVERRIDES (only for elements that need special treatment) ===== */
 [data-theme="dark"] .hero {
-  background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(109,40,217,0.04)), rgba(15,18,25,0.5);
+  background: rgba(15,18,25,0.5);
 }
 [data-theme="dark"] .chat-msg--own .chat-msg__body {
   background: #065f46;
   border-color: #047857;
 }
 [data-theme="dark"] .calendar-section {
-  background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(124,58,237,0.02));
+  background: rgba(15,18,25,0.5);
+}
+[data-theme="dark"] .formation-section {
+  background: rgba(15,18,25,0.5);
 }
 [data-theme="dark"] footer {
   background: #080a10;
@@ -1042,7 +1045,7 @@ body::before {
   color: #f0f1f3;
 }
 [data-theme="dark"] .hero {
-  background: linear-gradient(135deg, rgba(124,58,237,0.10), rgba(124,58,237,0.03));
+  background: rgba(15,18,25,0.5);
 }
 [data-theme="dark"] .hero__badgeInner {
   background: var(--primary-dark);
@@ -1397,7 +1400,7 @@ body::before {
 
 /* ===== KALENDÁŘ WIDGET ===== */
 .calendar-section {
-  background: linear-gradient(135deg, rgba(109,40,217,0.06), rgba(109,40,217,0.01));
+  background: rgba(255,255,255,0.5);
 }
 
 /* Side-by-side layout: calendar + upcoming */
