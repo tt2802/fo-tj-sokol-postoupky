@@ -31,7 +31,7 @@ module.exports = class {
         
         if (ytId) {
           videoHtml = `
-<h2>📹 Video ze zápasu</h2>
+<h2>Video ze zápasu</h2>
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
   <iframe
     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
@@ -45,13 +45,13 @@ module.exports = class {
         }
       } else if (url.endsWith('.mp4')) {
         videoHtml = `
-<h2>📹 Video ze zápasu</h2>
+<h2>Video ze zápasu</h2>
 <video controls style="width: 100%; max-width: 800px; margin: 2rem 0;">
   <source src="${url}" type="video/mp4">
   Váš prohlížeč nepodporuje video element.
 </video>`;
       } else {
-        videoHtml = `<h2>🔗 Video ze zápasu</h2><p><a href="${url}" target="_blank" rel="noopener">Otevřít video</a></p>`;
+        videoHtml = `<h2>Video ze zápasu</h2><p><a href="${url}" target="_blank" rel="noopener">Otevřít video</a></p>`;
       }
     }
 
@@ -94,25 +94,25 @@ ${videoHtml}
 ${m.report ? `<h2>Zpráva ze zápasu</h2><div class="content">${m.report || ''}</div>` : ''}
 
 ${m.lineup && m.lineup.length > 0 ? `
-<h2>⚽ Sestava</h2>
+<h2>Sestava</h2>
 <ul>
 ${m.lineup.map(p => `  <li>${p.player || p}</li>`).join('\n')}
 </ul>` : ''}
 
 ${m.scorers && m.scorers.length > 0 ? `
-<h2>🎯 Střelci</h2>
+<h2>Střelci</h2>
 <ul>
 ${m.scorers.map(s => `  <li>${s.scorer || s}</li>`).join('\n')}
 </ul>` : ''}
 
 ${m.cards && m.cards.length > 0 ? `
-<h2>🟨 Karty</h2>
+<h2>Karty</h2>
 <ul>
 ${m.cards.map(c => `  <li>${c.card || c}</li>`).join('\n')}
 </ul>` : ''}
 
 ${m.substitutions && m.substitutions.length > 0 ? `
-<h2>🔄 Střídání</h2>
+<h2>Střídání</h2>
 <ul>
 ${m.substitutions.map(s => `  <li>${s.substitution || s}</li>`).join('\n')}
 </ul>` : ''}

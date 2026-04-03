@@ -900,6 +900,37 @@ body {
 .theme-toggle:hover {
   background: rgba(255,255,255,0.3);
 }
+.theme-icon--sun { display: none; }
+[data-theme="dark"] .theme-icon--moon { display: none; }
+[data-theme="dark"] .theme-icon--sun { display: inline; }
+
+/* ===== CARD TYPE ICONS ===== */
+.card-icon {
+  display: inline-block;
+  width: 14px;
+  height: 19px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-right: 3px;
+}
+.card-icon--yellow { background: #facc15; }
+.card-icon--red { background: #ef4444; }
+
+/* ===== FOOTBALL BACKGROUND PATTERN ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cg fill='%23000' stroke='%23000'%3E%3Cg transform='translate(50,50)'%3E%3Ccircle r='18' fill='none' stroke-width='1.2'/%3E%3Cpolygon points='0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2'/%3E%3Cline x1='0' y1='-7' x2='0' y2='-18' stroke-width='.8'/%3E%3Cline x1='6.7' y1='-2.2' x2='17.1' y2='-5.6' stroke-width='.8'/%3E%3Cline x1='4.1' y1='5.7' x2='10.6' y2='14.6' stroke-width='.8'/%3E%3Cline x1='-4.1' y1='5.7' x2='-10.6' y2='14.6' stroke-width='.8'/%3E%3Cline x1='-6.7' y1='-2.2' x2='-17.1' y2='-5.6' stroke-width='.8'/%3E%3C/g%3E%3Cg transform='translate(150,150)'%3E%3Ccircle r='18' fill='none' stroke-width='1.2'/%3E%3Cpolygon points='0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2'/%3E%3Cline x1='0' y1='-7' x2='0' y2='-18' stroke-width='.8'/%3E%3Cline x1='6.7' y1='-2.2' x2='17.1' y2='-5.6' stroke-width='.8'/%3E%3Cline x1='4.1' y1='5.7' x2='10.6' y2='14.6' stroke-width='.8'/%3E%3Cline x1='-4.1' y1='5.7' x2='-10.6' y2='14.6' stroke-width='.8'/%3E%3Cline x1='-6.7' y1='-2.2' x2='-17.1' y2='-5.6' stroke-width='.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+[data-theme="dark"] body::before {
+  opacity: 0.06;
+  filter: invert(1);
+}
 
 /* ===== DARK MODE OVERRIDES (only for elements that need special treatment) ===== */
 [data-theme="dark"] .chat-msg--own .chat-msg__body {

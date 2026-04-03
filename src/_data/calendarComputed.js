@@ -30,12 +30,12 @@ module.exports = function () {
   };
 
   const typeIcons = {
-    training: "🏃",
-    tournament: "🏆",
-    camp: "⛺",
-    meeting: "📋",
-    match: "⚽",
-    other: "📅"
+    training: "",
+    tournament: "",
+    camp: "",
+    meeting: "",
+    match: "",
+    other: ""
   };
 
   // Calendar events — expand recurring ones

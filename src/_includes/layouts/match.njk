@@ -86,7 +86,7 @@ layout: layouts/page.njk
       <ul>
         {% for c in m.cards %}
           <li>
-            {% if c.type == "yellow" %}🟨{% else %}🟥{% endif %}
+            {% if c.type == "yellow" %}<span class="card-icon card-icon--yellow"></span>{% else %}<span class="card-icon card-icon--red"></span>{% endif %}
             {{ c.player }}
             {% if c.minute %} ({{ c.minute }}'){% endif %}
           </li>

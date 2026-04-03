@@ -52,7 +52,7 @@ layout: layouts/page.njk
     <div class="pitch-bench">
       {% for b in formationComputed.bench %}
         <div class="pitch-bench__item">
-          <div class="pitch-bench__icon">{% if b.slot == 'TRENER' %}🎓{% else %}🧴{% endif %}</div>
+          <div class="pitch-bench__icon">{% if b.slot == 'TRENER' %}T{% else %}F{% endif %}</div>
           <div class="pitch-bench__info">
             <span class="pitch-bench__role">{{ b.roleLabel }}</span>
             <span class="pitch-bench__name">{{ b.name if b.name else '—' }}</span>
@@ -166,13 +166,13 @@ layout: layouts/page.njk
               {% if s.phone or s.email or s.contact %}
                 <div style="margin-top: 1rem; font-size: 0.9rem;">
                   {% if s.contact %}
-                    <p>📌 {{ s.contact }}</p>
+                    <p>{{ s.contact }}</p>
                   {% endif %}
                   {% if s.phone %}
-                    <p>📞 <a href="tel:{{ s.phone }}">{{ s.phone }}</a></p>
+                    <p><a href="tel:{{ s.phone }}">{{ s.phone }}</a></p>
                   {% endif %}
                   {% if s.email %}
-                    <p>📧 <a href="mailto:{{ s.email }}">{{ s.email }}</a></p>
+                    <p><a href="mailto:{{ s.email }}">{{ s.email }}</a></p>
                   {% endif %}
                 </div>
               {% endif %}

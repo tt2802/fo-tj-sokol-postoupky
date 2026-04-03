@@ -70,7 +70,7 @@ layout: layouts/base.njk
   loginBtn.addEventListener('click', function() {
     auth.signInWithPopup(provider).catch(function(err) {
       console.error('Auth error:', err.code, err.message);
-      authEl.innerHTML = '<div style="color:#dc2626;font-weight:600;">⚠️ Chyba: ' + err.code + '<br><small>' + err.message + '</small></div>';
+      authEl.innerHTML = '<div style="color:#dc2626;font-weight:600;">Chyba: ' + err.code + '<br><small>' + err.message + '</small></div>';
     });
   });
 

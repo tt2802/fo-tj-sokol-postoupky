@@ -35,7 +35,7 @@ module.exports = class {
         
         if (ytId) {
           videoHtml = `
-<h2>📹 Video ze zápasu</h2>
+<h2>Video ze zápasu</h2>
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
   <iframe
     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
@@ -49,13 +49,13 @@ module.exports = class {
         }
       } else if (url.endsWith('.mp4')) {
         videoHtml = `
-<h2>📹 Video ze zápasu</h2>
+<h2>Video ze zápasu</h2>
 <video controls style="width: 100%; max-width: 800px; margin: 2rem 0;">
   <source src="${url}" type="video/mp4">
   Váš prohlížeč nepodporuje video element.
 </video>`;
       } else {
-        videoHtml = `<h2>🔗 Video ze zápasu</h2><p><a href="${url}" target="_blank" rel="noopener">Otevřít video</a></p>`;
+        videoHtml = `<h2>Video ze zápasu</h2><p><a href="${url}" target="_blank" rel="noopener">Otevřít video</a></p>`;
       }
     }
 
@@ -70,7 +70,7 @@ module.exports = class {
 
       votingHtml = `
 <section class="motm-section" id="motmSection">
-  <h2>⭐ Hráč zápasu — hlasování</h2>
+  <h2>Hráč zápasu — hlasování</h2>
 
   <div id="motmAuth">
     <button id="motmLogin" class="chat-google-btn">
@@ -120,7 +120,7 @@ module.exports = class {
 
   loginBtn.addEventListener('click', function() {
     auth.signInWithPopup(provider).catch(function(err) {
-      authEl.innerHTML = '<div style="color:#dc2626;">⚠️ ' + escapeHtml(err.message) + '</div>';
+      authEl.innerHTML = '<div style="color:#dc2626;">Chyba: ' + escapeHtml(err.message) + '</div>';
     });
   });
 
@@ -184,7 +184,7 @@ module.exports = class {
       sorted.forEach(function(item, i) {
         var pct = Math.round(item[1] / total * 100);
         html += '<div class="motm-bar-row">' +
-          '<span class="motm-bar-name">' + (i === 0 ? '⭐ ' : '') + escapeHtml(item[0]) + '</span>' +
+          '<span class="motm-bar-name">' + escapeHtml(item[0]) + '</span>' +
           '<div class="motm-bar-track"><div class="motm-bar-fill' + (i === 0 ? ' motm-bar-fill--top' : '') + '" style="width:' + pct + '%"></div></div>' +
           '<span class="motm-bar-count">' + item[1] + ' (' + pct + '%)</span>' +
           '</div>';
@@ -225,29 +225,29 @@ ${videoHtml}
 ${m.report ? `<h2>Zpráva ze zápasu</h2><div class="content">${m.report || ''}</div>` : ''}
 
 ${m.lineup && m.lineup.length > 0 ? `
-<h2>⚽ Sestava</h2>
+<h2>Sestava</h2>
 <ul>
 ${m.lineup.map(p => `  <li>${p.player || p}</li>`).join('\n')}
 </ul>` : ''}
 
 ${m.scorers && m.scorers.length > 0 ? `
-<h2>🎯 Střelci</h2>
+<h2>Střelci</h2>
 <ul>
 ${m.scorers.map(s => `  <li>${s.scorer || s}</li>`).join('\n')}
 </ul>` : ''}
 
 ${m.cards && m.cards.length > 0 ? `
-<h2>🟨 Karty</h2>
+<h2>Karty</h2>
 <ul>
 ${m.cards.map(c => {
   if (typeof c === 'string') return `  <li>${c}</li>`;
-  const emoji = c.cardType === 'red' ? '🟥' : '🟨';
-  return `  <li>${emoji} ${c.player}</li>`;
+  const cardClass = c.cardType === 'red' ? 'card-icon--red' : 'card-icon--yellow';
+  return `  <li><span class="card-icon ${cardClass}"></span> ${c.player}</li>`;
 }).join('\n')}
 </ul>` : ''}
 
 ${m.substitutions && m.substitutions.length > 0 ? `
-<h2>🔄 Střídání</h2>
+<h2>Střídání</h2>
 <ul>
 ${m.substitutions.map(s => {
   if (typeof s === 'string') return `  <li>${s}</li>`;

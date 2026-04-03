@@ -45,11 +45,8 @@
     if (saved) {
       document.documentElement.setAttribute("data-theme", saved);
     }
-    // Update icon
-    function updateIcon() {
-      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-      themeBtn.textContent = isDark ? "☀️" : "🌙";
-    }
+    // Update icon — handled by CSS visibility of .theme-icon--moon / .theme-icon--sun
+    function updateIcon() {}
     updateIcon();
 
     themeBtn.addEventListener("click", (e) => {
