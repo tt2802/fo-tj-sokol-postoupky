@@ -19,6 +19,21 @@ hideTitle: true
           <a class="btn btn--ghost" href="{{ '/nabor/' | url }}">Nábor</a>
         </div>
       </div>
+
+      {% if matchesComputed.nextMatch %}
+      <a href="{{ '/muzi/zapasy/' | url }}" class="hero__next-match">
+        <span class="hero__next-label">Příští zápas</span>
+        <span class="hero__next-date">{{ matchesComputed.nextMatch._dateStr | czDate }}{% if matchesComputed.nextMatch.time %} · {{ matchesComputed.nextMatch.time }}{% endif %}</span>
+        <span class="hero__next-teams">
+          <strong>{{ matchesComputed.nextMatch.home }}</strong>
+          <span class="hero__next-vs">vs</span>
+          <strong>{{ matchesComputed.nextMatch.away }}</strong>
+        </span>
+        {% if matchesComputed.nextMatch.venue %}
+        <span class="hero__next-venue">{{ matchesComputed.nextMatch.venue }}</span>
+        {% endif %}
+      </a>
+      {% endif %}
     </div>
   </div>
 </section>
