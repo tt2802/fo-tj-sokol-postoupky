@@ -57,6 +57,10 @@ nav a {
 
 .container {
   padding: 0 1rem 1rem 1rem;
+  background: rgba(255,255,255,0.5);
+}
+main > .container {
+  padding-top: 0;
 }
 .section:first-child {
   padding-top: 1rem;
@@ -65,11 +69,17 @@ nav a {
   padding: 3rem 0;
   background: rgba(255,255,255,0.5);
 }
+main {
+  background: rgba(255,255,255,0.5);
+}
+[data-theme="dark"] main {
+  background: rgba(15,18,25,0.5);
+}
 [data-theme="dark"] .section {
   background: rgba(15,18,25,0.5);
 }
-[data-theme="dark"] .container:has(> .hero) {
-  background: transparent;
+[data-theme="dark"] .container {
+  background: rgba(15,18,25,0.5);
 }
 
 .section h1,
