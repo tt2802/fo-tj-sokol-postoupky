@@ -69,12 +69,18 @@ main > .container {
 }
 .section {
   padding: 3rem 0;
+  background: rgba(255,255,255,0.5);
+  border-radius: 12px;
+  margin-bottom: 1rem;
 }
 main {
-  background: rgba(255,255,255,0.5);
   flex: 1;
+  padding: 1rem;
 }
-[data-theme="dark"] main {
+[data-theme="dark"] .section {
+  background: rgba(15,18,25,0.5);
+}
+[data-theme="dark"] .hero {
   background: rgba(15,18,25,0.5);
 }
 
@@ -152,7 +158,10 @@ main {
 }
 /* ===== DOMŮ: HERO ===== */
 .hero {
-  padding: 0 0 3rem 0;
+  background: rgba(255,255,255,0.5);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  padding: 2rem 0 3rem 0;
 }
 
 .hero__inner {
