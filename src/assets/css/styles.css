@@ -60,7 +60,6 @@ nav a {
 
 .container {
   padding: 0 1rem 1rem 1rem;
-  background: rgba(255,255,255,0.5);
 }
 main > .container {
   padding-top: 0;
@@ -70,19 +69,12 @@ main > .container {
 }
 .section {
   padding: 3rem 0;
-  background: rgba(255,255,255,0.5);
 }
 main {
   background: rgba(255,255,255,0.5);
   flex: 1;
 }
 [data-theme="dark"] main {
-  background: rgba(15,18,25,0.5);
-}
-[data-theme="dark"] .section {
-  background: rgba(15,18,25,0.5);
-}
-[data-theme="dark"] .container {
   background: rgba(15,18,25,0.5);
 }
 
@@ -160,7 +152,6 @@ main {
 }
 /* ===== DOMŮ: HERO ===== */
 .hero {
-  background: rgba(255,255,255,0.5);
   padding: 0 0 3rem 0;
 }
 
@@ -294,11 +285,8 @@ main {
 }
 
 .site-header {
-  background: rgba(109, 40, 217, 0.85);
+  background: var(--primary-dark);
   color: white;
-}
-[data-theme="dark"] .site-header {
-  background: rgba(59, 21, 120, 0.85);
 }
 
 /* dropdown menu */
@@ -530,8 +518,7 @@ body {
     left: 0;
     right: 0;
     top: 100%;
-    background: rgba(109, 40, 217, 0.92);
-    backdrop-filter: blur(8px);
+    background: var(--primary-dark);
     padding: 0.75rem 0.9rem;
     flex-direction: column;
     align-items: stretch;
@@ -620,7 +607,6 @@ body {
 
 /* ===== FORMATION PITCH (FIFA style) ===== */
 .formation-section {
-  background: rgba(255,255,255,0.5);
 }
 
 .pitch {
@@ -1015,18 +1001,9 @@ body::before {
 }
 
 /* ===== DARK MODE OVERRIDES (only for elements that need special treatment) ===== */
-[data-theme="dark"] .hero {
-  background: rgba(15,18,25,0.5);
-}
 [data-theme="dark"] .chat-msg--own .chat-msg__body {
   background: #065f46;
   border-color: #047857;
-}
-[data-theme="dark"] .calendar-section {
-  background: rgba(15,18,25,0.5);
-}
-[data-theme="dark"] .formation-section {
-  background: rgba(15,18,25,0.5);
 }
 [data-theme="dark"] footer {
   background: #080a10;
@@ -1068,9 +1045,6 @@ body::before {
 [data-theme="dark"] h2,
 [data-theme="dark"] h3 {
   color: #f0f1f3;
-}
-[data-theme="dark"] .hero {
-  background: rgba(15,18,25,0.5);
 }
 [data-theme="dark"] .hero__badgeInner {
   background: var(--primary-dark);
@@ -1425,7 +1399,6 @@ body::before {
 
 /* ===== KALENDÁŘ WIDGET ===== */
 .calendar-section {
-  background: rgba(255,255,255,0.5);
 }
 
 /* Side-by-side layout: calendar + upcoming */
