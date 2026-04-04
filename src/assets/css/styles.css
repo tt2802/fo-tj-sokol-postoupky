@@ -89,6 +89,12 @@ main > .container {
 .section--no-bg {
   background: transparent;
 }
+.news-detail {
+  background: rgba(255,255,255,0.9);
+}
+[data-theme="dark"] .news-detail {
+  background: rgba(15,18,25,0.9);
+}
 main {
   flex: 1;
 }
