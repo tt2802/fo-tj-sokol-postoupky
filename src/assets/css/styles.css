@@ -89,10 +89,12 @@ main > .container {
 .section--no-bg {
   background: transparent;
 }
-.news-detail {
+.news-detail .prose {
   background: rgba(255,255,255,0.9);
+  padding: 2rem;
+  border-radius: 12px;
 }
-[data-theme="dark"] .news-detail {
+[data-theme="dark"] .news-detail .prose {
   background: rgba(15,18,25,0.9);
 }
 main {
