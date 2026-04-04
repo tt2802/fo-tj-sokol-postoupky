@@ -84,9 +84,12 @@ main > .container {
 }
 .section {
   padding: 3rem 0;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.7);
 }
 .section--no-bg {
+  background: transparent;
+}
+.news-detail {
   background: transparent;
 }
 .news-detail .prose {
@@ -101,10 +104,10 @@ main {
   flex: 1;
 }
 [data-theme="dark"] .section {
-  background: rgba(15,18,25,0.85);
+  background: rgba(15,18,25,0.7);
 }
 [data-theme="dark"] .hero {
-  background: rgba(15,18,25,0.85);
+  background: rgba(15,18,25,0.7);
 }
 
 .section h1,
@@ -181,7 +184,7 @@ main {
 }
 /* ===== DOMŮ: HERO ===== */
 .hero {
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.7);
   padding: 2rem 0 3rem 0;
 }
 
