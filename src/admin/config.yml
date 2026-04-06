@@ -1,4 +1,4 @@
-# file: src/admin/config.yml
+﻿# file: src/admin/config.yml
 backend:
   name: github
   repo: tt2802/fo-tj-sokol-postoupky
@@ -29,7 +29,7 @@ commit_messages:
 
 collections:
   # ────────────────────────────────────────────────
-  # 📰 NOVINKY
+  # NOVINKY
   # ────────────────────────────────────────────────
   - name: "news"
     label: "Novinky"
@@ -38,22 +38,23 @@ collections:
     folder: "src/news"
     create: true
     slug: "{{slug}}"
-    summary: "{{title}} ({{date}})"
+    summary: "{{date}} — {{title}}"
+    sortable_fields: ["date", "title"]
     preview_url: "{{site_url}}/novinky/{{slug}}/"
     fields:
-      - { label: "Titulek", name: "title", widget: "string" }
+      - { label: "Titulek", name: "title", widget: "string", hint: "Hlavni nadpis clanku" }
       - label: "Datum"
         name: "date"
         widget: "datetime"
         format: "YYYY-MM-DD"
-        date_format: "YYYY-MM-DD"
+        date_format: "DD.MM.YYYY"
         time_format: false
         picker_utc: true
-      - { label: "Perex", name: "excerpt", widget: "text", required: false }
+      - { label: "Perex", name: "excerpt", widget: "text", required: false, hint: "Kratky uvodni text zobrazeny v prehledu novinek" }
       - { label: "Obsah", name: "body", widget: "markdown" }
 
   # ────────────────────────────────────────────────
-  # ⚽ ZÁPASY
+  # ZÁPASY
   # ────────────────────────────────────────────────
   - name: "matches"
     label: "Zápasy"
@@ -68,7 +69,7 @@ collections:
             name: "items"
             widget: "list"
             collapsed: true
-            summary: "{{fields.date}} · {{fields.team}} · {{fields.home}} vs {{fields.away}}"
+            summary: "{{fields.date}} · {{fields.home}} vs {{fields.away}} ({{fields.competition}})"
             fields:
               - label: "Slug (URL)"
                 name: "slug"
@@ -103,8 +104,8 @@ collections:
                   - { label: "Školička", value: "skolicka" }
 
               - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026", required: true }
-              - { label: "Soutěž", name: "competition", widget: "string", required: true }
-              - { label: "Kolo", name: "round", widget: "string", required: false }
+              - { label: "Soutěž", name: "competition", widget: "string", required: true, hint: "Napr. OP, 1.A, KP, přátelák" }
+              - { label: "Kolo", name: "round", widget: "string", required: false, hint: "Císlo kola v soutěži" }
               - label: "Datum"
                 name: "date"
                 widget: "datetime"
@@ -116,16 +117,19 @@ collections:
                 name: "home"
                 widget: "string"
                 required: true
+                hint: "Název domácího týmu"
               - label: "Hosté"
                 name: "away"
                 widget: "string"
                 required: true
-              - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true }
-              - { label: "Místo utkání", name: "venue", widget: "string" }
+                hint: "Název hostího týmu"
+              - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true, hint: "Zapnuto = hrajeme doma v Postoupkách" }
+              - { label: "Místo utkání", name: "venue", widget: "string", default: "Postoupky", hint: "Kde se zápas hraje" }
               - label: "Čas zápasu"
                 name: "time"
                 widget: "string"
                 required: false
+                hint: "Napr. 15:00"
 
       - name: "played_matches"
         label: "Odehrané zápasy"
@@ -136,7 +140,7 @@ collections:
             name: "items"
             widget: "list"
             collapsed: true
-            summary: "{{fields.date}} · {{fields.team}} · {{fields.homeScore}}:{{fields.awayScore}}"
+            summary: "{{fields.date}} · {{fields.home}} {{fields.homeScore}}:{{fields.awayScore}} {{fields.away}}"
             fields:
               - label: "Slug (URL)"
                 name: "slug"
@@ -154,6 +158,7 @@ collections:
                 name: "relatedUpcoming"
                 widget: "match-selector"
                 required: false
+                hint: "Vyberte z nadchazejicich zapasu a pole se automaticky vyplni"
 
               - label: "Tým"
                 name: "team"
@@ -176,8 +181,8 @@ collections:
                   - { label: "Školička", value: "skolicka" }
 
               - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026", required: true }
-              - { label: "Soutěž", name: "competition", widget: "string", required: false }
-              - { label: "Kolo", name: "round", widget: "string", required: false }
+              - { label: "Soutěž", name: "competition", widget: "string", required: false, hint: "Napr. OP, 1.A, KP, přátelák" }
+              - { label: "Kolo", name: "round", widget: "string", required: false, hint: "Císlo kola v soutěži" }
               - label: "Datum"
                 name: "date"
                 widget: "datetime"
@@ -194,14 +199,15 @@ collections:
                 name: "away"
                 widget: "string"
                 required: false
-              - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true }
-              - { label: "Místo utkání", name: "venue", widget: "string" }
+              - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true, hint: "Zapnuto = hrajeme doma v Postoupkách" }
+              - { label: "Místo utkání", name: "venue", widget: "string", default: "Postoupky" }
 
               - label: "Skóre domácích"
                 name: "homeScore"
                 widget: "number"
                 required: false
                 value_type: "int"
+                hint: "--- VYSLEDEK ---"
 
               - label: "Skóre hostů"
                 name: "awayScore"
@@ -218,16 +224,19 @@ collections:
                 name: "report"
                 widget: "text"
                 required: false
+                hint: "Kratky popis prubehu zapasu"
 
               - label: "Video URL"
                 name: "videoUrl"
                 widget: "string"
                 required: false
+                hint: "Odkaz na video ze zapasu (YouTube apod.)"
 
               - label: "Sestava"
                 name: "lineup"
                 widget: "lineup-picker"
                 required: false
+                hint: "--- SESTAVA A STATISTIKY ---"
 
               - label: "Střelci gólů"
                 name: "scorers"
@@ -288,7 +297,7 @@ collections:
               - { label: "Body", name: "points", widget: "number", value_type: "int", default: 0 }
 
   # ────────────────────────────────────────────────
-  # 👥 TÝM
+  # TÝM
   # ────────────────────────────────────────────────
   - name: "team"
     label: "Tým"
@@ -441,9 +450,9 @@ collections:
             summary: "{{fields.role}} · {{fields.name}}"
             fields:
               - { label: "Jméno", name: "name", widget: "string" }
-              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Role", name: "role", widget: "string", hint: "Napr. Hlavni trener, Asistent, Vedouci tymu" }
               - { label: "Kontakt", name: "contact", widget: "string", required: false }
-              - { label: "Telefon", name: "phone", widget: "string", required: false }
+              - { label: "Telefon", name: "phone", widget: "string", required: false, hint: "Napr. +420 123 456 789" }
               - { label: "Email", name: "email", widget: "string", required: false }
               - { label: "Fotka", name: "photo", widget: "image", required: false }
 
@@ -503,7 +512,7 @@ collections:
               - { label: "Hráč", name: "player", widget: "player-select", required: false, hint: "Vyberte hráče ze seznamu" }
 
   # ────────────────────────────────────────────────
-  # 📸 OBSAH
+  # OBSAH
   # ────────────────────────────────────────────────
   - name: "content"
     label: "Obsah"
@@ -605,15 +614,15 @@ collections:
             summary: "{{fields.name}}"
             fields:
               - { label: "Název", name: "name", widget: "string" }
-              - { label: "Logo", name: "logo", widget: "image", required: false }
-              - { label: "Odkaz", name: "url", widget: "string", required: false }
+              - { label: "Logo", name: "logo", widget: "image", required: false, hint: "Idealni velikost: 200x100 px" }
+              - { label: "Odkaz", name: "url", widget: "string", required: false, hint: "Webova stranka partnera" }
 
       - name: "contacts"
         label: "Kontakty"
         file: "src/_data/contacts.yml"
         fields:
-          - { label: "Adresa", name: "address", widget: "string", required: false }
-          - { label: "Mapa URL", name: "mapUrl", widget: "string", required: false }
+          - { label: "Adresa", name: "address", widget: "string", required: false, hint: "Adresa hriste / klubovny" }
+          - { label: "Mapa URL", name: "mapUrl", widget: "string", required: false, hint: "Odkaz na Google Maps / Mapy.cz" }
           - label: "Kontaktní osoby"
             name: "people"
             widget: "list"
@@ -636,7 +645,7 @@ collections:
               - { label: "Místo", name: "place", widget: "string", required: false }
 
   # ────────────────────────────────────────────────
-  # ⚙️ NASTAVENÍ
+  # NASTAVENÍ
   # ────────────────────────────────────────────────
   - name: "settings"
     label: "Nastavení"
@@ -648,9 +657,9 @@ collections:
         fields:
           - { label: "URL webu", name: "url", widget: "string", required: true, hint: "Např. https://tt2802.github.io/fo-tj-sokol-postoupky" }
           - { label: "OG obrázek", name: "ogImage", widget: "string", required: false, hint: "Např. /assets/img/og-image.png" }
-          - { label: "Název klubu", name: "clubName", widget: "string", required: true }
-          - { label: "Krátký název klubu", name: "clubShort", widget: "string", required: true }
-          - { label: "Facebook URL", name: "facebookUrl", widget: "string", required: false }
+          - { label: "Název klubu", name: "clubName", widget: "string", required: true, hint: "Plny nazev: TJ Sokol Postoupky" }
+          - { label: "Krátký název klubu", name: "clubShort", widget: "string", required: true, hint: "Napr. Postoupky" }
+          - { label: "Facebook URL", name: "facebookUrl", widget: "string", required: false, hint: "Odkaz na Facebook stranku klubu" }
           - label: "Hlavní kontakt"
             name: "contact"
             widget: "object"

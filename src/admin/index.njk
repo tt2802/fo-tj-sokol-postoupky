@@ -7,10 +7,53 @@ permalink: /admin/index.html
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Administrace | TJ Sokol Postoupky</title>
+    <style>
+      /* ── Branding: hlavička CMS ── */
+      [class*="AppHeader"] {
+        background: #6d28d9 !important;
+      }
+
+      /* Logo vedle názvu */
+      [class*="AppHeader"] a[href="#/"] {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+      }
+      [class*="AppHeader"] a[href="#/"]::before {
+        content: "";
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        background: url("/assets/img/logo.png") center/contain no-repeat;
+        border-radius: 4px;
+      }
+
+      /* ── Sidebar kolekce ── */
+      [class*="SidebarNavList"] li > a,
+      [class*="SidebarNavList"] li > div {
+        font-size: 15px;
+      }
+
+      /* ── Lepší přehlednost: list-item summary ── */
+      [class*="ListCard"],
+      [class*="ObjectWidgetTopBar"] {
+        border-left: 3px solid #6d28d9;
+      }
+
+      /* ── Zápasové formuláře: vizuální oddělovací čára ── */
+      [id*="homeScore"],
+      [id*="referee"],
+      [id*="lineup"],
+      [id*="scorers"] {
+        border-top: 2px solid #e5e7eb;
+        padding-top: 12px;
+        margin-top: 8px;
+      }
+    </style>
   </head>
   <body>
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <script src="./autofill-plugin.js?v=20260331b"></script>
+    <script src="./autofill-plugin.js?v=20260406"></script>
   </body>
 </html>
