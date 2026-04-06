@@ -9,6 +9,8 @@ backend:
 # Enable local backend for local testing (no auth required when running the proxy)
 local_backend: true
 
+locale: 'cs'
+
 site_url: https://tt2802.github.io/fo-tj-sokol-postoupky
 display_url: https://tt2802.github.io/fo-tj-sokol-postoupky
 
@@ -26,9 +28,13 @@ commit_messages:
   deleteMedia: "chore(cms): smazán soubor {{path}}"
 
 collections:
+  # ────────────────────────────────────────────────
+  # 📰 NOVINKY
+  # ────────────────────────────────────────────────
   - name: "news"
-    label: "Novinky"
+    label: "📰 Novinky"
     label_singular: "Novinka"
+    description: "Články a aktuality na webu"
     folder: "src/news"
     create: true
     slug: "{{slug}}"
@@ -46,11 +52,15 @@ collections:
       - { label: "Perex", name: "excerpt", widget: "text", required: false }
       - { label: "Obsah", name: "body", widget: "markdown" }
 
-  - name: "data"
-    label: "Data"
+  # ────────────────────────────────────────────────
+  # ⚽ ZÁPASY
+  # ────────────────────────────────────────────────
+  - name: "matches"
+    label: "⚽ Zápasy"
+    description: "Nadcházející a odehrané zápasy, tabulka soutěže"
     files:
       - name: "upcoming_matches"
-        label: "Nadcházející zápasy"
+        label: "� Nadcházející zápasy"
         file: "src/_data/upcoming_matches.json"
         preview_url: "{{site_url}}/zapasy/"
         fields:
@@ -118,7 +128,7 @@ collections:
                 required: false
 
       - name: "played_matches"
-        label: "Odehrané zápasy"
+        label: "✅ Odehrané zápasy"
         file: "src/_data/played_matches.json"
         preview_url: "{{site_url}}/zapasy/"
         fields:
@@ -254,8 +264,38 @@ collections:
                   - { label: "Střídá (ven)", name: "playerOut", widget: "player-select" }
                   - { label: "Za (dovnitř)", name: "playerIn", widget: "player-select" }
 
+      - name: "league_table"
+        label: "🏆 Tabulka soutěže"
+        file: "src/_data/league_table.json"
+        preview_url: "{{site_url}}/muzi/"
+        fields:
+          - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026" }
+          - { label: "Soutěž", name: "competition", widget: "string", default: "ZKP" }
+          - label: "Týmy"
+            name: "teams"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.pos}}. {{fields.name}} — {{fields.points}} b."
+            fields:
+              - { label: "Pořadí", name: "pos", widget: "number", value_type: "int" }
+              - { label: "Název týmu", name: "name", widget: "string" }
+              - { label: "Zápasy", name: "played", widget: "number", value_type: "int", default: 0 }
+              - { label: "Výhry", name: "wins", widget: "number", value_type: "int", default: 0 }
+              - { label: "Remízy", name: "draws", widget: "number", value_type: "int", default: 0 }
+              - { label: "Prohry", name: "losses", widget: "number", value_type: "int", default: 0 }
+              - { label: "Skóre +", name: "goalsFor", widget: "number", value_type: "int", default: 0 }
+              - { label: "Skóre −", name: "goalsAgainst", widget: "number", value_type: "int", default: 0 }
+              - { label: "Body", name: "points", widget: "number", value_type: "int", default: 0 }
+
+  # ────────────────────────────────────────────────
+  # 👥 TÝM
+  # ────────────────────────────────────────────────
+  - name: "team"
+    label: "👥 Tým"
+    description: "Hráči, realizační tým a základní sestava"
+    files:
       - name: "players"
-        label: "Hráči"
+        label: "🏃 Hráči"
         file: "src/_data/players.json"
         preview_url: "{{site_url}}/muzi/tym/"
         fields:
@@ -391,7 +431,7 @@ collections:
                   - { label: "Fotka", name: "photo", widget: "image", required: false }
 
       - name: "staff"
-        label: "Realizační tým"
+        label: "🎓 Realizační tým"
         file: "src/_data/staff.json"
         fields:
           - label: "Osoby"
@@ -408,7 +448,7 @@ collections:
               - { label: "Fotka", name: "photo", widget: "image", required: false }
 
       - name: "formation"
-        label: "Sestava (formace)"
+        label: "📋 Sestava (formace)"
         file: "src/_data/formation.json"
         preview_url: "{{site_url}}/muzi/tym/"
         fields:
@@ -462,8 +502,15 @@ collections:
                   - { label: "🎓 Trenér", value: "TRENER" }
               - { label: "Hráč", name: "player", widget: "player-select", required: false, hint: "Vyberte hráče ze seznamu" }
 
+  # ────────────────────────────────────────────────
+  # 📸 OBSAH
+  # ────────────────────────────────────────────────
+  - name: "content"
+    label: "📸 Obsah"
+    description: "Galerie, kalendář, partneři a kontakty"
+    files:
       - name: "calendar_events"
-        label: "Kalendář akcí"
+        label: "📅 Kalendář akcí"
         file: "src/_data/calendar_events.json"
         fields:
           - label: "Události"
@@ -523,7 +570,7 @@ collections:
                 hint: "Datum, do kdy se akce opakuje (včetně). Potřeba jen pokud je zvoleno opakování."
 
       - name: "gallery"
-        label: "Galerie"
+        label: "🖼️ Galerie"
         file: "src/_data/gallery.yml"
         preview_url: "{{site_url}}/galerie/"
         fields:
@@ -548,7 +595,7 @@ collections:
                   - { label: "Fotka", name: "photo", widget: "image" }
 
       - name: "sponsors"
-        label: "Partneři"
+        label: "🤝 Partneři"
         file: "src/_data/sponsors.json"
         fields:
           - label: "Partneři"
@@ -562,7 +609,7 @@ collections:
               - { label: "Odkaz", name: "url", widget: "string", required: false }
 
       - name: "contacts"
-        label: "Kontakty"
+        label: "📞 Kontakty"
         file: "src/_data/contacts.yml"
         fields:
           - { label: "Adresa", name: "address", widget: "string", required: false }
@@ -588,45 +635,15 @@ collections:
               - { label: "Čas", name: "time", widget: "string" }
               - { label: "Místo", name: "place", widget: "string", required: false }
 
-      - name: "categories"
-        label: "Kategorie mládeže"
-        file: "src/_data/categories.json"
-        fields:
-          - label: "Kategorie"
-            name: "items"
-            widget: "list"
-            collapsed: true
-            summary: "{{fields.name}} ({{fields.shortName}})"
-            fields:
-              - { label: "ID", name: "id", widget: "string", required: true, hint: "např. dorostenci", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "ID může obsahovat jen malá písmena, čísla a pomlčky."] }
-              - { label: "Název", name: "name", widget: "string", required: true }
-              - { label: "Zkratka", name: "shortName", widget: "string", required: true, hint: "např. U19" }
-
-      - name: "league_table"
-        label: "Tabulka soutěže"
-        file: "src/_data/league_table.json"
-        preview_url: "{{site_url}}/muzi/"
-        fields:
-          - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026" }
-          - { label: "Soutěž", name: "competition", widget: "string", default: "ZKP" }
-          - label: "Týmy"
-            name: "teams"
-            widget: "list"
-            collapsed: true
-            summary: "{{fields.pos}}. {{fields.name}} — {{fields.points}} b."
-            fields:
-              - { label: "Pořadí", name: "pos", widget: "number", value_type: "int" }
-              - { label: "Název týmu", name: "name", widget: "string" }
-              - { label: "Zápasy", name: "played", widget: "number", value_type: "int", default: 0 }
-              - { label: "Výhry", name: "wins", widget: "number", value_type: "int", default: 0 }
-              - { label: "Remízy", name: "draws", widget: "number", value_type: "int", default: 0 }
-              - { label: "Prohry", name: "losses", widget: "number", value_type: "int", default: 0 }
-              - { label: "Skóre +", name: "goalsFor", widget: "number", value_type: "int", default: 0 }
-              - { label: "Skóre −", name: "goalsAgainst", widget: "number", value_type: "int", default: 0 }
-              - { label: "Body", name: "points", widget: "number", value_type: "int", default: 0 }
-
+  # ────────────────────────────────────────────────
+  # ⚙️ NASTAVENÍ
+  # ────────────────────────────────────────────────
+  - name: "settings"
+    label: "⚙️ Nastavení"
+    description: "Nastavení webu a kategorie mládeže"
+    files:
       - name: "site"
-        label: "Nastavení webu"
+        label: "🌐 Nastavení webu"
         file: "src/_data/site.json"
         fields:
           - { label: "URL webu", name: "url", widget: "string", required: true, hint: "Např. https://tt2802.github.io/fo-tj-sokol-postoupky" }
@@ -650,6 +667,20 @@ collections:
               - { label: "Čas", name: "time", widget: "string", required: false }
               - { label: "Místo", name: "place", widget: "string", required: false }
           - { label: "Adresa", name: "address", widget: "string", required: false }
+
+      - name: "categories"
+        label: "🏷️ Kategorie mládeže"
+        file: "src/_data/categories.json"
+        fields:
+          - label: "Kategorie"
+            name: "items"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.name}} ({{fields.shortName}})"
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: true, hint: "např. dorostenci", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "ID může obsahovat jen malá písmena, čísla a pomlčky."] }
+              - { label: "Název", name: "name", widget: "string", required: true }
+              - { label: "Zkratka", name: "shortName", widget: "string", required: true, hint: "např. U19" }
 
 editor:
   preview: false
