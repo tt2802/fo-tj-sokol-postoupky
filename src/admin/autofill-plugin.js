@@ -339,7 +339,7 @@
               fontSize: "13px", lineHeight: "1.7"
             }
           }, [
-            h("strong", { key: "hd" }, "📋 Údaje z nadcházejícího zápasu:"),
+            h("strong", { key: "hd" }, "Údaje z nadcházejícího zápasu:"),
             h("br", { key: "b1" }),
             h("span", { key: "s1" }, teamLabel),
             h("br", { key: "b2" }),
@@ -360,12 +360,12 @@
         parts.push(h("div", {
           key: "status",
           style: { marginTop: "8px", color: "#0a7f2e", fontWeight: "bold", fontSize: "13px" }
-        }, "✅ Pole ve formuláři byla automaticky vyplněna."));
+        }, "Pole ve formuláři byla automaticky vyplněna."));
       } else if (st.status === "save") {
         parts.push(h("div", {
           key: "status",
           style: { marginTop: "8px", color: "#555", fontSize: "12px" }
-        }, "ℹ️ Údaje budou automaticky doplněny při uložení."));
+        }, "Údaje budou automaticky doplněny při uložení."));
       }
 
       return h("div", null, parts);
@@ -745,7 +745,7 @@
         options.push(h("option", { value: p.name, key: p.name }, label));
       });
 
-      options.push(h("option", { value: "__custom__", key: "__custom__" }, "✏️ Jiný hráč…"));
+      options.push(h("option", { value: "__custom__", key: "__custom__" }, "Jiný hráč…"));
 
       return h("select", {
         id: this.props.forID,
