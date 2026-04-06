@@ -52,6 +52,7 @@ collections:
         picker_utc: true
       - { label: "Perex", name: "excerpt", widget: "text", required: false, hint: "Kratky uvodni text zobrazeny v prehledu novinek" }
       - { label: "Obsah", name: "body", widget: "markdown" }
+      - { label: "Náhledový obrázek", name: "thumbnail", widget: "image", required: false, hint: "Fotka zobrazena v přehledu novinek" }
 
   # ────────────────────────────────────────────────
   # ZÁPASY
@@ -201,12 +202,18 @@ collections:
                 required: false
               - { label: "Jsme doma", name: "isHome", widget: "boolean", default: true, hint: "Zapnuto = hrajeme doma v Postoupkách" }
               - { label: "Místo utkání", name: "venue", widget: "string", default: "Postoupky" }
+              - label: "Čas zápasu"
+                name: "time"
+                widget: "string"
+                required: false
+                hint: "Napr. 15:00"
 
               - label: "Skóre domácích"
                 name: "homeScore"
                 widget: "number"
                 required: false
                 value_type: "int"
+                min: 0
                 hint: "--- VYSLEDEK ---"
 
               - label: "Skóre hostů"
@@ -214,6 +221,7 @@ collections:
                 widget: "number"
                 required: false
                 value_type: "int"
+                min: 0
 
               - label: "Rozhodčí"
                 name: "referee"
@@ -643,6 +651,25 @@ collections:
               - { label: "Den", name: "day", widget: "string" }
               - { label: "Čas", name: "time", widget: "string" }
               - { label: "Místo", name: "place", widget: "string", required: false }
+
+  # ────────────────────────────────────────────────
+  # STRÁNKY
+  # ────────────────────────────────────────────────
+  - name: "pages"
+    label: "Stránky"
+    description: "Editovatelné texty stránek"
+    files:
+      - name: "nabor"
+        label: "Nábor"
+        file: "src/_data/nabor_content.json"
+        preview_url: "{{site_url}}/nabor/"
+        fields:
+          - { label: "Nadpis", name: "title", widget: "string" }
+          - { label: "Podnázev", name: "subtitle", widget: "string", required: false }
+          - { label: "Obsah", name: "body", widget: "markdown" }
+          - { label: "Kontaktní osoba", name: "contactName", widget: "string", required: false }
+          - { label: "Email", name: "contactEmail", widget: "string", required: false }
+          - { label: "Telefon", name: "contactPhone", widget: "string", required: false }
 
   # ────────────────────────────────────────────────
   # NASTAVENÍ

@@ -1,5 +1,7 @@
 // file: .eleventy.cjs
 const { DateTime } = require("luxon");
+const markdownIt = require("markdown-it");
+const mdLib = markdownIt({ html: true, linkify: true });
 let pluginSitemap;
 try {
   pluginSitemap = require("@quasibit/eleventy-plugin-sitemap");
@@ -73,6 +75,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("striptags", stripTags);
   eleventyConfig.addFilter("truncate", truncateText);
+  eleventyConfig.addFilter("md", (content) => mdLib.render(content || ""));
   eleventyConfig.addFilter("where", (arr, key, value) => {
     if (!Array.isArray(arr)) return [];
     return arr.filter((item) => item && item[key] === value);

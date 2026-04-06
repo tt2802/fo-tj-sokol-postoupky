@@ -1,2 +1,27 @@
-
+---
+layout: layouts/page.njk
 title: Nábor
+permalink: /nabor/
+---
+
+<section class="section">
+  <div class="container">
+    <h1>{{ nabor_content.title }}</h1>
+    {% if nabor_content.subtitle %}
+      <p class="muted" style="font-size:1.15rem;margin-bottom:2rem;">{{ nabor_content.subtitle }}</p>
+    {% endif %}
+
+    <div class="prose">
+      {{ nabor_content.body | md | safe }}
+    </div>
+
+    {% if nabor_content.contactName or nabor_content.contactEmail or nabor_content.contactPhone %}
+    <div style="margin-top:2rem;padding:1.5rem;background:var(--card-bg);border-radius:12px;border:1px solid var(--card-border);">
+      <h3 style="margin-top:0;">Kontakt</h3>
+      {% if nabor_content.contactName %}<p><strong>{{ nabor_content.contactName }}</strong></p>{% endif %}
+      {% if nabor_content.contactEmail %}<p>Email: <a href="mailto:{{ nabor_content.contactEmail }}">{{ nabor_content.contactEmail }}</a></p>{% endif %}
+      {% if nabor_content.contactPhone %}<p>Tel: <a href="tel:{{ nabor_content.contactPhone }}">{{ nabor_content.contactPhone }}</a></p>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>

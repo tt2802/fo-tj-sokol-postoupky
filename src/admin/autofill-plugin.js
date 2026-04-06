@@ -21,6 +21,14 @@
     return s.length >= 10 ? s.slice(0, 10) : s;
   }
 
+  function toSlug(str) {
+    var map = {'á':'a','č':'c','ď':'d','é':'e','ě':'e','í':'i','ň':'n','ó':'o',
+               'ř':'r','š':'s','ť':'t','ú':'u','ů':'u','ý':'y','ž':'z'};
+    return (str || "").toLowerCase()
+      .replace(/[^\x00-\x7F]/g, function (c) { return map[c] || ''; })
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
   function getPathPrefix() {
     var p = window.location.pathname || "";
     var i = p.indexOf("/admin/");
@@ -777,6 +785,37 @@
           var entry = arg.entry;
           if (!entry || !entry.get) return entry;
           var p = String(entry.get("path") || "");
+
+          /* ── upcoming matches: auto-slug + auto-fill home/away ── */
+          if (p.indexOf("upcoming_matches") >= 0) {
+            var uItems = entry.getIn(["data", "items"]);
+            if (!uItems || !uItems.map) return entry;
+
+            var uUpdated = uItems.map(function (im) {
+              var obj = im && im.toJS ? im.toJS() : im;
+              var fills = {};
+
+              if (obj.isHome === true && !obj.home) fills.home = "Postoupky";
+              if (obj.isHome === false && !obj.away) fills.away = "Postoupky";
+
+              var h = fills.home || obj.home || "";
+              var a = fills.away || obj.away || "";
+              var d = normalizeDate(obj.date);
+              if (!obj.slug && d && h && a) {
+                fills.slug = d + "-" + toSlug(h) + "-" + toSlug(a);
+              }
+
+              if (Object.keys(fills).length && im.merge) {
+                log("preSave upcoming fill:", Object.keys(fills).join(", "));
+                return im.merge(fills);
+              }
+              return im;
+            });
+
+            return entry.setIn(["data", "items"], uUpdated);
+          }
+
+          /* ── played matches: fill from related match + auto home/away + auto-slug ── */
           if (p.indexOf("played_matches") < 0) return entry;
 
           var items = entry.getIn(["data", "items"]);
@@ -784,29 +823,40 @@
 
           var updated = items.map(function (im) {
             var obj = im && im.toJS ? im.toJS() : im;
-            var slug = String((obj && obj.relatedUpcoming) || "").trim();
-            if (!slug) return im;
-
-            var match = null;
-            for (var i = 0; i < upcomingMatches.length; i++) {
-              if (upcomingMatches[i].slug === slug) { match = upcomingMatches[i]; break; }
-            }
-            if (!match) return im;
-
             var fills = {};
-            var keys = ["team", "category", "season", "competition", "round",
-                        "home", "away", "isHome", "venue", "slug"];
-            keys.forEach(function (k) {
-              var mv = match[k];
-              var cv = obj[k];
-              if ((cv === undefined || cv === null || cv === "") &&
-                  mv !== undefined && mv !== null && mv !== "") {
-                fills[k] = mv;
+
+            var relSlug = String((obj && obj.relatedUpcoming) || "").trim();
+            if (relSlug) {
+              var match = null;
+              for (var i = 0; i < upcomingMatches.length; i++) {
+                if (upcomingMatches[i].slug === relSlug) { match = upcomingMatches[i]; break; }
               }
-            });
-            // Always fill date if available
-            if (match.date && (!obj.date || obj.date === "")) {
-              fills.date = normalizeDate(match.date);
+              if (match) {
+                var keys = ["team", "category", "season", "competition", "round",
+                            "home", "away", "isHome", "venue", "slug"];
+                keys.forEach(function (k) {
+                  var mv = match[k];
+                  var cv = obj[k];
+                  if ((cv === undefined || cv === null || cv === "") &&
+                      mv !== undefined && mv !== null && mv !== "") {
+                    fills[k] = mv;
+                  }
+                });
+                if (match.date && (!obj.date || obj.date === "")) {
+                  fills.date = normalizeDate(match.date);
+                }
+              }
+            }
+
+            var isHome = fills.isHome !== undefined ? fills.isHome : obj.isHome;
+            if (isHome === true && !obj.home && !fills.home) fills.home = "Postoupky";
+            if (isHome === false && !obj.away && !fills.away) fills.away = "Postoupky";
+
+            if (!obj.slug && !fills.slug) {
+              var sh = fills.home || obj.home || "";
+              var sa = fills.away || obj.away || "";
+              var sd = normalizeDate(fills.date || obj.date);
+              if (sd && sh && sa) fills.slug = sd + "-" + toSlug(sh) + "-" + toSlug(sa);
             }
 
             if (Object.keys(fills).length && im.merge) {
