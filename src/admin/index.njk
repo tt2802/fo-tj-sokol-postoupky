@@ -8,52 +8,94 @@ permalink: /admin/index.html
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Administrace | TJ Sokol Postoupky</title>
     <style>
-      /* ── Branding: hlavička CMS ── */
-      [class*="AppHeader"] {
+      /* ── Branding overrides for Decap CMS v3 ── */
+
+      /* Header bar */
+      header, [class*="Header"] {
         background: #6d28d9 !important;
       }
 
-      /* Logo vedle názvu */
-      [class*="AppHeader"] a[href="#/"] {
-        display: flex !important;
-        align-items: center;
-        gap: 10px;
-      }
-      [class*="AppHeader"] a[href="#/"]::before {
-        content: "";
-        display: inline-block;
-        width: 32px;
-        height: 32px;
-        background: url("/assets/img/logo.png") center/contain no-repeat;
-        border-radius: 4px;
+      /* Main nav links in header */
+      header a, header span, header button,
+      [class*="Header"] a, [class*="Header"] span {
+        color: #fff !important;
       }
 
-      /* ── Sidebar kolekce ── */
-      [class*="SidebarNavList"] li > a,
-      [class*="SidebarNavList"] li > div {
-        font-size: 15px;
-      }
-
-      /* ── Lepší přehlednost: list-item summary ── */
-      [class*="ListCard"],
-      [class*="ObjectWidgetTopBar"] {
+      /* Active collection in sidebar */
+      nav a[aria-current="true"],
+      nav a[aria-current="page"],
+      aside a[aria-current="true"],
+      aside a[aria-current="page"] {
+        background: #ede9fe !important;
+        color: #6d28d9 !important;
         border-left: 3px solid #6d28d9;
+        font-weight: 600;
       }
 
-      /* ── Zápasové formuláře: vizuální oddělovací čára ── */
-      [id*="homeScore"],
-      [id*="referee"],
-      [id*="lineup"],
-      [id*="scorers"] {
-        border-top: 2px solid #e5e7eb;
-        padding-top: 12px;
-        margin-top: 8px;
+      /* Sidebar hover */
+      nav a:hover, aside a:hover {
+        background: #f5f3ff !important;
       }
     </style>
   </head>
   <body>
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <script src="./autofill-plugin.js?v=20260406"></script>
+    <script src="./autofill-plugin.js?v=20260406b"></script>
+    <script>
+      /* Post-init DOM branding — runs after CMS renders */
+      (function () {
+        var PURPLE = "#6d28d9";
+        var LOGO = "/fo-tj-sokol-postoupky/assets/img/logo.png";
+        var applied = false;
+
+        function brandHeader() {
+          if (applied) return;
+          /* Find the top-level header element */
+          var hdr = document.querySelector("header")
+                 || document.querySelector("[class*='AppHeader']")
+                 || document.querySelector("[class*='Header-']");
+          if (!hdr) return;
+
+          hdr.style.cssText = "background:" + PURPLE + "!important;";
+
+          /* Add logo before the first link */
+          var link = hdr.querySelector("a");
+          if (link && !link.querySelector(".club-logo")) {
+            var img = document.createElement("img");
+            img.className = "club-logo";
+            img.src = LOGO;
+            img.alt = "TJ Sokol Postoupky";
+            img.style.cssText = "height:32px;width:32px;object-fit:contain;margin-right:8px;border-radius:4px;vertical-align:middle;";
+            link.insertBefore(img, link.firstChild);
+          }
+
+          /* Ensure all header text/links are white */
+          var els = hdr.querySelectorAll("a, span, button, svg");
+          for (var i = 0; i < els.length; i++) {
+            els[i].style.color = "#fff";
+            if (els[i].tagName === "SVG") els[i].style.fill = "#fff";
+          }
+
+          applied = true;
+        }
+
+        /* Observe DOM changes until the header appears, then brand it */
+        var observer = new MutationObserver(function () {
+          brandHeader();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        /* Also try periodically as fallback */
+        var n = 0;
+        var t = setInterval(function () {
+          brandHeader();
+          if (applied || ++n > 60) {
+            clearInterval(t);
+            /* Keep observer running for SPA navigation */
+          }
+        }, 500);
+      })();
+    </script>
   </body>
 </html>
