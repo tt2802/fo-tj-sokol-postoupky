@@ -11,23 +11,25 @@ permalink: /admin/index.html
   <body>
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <script src="./autofill-plugin.js?v=20260406d"></script>
+    <script src="./autofill-plugin.js?v=20260406e"></script>
     <script>
     (function () {
       var REPO = "tt2802/fo-tj-sokol-postoupky";
-      var API  = "https://api.github.com/repos/" + REPO + "/commits?per_page=15";
+      var API  = "https://api.github.com/repos/" + REPO + "/commits?per_page=10";
       var PANEL_ID = "recent-changes-panel";
+      var TOGGLE_ID = "recent-changes-toggle";
       var injected = false;
+      var panelOpen = false;
 
       function formatDate(iso) {
         var d = new Date(iso);
-        return d.toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" })
+        return d.toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric" })
           + " " + d.toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" });
       }
 
       function shortenMsg(msg) {
         var first = (msg || "").split("\n")[0];
-        return first.length > 80 ? first.slice(0, 77) + "…" : first;
+        return first.length > 55 ? first.slice(0, 52) + "…" : first;
       }
 
       function typeIcon(msg) {
@@ -41,28 +43,37 @@ permalink: /admin/index.html
       }
 
       function injectPanel() {
-        if (injected || document.getElementById(PANEL_ID)) return;
-        // Only inject on the main collection list (not when editing)
-        var hash = window.location.hash || "";
-        if (hash.indexOf("/entries/") > -1 || hash.indexOf("/new") > -1) return;
-
-        // Find the main content area
-        var main = document.querySelector("main") || document.querySelector("[class*='Main']");
-        if (!main) return;
-
-        // Check if we're on a collections listing page
-        var wrapper = main.querySelector("div");
-        if (!wrapper) return;
-
+        if (injected) return;
         injected = true;
 
+        // Toggle button (fixed, bottom-right)
+        var toggle = document.createElement("button");
+        toggle.id = TOGGLE_ID;
+        toggle.type = "button";
+        toggle.textContent = "📋 Změny";
+        toggle.style.cssText = "position:fixed;bottom:20px;right:20px;z-index:9999;padding:8px 16px;font-size:13px;font-weight:600;border:none;border-radius:20px;background:#6d28d9;color:#fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform .15s;";
+        toggle.onmouseenter = function () { toggle.style.transform = "scale(1.05)"; };
+        toggle.onmouseleave = function () { toggle.style.transform = "scale(1)"; };
+        toggle.onclick = function () {
+          var p = document.getElementById(PANEL_ID);
+          if (p) {
+            panelOpen = !panelOpen;
+            p.style.display = panelOpen ? "block" : "none";
+          }
+        };
+        document.body.appendChild(toggle);
+
+        // Side panel (fixed, bottom-right, above button)
         var panel = document.createElement("div");
         panel.id = PANEL_ID;
-        panel.style.cssText = "margin:20px auto;max-width:800px;padding:20px 24px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);";
-        panel.innerHTML = '<h3 style="margin:0 0 14px;font-size:16px;color:#333;">Poslední změny</h3><div id="recent-changes-list" style="color:#888;font-size:14px;">Načítám…</div>';
+        panel.style.cssText = "display:none;position:fixed;bottom:60px;right:20px;z-index:9998;width:320px;max-height:420px;overflow-y:auto;padding:14px 16px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.12);font-family:system-ui,-apple-system,sans-serif;";
+        panel.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><span style="font-weight:700;font-size:14px;color:#333;">Poslední změny</span><button id="rc-close" type="button" style="border:none;background:none;cursor:pointer;font-size:18px;color:#999;padding:0 2px;">×</button></div><div id="recent-changes-list" style="color:#888;font-size:13px;">Načítám…</div>';
+        document.body.appendChild(panel);
 
-        // Insert after main content
-        main.appendChild(panel);
+        document.getElementById("rc-close").onclick = function () {
+          panelOpen = false;
+          panel.style.display = "none";
+        };
 
         fetch(API)
           .then(function (r) { return r.json(); })
@@ -71,50 +82,35 @@ permalink: /admin/index.html
               document.getElementById("recent-changes-list").textContent = "Nepodařilo se načíst.";
               return;
             }
-            var html = '<div style="display:flex;flex-direction:column;gap:8px;">';
+            var html = '<div style="display:flex;flex-direction:column;gap:6px;">';
             commits.forEach(function (c) {
               var msg = c.commit && c.commit.message || "";
               var date = c.commit && c.commit.author && c.commit.author.date || "";
-              var author = c.commit && c.commit.author && c.commit.author.name || "";
               var sha = (c.sha || "").slice(0, 7);
               var url = c.html_url || "#";
-              html += '<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:#fafafa;border-radius:6px;border:1px solid #f0f0f0;">'
-                + '<span style="font-size:18px;flex-shrink:0;margin-top:1px;">' + typeIcon(msg) + '</span>'
-                + '<div style="flex:1;min-width:0;">'
-                + '<div style="font-size:14px;color:#222;line-height:1.4;">' + shortenMsg(msg).replace(/</g,"&lt;") + '</div>'
-                + '<div style="font-size:12px;color:#888;margin-top:2px;">'
-                + formatDate(date) + ' · ' + author.replace(/</g,"&lt;")
+              html += '<div style="padding:6px 8px;background:#fafafa;border-radius:5px;border:1px solid #f0f0f0;">'
+                + '<div style="display:flex;align-items:center;gap:6px;">'
+                + '<span style="font-size:14px;flex-shrink:0;">' + typeIcon(msg) + '</span>'
+                + '<span style="font-size:12px;color:#222;line-height:1.3;overflow:hidden;text-overflow:ellipsis;">' + shortenMsg(msg).replace(/</g,"&lt;") + '</span>'
+                + '</div>'
+                + '<div style="font-size:11px;color:#999;margin-top:2px;padding-left:22px;">'
+                + formatDate(date)
                 + ' · <a href="' + url + '" target="_blank" rel="noopener" style="color:#6d28d9;text-decoration:none;">' + sha + '</a>'
-                + '</div></div></div>';
+                + '</div></div>';
             });
             html += '</div>';
             document.getElementById("recent-changes-list").innerHTML = html;
           })
           .catch(function () {
-            document.getElementById("recent-changes-list").textContent = "Nepodařilo se načíst změny.";
+            document.getElementById("recent-changes-list").textContent = "Nepodařilo se načíst.";
           });
       }
 
-      function tryInject() {
-        // Remove panel when navigating to edit view
-        var hash = window.location.hash || "";
-        if (hash.indexOf("/entries/") > -1 || hash.indexOf("/new") > -1) {
-          var existing = document.getElementById(PANEL_ID);
-          if (existing) { existing.remove(); injected = false; }
-          return;
-        }
-        injectPanel();
-      }
-
-      // Observe hash changes and DOM mutations
-      window.addEventListener("hashchange", function () { injected = false; setTimeout(tryInject, 500); });
-
-      var obs = new MutationObserver(function () { tryInject(); });
+      // Wait for CMS to render, then inject
       var attempts = 0;
       var timer = setInterval(function () {
         var body = document.querySelector("main") || document.querySelector("[class*='Main']");
-        if (body) { obs.observe(body, { childList: true, subtree: true }); clearInterval(timer); tryInject(); }
-        if (++attempts > 60) clearInterval(timer);
+        if (body || ++attempts > 40) { clearInterval(timer); injectPanel(); }
       }, 500);
     })();
     </script>
