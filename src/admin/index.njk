@@ -218,6 +218,236 @@ permalink: /admin/index.html
         if (body || ++attempts > 40) { clearInterval(timer); injectPanel(); }
       }, 500);
     })();
+
+    /* ── Status Monitor: deploy & site health check ── */
+    (function () {
+      var REPO = "tt2802/fo-tj-sokol-postoupky";
+      var SITE = "https://tt2802.github.io/fo-tj-sokol-postoupky/";
+      var GH_API = "https://api.github.com/repos/" + REPO;
+      var STATUS_ID = "status-panel";
+      var STATUS_DOT = "status-dot";
+      var injected = false;
+      var panelOpen = false;
+
+      function timeAgo(iso) {
+        var diff = (Date.now() - new Date(iso).getTime()) / 1000;
+        if (diff < 60) return "právě teď";
+        if (diff < 3600) return Math.floor(diff / 60) + " min";
+        if (diff < 86400) return Math.floor(diff / 3600) + " hod";
+        return Math.floor(diff / 86400) + " dní";
+      }
+
+      function fmtDate(iso) {
+        var d = new Date(iso);
+        return d.toLocaleDateString("cs-CZ") + " " + d.toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" });
+      }
+
+      function row(label, val, color) {
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f0f0;">'
+          + '<span style="font-size:12px;color:#666;">' + label + '</span>'
+          + '<span style="font-size:12px;font-weight:600;color:' + (color || "#222") + ';">' + val + '</span></div>';
+      }
+
+      function statusBadge(text, bg, fg) {
+        return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:' + bg + ';color:' + fg + ';">' + text + '</span>';
+      }
+
+      function inject() {
+        if (injected) return;
+        injected = true;
+        var isMobile = window.innerWidth <= 768;
+
+        // Dot indicator button (fixed, bottom-left)
+        var dot = document.createElement("button");
+        dot.id = STATUS_DOT;
+        dot.type = "button";
+        dot.innerHTML = "● Stav";
+        dot.style.cssText = "position:fixed;bottom:" + (isMobile ? "12px" : "20px") + ";left:" + (isMobile ? "12px" : "20px") + ";z-index:9999;padding:8px 16px;font-size:13px;font-weight:600;border:none;border-radius:20px;background:#374151;color:#fbbf24;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform .15s;";
+        dot.onmouseenter = function () { dot.style.transform = "scale(1.05)"; };
+        dot.onmouseleave = function () { dot.style.transform = "scale(1)"; };
+        dot.onclick = function () {
+          var p = document.getElementById(STATUS_ID);
+          if (p) { panelOpen = !panelOpen; p.style.display = panelOpen ? "block" : "none"; }
+        };
+        document.body.appendChild(dot);
+
+        // Panel
+        var panel = document.createElement("div");
+        panel.id = STATUS_ID;
+        panel.style.cssText = "display:none;position:fixed;bottom:60px;left:" + (isMobile ? "10px" : "20px") + ";z-index:9998;width:" + (isMobile ? "calc(100vw - 20px)" : "320px") + ";padding:16px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.12);font-family:system-ui,-apple-system,sans-serif;";
+        panel.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">'
+          + '<span style="font-weight:700;font-size:14px;color:#333;">Stav webu</span>'
+          + '<button id="st-close" type="button" style="border:none;background:none;cursor:pointer;font-size:18px;color:#999;padding:0 2px;">×</button></div>'
+          + '<div id="status-content" style="font-size:13px;color:#888;">Kontroluji…</div>';
+        document.body.appendChild(panel);
+
+        document.getElementById("st-close").onclick = function () {
+          panelOpen = false;
+          panel.style.display = "none";
+        };
+
+        // Run checks
+        runChecks();
+      }
+
+      function runChecks() {
+        var results = { commit: null, deploy: null, siteOk: null };
+
+        // 1. Latest commit
+        var p1 = fetch(GH_API + "/commits?per_page=1")
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (Array.isArray(data) && data[0]) {
+              results.commit = {
+                sha: data[0].sha,
+                date: data[0].commit.author.date,
+                msg: (data[0].commit.message || "").split("\n")[0]
+              };
+            }
+          }).catch(function () {});
+
+        // 2. Latest GitHub Pages deployment (via deployments API)
+        var p2 = fetch(GH_API + "/pages/builds/latest")
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data && data.status) {
+              results.deploy = {
+                status: data.status,
+                created: data.created_at,
+                updated: data.updated_at,
+                commitSha: data.commit ? data.commit.substring(0, 7) : ""
+              };
+            }
+          }).catch(function () {
+            // Try actions workflow runs as fallback
+            return fetch(GH_API + "/actions/runs?per_page=1&status=completed")
+              .then(function (r) { return r.json(); })
+              .then(function (data) {
+                if (data && data.workflow_runs && data.workflow_runs[0]) {
+                  var run = data.workflow_runs[0];
+                  results.deploy = {
+                    status: run.conclusion === "success" ? "built" : run.conclusion,
+                    created: run.created_at,
+                    updated: run.updated_at,
+                    commitSha: (run.head_sha || "").substring(0, 7)
+                  };
+                }
+              }).catch(function () {});
+          });
+
+        // 3. Site ping
+        var p3 = fetch(SITE, { method: "HEAD", cache: "no-store", mode: "no-cors" })
+          .then(function () { results.siteOk = true; })
+          .catch(function () { results.siteOk = false; });
+
+        Promise.all([p1, p2, p3]).then(function () {
+          renderStatus(results);
+        });
+      }
+
+      function renderStatus(r) {
+        var html = '';
+
+        // Overall status
+        var allGood = r.siteOk !== false;
+        var deployOk = r.deploy && (r.deploy.status === "built" || r.deploy.status === "success");
+        var synced = true;
+
+        if (r.commit && r.deploy && r.deploy.commitSha) {
+          synced = r.commit.sha.substring(0, 7) === r.deploy.commitSha;
+        }
+
+        var overallOk = allGood && deployOk !== false;
+
+        // Status header
+        if (overallOk && synced) {
+          html += '<div style="text-align:center;padding:8px 0 12px;">'
+            + '<div style="font-size:28px;">✅</div>'
+            + '<div style="font-size:13px;font-weight:600;color:#16a34a;margin-top:4px;">Vše v pořádku</div></div>';
+        } else if (!synced) {
+          html += '<div style="text-align:center;padding:8px 0 12px;">'
+            + '<div style="font-size:28px;">🔄</div>'
+            + '<div style="font-size:13px;font-weight:600;color:#d97706;margin-top:4px;">Probíhá nasazení…</div></div>';
+        } else {
+          html += '<div style="text-align:center;padding:8px 0 12px;">'
+            + '<div style="font-size:28px;">⚠️</div>'
+            + '<div style="font-size:13px;font-weight:600;color:#dc2626;margin-top:4px;">Problém s nasazením</div></div>';
+        }
+
+        // Web status
+        if (r.siteOk === true) {
+          html += row("Web", statusBadge("Online", "#dcfce7", "#16a34a"));
+        } else if (r.siteOk === false) {
+          html += row("Web", statusBadge("Nedostupný", "#fecaca", "#dc2626"));
+        } else {
+          html += row("Web", statusBadge("Neznámý", "#f3f4f6", "#6b7280"));
+        }
+
+        // Deploy status
+        if (r.deploy) {
+          var dLabel = r.deploy.status === "built" || r.deploy.status === "success" ? "Nasazeno" : r.deploy.status === "building" || r.deploy.status === "queued" ? "Probíhá" : r.deploy.status;
+          var dBg = dLabel === "Nasazeno" ? "#dcfce7" : dLabel === "Probíhá" ? "#fef3c7" : "#fecaca";
+          var dFg = dLabel === "Nasazeno" ? "#16a34a" : dLabel === "Probíhá" ? "#d97706" : "#dc2626";
+          html += row("GitHub Pages", statusBadge(dLabel, dBg, dFg));
+          html += row("Naposledy nasazeno", timeAgo(r.deploy.updated || r.deploy.created));
+        } else {
+          html += row("GitHub Pages", statusBadge("Neznámý", "#f3f4f6", "#6b7280"));
+        }
+
+        // Sync status
+        if (r.commit && r.deploy && r.deploy.commitSha) {
+          if (synced) {
+            html += row("Synchronizace", statusBadge("Aktuální", "#dcfce7", "#16a34a"));
+          } else {
+            html += row("Synchronizace", statusBadge("Čeká na deploy", "#fef3c7", "#d97706"));
+          }
+        }
+
+        // Latest commit
+        if (r.commit) {
+          html += '<div style="margin-top:10px;padding:8px 10px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0;">'
+            + '<div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">Poslední commit</div>'
+            + '<div style="font-size:12px;color:#334155;line-height:1.4;">' + r.commit.msg.replace(/</g, "&lt;").substring(0, 60) + '</div>'
+            + '<div style="font-size:11px;color:#94a3b8;margin-top:2px;">' + fmtDate(r.commit.date) + ' · ' + r.commit.sha.substring(0, 7) + '</div></div>';
+        }
+
+        // Refresh button
+        html += '<div style="text-align:center;margin-top:12px;">'
+          + '<button id="st-refresh" type="button" style="padding:6px 16px;font-size:12px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;color:#333;cursor:pointer;font-weight:500;">🔄 Obnovit</button></div>';
+
+        var el = document.getElementById("status-content");
+        if (el) el.innerHTML = html;
+
+        // Bind refresh
+        var btn = document.getElementById("st-refresh");
+        if (btn) btn.onclick = function () {
+          el.innerHTML = '<div style="text-align:center;color:#888;padding:10px;">Kontroluji…</div>';
+          runChecks();
+        };
+
+        // Update dot color
+        var dot = document.getElementById(STATUS_DOT);
+        if (dot) {
+          if (overallOk && synced) {
+            dot.style.color = "#22c55e";
+            dot.style.background = "#1e3a2f";
+          } else if (!synced) {
+            dot.style.color = "#fbbf24";
+            dot.style.background = "#374151";
+          } else {
+            dot.style.color = "#ef4444";
+            dot.style.background = "#3b1520";
+          }
+        }
+      }
+
+      // Inject after CMS loads
+      var att = 0;
+      var tm = setInterval(function () {
+        var body = document.querySelector("main") || document.querySelector("[class*='Main']");
+        if (body || ++att > 40) { clearInterval(tm); inject(); }
+      }, 600);
+    })();
     </script>
   </body>
 </html>
