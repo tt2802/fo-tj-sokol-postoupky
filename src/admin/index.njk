@@ -6,353 +6,537 @@ permalink: /admin/index.html
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#6d28d9">
     <title>Administrace | TJ Sokol Postoupky</title>
     <style>
-      :root {
-        --purple: #6d28d9;
-        --purple-dark: #4c1d95;
-        --purple-light: #f3e8ff;
-        --text: #1e293b;
-        --muted: #64748b;
-        --border: #e2e8f0;
-        --bg: #f8fafc;
-      }
-      *, *::before, *::after { box-sizing: border-box; margin: 0; }
-      html { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-      body { background: var(--bg); color: var(--text); }
+      /* ── Base mobile reset ── */
+      *, *::before, *::after { box-sizing: border-box; }
 
-      /* ── Admin Header (matches main site) ── */
-      .admin-header {
-        background: var(--purple-dark);
-        color: #fff;
-        padding: 0.5rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky; top: 0; z-index: 100;
-      }
-      .admin-header__left {
-        display: flex; align-items: center; gap: 0.6rem;
-        text-decoration: none; color: #fff; min-width: 0;
-      }
-      .admin-header__logo { height: 40px; width: auto; flex-shrink: 0; }
-      .admin-header__title {
-        font-weight: 800; font-size: 0.95rem; white-space: nowrap;
-        overflow: hidden; text-overflow: ellipsis;
-      }
-      .admin-header__badge {
-        background: rgba(255,255,255,.15);
-        font-size: 11px; padding: 2px 8px; border-radius: 6px;
-        font-weight: 600; flex-shrink: 0;
-      }
-      .admin-header__right {
-        display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;
-      }
-      .admin-header__right a {
-        color: rgba(255,255,255,.8); font-size: 12px; text-decoration: none;
-        padding: 6px 10px; border-radius: 8px; white-space: nowrap;
-      }
-      .admin-header__right a:hover { background: rgba(255,255,255,.1); }
-
-      /* ── Mobile hamburger ── */
-      .admin-nav-toggle {
+      /* ── Mobile menu overlay ── */
+      #mob-menu-btn {
         display: none;
-        background: rgba(255,255,255,.15);
-        border: 1px solid rgba(255,255,255,.3);
-        color: #fff; padding: 0.4rem 0.6rem; border-radius: 10px;
-        font-size: 1.2rem; cursor: pointer; line-height: 1;
+        position: fixed; top: 8px; left: 8px; z-index: 10001;
+        width: 44px; height: 44px; border: none; border-radius: 10px;
+        background: #6d28d9; color: #fff; font-size: 22px; line-height: 1;
+        cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.3);
+        align-items: center; justify-content: center;
       }
-
-      /* ── Slide-out nav drawer ── */
-      .admin-nav-overlay {
-        display: none; position: fixed; inset: 0; z-index: 200;
-        background: rgba(0,0,0,.4); opacity: 0; transition: opacity .2s;
+      #mob-menu-overlay {
+        display: none; position: fixed; inset: 0; z-index: 10000;
+        background: rgba(0,0,0,.5); opacity: 0; transition: opacity .2s;
       }
-      .admin-nav-overlay.open { opacity: 1; }
-
-      .admin-nav {
-        display: none;
-        position: fixed; top: 0; left: -290px; z-index: 201;
+      #mob-menu-overlay.open { opacity: 1; }
+      #mob-menu-drawer {
+        position: fixed; top: 0; left: -280px; z-index: 10002;
         width: 280px; height: 100vh; background: #fff;
         overflow-y: auto; transition: left .25s ease;
-        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+        box-shadow: 4px 0 20px rgba(0,0,0,.15);
+        padding: 60px 0 20px;
       }
-      .admin-nav.open { left: 0; }
-
-      .admin-nav__head {
-        background: var(--purple-dark); color: #fff;
-        padding: 16px 20px; display: flex; align-items: center; gap: 10px;
+      #mob-menu-drawer.open { left: 0; }
+      #mob-menu-drawer .mob-heading {
+        padding: 10px 20px; font-size: 12px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: .5px;
+        color: #6d28d9; border-bottom: 1px solid #f0f0f0;
       }
-      .admin-nav__head img { height: 32px; }
-      .admin-nav__head span { font-weight: 700; font-size: 14px; }
-
-      .admin-nav__group {
-        padding: 10px 16px 4px; font-size: 11px; font-weight: 700;
-        text-transform: uppercase; letter-spacing: .6px;
-        color: var(--purple); margin-top: 4px;
-      }
-      .admin-nav a {
+      #mob-menu-drawer a {
         display: flex; align-items: center; gap: 10px;
-        padding: 12px 20px; font-size: 14px; color: var(--text);
-        text-decoration: none; border-bottom: 1px solid #f8f9fa;
-        transition: background .1s;
+        padding: 14px 20px; font-size: 15px; color: #333;
+        text-decoration: none; border-bottom: 1px solid #f8f8f8;
       }
-      .admin-nav a:hover { background: var(--purple-light); }
-      .admin-nav a:active { background: #ede9fe; }
-      .admin-nav .ni { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+      #mob-menu-drawer a:active { background: #f3e8ff; }
+      #mob-menu-drawer a .mob-icon { font-size: 18px; width: 24px; text-align: center; }
 
-      /* ── CMS container ── */
-      #nc-root { min-height: calc(100vh - 52px); }
-
-      /* ── Mobile ── */
       @media (max-width: 768px) {
-        .admin-nav-toggle { display: inline-flex; align-items: center; }
-        .admin-header__badge { display: none; }
-        .admin-header__logo { height: 32px; }
+        #mob-menu-btn { display: flex; }
+
+        /* Prevent horizontal overflow */
         html, body, #nc-root { overflow-x: hidden !important; max-width: 100vw !important; }
-        #nc-root input, #nc-root select, #nc-root textarea {
-          font-size: 16px !important; max-width: 100% !important;
-          width: 100% !important; box-sizing: border-box !important;
-        }
-      }
-      @media (min-width: 769px) {
-        .admin-header__logo { height: 48px; }
-        .admin-header__title { font-size: 1.1rem; }
+
+        /* Full-width form inputs - prevent iOS zoom */
+        #nc-root input,
+        #nc-root select,
+        #nc-root textarea { font-size: 16px !important; }
       }
     </style>
   </head>
   <body>
-    <!-- Admin header — same style as main site -->
-    <header class="admin-header">
-      <a class="admin-header__left" href="{{ '/' | url }}" title="Zpět na web">
-        <img class="admin-header__logo" src="{{ '/assets/img/logo.png' | url }}" alt="">
-        <span class="admin-header__title">TJ Sokol Postoupky</span>
-        <span class="admin-header__badge">Admin</span>
-      </a>
-      <div class="admin-header__right">
-        <a href="{{ '/' | url }}">← Web</a>
-        <button class="admin-nav-toggle" id="navToggle" type="button" aria-label="Menu">☰</button>
-      </div>
-    </header>
-
-    <!-- Mobile nav overlay -->
-    <div class="admin-nav-overlay" id="navOverlay"></div>
-
-    <!-- Slide-out navigation (shown after login) -->
-    <nav class="admin-nav" id="adminNav">
-      <div class="admin-nav__head">
-        <img src="{{ '/assets/img/logo.png' | url }}" alt="">
-        <span>Administrace</span>
-      </div>
-      <div class="admin-nav__group">Novinky</div>
-      <a href="#" data-nav="news"><span class="ni">📰</span> Novinky</a>
-      <div class="admin-nav__group">Zápasy</div>
-      <a href="#" data-nav="matches" data-file="upcoming_matches"><span class="ni">📅</span> Nadcházející</a>
-      <a href="#" data-nav="matches" data-file="played_matches"><span class="ni">⚽</span> Odehrané</a>
-      <a href="#" data-nav="matches" data-file="league_table"><span class="ni">🏆</span> Tabulka</a>
-      <div class="admin-nav__group">Tým</div>
-      <a href="#" data-nav="team" data-file="players"><span class="ni">👤</span> Hráči</a>
-      <a href="#" data-nav="team" data-file="staff"><span class="ni">👔</span> Realizační tým</a>
-      <a href="#" data-nav="team" data-file="formation"><span class="ni">📋</span> Sestava</a>
-      <div class="admin-nav__group">Obsah</div>
-      <a href="#" data-nav="content" data-file="calendar_events"><span class="ni">📆</span> Kalendář</a>
-      <a href="#" data-nav="content" data-file="gallery"><span class="ni">🖼️</span> Galerie</a>
-      <a href="#" data-nav="content" data-file="sponsors"><span class="ni">🤝</span> Partneři</a>
-      <a href="#" data-nav="content" data-file="contacts"><span class="ni">📞</span> Kontakty</a>
-      <div class="admin-nav__group">Stránky</div>
-      <a href="#" data-nav="pages" data-file="nabor"><span class="ni">📝</span> Nábor</a>
-      <div class="admin-nav__group">Nastavení</div>
-      <a href="#" data-nav="settings" data-file="site"><span class="ni">⚙️</span> Nastavení webu</a>
-      <a href="#" data-nav="settings" data-file="categories"><span class="ni">🏷️</span> Kategorie mládeže</a>
-    </nav>
+    <!-- Mobile menu -->
+    <button id="mob-menu-btn" type="button" aria-label="Menu">☰</button>
+    <div id="mob-menu-overlay"></div>
+    <div id="mob-menu-drawer">
+      <div class="mob-heading">Novinky</div>
+      <a href="#" data-mob-nav="news"><span class="mob-icon">📰</span> Novinky</a>
+      <div class="mob-heading">Zápasy</div>
+      <a href="#" data-mob-nav="matches" data-mob-file="upcoming_matches"><span class="mob-icon">📅</span> Nadcházející zápasy</a>
+      <a href="#" data-mob-nav="matches" data-mob-file="played_matches"><span class="mob-icon">⚽</span> Odehrané zápasy</a>
+      <a href="#" data-mob-nav="matches" data-mob-file="league_table"><span class="mob-icon">🏆</span> Tabulka soutěže</a>
+      <div class="mob-heading">Tým</div>
+      <a href="#" data-mob-nav="team" data-mob-file="players"><span class="mob-icon">👤</span> Hráči</a>
+      <a href="#" data-mob-nav="team" data-mob-file="staff"><span class="mob-icon">👔</span> Realizační tým</a>
+      <a href="#" data-mob-nav="team" data-mob-file="formation"><span class="mob-icon">📋</span> Sestava</a>
+      <div class="mob-heading">Obsah</div>
+      <a href="#" data-mob-nav="content" data-mob-file="calendar_events"><span class="mob-icon">📆</span> Kalendář akcí</a>
+      <a href="#" data-mob-nav="content" data-mob-file="gallery"><span class="mob-icon">🖼️</span> Galerie</a>
+      <a href="#" data-mob-nav="content" data-mob-file="sponsors"><span class="mob-icon">🤝</span> Partneři</a>
+      <a href="#" data-mob-nav="content" data-mob-file="contacts"><span class="mob-icon">📞</span> Kontakty</a>
+      <div class="mob-heading">Stránky</div>
+      <a href="#" data-mob-nav="pages" data-mob-file="nabor"><span class="mob-icon">📝</span> Nábor</a>
+      <div class="mob-heading">Nastavení</div>
+      <a href="#" data-mob-nav="settings" data-mob-file="site"><span class="mob-icon">⚙️</span> Nastavení webu</a>
+      <a href="#" data-mob-nav="settings" data-mob-file="categories"><span class="mob-icon">🏷️</span> Kategorie mládeže</a>
+    </div>
 
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <script src="./autofill-plugin.js?v=20260408"></script>
-
+    <script src="./autofill-plugin.js?v=20260406e"></script>
     <script>
-    /* ── Navigation: show after login, drawer on mobile ── */
+    /* ── Mobile menu + DOM fixer ── */
     (function () {
-      var navEl     = document.getElementById("adminNav");
-      var toggleBtn = document.getElementById("navToggle");
-      var overlay   = document.getElementById("navOverlay");
-      var links     = navEl.querySelectorAll("a[data-nav]");
-      var navReady  = false;
+      if (window.innerWidth > 768) return; // Only on mobile
 
-      function isMobile() { return window.innerWidth <= 768; }
+      var menuBtn = document.getElementById("mob-menu-btn");
+      var overlay = document.getElementById("mob-menu-overlay");
+      var drawer  = document.getElementById("mob-menu-drawer");
+      var links   = drawer.querySelectorAll("a[data-mob-nav]");
 
-      function openDrawer() {
-        overlay.style.display = "block";
-        requestAnimationFrame(function () { overlay.classList.add("open"); navEl.classList.add("open"); });
-      }
-      function closeDrawer() {
-        overlay.classList.remove("open"); navEl.classList.remove("open");
-        setTimeout(function () { overlay.style.display = "none"; }, 250);
-      }
+      function openMenu()  { overlay.style.display = "block"; setTimeout(function(){ overlay.classList.add("open"); drawer.classList.add("open"); }, 10); }
+      function closeMenu() { overlay.classList.remove("open"); drawer.classList.remove("open"); setTimeout(function(){ overlay.style.display = "none"; }, 250); }
 
-      toggleBtn.onclick = function () {
-        if (navEl.classList.contains("open")) closeDrawer(); else openDrawer();
-      };
-      overlay.onclick = closeDrawer;
+      menuBtn.onclick = openMenu;
+      overlay.onclick = closeMenu;
 
-      // Link navigation → Decap CMS hash route
+      // Navigate CMS by clicking sidebar links programmatically
       links.forEach(function (a) {
         a.onclick = function (e) {
           e.preventDefault();
-          var col = a.getAttribute("data-nav");
-          var file = a.getAttribute("data-file");
-          window.location.hash = file
-            ? "#/collections/" + col + "/entries/" + file
-            : "#/collections/" + col;
-          closeDrawer();
+          closeMenu();
+          var col = a.getAttribute("data-mob-nav");
+          var file = a.getAttribute("data-mob-file");
+
+          // Build the hash URL that Decap CMS uses
+          if (file) {
+            window.location.hash = "#/collections/" + col + "/entries/" + file;
+          } else {
+            window.location.hash = "#/collections/" + col;
+          }
+
+          // Force CMS to pick up the hash change
+          setTimeout(function () { window.dispatchEvent(new HashChangeEvent("hashchange")); }, 100);
         };
       });
 
-      // Show nav only after CMS login (header element appears)
-      function checkLogin() {
-        if (navReady) return;
-        var root = document.getElementById("nc-root");
-        if (!root) return;
-        var h = root.querySelector("header");
-        if (h) {
-          navReady = true;
-          navEl.style.display = "block";
-          if (!isMobile()) navEl.style.position = "static";
-          applyMobileFix();
-        }
-      }
-
-      // Restyle CMS DOM for mobile
+      // ── DOM fixer: apply mobile styles to actual Decap elements ──
+      var fixApplied = false;
       function applyMobileFix() {
-        if (!isMobile()) return;
         var root = document.getElementById("nc-root");
         if (!root) return;
 
-        // Hide CMS sidebar (we have our own nav)
+        // Find the main flex container (sidebar + content)
+        var mainWrap = root.querySelector("div > div > div");
+        if (mainWrap && mainWrap.children.length >= 2) {
+          var sidebar = mainWrap.children[0];
+          var content = mainWrap.children[1];
+
+          // Check if this looks like the sidebar layout
+          var sidebarStyle = window.getComputedStyle(sidebar);
+          if (sidebarStyle.display !== "none" && parseInt(sidebarStyle.width) > 100) {
+            // Hide the CMS sidebar — we use our own menu
+            sidebar.style.cssText = "display:none !important;";
+
+            // Make content full-width
+            mainWrap.style.cssText = "flex-direction:column !important; min-height:auto !important;";
+            content.style.cssText = "width:100% !important; min-width:0 !important; max-width:100vw !important; overflow-x:hidden !important;";
+          }
+        }
+
+        // Fix header
+        var header = root.querySelector("header");
+        if (header) {
+          header.style.cssText += "flex-wrap:wrap !important; padding:6px 10px 6px 56px !important; gap:4px !important;";
+          // Shrink header items
+          header.querySelectorAll("a, button, span").forEach(function (el) {
+            el.style.fontSize = "12px";
+            el.style.padding = "4px 8px";
+          });
+        }
+
+        // Fix all inputs
+        root.querySelectorAll("input, select, textarea").forEach(function (el) {
+          el.style.cssText += "max-width:100% !important; width:100% !important; box-sizing:border-box !important; font-size:16px !important;";
+        });
+
+        // Fix all buttons to be touch-friendly
+        root.querySelectorAll("button").forEach(function (btn) {
+          if (btn.id === "mob-menu-btn") return;
+          var h = parseInt(window.getComputedStyle(btn).height);
+          if (h < 40) btn.style.minHeight = "40px";
+        });
+
+        // Hide preview pane (split view) — keep only editor
         root.querySelectorAll("div").forEach(function (div) {
           var cs = window.getComputedStyle(div);
-          if (cs.display !== "flex" || div.children.length < 2) return;
-          var first = div.children[0];
-          var fw = parseInt(window.getComputedStyle(first).width);
-          var dw = parseInt(cs.width);
-          if (fw > 150 && fw < 320 && dw > 400 && first.querySelector("a")) {
-            first.style.cssText = "display:none !important;";
-            div.style.cssText += "flex-direction:column !important;";
-            for (var i = 1; i < div.children.length; i++) {
-              div.children[i].style.cssText += "width:100%!important;min-width:0!important;max-width:100vw!important;overflow-x:hidden!important;";
+          // Detect split panes: two siblings with width ~50%
+          if (cs.display === "flex" && div.children.length === 2) {
+            var c1 = div.children[0], c2 = div.children[1];
+            var w1 = parseInt(window.getComputedStyle(c1).width);
+            var w2 = parseInt(window.getComputedStyle(c2).width);
+            var total = w1 + w2;
+            // If it looks like a 50/50 split (editor + preview)
+            if (total > 300 && Math.abs(w1 - w2) < total * 0.3) {
+              var iframe = c2.querySelector("iframe");
+              if (iframe) {
+                c2.style.display = "none";
+                c1.style.width = "100%";
+                c1.style.maxWidth = "100%";
+              }
             }
           }
         });
 
-        // Compact CMS header
-        var ch = root.querySelector("header");
-        if (ch) ch.style.cssText += "flex-wrap:wrap!important;padding:6px 10px!important;gap:4px!important;font-size:12px!important;";
-
-        // Touch-friendly buttons
-        root.querySelectorAll("button").forEach(function (b) {
-          if (parseInt(window.getComputedStyle(b).height) < 36) b.style.minHeight = "40px";
-        });
+        fixApplied = true;
       }
 
-      setInterval(checkLogin, 800);
-      setInterval(applyMobileFix, 2000);
-      window.addEventListener("hashchange", function () { setTimeout(applyMobileFix, 400); });
+      // Run fixer periodically (CMS re-renders on navigation)
+      setInterval(applyMobileFix, 1500);
+      // Also run on hash changes
+      window.addEventListener("hashchange", function () { setTimeout(applyMobileFix, 500); });
     })();
     </script>
-
-    <!-- Floating widgets: changes + status (desktop only) -->
     <script>
     (function () {
       var REPO = "tt2802/fo-tj-sokol-postoupky";
       var API  = "https://api.github.com/repos/" + REPO + "/commits?per_page=10";
+      var PANEL_ID = "recent-changes-panel";
+      var TOGGLE_ID = "recent-changes-toggle";
+      var injected = false;
+      var panelOpen = false;
+
+      function formatDate(iso) {
+        var d = new Date(iso);
+        return d.toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric" })
+          + " " + d.toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" });
+      }
+
+      function shortenMsg(msg) {
+        var first = (msg || "").split("\n")[0];
+        return first.length > 55 ? first.slice(0, 52) + "…" : first;
+      }
+
+      function typeIcon(msg) {
+        var m = (msg || "").toLowerCase();
+        if (m.indexOf("novink") > -1 || m.indexOf("news") > -1 || m.indexOf("článek") > -1) return "📰";
+        if (m.indexOf("zápas") > -1 || m.indexOf("match") > -1 || m.indexOf("score") > -1) return "⚽";
+        if (m.indexOf("hráč") > -1 || m.indexOf("player") > -1 || m.indexOf("tým") > -1) return "👤";
+        if (m.indexOf("galeri") > -1 || m.indexOf("foto") > -1) return "🖼️";
+        if (m.indexOf("admin") > -1 || m.indexOf("cms") > -1) return "⚙️";
+        return "📝";
+      }
+
+      function injectPanel() {
+        if (injected) return;
+        injected = true;
+        // Hide widgets on mobile — keep UI clean for editing
+        if (window.innerWidth <= 768) return;
+        var isMobile = false;
+
+        // Toggle button (fixed, bottom-right)
+        var toggle = document.createElement("button");
+        toggle.id = TOGGLE_ID;
+        toggle.type = "button";
+        toggle.textContent = "📋 Změny";
+        toggle.style.cssText = "position:fixed;bottom:" + (isMobile ? "12px" : "20px") + ";right:" + (isMobile ? "12px" : "20px") + ";z-index:9999;padding:8px 16px;font-size:13px;font-weight:600;border:none;border-radius:20px;background:#6d28d9;color:#fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform .15s;";
+        toggle.onmouseenter = function () { toggle.style.transform = "scale(1.05)"; };
+        toggle.onmouseleave = function () { toggle.style.transform = "scale(1)"; };
+        toggle.onclick = function () {
+          var p = document.getElementById(PANEL_ID);
+          if (p) {
+            panelOpen = !panelOpen;
+            p.style.display = panelOpen ? "block" : "none";
+          }
+        };
+        document.body.appendChild(toggle);
+
+        // Side panel (fixed, bottom-right, above button)
+        var panel = document.createElement("div");
+        panel.id = PANEL_ID;
+        panel.style.cssText = "display:none;position:fixed;bottom:60px;right:" + (isMobile ? "10px" : "20px") + ";z-index:9998;width:" + (isMobile ? "calc(100vw - 20px)" : "320px") + ";max-height:" + (isMobile ? "60vh" : "420px") + ";overflow-y:auto;padding:14px 16px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.12);font-family:system-ui,-apple-system,sans-serif;";
+        panel.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><span style="font-weight:700;font-size:14px;color:#333;">Poslední změny</span><button id="rc-close" type="button" style="border:none;background:none;cursor:pointer;font-size:18px;color:#999;padding:0 2px;">×</button></div><div id="recent-changes-list" style="color:#888;font-size:13px;">Načítám…</div>';
+        document.body.appendChild(panel);
+
+        document.getElementById("rc-close").onclick = function () {
+          panelOpen = false;
+          panel.style.display = "none";
+        };
+
+        fetch(API)
+          .then(function (r) { return r.json(); })
+          .then(function (commits) {
+            if (!Array.isArray(commits)) {
+              document.getElementById("recent-changes-list").textContent = "Nepodařilo se načíst.";
+              return;
+            }
+            var html = '<div style="display:flex;flex-direction:column;gap:6px;">';
+            commits.forEach(function (c) {
+              var msg = c.commit && c.commit.message || "";
+              var date = c.commit && c.commit.author && c.commit.author.date || "";
+              var sha = (c.sha || "").slice(0, 7);
+              var url = c.html_url || "#";
+              html += '<div style="padding:6px 8px;background:#fafafa;border-radius:5px;border:1px solid #f0f0f0;">'
+                + '<div style="display:flex;align-items:center;gap:6px;">'
+                + '<span style="font-size:14px;flex-shrink:0;">' + typeIcon(msg) + '</span>'
+                + '<span style="font-size:12px;color:#222;line-height:1.3;overflow:hidden;text-overflow:ellipsis;">' + shortenMsg(msg).replace(/</g,"&lt;") + '</span>'
+                + '</div>'
+                + '<div style="font-size:11px;color:#999;margin-top:2px;padding-left:22px;">'
+                + formatDate(date)
+                + ' · <a href="' + url + '" target="_blank" rel="noopener" style="color:#6d28d9;text-decoration:none;">' + sha + '</a>'
+                + '</div></div>';
+            });
+            html += '</div>';
+            document.getElementById("recent-changes-list").innerHTML = html;
+          })
+          .catch(function () {
+            document.getElementById("recent-changes-list").textContent = "Nepodařilo se načíst.";
+          });
+      }
+
+      // Wait for CMS to render, then inject
+      var attempts = 0;
+      var timer = setInterval(function () {
+        var body = document.querySelector("main") || document.querySelector("[class*='Main']");
+        if (body || ++attempts > 40) { clearInterval(timer); injectPanel(); }
+      }, 500);
+    })();
+
+    /* ── Status Monitor: deploy & site health check ── */
+    (function () {
+      var REPO = "tt2802/fo-tj-sokol-postoupky";
       var SITE = "https://tt2802.github.io/fo-tj-sokol-postoupky/";
       var GH_API = "https://api.github.com/repos/" + REPO;
+      var STATUS_ID = "status-panel";
+      var STATUS_DOT = "status-dot";
       var injected = false;
+      var panelOpen = false;
 
-      function esc(s) { return (s||"").replace(/</g,"&lt;"); }
-      function fmtD(iso) { var d=new Date(iso); return d.toLocaleDateString("cs-CZ",{day:"numeric",month:"numeric"})+" "+d.toLocaleTimeString("cs-CZ",{hour:"2-digit",minute:"2-digit"}); }
-      function short(m) { var f=(m||"").split("\n")[0]; return f.length>55?f.slice(0,52)+"…":f; }
-      function ico(m) { var l=(m||"").toLowerCase(); if(l.indexOf("novink")>-1||l.indexOf("news")>-1)return"📰"; if(l.indexOf("zápas")>-1||l.indexOf("match")>-1)return"⚽"; if(l.indexOf("hráč")>-1||l.indexOf("tým")>-1)return"👤"; if(l.indexOf("galeri")>-1)return"🖼️"; if(l.indexOf("admin")>-1)return"⚙️"; return"📝"; }
-      function ago(iso) { var d=(Date.now()-new Date(iso).getTime())/1000; if(d<60)return"teď"; if(d<3600)return Math.floor(d/60)+" min"; if(d<86400)return Math.floor(d/3600)+" hod"; return Math.floor(d/86400)+" dní"; }
-      function row(l,v) { return'<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f0f0;"><span style="font-size:12px;color:#666;">'+l+'</span><span style="font-size:12px;font-weight:600;">'+v+'</span></div>'; }
-      function bdg(t,bg,fg) { return'<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:'+bg+';color:'+fg+';">'+t+'</span>'; }
-
-      function mkBtn(id,txt,side,bg,fg) {
-        var b=document.createElement("button"); b.id=id; b.type="button"; b.innerHTML=txt;
-        b.style.cssText="position:fixed;bottom:20px;"+side+":20px;z-index:9999;padding:8px 16px;font-size:13px;font-weight:600;border:none;border-radius:20px;background:"+bg+";color:"+fg+";cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform .15s;";
-        b.onmouseenter=function(){b.style.transform="scale(1.05)";}; b.onmouseleave=function(){b.style.transform="scale(1)";};
-        return b;
+      function timeAgo(iso) {
+        var diff = (Date.now() - new Date(iso).getTime()) / 1000;
+        if (diff < 60) return "právě teď";
+        if (diff < 3600) return Math.floor(diff / 60) + " min";
+        if (diff < 86400) return Math.floor(diff / 3600) + " hod";
+        return Math.floor(diff / 86400) + " dní";
       }
-      function mkPanel(id,side) {
-        var p=document.createElement("div"); p.id=id;
-        p.style.cssText="display:none;position:fixed;bottom:60px;"+side+":20px;z-index:9998;width:320px;max-height:420px;overflow-y:auto;padding:14px 16px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.12);font-family:system-ui,sans-serif;";
-        return p;
+
+      function fmtDate(iso) {
+        var d = new Date(iso);
+        return d.toLocaleDateString("cs-CZ") + " " + d.toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" });
+      }
+
+      function row(label, val, color) {
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f0f0;">'
+          + '<span style="font-size:12px;color:#666;">' + label + '</span>'
+          + '<span style="font-size:12px;font-weight:600;color:' + (color || "#222") + ';">' + val + '</span></div>';
+      }
+
+      function statusBadge(text, bg, fg) {
+        return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:' + bg + ';color:' + fg + ';">' + text + '</span>';
       }
 
       function inject() {
-        if (injected) return; injected = true;
+        if (injected) return;
+        injected = true;
+        // Hide widgets on mobile — keep UI clean for editing
         if (window.innerWidth <= 768) return;
+        var isMobile = false;
 
-        // Changes widget
-        var cO=false, cB=mkBtn("rc-b","📋 Změny","right","#6d28d9","#fff"), cP=mkPanel("rc-p","right");
-        cP.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:14px;color:#333;">Poslední změny</b><button id="rc-x" style="border:none;background:none;cursor:pointer;font-size:18px;color:#999;">×</button></div><div id="rc-l" style="color:#888;font-size:13px;">Načítám…</div>';
-        document.body.appendChild(cB); document.body.appendChild(cP);
-        cB.onclick=function(){cO=!cO;cP.style.display=cO?"block":"none";}; 
+        // Dot indicator button (fixed, bottom-left)
+        var dot = document.createElement("button");
+        dot.id = STATUS_DOT;
+        dot.type = "button";
+        dot.innerHTML = "● Stav";
+        dot.style.cssText = "position:fixed;bottom:" + (isMobile ? "12px" : "20px") + ";left:" + (isMobile ? "12px" : "20px") + ";z-index:9999;padding:8px 16px;font-size:13px;font-weight:600;border:none;border-radius:20px;background:#374151;color:#fbbf24;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform .15s;";
+        dot.onmouseenter = function () { dot.style.transform = "scale(1.05)"; };
+        dot.onmouseleave = function () { dot.style.transform = "scale(1)"; };
+        dot.onclick = function () {
+          var p = document.getElementById(STATUS_ID);
+          if (p) { panelOpen = !panelOpen; p.style.display = panelOpen ? "block" : "none"; }
+        };
+        document.body.appendChild(dot);
 
-        fetch(API).then(function(r){return r.json();}).then(function(commits){
-          if(!Array.isArray(commits)){document.getElementById("rc-l").textContent="Chyba.";return;}
-          var h='<div style="display:flex;flex-direction:column;gap:6px;">';
-          commits.forEach(function(c){var m=c.commit&&c.commit.message||"";var d=c.commit&&c.commit.author&&c.commit.author.date||"";
-            h+='<div style="padding:6px 8px;background:#fafafa;border-radius:5px;border:1px solid #f0f0f0;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">'+ico(m)+'</span><span style="font-size:12px;color:#222;">'+esc(short(m))+'</span></div><div style="font-size:11px;color:#999;margin-top:2px;padding-left:22px;">'+fmtD(d)+' · <a href="'+(c.html_url||"#")+'" target="_blank" rel="noopener" style="color:#6d28d9;text-decoration:none;">'+(c.sha||"").slice(0,7)+'</a></div></div>';
-          });
-          document.getElementById("rc-l").innerHTML=h+'</div>';
-        }).catch(function(){document.getElementById("rc-l").textContent="Chyba.";});
+        // Panel
+        var panel = document.createElement("div");
+        panel.id = STATUS_ID;
+        panel.style.cssText = "display:none;position:fixed;bottom:60px;left:" + (isMobile ? "10px" : "20px") + ";z-index:9998;width:" + (isMobile ? "calc(100vw - 20px)" : "320px") + ";padding:16px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.12);font-family:system-ui,-apple-system,sans-serif;";
+        panel.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">'
+          + '<span style="font-weight:700;font-size:14px;color:#333;">Stav webu</span>'
+          + '<button id="st-close" type="button" style="border:none;background:none;cursor:pointer;font-size:18px;color:#999;padding:0 2px;">×</button></div>'
+          + '<div id="status-content" style="font-size:13px;color:#888;">Kontroluji…</div>';
+        document.body.appendChild(panel);
 
-        setTimeout(function(){
-          var x=document.getElementById("rc-x");
-          if(x) x.onclick=function(){cO=false;cP.style.display="none";};
-        }, 100);
+        document.getElementById("st-close").onclick = function () {
+          panelOpen = false;
+          panel.style.display = "none";
+        };
 
-        // Status widget
-        var sO=false, sB=mkBtn("st-b","● Stav","left","#374151","#fbbf24"), sP=mkPanel("st-p","left");
-        sP.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><b style="font-size:14px;color:#333;">Stav webu</b><button id="st-x" style="border:none;background:none;cursor:pointer;font-size:18px;color:#999;">×</button></div><div id="st-c" style="font-size:13px;color:#888;">Kontroluji…</div>';
-        document.body.appendChild(sB); document.body.appendChild(sP);
-        sB.onclick=function(){sO=!sO;sP.style.display=sO?"block":"none";};
-
-        setTimeout(function(){
-          var x=document.getElementById("st-x");
-          if(x) x.onclick=function(){sO=false;sP.style.display="none";};
-        }, 100);
-
-        function runChecks() {
-          var r={commit:null,deploy:null,siteOk:null};
-          var p1=fetch(GH_API+"/commits?per_page=1").then(function(x){return x.json();}).then(function(d){if(Array.isArray(d)&&d[0])r.commit={sha:d[0].sha,date:d[0].commit.author.date,msg:(d[0].commit.message||"").split("\n")[0]};}).catch(function(){});
-          var p2=fetch(GH_API+"/pages/builds/latest").then(function(x){return x.json();}).then(function(d){if(d&&d.status)r.deploy={status:d.status,created:d.created_at,updated:d.updated_at,commitSha:d.commit?d.commit.substring(0,7):""};}).catch(function(){return fetch(GH_API+"/actions/runs?per_page=1&status=completed").then(function(x){return x.json();}).then(function(d){if(d&&d.workflow_runs&&d.workflow_runs[0]){var run=d.workflow_runs[0];r.deploy={status:run.conclusion==="success"?"built":run.conclusion,created:run.created_at,updated:run.updated_at,commitSha:(run.head_sha||"").substring(0,7)};}}).catch(function(){});});
-          var p3=fetch(SITE,{method:"HEAD",cache:"no-store",mode:"no-cors"}).then(function(){r.siteOk=true;}).catch(function(){r.siteOk=false;});
-
-          Promise.all([p1,p2,p3]).then(function(){
-            var sync=true; if(r.commit&&r.deploy&&r.deploy.commitSha)sync=r.commit.sha.substring(0,7)===r.deploy.commitSha;
-            var depOk=r.deploy&&(r.deploy.status==="built"||r.deploy.status==="success");
-            var ok=r.siteOk!==false&&depOk!==false;
-            var h='';
-            if(ok&&sync)h+='<div style="text-align:center;padding:8px 0 12px;"><div style="font-size:28px;">✅</div><div style="font-size:13px;font-weight:600;color:#16a34a;">Vše OK</div></div>';
-            else if(!sync)h+='<div style="text-align:center;padding:8px 0 12px;"><div style="font-size:28px;">🔄</div><div style="font-size:13px;font-weight:600;color:#d97706;">Nasazování…</div></div>';
-            else h+='<div style="text-align:center;padding:8px 0 12px;"><div style="font-size:28px;">⚠️</div><div style="font-size:13px;font-weight:600;color:#dc2626;">Problém</div></div>';
-            h+=row("Web",r.siteOk?bdg("Online","#dcfce7","#16a34a"):bdg("Nedostupný","#fecaca","#dc2626"));
-            if(r.deploy){var dl=r.deploy.status==="built"||r.deploy.status==="success"?"OK":"⏳";h+=row("Deploy",bdg(dl,dl==="OK"?"#dcfce7":"#fef3c7",dl==="OK"?"#16a34a":"#d97706"));h+=row("Poslední",ago(r.deploy.updated||r.deploy.created));}
-            if(r.commit&&r.deploy&&r.deploy.commitSha)h+=row("Sync",sync?bdg("OK","#dcfce7","#16a34a"):bdg("Čeká","#fef3c7","#d97706"));
-            if(r.commit)h+='<div style="margin-top:10px;padding:8px 10px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0;"><div style="font-size:11px;color:#94a3b8;">Poslední commit</div><div style="font-size:12px;color:#334155;margin-top:2px;">'+esc(r.commit.msg).substring(0,60)+'</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">'+fmtD(r.commit.date)+' · '+r.commit.sha.substring(0,7)+'</div></div>';
-            h+='<div style="text-align:center;margin-top:12px;"><button id="st-r" style="padding:6px 16px;font-size:12px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;color:#333;cursor:pointer;">🔄 Obnovit</button></div>';
-            document.getElementById("st-c").innerHTML=h;
-            var rb=document.getElementById("st-r"); if(rb)rb.onclick=function(){document.getElementById("st-c").innerHTML='<div style="text-align:center;color:#888;padding:10px;">Kontroluji…</div>';runChecks();};
-            if(ok&&sync){sB.style.color="#22c55e";sB.style.background="#1e3a2f";}else if(!sync){sB.style.color="#fbbf24";sB.style.background="#374151";}else{sB.style.color="#ef4444";sB.style.background="#3b1520";}
-          });
-        }
+        // Run checks
         runChecks();
       }
 
-      var att=0, tm=setInterval(function(){var b=document.querySelector("#nc-root header")||document.querySelector("#nc-root main");if(b||++att>40){clearInterval(tm);inject();}},600);
+      function runChecks() {
+        var results = { commit: null, deploy: null, siteOk: null };
+
+        // 1. Latest commit
+        var p1 = fetch(GH_API + "/commits?per_page=1")
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (Array.isArray(data) && data[0]) {
+              results.commit = {
+                sha: data[0].sha,
+                date: data[0].commit.author.date,
+                msg: (data[0].commit.message || "").split("\n")[0]
+              };
+            }
+          }).catch(function () {});
+
+        // 2. Latest GitHub Pages deployment (via deployments API)
+        var p2 = fetch(GH_API + "/pages/builds/latest")
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data && data.status) {
+              results.deploy = {
+                status: data.status,
+                created: data.created_at,
+                updated: data.updated_at,
+                commitSha: data.commit ? data.commit.substring(0, 7) : ""
+              };
+            }
+          }).catch(function () {
+            // Try actions workflow runs as fallback
+            return fetch(GH_API + "/actions/runs?per_page=1&status=completed")
+              .then(function (r) { return r.json(); })
+              .then(function (data) {
+                if (data && data.workflow_runs && data.workflow_runs[0]) {
+                  var run = data.workflow_runs[0];
+                  results.deploy = {
+                    status: run.conclusion === "success" ? "built" : run.conclusion,
+                    created: run.created_at,
+                    updated: run.updated_at,
+                    commitSha: (run.head_sha || "").substring(0, 7)
+                  };
+                }
+              }).catch(function () {});
+          });
+
+        // 3. Site ping
+        var p3 = fetch(SITE, { method: "HEAD", cache: "no-store", mode: "no-cors" })
+          .then(function () { results.siteOk = true; })
+          .catch(function () { results.siteOk = false; });
+
+        Promise.all([p1, p2, p3]).then(function () {
+          renderStatus(results);
+        });
+      }
+
+      function renderStatus(r) {
+        var html = '';
+
+        // Overall status
+        var allGood = r.siteOk !== false;
+        var deployOk = r.deploy && (r.deploy.status === "built" || r.deploy.status === "success");
+        var synced = true;
+
+        if (r.commit && r.deploy && r.deploy.commitSha) {
+          synced = r.commit.sha.substring(0, 7) === r.deploy.commitSha;
+        }
+
+        var overallOk = allGood && deployOk !== false;
+
+        // Status header
+        if (overallOk && synced) {
+          html += '<div style="text-align:center;padding:8px 0 12px;">'
+            + '<div style="font-size:28px;">✅</div>'
+            + '<div style="font-size:13px;font-weight:600;color:#16a34a;margin-top:4px;">Vše v pořádku</div></div>';
+        } else if (!synced) {
+          html += '<div style="text-align:center;padding:8px 0 12px;">'
+            + '<div style="font-size:28px;">🔄</div>'
+            + '<div style="font-size:13px;font-weight:600;color:#d97706;margin-top:4px;">Probíhá nasazení…</div></div>';
+        } else {
+          html += '<div style="text-align:center;padding:8px 0 12px;">'
+            + '<div style="font-size:28px;">⚠️</div>'
+            + '<div style="font-size:13px;font-weight:600;color:#dc2626;margin-top:4px;">Problém s nasazením</div></div>';
+        }
+
+        // Web status
+        if (r.siteOk === true) {
+          html += row("Web", statusBadge("Online", "#dcfce7", "#16a34a"));
+        } else if (r.siteOk === false) {
+          html += row("Web", statusBadge("Nedostupný", "#fecaca", "#dc2626"));
+        } else {
+          html += row("Web", statusBadge("Neznámý", "#f3f4f6", "#6b7280"));
+        }
+
+        // Deploy status
+        if (r.deploy) {
+          var dLabel = r.deploy.status === "built" || r.deploy.status === "success" ? "Nasazeno" : r.deploy.status === "building" || r.deploy.status === "queued" ? "Probíhá" : r.deploy.status;
+          var dBg = dLabel === "Nasazeno" ? "#dcfce7" : dLabel === "Probíhá" ? "#fef3c7" : "#fecaca";
+          var dFg = dLabel === "Nasazeno" ? "#16a34a" : dLabel === "Probíhá" ? "#d97706" : "#dc2626";
+          html += row("GitHub Pages", statusBadge(dLabel, dBg, dFg));
+          html += row("Naposledy nasazeno", timeAgo(r.deploy.updated || r.deploy.created));
+        } else {
+          html += row("GitHub Pages", statusBadge("Neznámý", "#f3f4f6", "#6b7280"));
+        }
+
+        // Sync status
+        if (r.commit && r.deploy && r.deploy.commitSha) {
+          if (synced) {
+            html += row("Synchronizace", statusBadge("Aktuální", "#dcfce7", "#16a34a"));
+          } else {
+            html += row("Synchronizace", statusBadge("Čeká na deploy", "#fef3c7", "#d97706"));
+          }
+        }
+
+        // Latest commit
+        if (r.commit) {
+          html += '<div style="margin-top:10px;padding:8px 10px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0;">'
+            + '<div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">Poslední commit</div>'
+            + '<div style="font-size:12px;color:#334155;line-height:1.4;">' + r.commit.msg.replace(/</g, "&lt;").substring(0, 60) + '</div>'
+            + '<div style="font-size:11px;color:#94a3b8;margin-top:2px;">' + fmtDate(r.commit.date) + ' · ' + r.commit.sha.substring(0, 7) + '</div></div>';
+        }
+
+        // Refresh button
+        html += '<div style="text-align:center;margin-top:12px;">'
+          + '<button id="st-refresh" type="button" style="padding:6px 16px;font-size:12px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;color:#333;cursor:pointer;font-weight:500;">🔄 Obnovit</button></div>';
+
+        var el = document.getElementById("status-content");
+        if (el) el.innerHTML = html;
+
+        // Bind refresh
+        var btn = document.getElementById("st-refresh");
+        if (btn) btn.onclick = function () {
+          el.innerHTML = '<div style="text-align:center;color:#888;padding:10px;">Kontroluji…</div>';
+          runChecks();
+        };
+
+        // Update dot color
+        var dot = document.getElementById(STATUS_DOT);
+        if (dot) {
+          if (overallOk && synced) {
+            dot.style.color = "#22c55e";
+            dot.style.background = "#1e3a2f";
+          } else if (!synced) {
+            dot.style.color = "#fbbf24";
+            dot.style.background = "#374151";
+          } else {
+            dot.style.color = "#ef4444";
+            dot.style.background = "#3b1520";
+          }
+        }
+      }
+
+      // Inject after CMS loads
+      var att = 0;
+      var tm = setInterval(function () {
+        var body = document.querySelector("main") || document.querySelector("[class*='Main']");
+        if (body || ++att > 40) { clearInterval(tm); inject(); }
+      }, 600);
     })();
     </script>
   </body>
