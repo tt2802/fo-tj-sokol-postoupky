@@ -66,6 +66,7 @@ module.exports = class {
     const catName = categoryNames[m.category] || m.category;
 
     return `
+<div class="content-card">
 <nav class="muted" aria-label="Drobečková navigace">
   <a href="${pathPrefix}mladez/${m.category}/zapasy/">${catName}</a>
   <span aria-hidden="true">›</span>
@@ -118,6 +119,7 @@ ${m.substitutions.map(s => `  <li>${s.substitution || s}</li>`).join('\n')}
 </ul>` : ''}
 
 ${m.referee ? `<p class="muted"><strong>Rozhodčí:</strong> ${m.referee}</p>` : ''}
+</div>
 `;
   }
 };

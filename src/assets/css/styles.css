@@ -79,6 +79,16 @@ nav a {
 main > .container {
   padding-top: 0;
 }
+.content-card {
+  background: rgba(255,255,255,0.9);
+  padding: 1.5rem 2rem 2rem;
+  border-radius: 14px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+[data-theme="dark"] .content-card {
+  background: rgba(15,18,25,0.9);
+}
 .section:first-child {
   padding-top: 1rem;
 }

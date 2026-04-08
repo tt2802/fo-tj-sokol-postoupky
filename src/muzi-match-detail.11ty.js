@@ -197,6 +197,7 @@ module.exports = class {
     }
 
     return `
+<div class="content-card">
 <nav class="muted" aria-label="Drobečková navigace">
   <a href="${pathPrefix}muzi/zapasy/">Zápasy Mužů</a>
   <span aria-hidden="true">›</span>
@@ -258,6 +259,7 @@ ${m.substitutions.map(s => {
 ${m.referee ? `<p class="muted"><strong>Rozhodčí:</strong> ${m.referee}</p>` : ''}
 
 ${votingHtml}
+</div>
 `;
   }
 };
