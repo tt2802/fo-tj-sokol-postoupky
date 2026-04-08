@@ -50,12 +50,71 @@ permalink: /admin/index.html
         #mob-menu-btn { display: flex; }
 
         /* Prevent horizontal overflow */
-        html, body, #nc-root { overflow-x: hidden !important; max-width: 100vw !important; }
+        html, body { overflow-x: hidden !important; max-width: 100vw !important; width: 100vw !important; }
+
+        /* Force CMS root to full viewport width */
+        #nc-root {
+          overflow-x: hidden !important;
+          max-width: 100vw !important;
+          width: 100% !important;
+        }
+
+        /* Hide CMS sidebar */
+        #nc-root aside {
+          display: none !important;
+          width: 0 !important;
+          min-width: 0 !important;
+          flex: 0 0 0 !important;
+        }
+
+        /* Force ALL divs and mains inside CMS to respect viewport */
+        #nc-root > div,
+        #nc-root > div > div,
+        #nc-root > div > div > div,
+        #nc-root main {
+          width: 100% !important;
+          max-width: 100vw !important;
+          min-width: 0 !important;
+          overflow-x: hidden !important;
+        }
+
+        /* Flex containers: force column on mobile */
+        #nc-root > div > div > div {
+          flex-direction: column !important;
+        }
+
+        /* CMS header: compact + room for hamburger */
+        #nc-root header {
+          flex-wrap: wrap !important;
+          padding: 6px 10px 6px 56px !important;
+          gap: 4px !important;
+        }
+        #nc-root header a,
+        #nc-root header button,
+        #nc-root header span {
+          font-size: 12px !important;
+          padding: 4px 8px !important;
+        }
 
         /* Full-width form inputs - prevent iOS zoom */
         #nc-root input,
         #nc-root select,
-        #nc-root textarea { font-size: 16px !important; }
+        #nc-root textarea {
+          font-size: 16px !important;
+          max-width: 100% !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Touch-friendly buttons */
+        #nc-root button {
+          min-height: 38px;
+        }
+
+        /* Card list items full width */
+        #nc-root li, #nc-root a {
+          word-break: break-word !important;
+        }
       }
     </style>
   </head>
@@ -125,66 +184,36 @@ permalink: /admin/index.html
         };
       });
 
-      // ── DOM fixer: apply mobile styles to actual Decap elements ──
+      // ── DOM fixer: override CMS inline styles on mobile ──
       function applyMobileFix() {
         var root = document.getElementById("nc-root");
         if (!root) return;
 
-        // 1. Hide CMS sidebar (<aside>) — we use our own hamburger menu
-        root.querySelectorAll("aside").forEach(function (aside) {
-          aside.style.cssText = "display:none !important;";
-        });
-
-        // 2. Make <main> content full-width
-        root.querySelectorAll("main").forEach(function (main) {
-          main.style.cssText += "width:100% !important; min-width:0 !important; max-width:100vw !important; overflow-x:hidden !important; flex:1 !important;";
-        });
-
-        // 3. Fix the flex container holding aside+main
-        root.querySelectorAll("aside").forEach(function (aside) {
-          var parent = aside.parentElement;
-          if (parent) {
-            parent.style.cssText += "flex-direction:column !important; min-height:auto !important;";
+        // CMS sets inline styles on its containers — override them all to respect viewport
+        var allDivs = root.querySelectorAll("div, main, section");
+        allDivs.forEach(function (el) {
+          var s = el.style;
+          // If element has inline width/min-width that exceeds viewport, force it
+          if (s.width || s.minWidth || s.maxWidth) {
+            el.style.width = "100%";
+            el.style.minWidth = "0";
+            el.style.maxWidth = "100vw";
+          }
+          // Force overflow hidden on anything that might scroll horizontally
+          if (el.scrollWidth > el.clientWidth + 5) {
+            el.style.overflowX = "hidden";
           }
         });
 
-        // 4. Compact CMS header + space for our hamburger button
-        var header = root.querySelector("header");
-        if (header) {
-          header.style.cssText += "flex-wrap:wrap !important; padding:6px 10px 6px 56px !important; gap:4px !important;";
-          header.querySelectorAll("a, button, span").forEach(function (el) {
-            el.style.fontSize = "12px";
-            el.style.padding = "4px 8px";
-          });
-        }
-
-        // 5. Full-width inputs (prevent iOS zoom)
-        root.querySelectorAll("input, select, textarea").forEach(function (el) {
-          el.style.cssText += "max-width:100% !important; width:100% !important; box-sizing:border-box !important; font-size:16px !important;";
-        });
-
-        // 6. Touch-friendly buttons
-        root.querySelectorAll("button").forEach(function (btn) {
-          if (btn.id === "mob-menu-btn") return;
-          var h = parseInt(window.getComputedStyle(btn).height);
-          if (h < 36) btn.style.minHeight = "40px";
-        });
-
-        // 7. Hide preview pane in editor (split view)
+        // Hide preview pane in editor (split view with iframe)
         root.querySelectorAll("div").forEach(function (div) {
           var cs = window.getComputedStyle(div);
           if (cs.display === "flex" && div.children.length === 2) {
-            var c1 = div.children[0], c2 = div.children[1];
-            var w1 = parseInt(window.getComputedStyle(c1).width);
-            var w2 = parseInt(window.getComputedStyle(c2).width);
-            var total = w1 + w2;
-            if (total > 300 && Math.abs(w1 - w2) < total * 0.3) {
-              var iframe = c2.querySelector("iframe");
-              if (iframe) {
-                c2.style.display = "none";
-                c1.style.width = "100%";
-                c1.style.maxWidth = "100%";
-              }
+            var c2 = div.children[1];
+            if (c2.querySelector("iframe")) {
+              c2.style.display = "none";
+              div.children[0].style.width = "100%";
+              div.children[0].style.maxWidth = "100%";
             }
           }
         });
