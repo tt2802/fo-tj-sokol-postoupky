@@ -8,224 +8,239 @@ permalink: /admin/index.html
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Administrace | TJ Sokol Postoupky</title>
     <style>
-      /* ── Base mobile reset ── */
-      *, *::before, *::after { box-sizing: border-box; }
-
-      /* ── Mobile menu overlay ── */
-      #mob-menu-btn {
-        display: none;
-        position: fixed; top: 8px; left: 8px; z-index: 10001;
-        width: 44px; height: 44px; border: none; border-radius: 10px;
-        background: #6d28d9; color: #fff; font-size: 22px; line-height: 1;
-        cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.3);
-        align-items: center; justify-content: center;
-      }
-      #mob-menu-overlay {
-        display: none; position: fixed; inset: 0; z-index: 10000;
-        background: rgba(0,0,0,.5); opacity: 0; transition: opacity .2s;
-      }
-      #mob-menu-overlay.open { opacity: 1; }
-      #mob-menu-drawer {
-        position: fixed; top: 0; left: -280px; z-index: 10002;
-        width: 280px; height: 100vh; background: #fff;
-        overflow-y: auto; transition: left .25s ease;
-        box-shadow: 4px 0 20px rgba(0,0,0,.15);
-        padding: 60px 0 20px;
-      }
-      #mob-menu-drawer.open { left: 0; }
-      #mob-menu-drawer .mob-heading {
-        padding: 10px 20px; font-size: 12px; font-weight: 700;
-        text-transform: uppercase; letter-spacing: .5px;
-        color: #6d28d9; border-bottom: 1px solid #f0f0f0;
-      }
-      #mob-menu-drawer a {
-        display: flex; align-items: center; gap: 10px;
-        padding: 14px 20px; font-size: 15px; color: #333;
-        text-decoration: none; border-bottom: 1px solid #f8f8f8;
-      }
-      #mob-menu-drawer a:active { background: #f3e8ff; }
-      #mob-menu-drawer a .mob-icon { font-size: 18px; width: 24px; text-align: center; }
+      /* ── Mobile-friendly overrides for Decap CMS ── */
 
       @media (max-width: 768px) {
-        #mob-menu-btn { display: flex; }
-
-        /* Prevent horizontal overflow */
-        html, body { overflow-x: hidden !important; max-width: 100vw !important; width: 100vw !important; }
-
-        /* NUCLEAR: force every single element in CMS to respect viewport */
-        #nc-root,
-        #nc-root * {
-          max-width: 100vw !important;
-          min-width: 0 !important;
-          box-sizing: border-box !important;
-        }
-        #nc-root {
-          overflow-x: hidden !important;
-          width: 100% !important;
-        }
-
-        /* Hide CMS sidebar */
-        #nc-root aside {
-          display: none !important;
-          width: 0 !important;
-          flex: 0 0 0 !important;
-          overflow: hidden !important;
-        }
-
-        /* All containers full-width + column layout */
-        #nc-root div, #nc-root main, #nc-root section {
-          width: 100% !important;
-          overflow-x: hidden !important;
-        }
-        /* Override any flex-direction:row on inner wrappers */
-        #nc-root > div > div > div {
+        /* Force column layout on CMS root wrappers */
+        #nc-root > div,
+        #nc-root > div > div,
+        #nc-root > div > div > div,
+        [class*="AppMainContainer"],
+        [class*="App__AppMainContainer"] {
           flex-direction: column !important;
+          min-height: auto !important;
         }
 
-        /* CMS header: compact + room for hamburger */
-        #nc-root header {
+        /* Sidebar / collection pane: collapse to horizontal strip */
+        #nc-root nav,
+        #nc-root aside,
+        [class*="Sidebar"],
+        [class*="CollectionPane"],
+        [class*="Collection__Sidebar"] {
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          max-height: 120px !important;
+          overflow-y: auto !important;
+          border-right: none !important;
+          border-bottom: 2px solid #e5e7eb !important;
+          flex-shrink: 0 !important;
+          position: relative !important;
+        }
+
+        /* Sidebar links */
+        #nc-root nav a,
+        #nc-root aside a,
+        [class*="SidebarNavLink"],
+        [class*="Sidebar"] a {
+          font-size: 13px !important;
+          padding: 6px 12px !important;
+          display: block !important;
+        }
+
+        /* Main content area */
+        #nc-root main,
+        [class*="MainContent"],
+        [class*="Main__MainContainer"],
+        [class*="AppMainContainer"] > div:last-child {
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          padding: 10px !important;
+          overflow-x: hidden !important;
+        }
+
+        /* Top bar / header */
+        header,
+        [class*="AppHeader"],
+        [class*="Header"] {
           flex-wrap: wrap !important;
-          padding: 6px 10px 6px 56px !important;
-          gap: 4px !important;
-          overflow: hidden !important;
+          padding: 6px 10px !important;
+          gap: 6px !important;
         }
-        #nc-root header a,
-        #nc-root header button,
-        #nc-root header span {
+        header a, header button, header span,
+        [class*="AppHeader"] a,
+        [class*="AppHeader"] button {
           font-size: 12px !important;
-          padding: 4px 8px !important;
+          padding: 6px 8px !important;
         }
 
-        /* Full-width form inputs - prevent iOS zoom */
-        #nc-root input,
-        #nc-root select,
-        #nc-root textarea {
-          font-size: 16px !important;
+        /* Full-width all form elements */
+        input, select, textarea,
+        [class*="ControlInput"],
+        [class*="TextControl"] {
           max-width: 100% !important;
           width: 100% !important;
           box-sizing: border-box !important;
+          font-size: 16px !important; /* prevents iOS zoom */
         }
 
-        /* Touch-friendly buttons */
-        #nc-root button {
-          min-height: 38px;
+        /* Object/list widget headers - more touch friendly */
+        [class*="ListCard"],
+        [class*="ObjectWidgetTopBar"],
+        [class*="NestedObjectLabel"],
+        [class*="ListItem__StyledListItem"] {
+          padding: 12px !important;
+          min-height: 44px !important;
         }
 
-        /* Text wrapping */
-        #nc-root li, #nc-root a, #nc-root p, #nc-root span, #nc-root h1, #nc-root h2, #nc-root h3 {
-          word-break: break-word !important;
-          overflow-wrap: break-word !important;
+        /* Editor controls / toolbars: wrap */
+        [class*="Toolbar"],
+        [class*="EditorToggle"],
+        [class*="EditorControl"],
+        [class*="ToolbarItem"] {
+          flex-wrap: wrap !important;
+          gap: 4px !important;
+        }
+
+        /* Markdown/rich text editor */
+        [class*="RawEditor"],
+        [class*="VisualEditor"],
+        .CodeMirror,
+        [class*="MarkdownControl"] {
+          min-height: 180px !important;
+          font-size: 14px !important;
+        }
+
+        /* Buttons: large touch targets (44px Apple guideline) */
+        button,
+        [class*="Button"],
+        [role="button"] {
+          min-height: 44px !important;
+          min-width: 44px !important;
+          font-size: 14px !important;
+        }
+
+        /* Top bar action buttons */
+        [class*="TopBarButton"],
+        [class*="ToolbarButton"],
+        [class*="PublishButton"] {
+          padding: 10px 14px !important;
+          font-size: 13px !important;
+        }
+
+        /* Entry list: tighter */
+        [class*="EntryListing"],
+        [class*="EntryCard"],
+        [class*="ListCardLink"] {
+          padding: 10px 12px !important;
+        }
+
+        /* Media / image previews */
+        [class*="ImageWrapper"],
+        [class*="MediaCard"],
+        img[class*="preview"],
+        [class*="FileWidget"] > img {
+          max-width: 100% !important;
+          height: auto !important;
+        }
+
+        /* Dropdown/modal: full-width on mobile */
+        [class*="Dropdown"],
+        [class*="MenuList"],
+        [class*="SelectDropdown"] {
+          min-width: 200px !important;
+          max-width: calc(100vw - 24px) !important;
+        }
+
+        /* Slug / path input - prevent overflow */
+        [class*="ControlPaneContainer"],
+        [class*="EditorInterface"],
+        [class*="Editor__ControlPaneContainer"] {
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+          padding: 8px !important;
+        }
+
+        /* Save status bar */
+        [class*="EditorToolbar"],
+        [class*="StyledEditorToolbar"] {
+          flex-wrap: wrap !important;
+          justify-content: center !important;
+          gap: 8px !important;
+          padding: 8px !important;
+        }
+
+        /* Preview pane: hide on mobile, keep editor only */
+        [class*="PreviewPaneContainer"],
+        [class*="EditorPreviewPane"] {
+          display: none !important;
+        }
+
+        /* Toggle between editor/preview */
+        [class*="EditorToggle"] {
+          width: 100% !important;
+          justify-content: center !important;
+        }
+
+        /* Scroll fix for nested objects with many fields */
+        [class*="ObjectControl"],
+        [class*="ListControl"] {
+          overflow-x: hidden !important;
+          max-width: 100% !important;
+        }
+
+        /* Widget labels */
+        [class*="ControlLabel"],
+        label {
+          font-size: 13px !important;
+          margin-bottom: 4px !important;
+        }
+
+        /* Field hints */
+        [class*="ControlHint"] {
+          font-size: 11px !important;
+        }
+      }
+
+      /* Extra small screens (phones < 480px) */
+      @media (max-width: 480px) {
+        #nc-root nav,
+        #nc-root aside,
+        [class*="Sidebar"],
+        [class*="CollectionPane"] {
+          max-height: 100px !important;
+        }
+
+        header, [class*="AppHeader"] {
+          padding: 4px 6px !important;
+        }
+
+        #nc-root main,
+        [class*="MainContent"] {
+          padding: 6px !important;
+        }
+
+        /* Stack editor toolbar vertically */
+        [class*="EditorToolbar"],
+        [class*="StyledEditorToolbar"] {
+          flex-direction: column !important;
+          align-items: stretch !important;
+        }
+
+        /* Publish/save button: full width */
+        [class*="PublishButton"],
+        [class*="SaveButton"] {
+          width: 100% !important;
+          text-align: center !important;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Mobile menu -->
-    <button id="mob-menu-btn" type="button" aria-label="Menu">☰</button>
-    <div id="mob-menu-overlay"></div>
-    <div id="mob-menu-drawer">
-      <div class="mob-heading">Novinky</div>
-      <a href="#" data-mob-nav="news"><span class="mob-icon">📰</span> Novinky</a>
-      <div class="mob-heading">Zápasy</div>
-      <a href="#" data-mob-nav="matches" data-mob-file="upcoming_matches"><span class="mob-icon">📅</span> Nadcházející zápasy</a>
-      <a href="#" data-mob-nav="matches" data-mob-file="played_matches"><span class="mob-icon">⚽</span> Odehrané zápasy</a>
-      <a href="#" data-mob-nav="matches" data-mob-file="league_table"><span class="mob-icon">🏆</span> Tabulka soutěže</a>
-      <div class="mob-heading">Tým</div>
-      <a href="#" data-mob-nav="team" data-mob-file="players"><span class="mob-icon">👤</span> Hráči</a>
-      <a href="#" data-mob-nav="team" data-mob-file="staff"><span class="mob-icon">👔</span> Realizační tým</a>
-      <a href="#" data-mob-nav="team" data-mob-file="formation"><span class="mob-icon">📋</span> Sestava</a>
-      <div class="mob-heading">Obsah</div>
-      <a href="#" data-mob-nav="content" data-mob-file="calendar_events"><span class="mob-icon">📆</span> Kalendář akcí</a>
-      <a href="#" data-mob-nav="content" data-mob-file="gallery"><span class="mob-icon">🖼️</span> Galerie</a>
-      <a href="#" data-mob-nav="content" data-mob-file="sponsors"><span class="mob-icon">🤝</span> Partneři</a>
-      <a href="#" data-mob-nav="content" data-mob-file="contacts"><span class="mob-icon">📞</span> Kontakty</a>
-      <div class="mob-heading">Stránky</div>
-      <a href="#" data-mob-nav="pages" data-mob-file="nabor"><span class="mob-icon">📝</span> Nábor</a>
-      <div class="mob-heading">Nastavení</div>
-      <a href="#" data-mob-nav="settings" data-mob-file="site"><span class="mob-icon">⚙️</span> Nastavení webu</a>
-      <a href="#" data-mob-nav="settings" data-mob-file="categories"><span class="mob-icon">🏷️</span> Kategorie mládeže</a>
-    </div>
-
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script src="./autofill-plugin.js?v=20260406e"></script>
-    <script>
-    /* ── Mobile menu + DOM fixer ── */
-    (function () {
-      if (window.innerWidth > 768) return; // Only on mobile
-
-      var menuBtn = document.getElementById("mob-menu-btn");
-      var overlay = document.getElementById("mob-menu-overlay");
-      var drawer  = document.getElementById("mob-menu-drawer");
-      var links   = drawer.querySelectorAll("a[data-mob-nav]");
-
-      function openMenu()  { overlay.style.display = "block"; setTimeout(function(){ overlay.classList.add("open"); drawer.classList.add("open"); }, 10); }
-      function closeMenu() { overlay.classList.remove("open"); drawer.classList.remove("open"); setTimeout(function(){ overlay.style.display = "none"; }, 250); }
-
-      menuBtn.onclick = openMenu;
-      overlay.onclick = closeMenu;
-
-      // Navigate CMS by clicking sidebar links programmatically
-      links.forEach(function (a) {
-        a.onclick = function (e) {
-          e.preventDefault();
-          closeMenu();
-          var col = a.getAttribute("data-mob-nav");
-          var file = a.getAttribute("data-mob-file");
-
-          // Build the hash URL that Decap CMS uses
-          if (file) {
-            window.location.hash = "#/collections/" + col + "/entries/" + file;
-          } else {
-            window.location.hash = "#/collections/" + col;
-          }
-
-          // Force CMS to pick up the hash change
-          setTimeout(function () { window.dispatchEvent(new HashChangeEvent("hashchange")); }, 100);
-        };
-      });
-
-      // ── DOM fixer: override CMS inline styles on mobile ──
-      function applyMobileFix() {
-        var root = document.getElementById("nc-root");
-        if (!root) return;
-
-        // CMS sets inline styles on its containers — override them all to respect viewport
-        var allDivs = root.querySelectorAll("div, main, section");
-        allDivs.forEach(function (el) {
-          var s = el.style;
-          // If element has inline width/min-width that exceeds viewport, force it
-          if (s.width || s.minWidth || s.maxWidth) {
-            el.style.width = "100%";
-            el.style.minWidth = "0";
-            el.style.maxWidth = "100vw";
-          }
-          // Force overflow hidden on anything that might scroll horizontally
-          if (el.scrollWidth > el.clientWidth + 5) {
-            el.style.overflowX = "hidden";
-          }
-        });
-
-        // Hide preview pane in editor (split view with iframe)
-        root.querySelectorAll("div").forEach(function (div) {
-          var cs = window.getComputedStyle(div);
-          if (cs.display === "flex" && div.children.length === 2) {
-            var c2 = div.children[1];
-            if (c2.querySelector("iframe")) {
-              c2.style.display = "none";
-              div.children[0].style.width = "100%";
-              div.children[0].style.maxWidth = "100%";
-            }
-          }
-        });
-      }
-
-      // Run fixer periodically (CMS re-renders on navigation)
-      setInterval(applyMobileFix, 1500);
-      // Also run on hash changes
-      window.addEventListener("hashchange", function () { setTimeout(applyMobileFix, 500); });
-    })();
-    </script>
     <script>
     (function () {
       var REPO = "tt2802/fo-tj-sokol-postoupky";
@@ -259,9 +274,7 @@ permalink: /admin/index.html
       function injectPanel() {
         if (injected) return;
         injected = true;
-        // Hide widgets on mobile — keep UI clean for editing
-        if (window.innerWidth <= 768) return;
-        var isMobile = false;
+        var isMobile = window.innerWidth <= 768;
 
         // Toggle button (fixed, bottom-right)
         var toggle = document.createElement("button");
@@ -367,9 +380,7 @@ permalink: /admin/index.html
       function inject() {
         if (injected) return;
         injected = true;
-        // Hide widgets on mobile — keep UI clean for editing
-        if (window.innerWidth <= 768) return;
-        var isMobile = false;
+        var isMobile = window.innerWidth <= 768;
 
         // Dot indicator button (fixed, bottom-left)
         var dot = document.createElement("button");
