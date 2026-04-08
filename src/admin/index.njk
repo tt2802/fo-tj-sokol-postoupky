@@ -8,231 +8,94 @@ permalink: /admin/index.html
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Administrace | TJ Sokol Postoupky</title>
     <style>
-      /* ── Mobile-friendly overrides for Decap CMS ── */
+      /* ── Same base resets as main site (styles.css) ── */
+      html { box-sizing: border-box; }
+      *, *::before, *::after { box-sizing: inherit; }
+      img, video { max-width: 100%; height: auto; }
+      body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; line-height: 1.55; }
 
-      @media (max-width: 768px) {
-        /* Force column layout on CMS root wrappers */
-        #nc-root > div,
-        #nc-root > div > div,
-        #nc-root > div > div > div,
-        [class*="AppMainContainer"],
-        [class*="App__AppMainContainer"] {
-          flex-direction: column !important;
-          min-height: auto !important;
-        }
+      /* ── Mobile: 760px breakpoint (same as main site) ── */
+      @media (max-width: 760px) {
+        /* Root overflow control */
+        html, body { overflow-x: hidden; }
 
-        /* Sidebar / collection pane: collapse to horizontal strip */
-        #nc-root nav,
-        #nc-root aside,
-        [class*="Sidebar"],
-        [class*="CollectionPane"],
-        [class*="Collection__Sidebar"] {
+        /* CMS sidebar → horizontal strip at top instead of side column */
+        #nc-root aside {
           width: 100% !important;
-          min-width: 0 !important;
           max-width: 100% !important;
-          max-height: 120px !important;
+          min-width: 0 !important;
+          max-height: 110px !important;
           overflow-y: auto !important;
           border-right: none !important;
           border-bottom: 2px solid #e5e7eb !important;
-          flex-shrink: 0 !important;
-          position: relative !important;
         }
 
-        /* Sidebar links */
-        #nc-root nav a,
-        #nc-root aside a,
-        [class*="SidebarNavLink"],
-        [class*="Sidebar"] a {
-          font-size: 13px !important;
-          padding: 6px 12px !important;
-          display: block !important;
-        }
-
-        /* Main content area */
-        #nc-root main,
-        [class*="MainContent"],
-        [class*="Main__MainContainer"],
-        [class*="AppMainContainer"] > div:last-child {
+        /* CMS container that holds aside+main → stack vertically */
+        #nc-root aside + main,
+        #nc-root aside ~ main,
+        #nc-root main {
           width: 100% !important;
           min-width: 0 !important;
           max-width: 100% !important;
-          padding: 10px !important;
           overflow-x: hidden !important;
+          padding: 10px !important;
         }
 
-        /* Top bar / header */
-        header,
-        [class*="AppHeader"],
-        [class*="Header"] {
+        /* Force the aside's parent flex container to column */
+        #nc-root aside {
+          flex-shrink: 0 !important;
+        }
+
+        /* CMS header: compact */
+        #nc-root header {
           flex-wrap: wrap !important;
           padding: 6px 10px !important;
-          gap: 6px !important;
-        }
-        header a, header button, header span,
-        [class*="AppHeader"] a,
-        [class*="AppHeader"] button {
-          font-size: 12px !important;
-          padding: 6px 8px !important;
-        }
-
-        /* Full-width all form elements */
-        input, select, textarea,
-        [class*="ControlInput"],
-        [class*="TextControl"] {
-          max-width: 100% !important;
-          width: 100% !important;
-          box-sizing: border-box !important;
-          font-size: 16px !important; /* prevents iOS zoom */
-        }
-
-        /* Object/list widget headers - more touch friendly */
-        [class*="ListCard"],
-        [class*="ObjectWidgetTopBar"],
-        [class*="NestedObjectLabel"],
-        [class*="ListItem__StyledListItem"] {
-          padding: 12px !important;
-          min-height: 44px !important;
-        }
-
-        /* Editor controls / toolbars: wrap */
-        [class*="Toolbar"],
-        [class*="EditorToggle"],
-        [class*="EditorControl"],
-        [class*="ToolbarItem"] {
-          flex-wrap: wrap !important;
           gap: 4px !important;
         }
-
-        /* Markdown/rich text editor */
-        [class*="RawEditor"],
-        [class*="VisualEditor"],
-        .CodeMirror,
-        [class*="MarkdownControl"] {
-          min-height: 180px !important;
-          font-size: 14px !important;
+        #nc-root header a,
+        #nc-root header button,
+        #nc-root header span {
+          font-size: 12px !important;
+          padding: 4px 8px !important;
         }
 
-        /* Buttons: large touch targets (44px Apple guideline) */
-        button,
-        [class*="Button"],
-        [role="button"] {
-          min-height: 44px !important;
-          min-width: 44px !important;
-          font-size: 14px !important;
-        }
-
-        /* Top bar action buttons */
-        [class*="TopBarButton"],
-        [class*="ToolbarButton"],
-        [class*="PublishButton"] {
-          padding: 10px 14px !important;
-          font-size: 13px !important;
-        }
-
-        /* Entry list: tighter */
-        [class*="EntryListing"],
-        [class*="EntryCard"],
-        [class*="ListCardLink"] {
-          padding: 10px 12px !important;
-        }
-
-        /* Media / image previews */
-        [class*="ImageWrapper"],
-        [class*="MediaCard"],
-        img[class*="preview"],
-        [class*="FileWidget"] > img {
+        /* Inputs: full-width, 16px prevents iOS zoom (same as main site) */
+        #nc-root input,
+        #nc-root select,
+        #nc-root textarea {
           max-width: 100% !important;
-          height: auto !important;
-        }
-
-        /* Dropdown/modal: full-width on mobile */
-        [class*="Dropdown"],
-        [class*="MenuList"],
-        [class*="SelectDropdown"] {
-          min-width: 200px !important;
-          max-width: calc(100vw - 24px) !important;
-        }
-
-        /* Slug / path input - prevent overflow */
-        [class*="ControlPaneContainer"],
-        [class*="EditorInterface"],
-        [class*="Editor__ControlPaneContainer"] {
-          max-width: 100vw !important;
-          overflow-x: hidden !important;
-          padding: 8px !important;
-        }
-
-        /* Save status bar */
-        [class*="EditorToolbar"],
-        [class*="StyledEditorToolbar"] {
-          flex-wrap: wrap !important;
-          justify-content: center !important;
-          gap: 8px !important;
-          padding: 8px !important;
-        }
-
-        /* Preview pane: hide on mobile, keep editor only */
-        [class*="PreviewPaneContainer"],
-        [class*="EditorPreviewPane"] {
-          display: none !important;
-        }
-
-        /* Toggle between editor/preview */
-        [class*="EditorToggle"] {
           width: 100% !important;
-          justify-content: center !important;
+          font-size: 16px !important;
         }
 
-        /* Scroll fix for nested objects with many fields */
-        [class*="ObjectControl"],
-        [class*="ListControl"] {
-          overflow-x: hidden !important;
-          max-width: 100% !important;
+        /* Buttons: 44px touch target (Apple HIG) */
+        #nc-root button {
+          min-height: 44px !important;
         }
 
-        /* Widget labels */
-        [class*="ControlLabel"],
-        label {
-          font-size: 13px !important;
-          margin-bottom: 4px !important;
+        /* Text: word-break for long slugs/paths */
+        #nc-root a, #nc-root li, #nc-root p, #nc-root span {
+          word-break: break-word !important;
+          overflow-wrap: break-word !important;
         }
 
-        /* Field hints */
-        [class*="ControlHint"] {
-          font-size: 11px !important;
+        /* Hide floating widgets on mobile — keep editor clean */
+        #recent-changes-toggle, #recent-changes-panel,
+        #status-dot, #status-panel {
+          display: none !important;
         }
       }
 
-      /* Extra small screens (phones < 480px) */
+      /* ── Extra small (< 480px) — same as main site's second breakpoint ── */
       @media (max-width: 480px) {
-        #nc-root nav,
-        #nc-root aside,
-        [class*="Sidebar"],
-        [class*="CollectionPane"] {
-          max-height: 100px !important;
+        #nc-root aside {
+          max-height: 90px !important;
         }
-
-        header, [class*="AppHeader"] {
+        #nc-root header {
           padding: 4px 6px !important;
         }
-
-        #nc-root main,
-        [class*="MainContent"] {
+        #nc-root main {
           padding: 6px !important;
-        }
-
-        /* Stack editor toolbar vertically */
-        [class*="EditorToolbar"],
-        [class*="StyledEditorToolbar"] {
-          flex-direction: column !important;
-          align-items: stretch !important;
-        }
-
-        /* Publish/save button: full width */
-        [class*="PublishButton"],
-        [class*="SaveButton"] {
-          width: 100% !important;
-          text-align: center !important;
         }
       }
     </style>
@@ -240,7 +103,28 @@ permalink: /admin/index.html
   <body>
     <script>window.CMS_MANUAL_INIT = true;</script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <script src="./autofill-plugin.js?v=20260406e"></script>
+    <script src="./autofill-plugin.js?v=20260408"></script>
+    <script>
+    /* ── Mobile layout fixer (same approach as main site: element-based) ── */
+    (function () {
+      if (window.innerWidth > 760) return;
+
+      function fix() {
+        var root = document.getElementById("nc-root");
+        if (!root) return;
+
+        // The aside's parent is a flex row — make it column
+        var aside = root.querySelector("aside");
+        if (aside && aside.parentElement) {
+          aside.parentElement.style.flexDirection = "column";
+        }
+      }
+
+      // Run periodically (CMS re-renders on navigation)
+      setInterval(fix, 1500);
+      window.addEventListener("hashchange", function () { setTimeout(fix, 400); });
+    })();
+    </script>
     <script>
     (function () {
       var REPO = "tt2802/fo-tj-sokol-postoupky";
