@@ -10,104 +10,229 @@ permalink: /admin/index.html
     <style>
       /* ── Mobile-friendly overrides for Decap CMS ── */
 
-      /* Sidebar: stack above content on small screens */
       @media (max-width: 768px) {
-        /* Make the main app wrapper column layout */
+        /* Force column layout on CMS root wrappers */
+        #nc-root > div,
         #nc-root > div > div,
-        [class*="AppMainContainer"] {
+        #nc-root > div > div > div,
+        [class*="AppMainContainer"],
+        [class*="App__AppMainContainer"] {
           flex-direction: column !important;
+          min-height: auto !important;
         }
 
-        /* Sidebar: full width, horizontal scroll */
-        nav, aside,
+        /* Sidebar / collection pane: collapse to horizontal strip */
+        #nc-root nav,
+        #nc-root aside,
         [class*="Sidebar"],
-        [class*="CollectionPane"] {
+        [class*="CollectionPane"],
+        [class*="Collection__Sidebar"] {
           width: 100% !important;
           min-width: 0 !important;
           max-width: 100% !important;
+          max-height: 120px !important;
+          overflow-y: auto !important;
           border-right: none !important;
-          border-bottom: 1px solid #e0e0e0;
-          max-height: 180px;
-          overflow-y: auto;
+          border-bottom: 2px solid #e5e7eb !important;
+          flex-shrink: 0 !important;
+          position: relative !important;
         }
 
-        /* Collection list items: wrap text */
-        nav a, aside a {
-          font-size: 14px !important;
-          padding: 8px 12px !important;
-          white-space: nowrap;
+        /* Sidebar links */
+        #nc-root nav a,
+        #nc-root aside a,
+        [class*="SidebarNavLink"],
+        [class*="Sidebar"] a {
+          font-size: 13px !important;
+          padding: 6px 12px !important;
+          display: block !important;
         }
 
-        /* Main content: full width */
-        main, [class*="MainContent"] {
+        /* Main content area */
+        #nc-root main,
+        [class*="MainContent"],
+        [class*="Main__MainContainer"],
+        [class*="AppMainContainer"] > div:last-child {
           width: 100% !important;
           min-width: 0 !important;
-          padding: 12px !important;
-        }
-
-        /* Header: compact on mobile */
-        header {
-          flex-wrap: wrap;
-          padding: 8px 12px !important;
-        }
-        header a, header span {
-          font-size: 13px !important;
-        }
-
-        /* List items in collections */
-        [class*="ListCard"],
-        [class*="ObjectWidgetTopBar"] {
-          padding: 10px 12px !important;
-        }
-
-        /* Form fields: full width inputs */
-        input, select, textarea {
           max-width: 100% !important;
-          box-sizing: border-box !important;
+          padding: 10px !important;
+          overflow-x: hidden !important;
         }
 
-        /* Editor toolbar: wrap */
-        [class*="Toolbar"],
-        [class*="EditorToggle"] {
+        /* Top bar / header */
+        header,
+        [class*="AppHeader"],
+        [class*="Header"] {
           flex-wrap: wrap !important;
-          gap: 4px;
+          padding: 6px 10px !important;
+          gap: 6px !important;
         }
-
-        /* Markdown editor: reasonable height */
-        [class*="RawEditor"],
-        [class*="VisualEditor"],
-        .CodeMirror {
-          min-height: 200px !important;
-          font-size: 14px !important;
-        }
-
-        /* Buttons: larger touch targets */
-        button {
-          min-height: 36px;
-        }
-
-        /* Top bar actions: wrap "Přidat" etc. */
-        [class*="TopBarButton"],
-        [class*="ToolbarButton"] {
-          padding: 8px 12px !important;
-          font-size: 13px !important;
-        }
-      }
-
-      /* Extra small screens (phones) */
-      @media (max-width: 480px) {
-        nav, aside,
-        [class*="Sidebar"],
-        [class*="CollectionPane"] {
-          max-height: 140px;
-        }
-
-        header {
+        header a, header button, header span,
+        [class*="AppHeader"] a,
+        [class*="AppHeader"] button {
+          font-size: 12px !important;
           padding: 6px 8px !important;
         }
 
-        main, [class*="MainContent"] {
+        /* Full-width all form elements */
+        input, select, textarea,
+        [class*="ControlInput"],
+        [class*="TextControl"] {
+          max-width: 100% !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+          font-size: 16px !important; /* prevents iOS zoom */
+        }
+
+        /* Object/list widget headers - more touch friendly */
+        [class*="ListCard"],
+        [class*="ObjectWidgetTopBar"],
+        [class*="NestedObjectLabel"],
+        [class*="ListItem__StyledListItem"] {
+          padding: 12px !important;
+          min-height: 44px !important;
+        }
+
+        /* Editor controls / toolbars: wrap */
+        [class*="Toolbar"],
+        [class*="EditorToggle"],
+        [class*="EditorControl"],
+        [class*="ToolbarItem"] {
+          flex-wrap: wrap !important;
+          gap: 4px !important;
+        }
+
+        /* Markdown/rich text editor */
+        [class*="RawEditor"],
+        [class*="VisualEditor"],
+        .CodeMirror,
+        [class*="MarkdownControl"] {
+          min-height: 180px !important;
+          font-size: 14px !important;
+        }
+
+        /* Buttons: large touch targets (44px Apple guideline) */
+        button,
+        [class*="Button"],
+        [role="button"] {
+          min-height: 44px !important;
+          min-width: 44px !important;
+          font-size: 14px !important;
+        }
+
+        /* Top bar action buttons */
+        [class*="TopBarButton"],
+        [class*="ToolbarButton"],
+        [class*="PublishButton"] {
+          padding: 10px 14px !important;
+          font-size: 13px !important;
+        }
+
+        /* Entry list: tighter */
+        [class*="EntryListing"],
+        [class*="EntryCard"],
+        [class*="ListCardLink"] {
+          padding: 10px 12px !important;
+        }
+
+        /* Media / image previews */
+        [class*="ImageWrapper"],
+        [class*="MediaCard"],
+        img[class*="preview"],
+        [class*="FileWidget"] > img {
+          max-width: 100% !important;
+          height: auto !important;
+        }
+
+        /* Dropdown/modal: full-width on mobile */
+        [class*="Dropdown"],
+        [class*="MenuList"],
+        [class*="SelectDropdown"] {
+          min-width: 200px !important;
+          max-width: calc(100vw - 24px) !important;
+        }
+
+        /* Slug / path input - prevent overflow */
+        [class*="ControlPaneContainer"],
+        [class*="EditorInterface"],
+        [class*="Editor__ControlPaneContainer"] {
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
           padding: 8px !important;
+        }
+
+        /* Save status bar */
+        [class*="EditorToolbar"],
+        [class*="StyledEditorToolbar"] {
+          flex-wrap: wrap !important;
+          justify-content: center !important;
+          gap: 8px !important;
+          padding: 8px !important;
+        }
+
+        /* Preview pane: hide on mobile, keep editor only */
+        [class*="PreviewPaneContainer"],
+        [class*="EditorPreviewPane"] {
+          display: none !important;
+        }
+
+        /* Toggle between editor/preview */
+        [class*="EditorToggle"] {
+          width: 100% !important;
+          justify-content: center !important;
+        }
+
+        /* Scroll fix for nested objects with many fields */
+        [class*="ObjectControl"],
+        [class*="ListControl"] {
+          overflow-x: hidden !important;
+          max-width: 100% !important;
+        }
+
+        /* Widget labels */
+        [class*="ControlLabel"],
+        label {
+          font-size: 13px !important;
+          margin-bottom: 4px !important;
+        }
+
+        /* Field hints */
+        [class*="ControlHint"] {
+          font-size: 11px !important;
+        }
+      }
+
+      /* Extra small screens (phones < 480px) */
+      @media (max-width: 480px) {
+        #nc-root nav,
+        #nc-root aside,
+        [class*="Sidebar"],
+        [class*="CollectionPane"] {
+          max-height: 100px !important;
+        }
+
+        header, [class*="AppHeader"] {
+          padding: 4px 6px !important;
+        }
+
+        #nc-root main,
+        [class*="MainContent"] {
+          padding: 6px !important;
+        }
+
+        /* Stack editor toolbar vertically */
+        [class*="EditorToolbar"],
+        [class*="StyledEditorToolbar"] {
+          flex-direction: column !important;
+          align-items: stretch !important;
+        }
+
+        /* Publish/save button: full width */
+        [class*="PublishButton"],
+        [class*="SaveButton"] {
+          width: 100% !important;
+          text-align: center !important;
         }
       }
     </style>
