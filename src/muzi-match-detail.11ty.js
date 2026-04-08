@@ -198,12 +198,6 @@ module.exports = class {
 
     return `
 <div class="content-card">
-<nav class="muted" aria-label="Drobečková navigace">
-  <a href="${pathPrefix}muzi/zapasy/">Zápasy Mužů</a>
-  <span aria-hidden="true">›</span>
-  <span>${m.home} vs ${m.away}</span>
-</nav>
-
 <h1>${m.home} vs ${m.away}</h1>
 
 <p class="muted">
