@@ -14,6 +14,111 @@ permalink: /admin/index.html
       img, video { max-width: 100%; height: auto; }
       body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; line-height: 1.55; }
 
+      :root {
+        --admin-bg: #f3f5f9;
+        --admin-surface: #ffffff;
+        --admin-surface-soft: #f8fafc;
+        --admin-text: #0f172a;
+        --admin-muted: #64748b;
+        --admin-primary: #6d28d9;
+        --admin-primary-2: #5b21b6;
+        --admin-border: #e2e8f0;
+        --admin-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+        --admin-radius: 12px;
+      }
+
+      html, body {
+        background: radial-gradient(circle at 10% -10%, #eef2ff 0%, #f8fafc 42%, #f1f5f9 100%);
+        color: var(--admin-text);
+      }
+
+      #nc-root {
+        min-height: 100dvh;
+      }
+
+      /* Jemné sjednocení vizuálu napříč Decap třídami */
+      #nc-root [class*="CollectionMain"],
+      #nc-root [class*="MainPanel"],
+      #nc-root [class*="EditorContainer"],
+      #nc-root [class*="AppMainContainer"] {
+        background: transparent !important;
+      }
+
+      #nc-root [class*="EntryCard"],
+      #nc-root [class*="ListEntry"],
+      #nc-root [class*="GridCard"],
+      #nc-root [class*="MediaCard"],
+      #nc-root [class*="FieldWrapper"],
+      #nc-root [class*="FormField"] {
+        border-radius: var(--admin-radius) !important;
+      }
+
+      #nc-root [class*="EntryCard"],
+      #nc-root [class*="ListEntry"],
+      #nc-root [class*="GridCard"],
+      #nc-root [class*="MediaCard"] {
+        border: 1px solid var(--admin-border) !important;
+        background: var(--admin-surface) !important;
+        box-shadow: var(--admin-shadow) !important;
+      }
+
+      /* Inputs a fokus stavy */
+      #nc-root input,
+      #nc-root select,
+      #nc-root textarea {
+        border: 1px solid #cbd5e1 !important;
+        background: #fff !important;
+        color: var(--admin-text) !important;
+        transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+      }
+
+      #nc-root input:focus,
+      #nc-root select:focus,
+      #nc-root textarea:focus {
+        outline: none !important;
+        border-color: #8b5cf6 !important;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, .18) !important;
+        background: #fff !important;
+      }
+
+      #nc-root button,
+      #nc-root [role="button"] {
+        transition: transform .12s ease, filter .15s ease, box-shadow .18s ease;
+      }
+
+      #nc-root button:active,
+      #nc-root [role="button"]:active {
+        transform: translateY(1px);
+      }
+
+      /* Hlavní akční tlačítka (save/publish) – decentní zvýraznění */
+      #nc-root [class*="Toolbar"] button,
+      #nc-root [class*="EditorToolbar"] button {
+        border-radius: 10px !important;
+      }
+
+      #nc-root [class*="Toolbar"] button[class*="primary"],
+      #nc-root [class*="Toolbar"] button[data-test*="publish"],
+      #nc-root [class*="Toolbar"] button[data-test*="save"] {
+        background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-2) 100%) !important;
+        color: #fff !important;
+        border: 0 !important;
+        box-shadow: 0 6px 18px rgba(109, 40, 217, .25) !important;
+      }
+
+      /* Přehlednější hlavička */
+      #nc-root header,
+      #nc-root [class*="AppHeader"],
+      #nc-root [class*="AppHeaderLeader"] {
+        background: rgba(15, 23, 42, .92) !important;
+        backdrop-filter: blur(8px);
+      }
+
+      #nc-root header *,
+      #nc-root [class*="AppHeader"] * {
+        color: #f8fafc !important;
+      }
+
       /* ═══════════════════════════════════════════
          MOBILE (≤ 768px)
          Cíl: vertikální layout + rozbalovací lišta sekcí
@@ -284,8 +389,32 @@ permalink: /admin/index.html
     (function () {
       if (window.innerWidth > 768) return;
 
+      var NAV_STATE_KEY = "admin_mobile_nav_open";
+
+      function setOpen(root, btn, open) {
+        if (!root || !btn) return;
+        if (open) root.classList.add("mobile-nav-open");
+        else root.classList.remove("mobile-nav-open");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        var ch = document.getElementById("mobile-nav-chevron");
+        if (ch) ch.textContent = open ? "▴" : "▾";
+        try { localStorage.setItem(NAV_STATE_KEY, open ? "1" : "0"); } catch (e) {}
+      }
+
+      function bindAutoClose(root, btn) {
+        root.addEventListener("click", function (e) {
+          var target = e.target;
+          if (!target) return;
+          var link = target.closest("aside a, [class*='SidebarContainer'] a, [class*='NavItem']");
+          if (!link) return;
+          // Na mobilu po kliknutí do sekce menu zavřít, ať nepřekáží obsahu
+          setTimeout(function () { setOpen(root, btn, false); }, 120);
+        });
+      }
+
       function ensureToggle(root) {
-        if (document.getElementById("mobile-nav-toggle")) return;
+        var existing = document.getElementById("mobile-nav-toggle");
+        if (existing) return existing;
 
         var btn = document.createElement("button");
         btn.id = "mobile-nav-toggle";
@@ -294,20 +423,31 @@ permalink: /admin/index.html
         btn.innerHTML = '<span>📂 Sekce</span><span id="mobile-nav-chevron">▾</span>';
 
         btn.addEventListener("click", function () {
-          var open = root.classList.toggle("mobile-nav-open");
-          btn.setAttribute("aria-expanded", open ? "true" : "false");
-          var ch = document.getElementById("mobile-nav-chevron");
-          if (ch) ch.textContent = open ? "▴" : "▾";
+          var open = !root.classList.contains("mobile-nav-open");
+          setOpen(root, btn, open);
         });
 
         root.insertBefore(btn, root.firstChild);
+        bindAutoClose(root, btn);
+        btn.__autocloseBound = true;
+
+        // obnov stav z localStorage
+        var savedOpen = false;
+        try { savedOpen = localStorage.getItem(NAV_STATE_KEY) === "1"; } catch (e) {}
+        setOpen(root, btn, savedOpen);
+
+        return btn;
       }
 
       function fix() {
         var root = document.getElementById("nc-root");
         if (!root) return;
 
-        ensureToggle(root);
+        var toggleBtn = ensureToggle(root);
+        if (toggleBtn && !toggleBtn.__autocloseBound) {
+          bindAutoClose(root, toggleBtn);
+          toggleBtn.__autocloseBound = true;
+        }
 
         // 1. AppMainContainer: flex obálka → sloupec
         var containers = root.querySelectorAll(
