@@ -14,79 +14,116 @@ permalink: /admin/index.html
       img, video { max-width: 100%; height: auto; }
       body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; line-height: 1.55; }
 
-      /* ── MOBILE STYLES (≤ 768px) ── */
+      /* ═══════════════════════════════════════════
+         MOBILE  (≤ 768px)
+         Selektory podle DevTools tříd Decap CMS 3:
+           AppHeaderLeader  →  header
+           AppMainContainer →  flex obálka
+           SidebarContainer →  aside/nav
+           CollectionMain   →  main obsah
+      ═══════════════════════════════════════════ */
       @media (max-width: 768px) {
-        html, body { overflow-x: hidden; }
+        html, body { overflow-x: hidden; max-width: 100vw; }
 
-        /* ── Sidebar: scrollable horizontal nav strip ── */
+        /* === 1. HLAVNÍ FLEX OBÁLKA: sloupec ===
+           div.AppMainContainer drží aside + main vedle sebe,
+           musíme z toho udělat sloupec */
+        #nc-root [class*="AppMainContainer"],
+        #nc-root [class*="AppBody"],
+        #nc-root [class*="CollectionContainer"],
+        #nc-root [class*="PageContainer"],
+        #nc-root [class*="EditorContainer"],
+        #nc-root [class*="WorkflowContainer"] {
+          flex-direction: column !important;
+          overflow: hidden !important;
+          height: auto !important;
+          min-height: 0 !important;
+          width: 100% !important;
+        }
+
+        /* === 2. SIDEBAR: vodorovný scrollovatelný pruh nahoře ===
+           Pevná výška 52 px = jeden řádek, scrolluje doleva/doprava */
         #nc-root aside,
-        #nc-root [class*="Sidebar"],
-        #nc-root [class*="sidebar"],
-        #nc-root nav[class*="Nav"] {
+        #nc-root [class*="SidebarContainer"] {
+          order: 0 !important;
+          width: 100% !important;
+          max-width: 100vw !important;
+          min-width: 0 !important;
+          height: 52px !important;
+          min-height: 52px !important;
+          max-height: 52px !important;
+          overflow-x: auto !important;
+          overflow-y: hidden !important;
+          -webkit-overflow-scrolling: touch !important;
+          scrollbar-width: none !important;
+          /* horizontal strip */
+          display: flex !important;
+          flex-direction: row !important;
+          flex-wrap: nowrap !important;
+          align-items: center !important;
+          border-right: none !important;
+          border-bottom: 1px solid rgba(255,255,255,.12) !important;
+          padding: 0 4px !important;
           position: sticky !important;
           top: 0 !important;
-          z-index: 100 !important;
+          z-index: 50 !important;
+        }
+        #nc-root aside::-webkit-scrollbar,
+        #nc-root [class*="SidebarContainer"]::-webkit-scrollbar { display: none !important; }
+
+        /* Vnitřní kontejner navigace (ul / nav / div) uvnitř aside → taky řádek */
+        #nc-root aside > *,
+        #nc-root [class*="SidebarContainer"] > * {
+          display: flex !important;
+          flex-direction: row !important;
+          flex-wrap: nowrap !important;
+          align-items: center !important;
+          height: 100% !important;
+          gap: 0 !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          list-style: none !important;
+          width: auto !important;
+          flex-shrink: 0 !important;
+        }
+        /* Každá nav položka: inline, nekryjí se */
+        #nc-root aside li,
+        #nc-root aside a,
+        #nc-root [class*="SidebarContainer"] li,
+        #nc-root [class*="SidebarContainer"] a,
+        #nc-root [class*="NavItem"],
+        #nc-root [class*="navItem"] {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          white-space: nowrap !important;
+          flex-shrink: 0 !important;
+          height: 44px !important;
+          padding: 0 12px !important;
+          font-size: 12px !important;
+          gap: 5px !important;
+          min-width: 0 !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+          max-width: 110px !important;
+        }
+
+        /* === 3. HLAVNÍ OBSAH: přes celou šířku pod sidebarem === */
+        #nc-root main,
+        #nc-root [class*="CollectionMain"],
+        #nc-root [class*="MainPanel"],
+        #nc-root [class*="EditorToggle"] {
+          order: 1 !important;
           width: 100% !important;
           max-width: 100vw !important;
           min-width: 0 !important;
           height: auto !important;
-          max-height: 56px !important;
-          min-height: 0 !important;
-          overflow-x: auto !important;
-          overflow-y: hidden !important;
-          -webkit-overflow-scrolling: touch !important;
-          border-right: none !important;
-          border-bottom: 1px solid #e5e7eb !important;
-          flex-direction: row !important;
-          flex-wrap: nowrap !important;
-          background: #1e293b !important;
-          scrollbar-width: none !important;
-        }
-        #nc-root aside::-webkit-scrollbar { display: none !important; }
-
-        /* Nav items: horizontal pills */
-        #nc-root aside li,
-        #nc-root aside a,
-        #nc-root aside [class*="NavItem"],
-        #nc-root [class*="sidebar"] li,
-        #nc-root [class*="sidebar"] a {
-          white-space: nowrap !important;
-          display: inline-flex !important;
-          align-items: center !important;
-          padding: 10px 16px !important;
-          font-size: 13px !important;
-          min-height: 44px !important;
-        }
-
-        /* ── Layout: stack column ── */
-        #nc-root [class*="App"],
-        #nc-root > div > div,
-        #nc-root > div {
-          flex-direction: column !important;
-        }
-
-        /* ── Main content area ── */
-        #nc-root main,
-        #nc-root [class*="MainPanel"],
-        #nc-root aside + div,
-        #nc-root aside ~ div {
-          width: 100% !important;
-          min-width: 0 !important;
-          max-width: 100vw !important;
           overflow-x: hidden !important;
           padding: 12px !important;
+          flex: 1 1 auto !important;
         }
 
-        /* ── Top header bar ── */
-        #nc-root header,
-        #nc-root [class*="Header"],
-        #nc-root [class*="Toolbar"] {
-          flex-wrap: wrap !important;
-          padding: 8px 12px !important;
-          gap: 6px !important;
-        }
-
-        /* ── Form fields: full width + prevent iOS zoom ── */
+        /* === 4. FORMULÁŘOVÁ POLE === */
         #nc-root input[type="text"],
         #nc-root input[type="number"],
         #nc-root input[type="email"],
@@ -98,173 +135,126 @@ permalink: /admin/index.html
         #nc-root textarea {
           width: 100% !important;
           max-width: 100% !important;
-          font-size: 16px !important; /* prevents iOS auto-zoom */
-          border-radius: 8px !important;
-          padding: 10px 12px !important;
+          font-size: 16px !important; /* zabrání iOS zoom */
           min-height: 44px !important;
+          padding: 10px 12px !important;
+          border-radius: 8px !important;
         }
 
-        /* ── Buttons: big touch targets ── */
+        /* === 5. TLAČÍTKA: 44 px touch target === */
         #nc-root button,
         #nc-root [role="button"] {
           min-height: 44px !important;
-          font-size: 15px !important;
-          padding: 10px 16px !important;
+          min-width: 44px !important;
+          font-size: 14px !important;
+          padding: 10px 14px !important;
           border-radius: 8px !important;
           touch-action: manipulation !important;
         }
-
-        /* ── Toolbar buttons (save, preview, delete) ── */
-        #nc-root header button,
-        #nc-root [class*="Toolbar"] button,
-        #nc-root [class*="ToolbarButton"],
-        #nc-root [class*="EditorControl"] > button {
-          min-height: 44px !important;
-          min-width: 44px !important;
-          font-size: 14px !important;
+        /* Malé ikono-tlačítka (křížek, tužka…) nezvětšovat na 44px výšky */
+        #nc-root [class*="IconButton"],
+        #nc-root [class*="iconButton"] {
+          min-height: 36px !important;
+          min-width: 36px !important;
+          padding: 4px !important;
         }
 
-        /* ── Field labels: clear + readable ── */
+        /* === 6. FIELD WRAPPER + LABEL === */
+        #nc-root [class*="FieldWrapper"],
+        #nc-root [class*="field-wrapper"],
+        #nc-root [class*="FormField"],
+        #nc-root [class*="widgetControl"] {
+          margin-bottom: 14px !important;
+          width: 100% !important;
+        }
         #nc-root label,
-        #nc-root [class*="FieldLabel"],
-        #nc-root [class*="label"] {
+        #nc-root [class*="FieldLabel"] {
           font-size: 14px !important;
           font-weight: 600 !important;
           margin-bottom: 4px !important;
           display: block !important;
         }
 
-        /* ── Field wrapper: good vertical spacing ── */
-        #nc-root [class*="FieldWrapper"],
-        #nc-root [class*="field-wrapper"],
-        #nc-root [class*="FormField"] {
-          margin-bottom: 16px !important;
-        }
-
-        /* ── List editor items: easier to tap ── */
-        #nc-root [class*="ListItem"],
-        #nc-root [class*="list-item"] {
-          padding: 12px !important;
-          margin-bottom: 8px !important;
-          border-radius: 8px !important;
-        }
-
-        /* ── Markdown / rich text editor toolbar ── */
-        #nc-root [class*="EditorToolbar"],
-        #nc-root [class*="rte-toolbar"],
-        #nc-root [class*="mde-header"] {
-          flex-wrap: wrap !important;
-          gap: 4px !important;
-          padding: 6px !important;
-        }
-        #nc-root [class*="EditorToolbar"] button,
-        #nc-root [class*="mde-header"] button {
-          min-width: 36px !important;
-          min-height: 36px !important;
-          font-size: 14px !important;
-          padding: 4px !important;
-        }
-
-        /* ── Media / image cards ── */
+        /* === 7. SEZNAM POLOŽEK === */
+        #nc-root [class*="EntryCard"],
+        #nc-root [class*="ListEntry"],
         #nc-root [class*="GridCard"],
         #nc-root [class*="MediaCard"] {
-          min-width: 120px !important;
-          max-width: 140px !important;
+          width: 100% !important;
+          min-height: 56px !important;
+          padding: 12px !important;
+          border-radius: 8px !important;
+          margin-bottom: 6px !important;
         }
 
-        /* ── Relation dropdown results ── */
-        #nc-root [class*="MenuList"],
-        #nc-root [class*="menu-list"],
-        #nc-root [class*="option"] {
+        /* === 8. RELATION DROPDOWN === */
+        #nc-root [class*="MenuList"] [class*="option"],
+        #nc-root [class*="Option"] {
           font-size: 15px !important;
-          padding: 12px 14px !important;
           min-height: 44px !important;
+          padding: 10px 14px !important;
         }
 
-        /* ── Modal / overlay: full screen on mobile ── */
+        /* === 9. MODÁL: slide-up sheet === */
         #nc-root [class*="Modal"],
         #nc-root [role="dialog"] {
           width: 100vw !important;
           max-width: 100vw !important;
+          max-height: 90vh !important;
           margin: 0 !important;
-          border-radius: 12px 12px 0 0 !important;
+          border-radius: 16px 16px 0 0 !important;
           position: fixed !important;
           bottom: 0 !important;
           left: 0 !important;
           right: 0 !important;
-          max-height: 90vh !important;
           overflow-y: auto !important;
         }
 
-        /* ── Word wrapping ── */
-        #nc-root a,
-        #nc-root li,
-        #nc-root p,
-        #nc-root span,
-        #nc-root td {
+        /* === 10. WORD WRAP === */
+        #nc-root a, #nc-root li, #nc-root p,
+        #nc-root span, #nc-root td, #nc-root th {
           word-break: break-word !important;
           overflow-wrap: break-word !important;
         }
 
-        /* ── Collection list: tap-friendly rows ── */
-        #nc-root [class*="EntryCard"],
-        #nc-root [class*="entry-card"],
-        #nc-root [class*="ListEntry"],
-        #nc-root table tr {
-          min-height: 56px !important;
-          padding: 12px !important;
-        }
-
-        /* ── Fixed floating buttons: adjust for mobile ── */
+        /* === 11. PLOVOUCÍ TLAČÍTKA === */
         #recent-changes-toggle {
-          bottom: 16px !important;
-          right: 16px !important;
-          font-size: 12px !important;
-          padding: 8px 12px !important;
+          bottom: 14px !important; right: 14px !important;
+          font-size: 12px !important; padding: 9px 13px !important;
         }
         #status-dot {
-          bottom: 16px !important;
-          left: 16px !important;
-          font-size: 12px !important;
-          padding: 8px 12px !important;
+          bottom: 14px !important; left: 14px !important;
+          font-size: 12px !important; padding: 9px 13px !important;
         }
         #recent-changes-panel {
-          bottom: 66px !important;
-          right: 8px !important;
-          width: calc(100vw - 16px) !important;
-          max-height: 55vh !important;
+          bottom: 62px !important; right: 8px !important;
+          width: calc(100vw - 16px) !important; max-height: 55vh !important;
         }
         #status-panel {
-          bottom: 66px !important;
-          left: 8px !important;
-          width: calc(100vw - 16px) !important;
-          max-height: 55vh !important;
+          bottom: 62px !important; left: 8px !important;
+          width: calc(100vw - 16px) !important; max-height: 55vh !important;
         }
       }
 
       /* ── Extra small (≤ 480px) ── */
       @media (max-width: 480px) {
         #nc-root aside,
-        #nc-root [class*="Sidebar"] {
-          max-height: 50px !important;
+        #nc-root [class*="SidebarContainer"] {
+          height: 48px !important;
+          min-height: 48px !important;
+          max-height: 48px !important;
         }
-        #nc-root aside a,
-        #nc-root aside li {
-          padding: 8px 12px !important;
-          font-size: 12px !important;
+        #nc-root aside li, #nc-root aside a,
+        #nc-root [class*="SidebarContainer"] li,
+        #nc-root [class*="SidebarContainer"] a {
+          padding: 0 9px !important;
+          font-size: 11px !important;
+          max-width: 90px !important;
         }
         #nc-root main,
-        #nc-root aside + div,
-        #nc-root aside ~ div {
-          padding: 8px !important;
-        }
-        #nc-root button {
-          font-size: 14px !important;
-        }
+        #nc-root [class*="CollectionMain"] { padding: 8px !important; }
         #nc-root [class*="FieldWrapper"],
-        #nc-root [class*="FormField"] {
-          margin-bottom: 12px !important;
-        }
+        #nc-root [class*="FormField"] { margin-bottom: 10px !important; }
       }
     </style>
   </head>
@@ -281,24 +271,57 @@ permalink: /admin/index.html
         var root = document.getElementById("nc-root");
         if (!root) return;
 
-        // Find sidebar and its parent container
-        var aside = root.querySelector("aside");
-        if (aside && aside.parentElement) {
-          var parent = aside.parentElement;
-          parent.style.flexDirection = "column";
-          parent.style.width = "100%";
-          parent.style.overflow = "hidden";
-          aside.style.order = "-1"; // sidebar always on top
+        // 1. AppMainContainer: flex obálka → sloupec
+        var containers = root.querySelectorAll(
+          "[class*='AppMainContainer'],[class*='AppBody']," +
+          "[class*='CollectionContainer'],[class*='PageContainer']," +
+          "[class*='EditorContainer'],[class*='WorkflowContainer']"
+        );
+        containers.forEach(function(el) {
+          el.style.flexDirection = "column";
+          el.style.width = "100%";
+          el.style.overflow = "hidden";
+        });
+
+        // 2. SidebarContainer / aside → vodorovný pruh
+        var sidebar = root.querySelector("aside, [class*='SidebarContainer']");
+        if (sidebar) {
+          sidebar.style.display = "flex";
+          sidebar.style.flexDirection = "row";
+          sidebar.style.flexWrap = "nowrap";
+          sidebar.style.width = "100%";
+          sidebar.style.maxWidth = "100vw";
+          sidebar.style.height = "52px";
+          sidebar.style.minHeight = "52px";
+          sidebar.style.maxHeight = "52px";
+          sidebar.style.overflowX = "auto";
+          sidebar.style.overflowY = "hidden";
+          sidebar.style.order = "0";
+          // Vnitřní wrappery taky řádkově
+          Array.from(sidebar.children).forEach(function(child) {
+            child.style.display = "flex";
+            child.style.flexDirection = "row";
+            child.style.flexWrap = "nowrap";
+            child.style.alignItems = "center";
+            child.style.height = "100%";
+            child.style.width = "auto";
+            child.style.flexShrink = "0";
+          });
         }
 
-        // Make all direct children of nc-root that are flex containers go column
-        var appDiv = root.querySelector("[class*='App']") || root.firstElementChild;
-        if (appDiv) {
-          appDiv.style.flexDirection = "column";
+        // 3. CollectionMain / main → plná šířka pod sidebarem
+        var main = root.querySelector("main, [class*='CollectionMain']");
+        if (main) {
+          main.style.width = "100%";
+          main.style.maxWidth = "100vw";
+          main.style.minWidth = "0";
+          main.style.overflowX = "hidden";
+          main.style.order = "1";
+          main.style.flex = "1 1 auto";
         }
       }
 
-      // Run immediately and periodically (CMS re-renders on navigation)
+      // Spustit ihned i periodicky (CMS se re-renderuje při navigaci)
       fix();
       setInterval(fix, 1000);
       window.addEventListener("hashchange", function () { setTimeout(fix, 300); });
