@@ -8,68 +8,219 @@ permalink: /admin/index.html
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Administrace | TJ Sokol Postoupky</title>
     <style>
-      /* ── Base resets ── */
-      html { box-sizing: border-box; }
-      *, *::before, *::after { box-sizing: inherit; }
-      img, video { max-width: 100%; height: auto; }
-      body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; line-height: 1.55; }
-
+      /* ===== MOBILE-FIRST ADMIN UI ===== */
       :root {
-        --admin-bg: #f3f5f9;
-        --admin-surface: #ffffff;
-        --admin-surface-soft: #f8fafc;
-        --admin-text: #0f172a;
-        --admin-muted: #64748b;
-        --admin-primary: #6d28d9;
-        --admin-primary-2: #5b21b6;
-        --admin-border: #e2e8f0;
-        --admin-shadow: 0 8px 24px rgba(15, 23, 42, .08);
-        --admin-radius: 12px;
+        --bg: #f3f5fb;
+        --surface: #ffffff;
+        --surface-soft: #f8fafc;
+        --text: #0f172a;
+        --muted: #64748b;
+        --primary: #6d28d9;
+        --primary-2: #5b21b6;
+        --border: #e2e8f0;
+        --danger: #dc2626;
+        --radius: 12px;
+        --shadow: 0 8px 24px rgba(15, 23, 42, .08);
+        --space-page: 12px;
       }
 
+      html { box-sizing: border-box; }
+      *, *::before, *::after { box-sizing: inherit; }
+
       html, body {
-        background: radial-gradient(circle at 10% -10%, #eef2ff 0%, #f8fafc 42%, #f1f5f9 100%);
-        color: var(--admin-text);
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        background: radial-gradient(circle at 10% -10%, #eef2ff 0%, #f8fafc 44%, #f1f5f9 100%);
+        color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.5;
+      }
+
+      #nc-root,
+      #nc-root * {
+        max-width: 100%;
       }
 
       #nc-root {
         min-height: 100dvh;
       }
 
-      /* Jemné sjednocení vizuálu napříč Decap třídami */
-      #nc-root [class*="CollectionMain"],
-      #nc-root [class*="MainPanel"],
-      #nc-root [class*="EditorContainer"],
-      #nc-root [class*="AppMainContainer"] {
-        background: transparent !important;
+      /* Header */
+      #nc-root header,
+      #nc-root [class*="AppHeader"],
+      #nc-root [class*="AppHeaderLeader"] {
+        background: rgba(15, 23, 42, .93) !important;
+        backdrop-filter: blur(8px);
+      }
+      #nc-root header *,
+      #nc-root [class*="AppHeader"] * {
+        color: #f8fafc !important;
       }
 
+      /* Main wrappers: one column on mobile */
+      #nc-root [class*="AppMainContainer"],
+      #nc-root [class*="AppBody"],
+      #nc-root [class*="CollectionContainer"],
+      #nc-root [class*="PageContainer"],
+      #nc-root [class*="EditorContainer"],
+      #nc-root [class*="WorkflowContainer"] {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+      }
+
+      /* Mobile nav toggle */
+      #mobile-nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        width: calc(100% - (var(--space-page) * 2));
+        margin: var(--space-page);
+        padding: 11px 12px;
+        min-height: 44px;
+        border: 0;
+        border-radius: var(--radius);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        color: #f8fafc;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      /* Sidebar collapsed by default on mobile */
+      #nc-root aside,
+      #nc-root [class*="SidebarContainer"] {
+        width: calc(100% - (var(--space-page) * 2)) !important;
+        margin: 0 var(--space-page) var(--space-page) !important;
+        border-radius: var(--radius) !important;
+        border: 1px solid var(--border) !important;
+        background: #0f172a !important;
+        box-shadow: var(--shadow) !important;
+        overflow: hidden !important;
+        max-height: 0 !important;
+        opacity: 0 !important;
+        transform: translateY(-8px) !important;
+        transition: max-height .25s ease, opacity .2s ease, transform .2s ease !important;
+        order: 0 !important;
+      }
+
+      #nc-root.mobile-nav-open aside,
+      #nc-root.mobile-nav-open [class*="SidebarContainer"] {
+        max-height: 64vh !important;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        overflow-y: auto !important;
+      }
+
+      #nc-root aside > *,
+      #nc-root [class*="SidebarContainer"] > * {
+        display: flex !important;
+        flex-direction: column !important;
+        margin: 0 !important;
+        padding: 4px 0 !important;
+        list-style: none !important;
+        width: 100% !important;
+      }
+
+      #nc-root aside li,
+      #nc-root aside a,
+      #nc-root [class*="SidebarContainer"] li,
+      #nc-root [class*="SidebarContainer"] a,
+      #nc-root [class*="NavItem"],
+      #nc-root [class*="navItem"] {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        min-height: 44px !important;
+        width: 100% !important;
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+        color: #e5e7eb !important;
+        text-decoration: none !important;
+        border-bottom: 1px solid rgba(148, 163, 184, .18) !important;
+      }
+      #nc-root aside li:last-child,
+      #nc-root [class*="SidebarContainer"] li:last-child,
+      #nc-root aside a:last-child,
+      #nc-root [class*="SidebarContainer"] a:last-child {
+        border-bottom: 0 !important;
+      }
+
+      /* Active section highlight */
+      #nc-root aside a[aria-current="page"],
+      #nc-root aside a[aria-selected="true"],
+      #nc-root [class*="SidebarContainer"] a[aria-current="page"],
+      #nc-root [class*="SidebarContainer"] a[aria-selected="true"],
+      #nc-root [class*="NavItem"][class*="active"],
+      #nc-root [class*="navItem"][class*="active"] {
+        background: linear-gradient(135deg, rgba(109,40,217,.28), rgba(59,130,246,.2)) !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+        border-left: 4px solid #a78bfa !important;
+      }
+
+      /* Main area */
+      #nc-root main,
+      #nc-root [class*="CollectionMain"],
+      #nc-root [class*="MainPanel"],
+      #nc-root [class*="EditorToggle"] {
+        order: 1 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: var(--space-page) !important;
+        overflow-x: hidden !important;
+      }
+
+      /* Panels and cards */
       #nc-root [class*="EntryCard"],
       #nc-root [class*="ListEntry"],
       #nc-root [class*="GridCard"],
       #nc-root [class*="MediaCard"],
       #nc-root [class*="FieldWrapper"],
       #nc-root [class*="FormField"] {
-        border-radius: var(--admin-radius) !important;
+        border-radius: var(--radius) !important;
       }
 
       #nc-root [class*="EntryCard"],
       #nc-root [class*="ListEntry"],
       #nc-root [class*="GridCard"],
       #nc-root [class*="MediaCard"] {
-        border: 1px solid var(--admin-border) !important;
-        background: var(--admin-surface) !important;
-        box-shadow: var(--admin-shadow) !important;
+        border: 1px solid var(--border) !important;
+        background: var(--surface) !important;
+        box-shadow: var(--shadow) !important;
       }
 
-      /* Inputs a fokus stavy */
+      /* Forms */
+      #nc-root label,
+      #nc-root [class*="FieldLabel"] {
+        display: block !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        margin: 0 0 6px !important;
+      }
+
       #nc-root input,
       #nc-root select,
       #nc-root textarea {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 44px !important;
+        font-size: 16px !important;
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
         border: 1px solid #cbd5e1 !important;
         background: #fff !important;
-        color: var(--admin-text) !important;
-        transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        color: var(--text) !important;
+      }
+
+      #nc-root textarea {
+        min-height: 110px !important;
       }
 
       #nc-root input:focus,
@@ -77,306 +228,215 @@ permalink: /admin/index.html
       #nc-root textarea:focus {
         outline: none !important;
         border-color: #8b5cf6 !important;
-        box-shadow: 0 0 0 3px rgba(139, 92, 246, .18) !important;
-        background: #fff !important;
+        box-shadow: 0 0 0 3px rgba(139,92,246,.18) !important;
       }
 
+      #nc-root [class*="FieldWrapper"],
+      #nc-root [class*="field-wrapper"],
+      #nc-root [class*="FormField"],
+      #nc-root [class*="widgetControl"] {
+        width: 100% !important;
+        margin-bottom: 14px !important;
+      }
+
+      /* Buttons */
       #nc-root button,
       #nc-root [role="button"] {
-        transition: transform .12s ease, filter .15s ease, box-shadow .18s ease;
-      }
-
-      #nc-root button:active,
-      #nc-root [role="button"]:active {
-        transform: translateY(1px);
-      }
-
-      /* Hlavní akční tlačítka (save/publish) – decentní zvýraznění */
-      #nc-root [class*="Toolbar"] button,
-      #nc-root [class*="EditorToolbar"] button {
+        min-height: 44px !important;
+        min-width: 44px !important;
         border-radius: 10px !important;
       }
 
-      #nc-root [class*="Toolbar"] button[class*="primary"],
-      #nc-root [class*="Toolbar"] button[data-test*="publish"],
-      #nc-root [class*="Toolbar"] button[data-test*="save"] {
-        background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-2) 100%) !important;
+      /* Action toolbars on mobile: stack vertically */
+      #nc-root [class*="Toolbar"],
+      #nc-root [class*="EditorToolbar"],
+      #nc-root [class*="controls"],
+      #nc-root [class*="Actions"] {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+
+      #nc-root [class*="Toolbar"] button,
+      #nc-root [class*="EditorToolbar"] button,
+      #nc-root [class*="Actions"] button {
+        width: 100% !important;
+        font-size: 14px !important;
+        padding: 10px 14px !important;
+      }
+
+      /* Primary actions */
+      #nc-root button[data-test*="save"],
+      #nc-root button[data-test*="publish"],
+      #nc-root button[data-test*="new"],
+      #nc-root button[data-test*="login"],
+      #nc-root [class*="Toolbar"] button[class*="primary"] {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%) !important;
         color: #fff !important;
         border: 0 !important;
-        box-shadow: 0 6px 18px rgba(109, 40, 217, .25) !important;
+        box-shadow: 0 6px 16px rgba(109,40,217,.28) !important;
       }
 
-      /* Přehlednější hlavička */
-      #nc-root header,
-      #nc-root [class*="AppHeader"],
-      #nc-root [class*="AppHeaderLeader"] {
-        background: rgba(15, 23, 42, .92) !important;
-        backdrop-filter: blur(8px);
+      /* Tables -> cards on mobile */
+      #nc-root table {
+        width: 100% !important;
+        border-collapse: separate !important;
       }
 
-      #nc-root header *,
-      #nc-root [class*="AppHeader"] * {
-        color: #f8fafc !important;
+      #nc-root table thead {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        clip: rect(0 0 0 0) !important;
       }
 
-      /* ═══════════════════════════════════════════
-         MOBILE (≤ 768px)
-         Cíl: vertikální layout + rozbalovací lišta sekcí
-      ═══════════════════════════════════════════ */
-      @media (max-width: 768px) {
-        html, body { overflow-x: hidden; max-width: 100vw; }
+      #nc-root table,
+      #nc-root tbody,
+      #nc-root tr,
+      #nc-root td {
+        display: block !important;
+        width: 100% !important;
+      }
 
-        /* === 1) Hlavní obálky do sloupce === */
+      #nc-root tr {
+        background: var(--surface) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius) !important;
+        box-shadow: var(--shadow) !important;
+        margin: 0 0 12px !important;
+        padding: 8px 10px !important;
+      }
+
+      #nc-root td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 10px !important;
+        border: 0 !important;
+        padding: 8px 0 !important;
+        min-height: 36px;
+      }
+
+      #nc-root td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--muted);
+        font-size: 12px;
+        flex: 0 0 45%;
+      }
+
+      /* Floating helper panels */
+      #recent-changes-toggle,
+      #status-dot {
+        font-size: 12px !important;
+        padding: 9px 12px !important;
+        bottom: 14px !important;
+      }
+      #recent-changes-toggle { right: 14px !important; }
+      #status-dot { left: 14px !important; }
+
+      #recent-changes-panel,
+      #status-panel {
+        width: calc(100vw - 16px) !important;
+        max-height: 56vh !important;
+        bottom: 62px !important;
+      }
+      #recent-changes-panel { right: 8px !important; }
+      #status-panel { left: 8px !important; }
+
+      /* Text readability */
+      #nc-root h1, #nc-root h2, #nc-root h3 { line-height: 1.25; }
+      #nc-root h1 { font-size: 1.35rem !important; }
+      #nc-root h2 { font-size: 1.2rem !important; }
+      #nc-root h3 { font-size: 1.05rem !important; }
+      #nc-root p, #nc-root span, #nc-root td, #nc-root th {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+      }
+
+      /* <=480px (small phones) */
+      @media (max-width: 480px) {
+        :root { --space-page: 10px; }
+
+        #mobile-nav-toggle {
+          font-size: 13px;
+          padding: 10px;
+        }
+
+        #nc-root h1 { font-size: 1.2rem !important; }
+        #nc-root h2 { font-size: 1.08rem !important; }
+
+        #nc-root input,
+        #nc-root select,
+        #nc-root textarea,
+        #nc-root button {
+          font-size: 15px !important;
+        }
+      }
+
+      /* 481px - 768px (phones / small tablets) */
+      @media (min-width: 481px) and (max-width: 768px) {
+        :root { --space-page: 14px; }
+      }
+
+      /* >=1024px desktop */
+      @media (min-width: 1024px) {
+        :root { --space-page: 18px; }
+
+        #mobile-nav-toggle {
+          display: none !important;
+        }
+
         #nc-root [class*="AppMainContainer"],
-        #nc-root [class*="AppBody"],
         #nc-root [class*="CollectionContainer"],
         #nc-root [class*="PageContainer"],
-        #nc-root [class*="EditorContainer"],
-        #nc-root [class*="WorkflowContainer"] {
-          display: flex !important;
-          flex-direction: column !important;
-          width: 100% !important;
-          min-width: 0 !important;
-          overflow: hidden !important;
-          height: auto !important;
+        #nc-root [class*="EditorContainer"] {
+          flex-direction: row !important;
+          align-items: stretch !important;
         }
 
-        /* === 2) Tlačítko pro rozbalení sekcí === */
-        #mobile-nav-toggle {
-          display: flex !important;
-          align-items: center;
-          justify-content: space-between;
-          width: calc(100% - 16px);
-          margin: 8px;
-          padding: 10px 12px;
-          min-height: 44px;
-          border: 0;
-          border-radius: 10px;
-          background: #1f2937;
-          color: #f9fafb;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-        }
-
-        /* === 3) Sidebar jako accordion panel (na výšku) === */
         #nc-root aside,
         #nc-root [class*="SidebarContainer"] {
-          order: 0 !important;
-          width: calc(100% - 16px) !important;
-          max-width: calc(100% - 16px) !important;
-          margin: 0 8px 8px !important;
-          border-radius: 10px !important;
-          border: 1px solid rgba(255,255,255,.15) !important;
-          box-shadow: 0 4px 14px rgba(0,0,0,.18) !important;
-          overflow: hidden !important;
-          max-height: 0 !important;
-          opacity: 0 !important;
-          transform: translateY(-6px) !important;
-          transition: max-height .25s ease, opacity .2s ease, transform .2s ease !important;
-        }
-
-        #nc-root.mobile-nav-open aside,
-        #nc-root.mobile-nav-open [class*="SidebarContainer"] {
-          max-height: 62vh !important;
+          width: 290px !important;
+          max-width: 290px !important;
+          min-width: 240px !important;
+          margin: 0 !important;
+          border-radius: 0 !important;
+          border-right: 1px solid rgba(148,163,184,.2) !important;
+          border-bottom: 0 !important;
+          max-height: none !important;
           opacity: 1 !important;
-          transform: translateY(0) !important;
+          transform: none !important;
           overflow-y: auto !important;
         }
 
-        /* Vnitřek sidebaru = čistě vertikální seznam */
         #nc-root aside > *,
         #nc-root [class*="SidebarContainer"] > * {
-          display: flex !important;
-          flex-direction: column !important;
-          align-items: stretch !important;
-          width: 100% !important;
-          margin: 0 !important;
-          padding: 4px 0 !important;
-          list-style: none !important;
-          gap: 0 !important;
+          padding-top: 8px !important;
         }
 
-        #nc-root aside li,
-        #nc-root aside a,
-        #nc-root [class*="SidebarContainer"] li,
-        #nc-root [class*="SidebarContainer"] a,
-        #nc-root [class*="NavItem"],
-        #nc-root [class*="navItem"] {
-          display: flex !important;
-          align-items: center !important;
-          justify-content: flex-start !important;
-          width: 100% !important;
-          max-width: 100% !important;
-          min-height: 44px !important;
-          padding: 10px 12px !important;
-          font-size: 14px !important;
-          line-height: 1.3 !important;
-          white-space: normal !important;
-          overflow: visible !important;
-          text-overflow: clip !important;
-          border-bottom: 1px solid rgba(255,255,255,.08) !important;
-          gap: 8px !important;
-        }
-
-        #nc-root aside li:last-child,
-        #nc-root [class*="SidebarContainer"] li:last-child,
-        #nc-root aside a:last-child,
-        #nc-root [class*="SidebarContainer"] a:last-child {
-          border-bottom: 0 !important;
-        }
-
-        /* === 4) Main obsah pod sidebarem === */
         #nc-root main,
         #nc-root [class*="CollectionMain"],
         #nc-root [class*="MainPanel"],
         #nc-root [class*="EditorToggle"] {
-          order: 1 !important;
-          width: 100% !important;
-          max-width: 100% !important;
-          min-width: 0 !important;
-          overflow-x: hidden !important;
-          padding: 10px !important;
-          flex: 1 1 auto !important;
+          padding: 18px !important;
         }
 
-        /* === 4. FORMULÁŘOVÁ POLE === */
-        #nc-root input[type="text"],
-        #nc-root input[type="number"],
-        #nc-root input[type="email"],
-        #nc-root input[type="url"],
-        #nc-root input[type="date"],
-        #nc-root input[type="time"],
-        #nc-root input[type="search"],
-        #nc-root select,
-        #nc-root textarea {
-          width: 100% !important;
-          max-width: 100% !important;
-          font-size: 16px !important; /* zabrání iOS zoom */
-          min-height: 44px !important;
-          padding: 10px 12px !important;
-          border-radius: 8px !important;
+        /* Desktop tabulky vrátit normálně */
+        #nc-root table,
+        #nc-root tbody,
+        #nc-root tr,
+        #nc-root td,
+        #nc-root th,
+        #nc-root table thead {
+          display: revert !important;
         }
 
-        /* === 5. TLAČÍTKA: 44 px touch target === */
-        #nc-root button,
-        #nc-root [role="button"] {
-          min-height: 44px !important;
-          min-width: 44px !important;
-          font-size: 14px !important;
-          padding: 10px 14px !important;
-          border-radius: 8px !important;
-          touch-action: manipulation !important;
+        #nc-root td::before {
+          content: none !important;
         }
-        /* Malé ikono-tlačítka (křížek, tužka…) nezvětšovat na 44px výšky */
-        #nc-root [class*="IconButton"],
-        #nc-root [class*="iconButton"] {
-          min-height: 36px !important;
-          min-width: 36px !important;
-          padding: 4px !important;
-        }
-
-        /* === 6. FIELD WRAPPER + LABEL === */
-        #nc-root [class*="FieldWrapper"],
-        #nc-root [class*="field-wrapper"],
-        #nc-root [class*="FormField"],
-        #nc-root [class*="widgetControl"] {
-          margin-bottom: 14px !important;
-          width: 100% !important;
-        }
-        #nc-root label,
-        #nc-root [class*="FieldLabel"] {
-          font-size: 14px !important;
-          font-weight: 600 !important;
-          margin-bottom: 4px !important;
-          display: block !important;
-        }
-
-        /* === 7. SEZNAM POLOŽEK === */
-        #nc-root [class*="EntryCard"],
-        #nc-root [class*="ListEntry"],
-        #nc-root [class*="GridCard"],
-        #nc-root [class*="MediaCard"] {
-          width: 100% !important;
-          min-height: 56px !important;
-          padding: 12px !important;
-          border-radius: 8px !important;
-          margin-bottom: 6px !important;
-        }
-
-        /* === 8. RELATION DROPDOWN === */
-        #nc-root [class*="MenuList"] [class*="option"],
-        #nc-root [class*="Option"] {
-          font-size: 15px !important;
-          min-height: 44px !important;
-          padding: 10px 14px !important;
-        }
-
-        /* === 9. MODÁL: slide-up sheet === */
-        #nc-root [class*="Modal"],
-        #nc-root [role="dialog"] {
-          width: 100vw !important;
-          max-width: 100vw !important;
-          max-height: 90vh !important;
-          margin: 0 !important;
-          border-radius: 16px 16px 0 0 !important;
-          position: fixed !important;
-          bottom: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          overflow-y: auto !important;
-        }
-
-        /* === 10. WORD WRAP === */
-        #nc-root a, #nc-root li, #nc-root p,
-        #nc-root span, #nc-root td, #nc-root th {
-          word-break: break-word !important;
-          overflow-wrap: break-word !important;
-        }
-
-        /* === 11. PLOVOUCÍ TLAČÍTKA === */
-        #recent-changes-toggle {
-          bottom: 14px !important; right: 14px !important;
-          font-size: 12px !important; padding: 9px 13px !important;
-        }
-        #status-dot {
-          bottom: 14px !important; left: 14px !important;
-          font-size: 12px !important; padding: 9px 13px !important;
-        }
-        #recent-changes-panel {
-          bottom: 62px !important; right: 8px !important;
-          width: calc(100vw - 16px) !important; max-height: 55vh !important;
-        }
-        #status-panel {
-          bottom: 62px !important; left: 8px !important;
-          width: calc(100vw - 16px) !important; max-height: 55vh !important;
-        }
-      }
-
-      /* ── Extra small (≤ 480px) ── */
-      @media (max-width: 480px) {
-        #mobile-nav-toggle {
-          margin: 6px;
-          width: calc(100% - 12px);
-          font-size: 13px;
-          padding: 9px 10px;
-        }
-        #nc-root aside,
-        #nc-root [class*="SidebarContainer"] {
-          width: calc(100% - 12px) !important;
-          max-width: calc(100% - 12px) !important;
-          margin: 0 6px 6px !important;
-        }
-        #nc-root aside li, #nc-root aside a,
-        #nc-root [class*="SidebarContainer"] li,
-        #nc-root [class*="SidebarContainer"] a {
-          padding: 9px 10px !important;
-          font-size: 13px !important;
-        }
-        #nc-root main,
-        #nc-root [class*="CollectionMain"] { padding: 8px !important; }
-        #nc-root [class*="FieldWrapper"],
-        #nc-root [class*="FormField"] { margin-bottom: 10px !important; }
       }
     </style>
   </head>
@@ -402,6 +462,7 @@ permalink: /admin/index.html
       }
 
       function bindAutoClose(root, btn) {
+        if (root.__mobileNavAutocloseBound) return;
         root.addEventListener("click", function (e) {
           var target = e.target;
           if (!target) return;
@@ -409,6 +470,28 @@ permalink: /admin/index.html
           if (!link) return;
           // Na mobilu po kliknutí do sekce menu zavřít, ať nepřekáží obsahu
           setTimeout(function () { setOpen(root, btn, false); }, 120);
+        });
+        root.__mobileNavAutocloseBound = true;
+      }
+
+      function applyTableCardLabels(root) {
+        var tables = root.querySelectorAll("table");
+        tables.forEach(function (table) {
+          var headers = Array.from(table.querySelectorAll("thead th")).map(function (th) {
+            return (th.textContent || "").trim();
+          });
+
+          if (!headers.length) return;
+
+          var rows = table.querySelectorAll("tbody tr");
+          rows.forEach(function (tr) {
+            var cells = tr.querySelectorAll("td");
+            cells.forEach(function (td, index) {
+              if (!td.getAttribute("data-label")) {
+                td.setAttribute("data-label", headers[index] || "Hodnota");
+              }
+            });
+          });
         });
       }
 
@@ -444,10 +527,7 @@ permalink: /admin/index.html
         if (!root) return;
 
         var toggleBtn = ensureToggle(root);
-        if (toggleBtn && !toggleBtn.__autocloseBound) {
-          bindAutoClose(root, toggleBtn);
-          toggleBtn.__autocloseBound = true;
-        }
+        if (toggleBtn) bindAutoClose(root, toggleBtn);
 
         // 1. AppMainContainer: flex obálka → sloupec
         var containers = root.querySelectorAll(
@@ -488,6 +568,9 @@ permalink: /admin/index.html
           main.style.order = "1";
           main.style.flex = "1 1 auto";
         }
+
+        // 4. Tabulky na mobilu jako karty s popisky hodnot
+        applyTableCardLabels(root);
       }
 
       // Spustit ihned i periodicky (CMS se re-renderuje při navigaci)
