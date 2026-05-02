@@ -8,94 +8,262 @@ permalink: /admin/index.html
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Administrace | TJ Sokol Postoupky</title>
     <style>
-      /* ── Same base resets as main site (styles.css) ── */
+      /* ── Base resets ── */
       html { box-sizing: border-box; }
       *, *::before, *::after { box-sizing: inherit; }
       img, video { max-width: 100%; height: auto; }
       body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; line-height: 1.55; }
 
-      /* ── Mobile: 760px breakpoint (same as main site) ── */
-      @media (max-width: 760px) {
-        /* Root overflow control */
+      /* ── MOBILE STYLES (≤ 768px) ── */
+      @media (max-width: 768px) {
         html, body { overflow-x: hidden; }
 
-        /* CMS sidebar → horizontal strip at top instead of side column */
-        #nc-root aside {
+        /* ── Sidebar: scrollable horizontal nav strip ── */
+        #nc-root aside,
+        #nc-root [class*="Sidebar"],
+        #nc-root [class*="sidebar"],
+        #nc-root nav[class*="Nav"] {
+          position: sticky !important;
+          top: 0 !important;
+          z-index: 100 !important;
           width: 100% !important;
-          max-width: 100% !important;
+          max-width: 100vw !important;
           min-width: 0 !important;
-          max-height: 110px !important;
-          overflow-y: auto !important;
+          height: auto !important;
+          max-height: 56px !important;
+          min-height: 0 !important;
+          overflow-x: auto !important;
+          overflow-y: hidden !important;
+          -webkit-overflow-scrolling: touch !important;
           border-right: none !important;
-          border-bottom: 2px solid #e5e7eb !important;
+          border-bottom: 1px solid #e5e7eb !important;
+          flex-direction: row !important;
+          flex-wrap: nowrap !important;
+          background: #1e293b !important;
+          scrollbar-width: none !important;
         }
+        #nc-root aside::-webkit-scrollbar { display: none !important; }
 
-        /* CMS container that holds aside+main → stack vertically */
-        #nc-root aside + main,
-        #nc-root aside ~ main,
-        #nc-root main {
-          width: 100% !important;
-          min-width: 0 !important;
-          max-width: 100% !important;
-          overflow-x: hidden !important;
-          padding: 10px !important;
-        }
-
-        /* Force the aside's parent flex container to column */
-        #nc-root aside {
-          flex-shrink: 0 !important;
-        }
-
-        /* CMS header: compact */
-        #nc-root header {
-          flex-wrap: wrap !important;
-          padding: 6px 10px !important;
-          gap: 4px !important;
-        }
-        #nc-root header a,
-        #nc-root header button,
-        #nc-root header span {
-          font-size: 12px !important;
-          padding: 4px 8px !important;
-        }
-
-        /* Inputs: full-width, 16px prevents iOS zoom (same as main site) */
-        #nc-root input,
-        #nc-root select,
-        #nc-root textarea {
-          max-width: 100% !important;
-          width: 100% !important;
-          font-size: 16px !important;
-        }
-
-        /* Buttons: 44px touch target (Apple HIG) */
-        #nc-root button {
+        /* Nav items: horizontal pills */
+        #nc-root aside li,
+        #nc-root aside a,
+        #nc-root aside [class*="NavItem"],
+        #nc-root [class*="sidebar"] li,
+        #nc-root [class*="sidebar"] a {
+          white-space: nowrap !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          padding: 10px 16px !important;
+          font-size: 13px !important;
           min-height: 44px !important;
         }
 
-        /* Text: word-break for long slugs/paths */
-        #nc-root a, #nc-root li, #nc-root p, #nc-root span {
+        /* ── Layout: stack column ── */
+        #nc-root [class*="App"],
+        #nc-root > div > div,
+        #nc-root > div {
+          flex-direction: column !important;
+        }
+
+        /* ── Main content area ── */
+        #nc-root main,
+        #nc-root [class*="MainPanel"],
+        #nc-root aside + div,
+        #nc-root aside ~ div {
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+          padding: 12px !important;
+        }
+
+        /* ── Top header bar ── */
+        #nc-root header,
+        #nc-root [class*="Header"],
+        #nc-root [class*="Toolbar"] {
+          flex-wrap: wrap !important;
+          padding: 8px 12px !important;
+          gap: 6px !important;
+        }
+
+        /* ── Form fields: full width + prevent iOS zoom ── */
+        #nc-root input[type="text"],
+        #nc-root input[type="number"],
+        #nc-root input[type="email"],
+        #nc-root input[type="url"],
+        #nc-root input[type="date"],
+        #nc-root input[type="time"],
+        #nc-root input[type="search"],
+        #nc-root select,
+        #nc-root textarea {
+          width: 100% !important;
+          max-width: 100% !important;
+          font-size: 16px !important; /* prevents iOS auto-zoom */
+          border-radius: 8px !important;
+          padding: 10px 12px !important;
+          min-height: 44px !important;
+        }
+
+        /* ── Buttons: big touch targets ── */
+        #nc-root button,
+        #nc-root [role="button"] {
+          min-height: 44px !important;
+          font-size: 15px !important;
+          padding: 10px 16px !important;
+          border-radius: 8px !important;
+          touch-action: manipulation !important;
+        }
+
+        /* ── Toolbar buttons (save, preview, delete) ── */
+        #nc-root header button,
+        #nc-root [class*="Toolbar"] button,
+        #nc-root [class*="ToolbarButton"],
+        #nc-root [class*="EditorControl"] > button {
+          min-height: 44px !important;
+          min-width: 44px !important;
+          font-size: 14px !important;
+        }
+
+        /* ── Field labels: clear + readable ── */
+        #nc-root label,
+        #nc-root [class*="FieldLabel"],
+        #nc-root [class*="label"] {
+          font-size: 14px !important;
+          font-weight: 600 !important;
+          margin-bottom: 4px !important;
+          display: block !important;
+        }
+
+        /* ── Field wrapper: good vertical spacing ── */
+        #nc-root [class*="FieldWrapper"],
+        #nc-root [class*="field-wrapper"],
+        #nc-root [class*="FormField"] {
+          margin-bottom: 16px !important;
+        }
+
+        /* ── List editor items: easier to tap ── */
+        #nc-root [class*="ListItem"],
+        #nc-root [class*="list-item"] {
+          padding: 12px !important;
+          margin-bottom: 8px !important;
+          border-radius: 8px !important;
+        }
+
+        /* ── Markdown / rich text editor toolbar ── */
+        #nc-root [class*="EditorToolbar"],
+        #nc-root [class*="rte-toolbar"],
+        #nc-root [class*="mde-header"] {
+          flex-wrap: wrap !important;
+          gap: 4px !important;
+          padding: 6px !important;
+        }
+        #nc-root [class*="EditorToolbar"] button,
+        #nc-root [class*="mde-header"] button {
+          min-width: 36px !important;
+          min-height: 36px !important;
+          font-size: 14px !important;
+          padding: 4px !important;
+        }
+
+        /* ── Media / image cards ── */
+        #nc-root [class*="GridCard"],
+        #nc-root [class*="MediaCard"] {
+          min-width: 120px !important;
+          max-width: 140px !important;
+        }
+
+        /* ── Relation dropdown results ── */
+        #nc-root [class*="MenuList"],
+        #nc-root [class*="menu-list"],
+        #nc-root [class*="option"] {
+          font-size: 15px !important;
+          padding: 12px 14px !important;
+          min-height: 44px !important;
+        }
+
+        /* ── Modal / overlay: full screen on mobile ── */
+        #nc-root [class*="Modal"],
+        #nc-root [role="dialog"] {
+          width: 100vw !important;
+          max-width: 100vw !important;
+          margin: 0 !important;
+          border-radius: 12px 12px 0 0 !important;
+          position: fixed !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          max-height: 90vh !important;
+          overflow-y: auto !important;
+        }
+
+        /* ── Word wrapping ── */
+        #nc-root a,
+        #nc-root li,
+        #nc-root p,
+        #nc-root span,
+        #nc-root td {
           word-break: break-word !important;
           overflow-wrap: break-word !important;
         }
 
-        /* Hide floating widgets on mobile — keep editor clean */
-        #recent-changes-toggle, #recent-changes-panel,
-        #status-dot, #status-panel {
-          display: none !important;
+        /* ── Collection list: tap-friendly rows ── */
+        #nc-root [class*="EntryCard"],
+        #nc-root [class*="entry-card"],
+        #nc-root [class*="ListEntry"],
+        #nc-root table tr {
+          min-height: 56px !important;
+          padding: 12px !important;
+        }
+
+        /* ── Fixed floating buttons: adjust for mobile ── */
+        #recent-changes-toggle {
+          bottom: 16px !important;
+          right: 16px !important;
+          font-size: 12px !important;
+          padding: 8px 12px !important;
+        }
+        #status-dot {
+          bottom: 16px !important;
+          left: 16px !important;
+          font-size: 12px !important;
+          padding: 8px 12px !important;
+        }
+        #recent-changes-panel {
+          bottom: 66px !important;
+          right: 8px !important;
+          width: calc(100vw - 16px) !important;
+          max-height: 55vh !important;
+        }
+        #status-panel {
+          bottom: 66px !important;
+          left: 8px !important;
+          width: calc(100vw - 16px) !important;
+          max-height: 55vh !important;
         }
       }
 
-      /* ── Extra small (< 480px) — same as main site's second breakpoint ── */
+      /* ── Extra small (≤ 480px) ── */
       @media (max-width: 480px) {
-        #nc-root aside {
-          max-height: 90px !important;
+        #nc-root aside,
+        #nc-root [class*="Sidebar"] {
+          max-height: 50px !important;
         }
-        #nc-root header {
-          padding: 4px 6px !important;
+        #nc-root aside a,
+        #nc-root aside li {
+          padding: 8px 12px !important;
+          font-size: 12px !important;
         }
-        #nc-root main {
-          padding: 6px !important;
+        #nc-root main,
+        #nc-root aside + div,
+        #nc-root aside ~ div {
+          padding: 8px !important;
+        }
+        #nc-root button {
+          font-size: 14px !important;
+        }
+        #nc-root [class*="FieldWrapper"],
+        #nc-root [class*="FormField"] {
+          margin-bottom: 12px !important;
         }
       }
     </style>
@@ -105,24 +273,36 @@ permalink: /admin/index.html
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script src="./autofill-plugin.js?v=20260408"></script>
     <script>
-    /* ── Mobile layout fixer (same approach as main site: element-based) ── */
+    /* ── Mobile layout fixer ── */
     (function () {
-      if (window.innerWidth > 760) return;
+      if (window.innerWidth > 768) return;
 
       function fix() {
         var root = document.getElementById("nc-root");
         if (!root) return;
 
-        // The aside's parent is a flex row — make it column
+        // Find sidebar and its parent container
         var aside = root.querySelector("aside");
         if (aside && aside.parentElement) {
-          aside.parentElement.style.flexDirection = "column";
+          var parent = aside.parentElement;
+          parent.style.flexDirection = "column";
+          parent.style.width = "100%";
+          parent.style.overflow = "hidden";
+          aside.style.order = "-1"; // sidebar always on top
+        }
+
+        // Make all direct children of nc-root that are flex containers go column
+        var appDiv = root.querySelector("[class*='App']") || root.firstElementChild;
+        if (appDiv) {
+          appDiv.style.flexDirection = "column";
         }
       }
 
-      // Run periodically (CMS re-renders on navigation)
-      setInterval(fix, 1500);
-      window.addEventListener("hashchange", function () { setTimeout(fix, 400); });
+      // Run immediately and periodically (CMS re-renders on navigation)
+      fix();
+      setInterval(fix, 1000);
+      window.addEventListener("hashchange", function () { setTimeout(fix, 300); });
+      window.addEventListener("popstate", function () { setTimeout(fix, 300); });
     })();
     </script>
     <script>
