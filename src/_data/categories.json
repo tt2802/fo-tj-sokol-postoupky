@@ -1,19 +1,34 @@
 {
   "items": [
     {
-      "id": "starsi-pripravka",
-      "name": "Starší přípravka",
-      "shortName": "U11"
+      "id": "dorostenci",
+      "name": "Dorostenci",
+      "shortName": "U19"
     },
     {
-      "id": "mlads-pripravka",
-      "name": "Mladší přípravka",
-      "shortName": "U09"
+      "id": "dorostenky-d19",
+      "name": "Dorostenkyně",
+      "shortName": "D19"
+    },
+    {
+      "id": "starsi-zaci",
+      "name": "Starší žáci",
+      "shortName": "U15"
+    },
+    {
+      "id": "mlads-zaci",
+      "name": "Mladší žáci",
+      "shortName": "U12"
+    },
+    {
+      "id": "mlads-zaci-b",
+      "name": "Mladší žáci B",
+      "shortName": "U12 B"
     },
     {
       "id": "skolicka",
       "name": "Školička",
-      "shortName": "U07"
+      "shortName": "U8"
     }
   ]
 }
