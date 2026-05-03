@@ -3,15 +3,11 @@
   "positions": [
     {
       "slot": "GK",
-      "player": "Brankář"
+      "player": ""
     },
     {
       "slot": "CB1",
       "player": "Matyáš Morkus"
-    },
-    {
-      "slot": "TRIDACKA",
-      "player": "Šimčák"
     },
     {
       "slot": "CB2",
@@ -30,7 +26,7 @@
       "player": "Opluštil"
     },
     {
-      "slot": "LM",
+      "slot": "LWB",
       "player": "Gothin"
     },
     {
@@ -40,6 +36,10 @@
     {
       "slot": "ST2",
       "player": "Sklenář"
+    },
+    {
+      "slot": "TRIDACKA",
+      "player": "Šimčák"
     },
     {
       "slot": "ST1",
