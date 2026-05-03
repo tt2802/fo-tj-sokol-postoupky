@@ -6,11 +6,11 @@
       "player": "Brankář"
     },
     {
-      "slot": "RB",
-      "player": "Jeník"
+      "slot": "CB1",
+      "player": "Matyáš Morkus"
     },
     {
-      "slot": "CB1",
+      "slot": "TRIDACKA",
       "player": "Šimčák"
     },
     {
@@ -18,11 +18,11 @@
       "player": "Kubín"
     },
     {
-      "slot": "LB",
+      "slot": "CB3",
       "player": "Vrzal"
     },
     {
-      "slot": "CM1",
+      "slot": "CB1",
       "player": "Morkus"
     },
     {
@@ -47,11 +47,11 @@
     },
     {
       "slot": "TRENER",
-      "player": "Laďa Opluštil"
+      "player": "Vladimír Opluštil"
     },
     {
       "slot": "TRIDACKA",
-      "player": "McEvoy"
+      "player": ""
     }
   ]
 }
