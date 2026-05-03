@@ -176,6 +176,72 @@ permalink: /admin/index.html
           overflow-y: visible !important;
         }
 
+        /* Telefon: skrýt search (zlobí v adminu) */
+        #nc-root aside [class*="Search"],
+        #nc-root [class*="SidebarContainer"] [class*="Search"],
+        #nc-root [class*="CollectionTop"] [class*="Search"],
+        #nc-root [class*="CollectionTop"] input[type="search"],
+        #nc-root [class*="CollectionTop"] [role="search"],
+        #nc-root [data-testid*="search"] {
+          display: none !important;
+          visibility: hidden !important;
+          max-height: 0 !important;
+          overflow: hidden !important;
+        }
+
+        /* Vnořené editory (hráči, kalendář, listy, relation položky) */
+        #nc-root [class*="SplitPane"],
+        #nc-root [class*="EditorSplitPane"],
+        #nc-root [class*="EditorContainer"],
+        #nc-root [class*="EditorMain"] {
+          display: flex !important;
+          flex-direction: column !important;
+          min-width: 0 !important;
+          width: 100% !important;
+        }
+
+        #nc-root [class*="ListControl"],
+        #nc-root [class*="ListControlItem"],
+        #nc-root [class*="ObjectControl"],
+        #nc-root [class*="ObjectWidget"],
+        #nc-root [class*="RelationControl"],
+        #nc-root [class*="CardsGrid"],
+        #nc-root [class*="CardGrid"],
+        #nc-root [class*="Sortable"],
+        #nc-root [class*="Nested"] {
+          min-width: 0 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        #nc-root [class*="ListControlItem"],
+        #nc-root [class*="ObjectControl"],
+        #nc-root [class*="Sortable"] [class*="Item"],
+        #nc-root [class*="CardGrid"] > * {
+          padding: 10px !important;
+          border-radius: 10px !important;
+          overflow: hidden !important;
+        }
+
+        #nc-root [class*="ListControlItem"] [class*="TopBar"],
+        #nc-root [class*="ListControlItem"] [class*="Toolbar"],
+        #nc-root [class*="ObjectControl"] [class*="Toolbar"] {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+          gap: 8px !important;
+          flex-wrap: wrap !important;
+        }
+
+        #nc-root [class*="ListControlItem"] [class*="TopBar"] button,
+        #nc-root [class*="ListControlItem"] [class*="Toolbar"] button,
+        #nc-root [class*="ObjectControl"] [class*="Toolbar"] button {
+          width: auto !important;
+          min-width: 36px !important;
+          min-height: 36px !important;
+          padding: 6px 8px !important;
+        }
+
         #nc-root [class*="CollectionMain"] > *,
         #nc-root [class*="MainPanel"] > *,
         #nc-root [class*="EditorContainer"] > * {
