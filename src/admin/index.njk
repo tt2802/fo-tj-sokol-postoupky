@@ -37,7 +37,7 @@ permalink: /admin/index.html
          MOBILNÍ STYLY – pouze pro telefony a tablety
          Na počítači (> 768 px) se nic nemění.
          ============================================= */
-      @media (max-width: 768px) {
+      @media (max-width: 768px), ((hover: none) and (pointer: coarse) and (max-width: 900px)) {
 
         html, body {
           margin: 0;
@@ -81,24 +81,38 @@ permalink: /admin/index.html
           border-bottom: 1px solid rgba(148, 163, 184, .2) !important;
           background: #0f172a !important;
           box-shadow: var(--shadow) !important;
-          overflow-x: auto !important;
-          overflow-y: hidden !important;
+          overflow-x: hidden !important;
+          overflow-y: visible !important;
           -webkit-overflow-scrolling: touch !important;
-          min-height: 54px !important;
-          max-height: 64px !important;
+          min-height: 0 !important;
+          max-height: none !important;
+          padding: 4px 6px !important;
         }
 
         #nc-root aside > *,
         #nc-root [class*="SidebarContainer"] > * {
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+        }
+
+        #nc-root aside ul,
+        #nc-root [class*="SidebarContainer"] ul,
+        #nc-root [class*="Nav"] ul {
           display: flex !important;
           flex-direction: row !important;
+          flex-wrap: nowrap !important;
           align-items: center !important;
+          gap: 6px !important;
           list-style: none !important;
           margin: 0 !important;
-          padding: 6px !important;
-          width: max-content !important;
-          min-width: 100% !important;
-          flex-wrap: nowrap !important;
+          padding: 4px 0 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+          overflow-y: hidden !important;
+          -webkit-overflow-scrolling: touch !important;
+          scrollbar-width: thin;
         }
 
         #nc-root aside li,
@@ -305,8 +319,10 @@ permalink: /admin/index.html
 
         #nc-root aside,
         #nc-root [class*="SidebarContainer"] {
-          min-height: 48px !important;
-          max-height: 52px !important;
+          min-height: 0 !important;
+          max-height: none !important;
+          padding-top: 2px !important;
+          padding-bottom: 2px !important;
         }
 
         #nc-root aside li,
