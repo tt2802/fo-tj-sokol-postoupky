@@ -128,6 +128,19 @@
       "team": "muzi",
       "home": "Postoupky",
       "competition": "9.liga"
+    },
+    {
+      "season": "2025/2026",
+      "relatedUpcoming": "postoupky-bezmerov",
+      "isHome": true,
+      "slug": "postoupky-bezmerov",
+      "round": "1",
+      "away": "Bezměrov",
+      "date": "2026-05-02",
+      "venue": "Postoupky",
+      "team": "mladez",
+      "home": "Postoupky",
+      "competition": "9.liga"
     }
   ]
 }
