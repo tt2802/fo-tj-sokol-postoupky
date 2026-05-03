@@ -2,8 +2,14 @@
   "items": [
     {
       "name": "Vladimír Opluštil",
-      "role": "Vedoucí Oddílu",
-      "contact": "oplustil.v@seznam.cz"
+      "role": "Prezident klubu",
+      "contact": "oplustil.v@seznam.cz",
+      "phone": "+420 730 592 021",
+      "email": "OPLUSTIL.V@SEZNAM.CZ"
+    },
+    {
+      "name": "Ing. Marek Šimčák",
+      "role": "generální manažer"
     }
   ]
 }
