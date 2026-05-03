@@ -41,8 +41,8 @@
       "photo": ""
     },
     {
-      "name": "Hesham Gothim",
-      "number": 12,
+      "name": "Hesham Ghothim",
+      "number": 17,
       "position": "Záložník",
       "photo": ""
     },
@@ -52,13 +52,28 @@
       "position": "Brankář"
     },
     {
-      "name": "Francessco",
+      "name": "Francessco Pernorio",
       "number": 16,
       "position": "Záložník"
     },
     {
       "name": "Marek Šimčák",
       "number": 3,
+      "position": "Obránce"
+    },
+    {
+      "name": "Thomas James McEvoy",
+      "number": 4,
+      "position": "Záložník"
+    },
+    {
+      "name": "David Červenák",
+      "number": 9,
+      "position": "Útočník"
+    },
+    {
+      "name": "Patrik Strážnický",
+      "number": 12,
       "position": "Obránce"
     }
   ],
