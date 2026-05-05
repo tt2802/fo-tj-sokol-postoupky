@@ -2,8 +2,8 @@
   "formation": "3-5-2",
   "positions": [
     {
-      "slot": "GK",
-      "player": ""
+      "slot": "ST1",
+      "player": "Jakub Svačina"
     },
     {
       "slot": "CB1",
@@ -11,15 +11,11 @@
     },
     {
       "slot": "CB2",
-      "player": "Kubín"
+      "player": "Tomáš Kubín"
     },
     {
       "slot": "CB3",
-      "player": "Vrzal"
-    },
-    {
-      "slot": "CB1",
-      "player": "Morkus"
+      "player": "Filip Vrzal"
     },
     {
       "slot": "CM2",
@@ -27,7 +23,7 @@
     },
     {
       "slot": "LWB",
-      "player": "Gothin"
+      "player": ""
     },
     {
       "slot": "RM",
@@ -52,6 +48,10 @@
     {
       "slot": "TRIDACKA",
       "player": ""
+    },
+    {
+      "slot": "RWB",
+      "player": "Hrdlička"
     }
   ]
 }
