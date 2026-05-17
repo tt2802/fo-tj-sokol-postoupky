@@ -45,6 +45,17 @@
       "type": "training",
       "repeat": "weekly",
       "team": "muzi"
+    },
+    {
+      "endTime": "14.00",
+      "time": "9.15",
+      "date": "2026-06-13",
+      "location": "Bezměrov",
+      "title": "Turnaj školiček",
+      "type": "tournament",
+      "repeat": "none",
+      "description": "Janoštíkův  memoriál",
+      "team": "mladez"
     }
   ]
 }
