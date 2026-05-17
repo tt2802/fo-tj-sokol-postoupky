@@ -9,6 +9,11 @@
       "id": "skolicka",
       "name": "Školička",
       "shortName": "U7"
+    },
+    {
+      "id": "starsi-pripravka",
+      "name": "Starší přípravka",
+      "shortName": "U11"
     }
   ]
 }
