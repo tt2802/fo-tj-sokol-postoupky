@@ -1,11 +1,61 @@
 {
-  "season": "2025/2026",
-  "competition": "ZKP",
+  "season": "2026/2027",
+  "competition": "9.liga skupina B",
   "teams": [
-    { "pos": 1, "name": "Kroměříž B", "played": 3, "wins": 3, "draws": 0, "losses": 0, "goalsFor": 9, "goalsAgainst": 2, "points": 9 },
-    { "pos": 2, "name": "Hulín", "played": 3, "wins": 2, "draws": 1, "losses": 0, "goalsFor": 7, "goalsAgainst": 3, "points": 7 },
-    { "pos": 3, "name": "Postoupky", "played": 3, "wins": 1, "draws": 1, "losses": 1, "goalsFor": 5, "goalsAgainst": 4, "points": 4 },
-    { "pos": 4, "name": "Vsetín", "played": 3, "wins": 1, "draws": 0, "losses": 2, "goalsFor": 4, "goalsAgainst": 6, "points": 3 },
-    { "pos": 5, "name": "Morkovice", "played": 3, "wins": 0, "draws": 0, "losses": 3, "goalsFor": 2, "goalsAgainst": 8, "points": 0 }
+    {
+      "goalsAgainst": 2,
+      "points": 9,
+      "goalsFor": 9,
+      "name": "Šelešovice",
+      "draws": 0,
+      "losses": 0,
+      "played": 3,
+      "pos": 1,
+      "wins": 3
+    },
+    {
+      "goalsAgainst": 3,
+      "points": 7,
+      "goalsFor": 7,
+      "name": "Bařice",
+      "draws": 1,
+      "losses": 0,
+      "played": 3,
+      "pos": 2,
+      "wins": 2
+    },
+    {
+      "goalsAgainst": 4,
+      "points": 4,
+      "goalsFor": 5,
+      "name": "Postoupky",
+      "draws": 1,
+      "losses": 1,
+      "played": 3,
+      "pos": 3,
+      "wins": 1
+    },
+    {
+      "goalsAgainst": 6,
+      "points": 3,
+      "goalsFor": 4,
+      "name": "Dřínov",
+      "draws": 0,
+      "losses": 2,
+      "played": 3,
+      "pos": 4,
+      "wins": 1
+    },
+    {
+      "goalsAgainst": 8,
+      "points": 0,
+      "goalsFor": 2,
+      "name": "Troubky",
+      "draws": 0,
+      "losses": 3,
+      "played": 3,
+      "pos": 5,
+      "wins": 0
+    }
   ]
 }
