@@ -60,12 +60,6 @@
       "position": "Obránce"
     },
     {
-      "name": "Jakub Svačina",
-      "number": 14,
-      "position": "Útočník",
-      "photo": ""
-    },
-    {
       "name": "Francessco Pernorio",
       "number": 16,
       "position": "Záložník"
@@ -75,6 +69,16 @@
       "number": 17,
       "position": "Záložník",
       "photo": ""
+    },
+    {
+      "name": "Nicholas Pernorio",
+      "number": 10,
+      "position": "Útočník"
+    },
+    {
+      "name": "Štěpán Španiel",
+      "number": 17,
+      "position": "Útočník"
     }
   ],
   "youth": {
