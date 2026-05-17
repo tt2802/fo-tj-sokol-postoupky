@@ -14,11 +14,7 @@ trainings:
     day: Středa
     time: 18:00–19:30
     place: Sokolovna Postoupky
-  - team: Dorostenci
-    day: Úterý
-    time: 17:00–18:00
-    place: Sokolovna Postoupky
-  - team: Starší žáci
-    day: Čtvrtek
-    time: 16:00–17:00
-    place: Sokolovna Postoupky
+  - team: Mladší přípravka
+    day: Středa
+    time: 16:30–17:30
+    place: Multifunkční hřiště  Postoupky
