@@ -23,6 +23,17 @@
       "repeat": null,
       "description": "Turnaj školiček pro děti do 7 let ( dívky do 9 let)",
       "team": "mladez"
+    },
+    {
+      "repeatUntil": "2026-06-24",
+      "endTime": "17:30",
+      "time": "16:30",
+      "date": "2026-05-20",
+      "location": "Hřiště na Rybníčkách",
+      "title": "Sportovní hry",
+      "type": "training",
+      "repeat": "weekly",
+      "team": "mladez"
     }
   ]
 }
