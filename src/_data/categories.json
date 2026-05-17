@@ -1,14 +1,14 @@
 {
   "items": [
     {
-      "id": "mladsi-pripravka",
-      "name": "Mladší přípravka",
-      "shortName": "U09"
-    },
-    {
       "id": "skolicka",
       "name": "Školička",
       "shortName": "U7"
+    },
+    {
+      "id": "mladsi-pripravka",
+      "name": "Mladší přípravka",
+      "shortName": "U09"
     },
     {
       "id": "starsi-pripravka",
