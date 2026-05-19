@@ -35,8 +35,15 @@ npm run lint         # kontrola JavaScriptu pomocí ESLint (po instalaci devDepe
   TEXT NOVINKY...
   ```
 
-- **Zápas**: použijte šablonu `src/matches/match.njk` nebo přidejte nový objekt do `src/_data/matches.json` a poté vytvořte odpovídající `.md` soubor s reportem.
+- **Zápasy**: spravujte v adminu soubory `src/_data/upcoming_matches.json` a `src/_data/played_matches.json` (případně pomocí skriptů v `src/scripts/`).
 - **Stránka**: soubory v `src/pages/` jsou převáděny přímo podle permalinku.
+
+### Jak se změna z adminu propíše všude
+
+1. Uložení v `/admin/` vytvoří commit do `main`.
+2. GitHub Actions spustí build/deploy workflow.
+3. Eleventy načte data ze `src/_data` a vygeneruje nové HTML + `_site/_data`.
+4. Po dokončení deploye jsou změny konzistentně vidět na všech stránkách.
 
 
 ## Další kroky

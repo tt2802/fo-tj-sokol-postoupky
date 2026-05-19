@@ -26,7 +26,7 @@ layout: layouts/page.njk
           <article class="card">
             <div class="card__media">
               {% if p.photo %}
-                <img src="{{ p.photo }}" alt="Fotka hráče {{ p.name }}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px 4px 0 0;">
+                <img src="{{ p.photo }}" alt="Fotka hráče {{ p.name }}" loading="lazy" decoding="async" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px 4px 0 0;">
               {% else %}
                 <div style="width: 100%; aspect-ratio: 1; background: var(--bg-alt); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
                   Bez fotky

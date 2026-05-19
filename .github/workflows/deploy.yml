@@ -31,6 +31,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      - name: Validate admin/data sync integrity
+        run: npm run check:data-sync
       - name: Lint JavaScript
         run: npm run lint || echo "Lint warnings/errors ignored in CI"
 

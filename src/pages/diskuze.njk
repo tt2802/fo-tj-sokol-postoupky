@@ -53,9 +53,9 @@ layout: layouts/base.njk
 </section>
 
 {# ── Firebase SDK ── #}
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
 (function() {
@@ -80,6 +80,8 @@ layout: layouts/base.njk
   var userEl     = document.getElementById('chatUser');
 
   var provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  var authInProgress = false;
 
   function escapeHtml(str) {
     var d = document.createElement('div');
@@ -87,21 +89,87 @@ layout: layouts/base.njk
     return d.innerHTML;
   }
 
-  function doLogin() {
-    auth.signInWithPopup(provider).catch(function(err) {
-      console.error('Auth error:', err.code, err.message);
-      var msgEl = document.getElementById('chatWelcome');
-      msgEl.innerHTML = '<div style="color:#dc2626;font-weight:600;">Chyba přihlášení: ' + escapeHtml(err.code) + '<br><small>' + escapeHtml(err.message) + '</small></div>';
-      msgEl.style.display = '';
+  function setLoginBusyState(busy, sourceBtn) {
+    var btn = sourceBtn || document.getElementById('chatLogin');
+    if (!btn) return;
+    btn.disabled = !!busy;
+    btn.style.opacity = busy ? '0.7' : '';
+    btn.style.cursor = busy ? 'wait' : '';
+  }
+
+  function setWelcomeHtml(html) {
+    var msgEl = document.getElementById('chatWelcome');
+    if (!msgEl) return;
+    msgEl.innerHTML = html;
+    msgEl.style.display = '';
+  }
+
+  function showAuthMessage(html) {
+    setWelcomeHtml(html);
+  }
+
+  function handleAuthError(err) {
+    console.error('Auth error:', err && err.code, err && err.message);
+
+    if (!err) {
+      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Neznámá chyba přihlášení.</p>');
+      return;
+    }
+
+    if (err.code === 'auth/unauthorized-domain') {
+      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Doména není povolená ve Firebase Authentication. V konzoli Firebase přidejte doménu tohoto webu do Authorized domains.</p>');
+      return;
+    }
+
+    if (err.code === 'auth/operation-not-allowed') {
+      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Ve Firebase není povolené přihlášení přes Google provider.</p>');
+      return;
+    }
+
+    showAuthMessage('<div style="color:#dc2626;font-weight:600;">Chyba přihlášení: ' + escapeHtml(err.code) + '<br><small>' + escapeHtml(err.message) + '</small></div>');
+  }
+
+  function doLogin(evt) {
+    if (authInProgress) {
+      var waitEl = document.getElementById('chatWelcome');
+      if (waitEl) {
+        waitEl.innerHTML = '<p style="color:#b45309;font-weight:600;">Probíhá přihlášení… dokončete otevřené přihlašovací okno.</p>';
+        waitEl.style.display = '';
+      }
+      return;
+    }
+
+    authInProgress = true;
+    var clickedBtn = evt && evt.currentTarget ? evt.currentTarget : document.getElementById('chatLogin');
+    setLoginBusyState(true, clickedBtn);
+
+    setWelcomeHtml('<p style="color:#b45309;font-weight:600;">Přesměrovávám na Google přihlášení…</p>');
+
+    auth.signInWithRedirect(provider).catch(function(err) {
+      handleAuthError(err);
+    }).finally(function() {
+      authInProgress = false;
+      setLoginBusyState(false, clickedBtn);
     });
   }
 
   /* ── Auth ── */
+  auth.getRedirectResult().then(function(result) {
+    if (result && result.user) {
+      authInProgress = false;
+      setLoginBusyState(false);
+      return;
+    }
+  }).catch(function(err) {
+    handleAuthError(err);
+  });
+
   loginBtn.addEventListener('click', doLogin);
 
   auth.onAuthStateChanged(function(user) {
     currentUser = user;
     if (user) {
+      authInProgress = false;
       welcomeEl.style.display = 'none';
       inputArea.style.display = 'flex';
       userEl.innerHTML =
@@ -116,10 +184,12 @@ layout: layouts/base.njk
       welcomeEl.style.display = '';
       inputArea.style.display = 'none';
       userEl.innerHTML =
-        '<button id="chatLogin" class="chat-google-btn">' +
+        '<button id="chatLogin" class="chat-google-btn" type="button">' +
         '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="18" height="18">' +
         ' Přihlásit se</button>';
-      document.getElementById('chatLogin').addEventListener('click', doLogin);
+      var newLoginBtn = document.getElementById('chatLogin');
+      setLoginBusyState(false, newLoginBtn);
+      newLoginBtn.addEventListener('click', doLogin);
     }
   });
 

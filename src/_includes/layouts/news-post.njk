@@ -39,9 +39,9 @@ layout: layouts/base.njk
 </section>
 
 {# ── Firebase SDK ── #}
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
 (function() {
@@ -67,12 +67,65 @@ layout: layouts/base.njk
   var loginBtn  = document.getElementById('commentLogin');
 
   var provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  var authInProgress = false;
+
+  function setLoginBusyState(busy) {
+    var btn = document.getElementById('commentLogin');
+    if (!btn) return;
+    btn.disabled = !!busy;
+    btn.style.opacity = busy ? '0.7' : '';
+    btn.style.cursor = busy ? 'wait' : '';
+  }
+
+  function showAuthMessage(html) {
+    var msgEl = document.getElementById('commentAuth');
+    if (!msgEl) return;
+    msgEl.innerHTML = html;
+    msgEl.style.display = '';
+  }
+
+  function handleAuthError(err) {
+    console.error('Auth error:', err && err.code, err && err.message);
+    if (!err) {
+      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Neznámá chyba přihlášení.</p>');
+      return;
+    }
+
+    if (err.code === 'auth/unauthorized-domain') {
+      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Doména není povolená ve Firebase Authentication. V konzoli Firebase přidejte doménu tohoto webu do Authorized domains.</p>');
+      return;
+    }
+
+    if (err.code === 'auth/operation-not-allowed') {
+      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Ve Firebase není povolené přihlášení přes Google provider.</p>');
+      return;
+    }
+
+    showAuthMessage('<div style="color:#dc2626;font-weight:600;">Chyba přihlášení: ' + escapeHtml(err.code) + '<br><small>' + escapeHtml(err.message) + '</small></div>');
+  }
 
   /* ── Auth ── */
+  auth.getRedirectResult().then(function(result) {
+    if (result && result.user) {
+      authInProgress = false;
+      setLoginBusyState(false);
+    }
+  }).catch(function(err) {
+    handleAuthError(err);
+  });
+
   loginBtn.addEventListener('click', function() {
-    auth.signInWithPopup(provider).catch(function(err) {
-      console.error('Auth error:', err.code, err.message);
-      authEl.innerHTML = '<div style="color:#dc2626;font-weight:600;">Chyba: ' + err.code + '<br><small>' + err.message + '</small></div>';
+    if (authInProgress) return;
+    authInProgress = true;
+    setLoginBusyState(true);
+    showAuthMessage('<p style="color:#b45309;font-weight:600;">Přesměrovávám na Google přihlášení…</p>');
+
+    auth.signInWithRedirect(provider).catch(function(err) {
+      handleAuthError(err);
+    }).finally(function() {
+      authInProgress = false;
+      setLoginBusyState(false);
     });
   });
 

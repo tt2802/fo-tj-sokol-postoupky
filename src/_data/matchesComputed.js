@@ -3,13 +3,7 @@ const { DateTime } = require("luxon");
 
 module.exports = function () {
   const items = require("./matchesArray.js");
-  const playedMatches = require("./played_matches.json");
   const zone = "Europe/Prague";
-
-  // Slugs of already played matches
-  const playedSlugs = new Set(
-    (playedMatches.items || []).map((m) => m.slug).filter(Boolean)
-  );
 
   const normalized = items
     .map((m) => {
@@ -32,7 +26,7 @@ module.exports = function () {
   const now = DateTime.now().setZone(zone);
 
   const upcoming = normalized.filter(
-    (m) => m._dt >= now.startOf("day") && !playedSlugs.has(m.slug)
+    (m) => m._dt >= now.startOf("day") && m.matchType === "upcoming"
   );
 
   const played = normalized

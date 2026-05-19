@@ -7,6 +7,7 @@
     "build": "npx @11ty/eleventy --config=.eleventy.cjs",
     "cms": "npx netlify-cms-proxy-server --port 8081",
     "convert-match": "node src/scripts/convert-match.js",
+    "check:data-sync": "node src/scripts/check-data-sync.js",
     "lint": "eslint \"src/assets/js/**/*.js\""
   },
   "dependencies": {

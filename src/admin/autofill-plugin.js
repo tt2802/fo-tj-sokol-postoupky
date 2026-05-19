@@ -8,6 +8,10 @@
  */
 (function () {
   var LOG = "[CMS AutoFill]";
+  var VERSION_KEY = "cmsDataVersion";
+  var VERSION_EVENT = "cms-data-version-updated";
+  var BROADCAST_NAME = "cms-data-sync";
+  var bc = null;
   var upcomingMatches = [];
   var playersData = null; // { men: [...], youth: { dorostenci: [...], ... } }
 
@@ -35,6 +39,42 @@
     return i < 0 ? "" : p.slice(0, i);
   }
 
+  function getDataVersion() {
+    try {
+      return String(localStorage.getItem(VERSION_KEY) || "0");
+    } catch (_) {
+      return "0";
+    }
+  }
+
+  function withVersion(url) {
+    var sep = String(url).indexOf("?") > -1 ? "&" : "?";
+    return url + sep + "v=" + encodeURIComponent(getDataVersion());
+  }
+
+  function bumpDataVersion(reason) {
+    var next = String(Date.now());
+    try {
+      localStorage.setItem(VERSION_KEY, next);
+    } catch (_) {}
+
+    try {
+      if (!bc && typeof BroadcastChannel !== "undefined") {
+        bc = new BroadcastChannel(BROADCAST_NAME);
+      }
+      if (bc) {
+        bc.postMessage({ type: VERSION_EVENT, version: next, reason: reason || "unknown" });
+      }
+    } catch (_) {}
+
+    try {
+      window.dispatchEvent(new CustomEvent(VERSION_EVENT, { detail: { version: next, reason: reason || "unknown" } }));
+    } catch (_) {}
+
+    log("Data version bumped:", next, "reason:", reason || "unknown");
+    return next;
+  }
+
   /* ───────────── data fetch ───────────── */
 
   function fetchMatches() {
@@ -50,11 +90,12 @@
 
   function chainFetch(urls) {
     if (!urls.length) return Promise.resolve([]);
-    return fetch(urls[0], { cache: "no-store" })
+    var currentUrl = withVersion(urls[0]);
+    return fetch(currentUrl, { cache: "no-store" })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (d) {
         var items = Array.isArray(d && d.items) ? d.items : [];
-        log("Loaded", items.length, "upcoming matches from", urls[0]);
+        log("Loaded", items.length, "upcoming matches from", currentUrl);
         return items;
       })
       .catch(function () { return chainFetch(urls.slice(1)); });
@@ -63,6 +104,7 @@
   function fetchPlayers() {
     var prefix = getPathPrefix();
     var urls = [
+      "https://raw.githubusercontent.com/tt2802/fo-tj-sokol-postoupky/main/src/_data/players.json",
       prefix ? prefix + "/_data/players.json" : null,
       "../_data/players.json",
       "/_data/players.json"
@@ -70,15 +112,68 @@
     return chainFetchRaw(urls);
   }
 
+  function refreshCaches() {
+    return Promise.all([
+      fetchMatches().then(function (items) {
+        upcomingMatches = items || [];
+      }).catch(function () {}),
+      fetchPlayers().then(function (d) {
+        playersData = d || playersData;
+      }).catch(function () {})
+    ]);
+  }
+
   function chainFetchRaw(urls) {
     if (!urls.length) return Promise.resolve(null);
-    return fetch(urls[0], { cache: "no-store" })
+    var currentUrl = withVersion(urls[0]);
+    return fetch(currentUrl, { cache: "no-store" })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (d) {
-        log("Loaded players from", urls[0]);
+        log("Loaded players from", currentUrl);
         return d;
       })
       .catch(function () { return chainFetchRaw(urls.slice(1)); });
+  }
+
+  function registerVersionSync(onRefresh) {
+    function handleVersionUpdate() {
+      if (typeof onRefresh === "function") onRefresh();
+    }
+
+    function onStorage(e) {
+      if (e && e.key === VERSION_KEY) handleVersionUpdate();
+    }
+
+    function onBroadcast(e) {
+      var data = e && e.data;
+      if (data && data.type === VERSION_EVENT) handleVersionUpdate();
+    }
+
+    function onCustomEvent() {
+      handleVersionUpdate();
+    }
+
+    window.addEventListener("storage", onStorage);
+    window.addEventListener(VERSION_EVENT, onCustomEvent);
+
+    try {
+      if (!bc && typeof BroadcastChannel !== "undefined") {
+        bc = new BroadcastChannel(BROADCAST_NAME);
+      }
+      if (bc) {
+        bc.addEventListener("message", onBroadcast);
+      }
+    } catch (_) {}
+
+    return function cleanup() {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener(VERSION_EVENT, onCustomEvent);
+      try {
+        if (bc) {
+          bc.removeEventListener("message", onBroadcast);
+        }
+      } catch (_) {}
+    };
   }
 
   /**
@@ -261,6 +356,28 @@
           selected: self._find(self.props.value)
         });
       });
+
+      window.addEventListener("focus", self._onWindowFocus);
+      self._cleanupVersionSync = registerVersionSync(function () {
+        self._onWindowFocus();
+      });
+    },
+
+    componentWillUnmount: function () {
+      window.removeEventListener("focus", this._onWindowFocus);
+      if (this._cleanupVersionSync) this._cleanupVersionSync();
+    },
+
+    _onWindowFocus: function () {
+      var self = this;
+      fetchMatches().then(function (items) {
+        upcomingMatches = items;
+        self.setState({
+          matches: items,
+          loaded: true,
+          selected: self._find(self.props.value)
+        });
+      });
     },
 
     _find: function (slug) {
@@ -419,10 +536,22 @@
 
     componentDidMount: function () {
       var self = this;
-      var loadPlayers = playersData
-        ? Promise.resolve(playersData)
-        : fetchPlayers().then(function (d) { playersData = d; return d; });
-      loadPlayers.then(function () { self._refresh(); });
+      refreshCaches().then(function () { self._refresh(); });
+
+      window.addEventListener("focus", self._onWindowFocus);
+      self._cleanupVersionSync = registerVersionSync(function () {
+        self._onWindowFocus();
+      });
+    },
+
+    componentWillUnmount: function () {
+      window.removeEventListener("focus", this._onWindowFocus);
+      if (this._cleanupVersionSync) this._cleanupVersionSync();
+    },
+
+    _onWindowFocus: function () {
+      var self = this;
+      refreshCaches().then(function () { self._refresh(); });
     },
 
     _refresh: function () {
@@ -638,11 +767,24 @@
 
     componentDidMount: function () {
       var self = this;
-      var loadPlayers = playersData
-        ? Promise.resolve(playersData)
-        : fetchPlayers().then(function (d) { playersData = d; return d; });
+      refreshCaches().then(function () {
+        self._refreshPlayers();
+      });
 
-      loadPlayers.then(function () {
+      window.addEventListener("focus", self._onWindowFocus);
+      self._cleanupVersionSync = registerVersionSync(function () {
+        self._onWindowFocus();
+      });
+    },
+
+    componentWillUnmount: function () {
+      window.removeEventListener("focus", this._onWindowFocus);
+      if (this._cleanupVersionSync) this._cleanupVersionSync();
+    },
+
+    _onWindowFocus: function () {
+      var self = this;
+      refreshCaches().then(function () {
         self._refreshPlayers();
       });
     },
@@ -782,6 +924,7 @@
       name: "preSave",
       handler: function (arg) {
         try {
+          bumpDataVersion("preSave");
           var entry = arg.entry;
           if (!entry || !entry.get) return entry;
           var p = String(entry.get("path") || "");
@@ -879,12 +1022,29 @@
     return true;
   }
 
+  function registerPostSave() {
+    if (!window.CMS || !window.CMS.registerEventListener) return false;
+    try {
+      window.CMS.registerEventListener({
+        name: "postSave",
+        handler: function () {
+          bumpDataVersion("postSave");
+          return Promise.resolve();
+        }
+      });
+      log("postSave hook registered");
+      return true;
+    } catch (e) {
+      warn("postSave hook registration failed:", e);
+      return false;
+    }
+  }
+
   /* ───────────── bootstrap ───────────── */
 
   function boot() {
     // Start fetching data immediately
-    fetchMatches().then(function (items) { upcomingMatches = items; });
-    fetchPlayers().then(function (d) { playersData = d; });
+    refreshCaches();
 
     // Register custom widgets BEFORE CMS.init()
     window.CMS.registerWidget("match-selector", MatchSelectorControl);
@@ -903,6 +1063,9 @@
         if (registerPreSave() || ++n > 40) clearInterval(t);
       }, 300);
     }
+
+    // Optional hook; preSave already bumps version as fallback.
+    registerPostSave();
   }
 
   if (document.readyState === "loading") {

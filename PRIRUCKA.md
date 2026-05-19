@@ -22,10 +22,12 @@ Po kliknutí na **Uložit** v adminu se stane toto:
 
 Obvykle to trvá **1–3 minuty** (někdy déle podle fronty GitHubu).
 
+> Admin nyní automaticky obnovuje data mezi záložkami (hráči/zápasy) po uložení. Pokud máš otevřených více oken adminu, synchronizují se průběžně.
+
 Pokud změna není vidět:
 
 - zkontroluj záložku **Actions** na GitHubu (zda deploy doběhl úspěšně),
-- obnov stránku na webu přes `Ctrl + F5`,
+- obnov stránku na webu přes `Ctrl + F5` (tvrdý refresh),
 - ověř, že byl obsah opravdu uložený (v adminu i na GitHubu v historii commitů).
 
 ---

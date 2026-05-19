@@ -2,6 +2,8 @@
 
 Toto je detailní návod jak je web strukturován a jak v něm editovat. 
 
+> **Důležité:** Jako zdroj pravdy pro editovatelná data vždy berte `src/admin/config.yml` + soubory v `src/_data/`. Pokud se některá část tohoto dokumentu liší, platí konfigurace v adminu.
+
 ## 📋 Přehled struktury
 
 Web má tyto hlavní sekce:

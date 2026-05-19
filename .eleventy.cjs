@@ -71,7 +71,18 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/_data/upcoming_matches.json": "_data/upcoming_matches.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/played_matches.json": "_data/played_matches.json" });
   eleventyConfig.addPassthroughCopy({ "src/_data/players.json": "_data/players.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/league_table.json": "_data/league_table.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/staff.json": "_data/staff.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/formation.json": "_data/formation.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/calendar_events.json": "_data/calendar_events.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/nabor_content.json": "_data/nabor_content.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/sponsors.json": "_data/sponsors.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/site.json": "_data/site.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/categories.json": "_data/categories.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/contacts.yml": "_data/contacts.yml" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/gallery.yml": "_data/gallery.yml" });
 
   eleventyConfig.addFilter("striptags", stripTags);
   eleventyConfig.addFilter("truncate", truncateText);
