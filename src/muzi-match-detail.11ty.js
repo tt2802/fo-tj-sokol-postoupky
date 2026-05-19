@@ -91,9 +91,9 @@ module.exports = class {
   <div id="motmResults" class="motm-results"></div>
 </section>
 
-<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
 (function() {
   var cfg = ${JSON.stringify(fb)};
