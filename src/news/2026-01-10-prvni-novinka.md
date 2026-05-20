@@ -18,7 +18,7 @@ excerpt: >+
 
   Tělocvičná jednota Sokol Postoupky (OFS Kroměříž)
 
-thumbnail: ""
+thumbnail: https://www.fotbal.cz/facr/komunike-ze-zasedani-vv-facr-ze-dne-4-listopadu-2025/a23229
 ---
 Výkonný výbor Fotbalové asociace České republiky přijal na řádném zasedání v Praze dne 4. listopadu 2025 následující závěry. 
 
