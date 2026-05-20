@@ -33,6 +33,11 @@
     {
       "name": "SABE ",
       "url": "https://www.sportovnipohary.cz/"
+    },
+    {
+      "url": "https://www.mesto-kromeriz.cz/",
+      "name": "Město Kroměříž",
+      "logo": "/assets/img/uploads/logo_km.png"
     }
   ]
 }
