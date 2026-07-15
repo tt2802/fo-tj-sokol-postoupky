@@ -73,6 +73,7 @@ layout: layouts/base.njk
   var db = firebase.firestore();
   var currentUser = null;
   var unsubscribeMessages = null;
+  var CHAT_COLLECTION = 'chatMessages';
 
   var messagesEl = document.getElementById('chatMessages');
   var welcomeEl  = document.getElementById('chatWelcome');
@@ -192,7 +193,7 @@ layout: layouts/base.njk
 
   function attachMessagesListener() {
     detachMessagesListener();
-    unsubscribeMessages = db.collection('chat_messages')
+    unsubscribeMessages = db.collection(CHAT_COLLECTION)
       .orderBy('createdAt', 'asc')
       .limitToLast(150)
       .onSnapshot(function(snap) {
@@ -254,7 +255,7 @@ layout: layouts/base.njk
     var text = inputEl.value.trim();
     if (!text || !currentUser) return;
     inputEl.value = '';
-    db.collection('chat_messages').add({
+    db.collection(CHAT_COLLECTION).add({
       text: text,
       userName: currentUser.displayName,
       userPhoto: currentUser.photoURL,
