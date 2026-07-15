@@ -75,6 +75,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/_data/players.json": "_data/players.json" });
   eleventyConfig.addPassthroughCopy({ "src/_data/league_table.json": "_data/league_table.json" });
   eleventyConfig.addPassthroughCopy({ "src/_data/staff.json": "_data/staff.json" });
+  eleventyConfig.addPassthroughCopy({ "src/_data/executive_board.json": "_data/executive_board.json" });
   eleventyConfig.addPassthroughCopy({ "src/_data/formation.json": "_data/formation.json" });
   eleventyConfig.addPassthroughCopy({ "src/_data/calendar_events.json": "_data/calendar_events.json" });
   eleventyConfig.addPassthroughCopy({ "src/_data/nabor_content.json": "_data/nabor_content.json" });

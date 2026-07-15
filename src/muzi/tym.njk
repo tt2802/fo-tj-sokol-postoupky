@@ -180,3 +180,40 @@ layout: layouts/page.njk
     {% endif %}
   </div>
 </section>
+
+<section class="section">
+  <div class="container">
+    <h2>Výkonný výbor</h2>
+
+    {% set boardList = executive_board.items | default([]) %}
+
+    {% if boardList | length == 0 %}
+      <p class="muted">Zatím zde není výkonný výbor. Doplníš ho v administraci v sekci „Tým → Výkonný výbor".</p>
+    {% else %}
+      <div class="grid staff" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+        {% for m in boardList %}
+          <article class="card">
+            <div class="card__body">
+              <h3 class="card__title">{{ m.name }}</h3>
+              <p class="muted"><strong>{{ m.role }}</strong></p>
+
+              {% if m.phone or m.email or m.contact %}
+                <div style="margin-top: 1rem; font-size: 0.9rem;">
+                  {% if m.contact %}
+                    <p>{{ m.contact }}</p>
+                  {% endif %}
+                  {% if m.phone %}
+                    <p><a href="tel:{{ m.phone }}">{{ m.phone }}</a></p>
+                  {% endif %}
+                  {% if m.email %}
+                    <p><a href="mailto:{{ m.email }}">{{ m.email }}</a></p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

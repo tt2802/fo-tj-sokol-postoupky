@@ -464,6 +464,23 @@ collections:
               - { label: "Email", name: "email", widget: "string", required: false }
               - { label: "Fotka", name: "photo", widget: "image", required: false }
 
+      - name: "executive_board"
+        label: "Výkonný výbor"
+        file: "src/_data/executive_board.json"
+        fields:
+          - label: "Členové"
+            name: "items"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.role}} · {{fields.name}}"
+            fields:
+              - { label: "Jméno", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string", hint: "Napr. Prezident klubu, Člen VV" }
+              - { label: "Kontakt", name: "contact", widget: "string", required: false }
+              - { label: "Telefon", name: "phone", widget: "string", required: false, hint: "Napr. +420 123 456 789" }
+              - { label: "Email", name: "email", widget: "string", required: false }
+              - { label: "Fotka", name: "photo", widget: "image", required: false }
+
       - name: "formation"
         label: "Sestava (formace)"
         file: "src/_data/formation.json"
