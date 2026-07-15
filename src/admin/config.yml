@@ -627,13 +627,31 @@ collections:
               - { label: "Popis alba", name: "description", widget: "text", required: false, hint: "Krátký popis toho, co je na fotkách" }
               - { label: "Slug", name: "slug", widget: "string", hint: "např. soustredeni-2026", required: true }
               - { label: "Úvodní fotka", name: "cover", widget: "image", required: false }
+              - label: "Rychlé přidání více fotek"
+                name: "bulkPhotos"
+                widget: "list"
+                required: false
+                collapsed: false
+                hint: "Tady můžeš nahrát více fotek najednou ze souborů. Po uložení se automaticky přidají do seznamu Fotky níže."
+                field:
+                  label: "Fotka"
+                  name: "photo"
+                  widget: "image"
+                  choose_url: false
+                  allow_multiple: true
+                  media_library:
+                    config:
+                      multiple: true
               - label: "Fotky"
                 name: "photos"
                 widget: "list"
                 collapsed: false
                 summary: "{{fields.caption}} {{fields.photo}}"
                 fields:
-                  - { label: "Fotka", name: "photo", widget: "image" }
+                  - label: "Fotka"
+                    name: "photo"
+                    widget: "image"
+                    choose_url: false
                   - { label: "Popisek", name: "caption", widget: "string", required: false, hint: "Volitelný popisek fotky" }
 
       - name: "sponsors"

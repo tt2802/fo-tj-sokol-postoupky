@@ -27,6 +27,27 @@
     return s.length >= 10 ? s.slice(0, 10) : s;
   }
 
+  function pushPhotoValue(target, rawValue) {
+    if (!rawValue) return;
+
+    if (Array.isArray(rawValue)) {
+      rawValue.forEach(function (nested) { pushPhotoValue(target, nested); });
+      return;
+    }
+
+    if (typeof rawValue === "string") {
+      var cleaned = rawValue.trim();
+      if (cleaned) target.push(cleaned);
+      return;
+    }
+
+    if (typeof rawValue === "object") {
+      if (rawValue.photo !== undefined) {
+        pushPhotoValue(target, rawValue.photo);
+      }
+    }
+  }
+
   function toSlug(str) {
     var map = {'á':'a','č':'c','ď':'d','é':'e','ě':'e','í':'i','ň':'n','ó':'o',
                'ř':'r','š':'s','ť':'t','ú':'u','ů':'u','ý':'y','ž':'z'};
@@ -1144,7 +1165,30 @@
                   })
                 : [];
 
+              var bulkRaw = Array.isArray(albumObj.bulkPhotos) ? albumObj.bulkPhotos : [];
+              var bulkPaths = [];
+
+              bulkRaw.forEach(function (item) {
+                pushPhotoValue(bulkPaths, item);
+              });
+
+              var existingPaths = {};
+              normalizedPhotos.forEach(function (photoItem) {
+                var key = String((photoItem && photoItem.photo) || "").trim();
+                if (key) existingPaths[key] = true;
+              });
+
+              bulkPaths.forEach(function (path) {
+                var key = String(path || "").trim();
+                if (!key || existingPaths[key]) return;
+                existingPaths[key] = true;
+                normalizedPhotos.push({ photo: key });
+              });
+
               var nextAlbum = Object.assign({}, albumObj, { photos: normalizedPhotos });
+              if (Object.prototype.hasOwnProperty.call(nextAlbum, "bulkPhotos")) {
+                delete nextAlbum.bulkPhotos;
+              }
 
               if (IGallery && IGallery.fromJS) return IGallery.fromJS(nextAlbum);
               return albumItem;
