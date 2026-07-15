@@ -38,7 +38,8 @@ layout: layouts/page.njk
                 <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px;">
                   {% for photo in album.photos | slice(0, 4) %}
                     <div class="card__media" style="--media-aspect: 1 / 1; --media-radius: 8px; --media-fit: cover;">
-                      {% image photo.photo, album.title ~ ' – fotka ' ~ loop.index, "(max-width: 400px) 25vw, 70px", "gallery-thumb" %}
+                      {% set photoSrc = photo.photo if photo.photo else photo %}
+                      {% image photoSrc, album.title ~ ' – fotka ' ~ loop.index, "(max-width: 400px) 25vw, 70px", "gallery-thumb" %}
                     </div>
                   {% endfor %}
                 </div>
