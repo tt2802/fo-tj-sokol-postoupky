@@ -86,12 +86,10 @@ layout: layouts/base.njk
   var provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
 
-  // Ensure auth session survives redirect/navigation and browser quirks.
-  var persistenceReady = auth
-    .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-    .catch(function(err) {
-      console.warn('Auth persistence setup failed:', err && err.code, err && err.message);
-    });
+  // Ensure auth session survives navigation where possible.
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(err) {
+    console.warn('Auth persistence setup failed:', err && err.code, err && err.message);
+  });
 
   function escapeHtml(str) {
     var d = document.createElement('div');
@@ -162,11 +160,34 @@ layout: layouts/base.njk
     setWelcomeHtml('<p style="color:#b45309;font-weight:600;">Přesměrovávám na Google přihlášení…</p>');
     var btn = document.getElementById('chatLogin');
     if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
-    persistenceReady
-      .then(function() {
-        return auth.signInWithRedirect(provider);
+    auth.signInWithPopup(provider)
+      .then(function(result) {
+        if (result && result.user) {
+          renderSignedIn(result.user);
+        }
       })
-      .catch(handleAuthError);
+      .catch(function(err) {
+        var code = err && err.code;
+        var b = document.getElementById('chatLogin');
+
+        if (code === 'auth/popup-closed-by-user') {
+          setWelcomeHtml('<p style="color:#b45309;font-weight:600;">Přihlášení bylo zrušeno (okno zavřeno). Klikněte prosím znovu.</p>');
+          if (b) { b.disabled = false; b.style.opacity = ''; }
+          return;
+        }
+
+        if (
+          code === 'auth/popup-blocked' ||
+          code === 'auth/cancelled-popup-request' ||
+          code === 'auth/operation-not-supported-in-this-environment'
+        ) {
+          setWelcomeHtml('<p style="color:#b45309;font-weight:600;">Popup je blokovaný, pokračuji přihlášením přes přesměrování…</p>');
+          auth.signInWithRedirect(provider).catch(handleAuthError);
+          return;
+        }
+
+        handleAuthError(err);
+      });
   }
 
   /* ── Auth state ── */
