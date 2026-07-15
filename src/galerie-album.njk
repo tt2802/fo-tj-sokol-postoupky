@@ -5,7 +5,13 @@ pagination:
   size: 1
   alias: album
 permalink: "/galerie/{{ album.slug }}/index.html"
+eleventyComputed:
+  title: "{{ album.title }}"
+  description: "{{ album.title }} · Fotogalerie TJ Sokol Postoupky"
+  ogTitle: "{{ album.title }}"
 ---
+
+{% set albumPhotos = album.photos | default([]) %}
 
 <section class="section">
   <div class="container">
@@ -27,25 +33,71 @@ permalink: "/galerie/{{ album.slug }}/index.html"
       </div>
 
       <div class="card__body">
-        {% if album.photos and album.photos | length > 0 %}
-          <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;">
-            {% for photo in album.photos %}
-              <figure style="margin:0;">
+        {% if albumPhotos and albumPhotos | length > 0 %}
+          <div class="gallery-viewer" data-gallery-viewer>
+            <div class="gallery-viewer__main-row">
+              <button type="button" class="gallery-viewer__nav gallery-viewer__nav--prev" data-gallery-nav="prev" aria-label="Předchozí fotka">‹</button>
+
+              <figure class="gallery-viewer__stage">
+                {% set firstPhoto = albumPhotos[0] %}
+                {% if firstPhoto.photo %}
+                  {% set firstSrc = firstPhoto.photo %}
+                  {% set firstAlt = firstPhoto.caption if firstPhoto.caption else album.title ~ ' – fotka 1' %}
+                  {% set firstCaption = firstPhoto.caption if firstPhoto.caption else '' %}
+                {% else %}
+                  {% set firstSrc = firstPhoto %}
+                  {% set firstAlt = album.title ~ ' – fotka 1' %}
+                  {% set firstCaption = '' %}
+                {% endif %}
+
+                <img
+                  class="gallery-viewer__image"
+                  data-gallery-main
+                  src="{{ firstSrc | url }}"
+                  alt="{{ firstAlt }}"
+                  loading="eager"
+                  decoding="async"
+                >
+
+                <figcaption class="gallery-viewer__caption">
+                  <strong>{{ album.title }}</strong>
+                  <span data-gallery-caption>{{ firstCaption if firstCaption else firstAlt }}</span>
+                  <span class="gallery-viewer__counter" data-gallery-counter>1 / {{ albumPhotos | length }}</span>
+                </figcaption>
+              </figure>
+
+              <button type="button" class="gallery-viewer__nav gallery-viewer__nav--next" data-gallery-nav="next" aria-label="Další fotka">›</button>
+            </div>
+
+            <div class="gallery-viewer__thumbs" role="list" aria-label="Náhledy fotek">
+              {% for photo in albumPhotos %}
                 {% if photo.photo %}
                   {% set photoSrc = photo.photo %}
                   {% set photoAlt = photo.caption if photo.caption else album.title ~ ' – fotka ' ~ loop.index %}
+                  {% set photoCaption = photo.caption if photo.caption else '' %}
                 {% else %}
                   {% set photoSrc = photo %}
                   {% set photoAlt = album.title ~ ' – fotka ' ~ loop.index %}
+                  {% set photoCaption = '' %}
                 {% endif %}
-                <div class="card__media" style="--media-aspect: 1 / 1; --media-radius: 12px; --media-fit: cover;">
-                  {% image photoSrc, photoAlt, "(max-width: 600px) 50vw, 320px", "gallery-photo" %}
-                </div>
-                {% if photo.caption %}
-                  <figcaption class="muted" style="margin-top:0.5rem;">{{ photo.caption }}</figcaption>
-                {% endif %}
-              </figure>
-            {% endfor %}
+
+                <button
+                  type="button"
+                  class="gallery-viewer__thumb{% if loop.first %} is-active{% endif %}"
+                  data-gallery-thumb
+                  data-index="{{ loop.index0 }}"
+                  data-src="{{ photoSrc | url }}"
+                  data-alt="{{ photoAlt }}"
+                  data-caption="{{ photoCaption }}"
+                  aria-label="{{ photoAlt }}"
+                >
+                  <span class="sr-only">{{ photoAlt }}</span>
+                  <span class="gallery-viewer__thumb-media">
+                    {% image photoSrc, photoAlt, "(max-width: 480px) 25vw, 120px", "gallery-viewer__thumb-img" %}
+                  </span>
+                </button>
+              {% endfor %}
+            </div>
           </div>
         {% else %}
           <p class="muted">V tomto albu zatím nejsou žádné fotky.</p>
@@ -54,3 +106,73 @@ permalink: "/galerie/{{ album.slug }}/index.html"
     </div>
   </div>
 </section>
+
+{% if albumPhotos and albumPhotos | length > 0 %}
+<script>
+(function() {
+  var viewer = document.querySelector('[data-gallery-viewer]');
+  if (!viewer) return;
+
+  var mainImage = viewer.querySelector('[data-gallery-main]');
+  var captionEl = viewer.querySelector('[data-gallery-caption]');
+  var counterEl = viewer.querySelector('[data-gallery-counter]');
+  var thumbButtons = Array.prototype.slice.call(viewer.querySelectorAll('[data-gallery-thumb]'));
+  var prevBtn = viewer.querySelector('[data-gallery-nav="prev"]');
+  var nextBtn = viewer.querySelector('[data-gallery-nav="next"]');
+  var items = thumbButtons.map(function(btn) {
+    return {
+      src: btn.getAttribute('data-src') || '',
+      alt: btn.getAttribute('data-alt') || '',
+      caption: btn.getAttribute('data-caption') || ''
+    };
+  });
+  var index = 0;
+
+  function setActive(nextIndex, focusThumb) {
+    if (!items.length) return;
+    index = (nextIndex + items.length) % items.length;
+    var item = items[index];
+
+    mainImage.src = item.src;
+    mainImage.alt = item.alt;
+    captionEl.textContent = item.caption || item.alt;
+    counterEl.textContent = (index + 1) + ' / ' + items.length;
+
+    thumbButtons.forEach(function(btn, i) {
+      btn.classList.toggle('is-active', i === index);
+      btn.setAttribute('aria-current', i === index ? 'true' : 'false');
+    });
+
+    var activeThumb = thumbButtons[index];
+    if (activeThumb) {
+      activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      if (focusThumb) activeThumb.focus({ preventScroll: true });
+    }
+  }
+
+  thumbButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setActive(parseInt(btn.getAttribute('data-index'), 10) || 0, false);
+    });
+  });
+
+  if (prevBtn) prevBtn.addEventListener('click', function() { setActive(index - 1, false); });
+  if (nextBtn) nextBtn.addEventListener('click', function() { setActive(index + 1, false); });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.defaultPrevented) return;
+    var tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setActive(index - 1, false);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setActive(index + 1, false);
+    }
+  });
+
+  setActive(0, false);
+})();
+</script>
+{% endif %}
