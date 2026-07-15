@@ -50,14 +50,17 @@ eleventyComputed:
                   {% set firstCaption = '' %}
                 {% endif %}
 
-                <img
-                  class="gallery-viewer__image"
-                  data-gallery-main
-                  src="{{ firstSrc | url }}"
-                  alt="{{ firstAlt }}"
-                  loading="eager"
-                  decoding="async"
-                >
+                <button type="button" class="gallery-viewer__expand" data-gallery-open aria-label="Zvětšit fotku">
+                  <img
+                    class="gallery-viewer__image"
+                    data-gallery-main
+                    src="{{ firstSrc | url }}"
+                    alt="{{ firstAlt }}"
+                    loading="eager"
+                    decoding="async"
+                  >
+                  <span class="gallery-viewer__expand-badge">Zvětšit</span>
+                </button>
 
                 <figcaption class="gallery-viewer__caption">
                   <strong>{{ album.title }}</strong>
@@ -108,17 +111,44 @@ eleventyComputed:
 </section>
 
 {% if albumPhotos and albumPhotos | length > 0 %}
+<div class="gallery-lightbox" data-gallery-lightbox aria-hidden="true">
+  <div class="gallery-lightbox__backdrop" data-gallery-close></div>
+  <div class="gallery-lightbox__panel" role="dialog" aria-modal="true" aria-label="Zvětšená fotka">
+    <button type="button" class="gallery-lightbox__close" data-gallery-close aria-label="Zavřít">×</button>
+    <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--prev" data-gallery-lightbox-nav="prev" aria-label="Předchozí fotka">‹</button>
+    <figure class="gallery-lightbox__figure">
+      <img class="gallery-lightbox__image" data-gallery-lightbox-image src="" alt="">
+      <figcaption class="gallery-lightbox__caption">
+        <strong>{{ album.title }}</strong>
+        <span data-gallery-lightbox-caption></span>
+        <span class="gallery-lightbox__counter" data-gallery-lightbox-counter></span>
+      </figcaption>
+    </figure>
+    <button type="button" class="gallery-lightbox__nav gallery-lightbox__nav--next" data-gallery-lightbox-nav="next" aria-label="Další fotka">›</button>
+  </div>
+</div>
+{% endif %}
+
+{% if albumPhotos and albumPhotos | length > 0 %}
 <script>
 (function() {
   var viewer = document.querySelector('[data-gallery-viewer]');
   if (!viewer) return;
 
   var mainImage = viewer.querySelector('[data-gallery-main]');
+  var openBtn = viewer.querySelector('[data-gallery-open]');
   var captionEl = viewer.querySelector('[data-gallery-caption]');
   var counterEl = viewer.querySelector('[data-gallery-counter]');
   var thumbButtons = Array.prototype.slice.call(viewer.querySelectorAll('[data-gallery-thumb]'));
   var prevBtn = viewer.querySelector('[data-gallery-nav="prev"]');
   var nextBtn = viewer.querySelector('[data-gallery-nav="next"]');
+  var lightbox = document.querySelector('[data-gallery-lightbox]');
+  var lightboxImage = lightbox ? lightbox.querySelector('[data-gallery-lightbox-image]') : null;
+  var lightboxCaption = lightbox ? lightbox.querySelector('[data-gallery-lightbox-caption]') : null;
+  var lightboxCounter = lightbox ? lightbox.querySelector('[data-gallery-lightbox-counter]') : null;
+  var lightboxPrev = lightbox ? lightbox.querySelector('[data-gallery-lightbox-nav="prev"]') : null;
+  var lightboxNext = lightbox ? lightbox.querySelector('[data-gallery-lightbox-nav="next"]') : null;
+  var closeBtns = lightbox ? Array.prototype.slice.call(lightbox.querySelectorAll('[data-gallery-close]')) : [];
   var items = thumbButtons.map(function(btn) {
     return {
       src: btn.getAttribute('data-src') || '',
@@ -127,6 +157,7 @@ eleventyComputed:
     };
   });
   var index = 0;
+  var lightboxOpen = false;
 
   function setActive(nextIndex, focusThumb) {
     if (!items.length) return;
@@ -137,6 +168,13 @@ eleventyComputed:
     mainImage.alt = item.alt;
     captionEl.textContent = item.caption || item.alt;
     counterEl.textContent = (index + 1) + ' / ' + items.length;
+
+    if (lightboxOpen && lightboxImage) {
+      lightboxImage.src = item.src;
+      lightboxImage.alt = item.alt;
+      if (lightboxCaption) lightboxCaption.textContent = item.caption || item.alt;
+      if (lightboxCounter) lightboxCounter.textContent = (index + 1) + ' / ' + items.length;
+    }
 
     thumbButtons.forEach(function(btn, i) {
       btn.classList.toggle('is-active', i === index);
@@ -150,11 +188,51 @@ eleventyComputed:
     }
   }
 
+  function openLightbox() {
+    if (!lightbox || !items.length) return;
+    var item = items[index];
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.add('is-lightbox-open');
+    document.body.classList.add('is-lightbox-open');
+    lightboxOpen = true;
+    if (lightboxImage) {
+      lightboxImage.src = item.src;
+      lightboxImage.alt = item.alt;
+    }
+    if (lightboxCaption) lightboxCaption.textContent = item.caption || item.alt;
+    if (lightboxCounter) lightboxCounter.textContent = (index + 1) + ' / ' + items.length;
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('is-lightbox-open');
+    document.body.classList.remove('is-lightbox-open');
+    lightboxOpen = false;
+  }
+
   thumbButtons.forEach(function(btn) {
     btn.addEventListener('click', function() {
       setActive(parseInt(btn.getAttribute('data-index'), 10) || 0, false);
     });
   });
+
+  if (openBtn) openBtn.addEventListener('click', openLightbox);
+  if (lightboxPrev) lightboxPrev.addEventListener('click', function() { setActive(index - 1, false); });
+  if (lightboxNext) lightboxNext.addEventListener('click', function() { setActive(index + 1, false); });
+  closeBtns.forEach(function(btn) {
+    btn.addEventListener('click', closeLightbox);
+  });
+
+  if (lightbox) {
+    lightbox.addEventListener('click', function(e) {
+      if (e.target && e.target.hasAttribute('data-gallery-close')) {
+        closeLightbox();
+      }
+    });
+  }
 
   if (prevBtn) prevBtn.addEventListener('click', function() { setActive(index - 1, false); });
   if (nextBtn) nextBtn.addEventListener('click', function() { setActive(index + 1, false); });
@@ -163,6 +241,13 @@ eleventyComputed:
     if (e.defaultPrevented) return;
     var tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+
+    if (e.key === 'Escape' && lightboxOpen) {
+      e.preventDefault();
+      closeLightbox();
+      return;
+    }
+
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
       setActive(index - 1, false);
