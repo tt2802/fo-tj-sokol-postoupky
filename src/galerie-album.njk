@@ -1,0 +1,56 @@
+---
+layout: layouts/page.njk
+pagination:
+  data: gallery.albums
+  size: 1
+  alias: album
+permalink: "/galerie/{{ album.slug }}/index.html"
+---
+
+<section class="section">
+  <div class="container">
+    <p class="muted"><a href="{{ '/galerie/' | url }}">← Zpět do galerie</a></p>
+    <h1>{{ album.title }}</h1>
+    <p class="muted">{{ album.date | czDate }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="content-card">
+      <div class="card__media" style="--media-aspect: 16 / 9; --media-radius: 0;">
+        {% if album.cover %}
+          {% image album.cover, album.title, "(max-width: 800px) 100vw, 800px", "gallery-cover" %}
+        {% else %}
+          <div class="media-frame__placeholder media-frame__placeholder--compact">Bez fotky</div>
+        {% endif %}
+      </div>
+
+      <div class="card__body">
+        {% if album.photos and album.photos | length > 0 %}
+          <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;">
+            {% for photo in album.photos %}
+              <figure style="margin:0;">
+                {% if photo.photo %}
+                  {% set photoSrc = photo.photo %}
+                  {% set photoAlt = photo.caption if photo.caption else album.title ~ ' – fotka ' ~ loop.index %}
+                {% else %}
+                  {% set photoSrc = photo %}
+                  {% set photoAlt = album.title ~ ' – fotka ' ~ loop.index %}
+                {% endif %}
+                <div class="card__media" style="--media-aspect: 1 / 1; --media-radius: 12px; --media-fit: cover;">
+                  {% image photoSrc, photoAlt, "(max-width: 600px) 50vw, 320px", "gallery-photo" %}
+                </div>
+                {% if photo.caption %}
+                  <figcaption class="muted" style="margin-top:0.5rem;">{{ photo.caption }}</figcaption>
+                {% endif %}
+              </figure>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="muted">V tomto albu zatím nejsou žádné fotky.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
