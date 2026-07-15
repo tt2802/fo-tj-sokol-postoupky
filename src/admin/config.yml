@@ -617,7 +617,7 @@ collections:
               - { label: "Název alba", name: "title", widget: "string" }
               - label: "Datum"
                 name: "date"
-                widget: "date"
+                widget: "datetime"
                 format: "YYYY-MM-DD"
                 date_format: "DD.MM.YYYY"
                 time_format: false
@@ -635,11 +635,6 @@ collections:
                 fields:
                   - { label: "Fotka", name: "photo", widget: "image" }
                   - { label: "Popisek", name: "caption", widget: "string", required: false, hint: "Volitelný popisek fotky" }
-              - label: "Hromadně přidat fotky"
-                name: "bulkPhotos"
-                widget: "text"
-                required: false
-                hint: "Vlož více cest/URL k fotkám najednou — každou na nový řádek. Při uložení se automaticky přidají do seznamu fotek."
 
       - name: "sponsors"
         label: "Partneři"

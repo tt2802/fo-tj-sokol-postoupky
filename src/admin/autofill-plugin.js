@@ -247,6 +247,72 @@
     };
   }
 
+  function normalizeAdminAssetPreviewUrl(url) {
+    var raw = String(url || "").trim();
+    if (!raw) return raw;
+    if (/^data:/i.test(raw)) return raw;
+
+    var origin = window.location.origin || "";
+    var prefix = getPathPrefix();
+
+    if (raw.indexOf(origin + "/assets/") === 0 && prefix) {
+      return origin + prefix + raw.slice(origin.length);
+    }
+
+    if (raw.indexOf("/assets/") === 0 && prefix) {
+      return prefix + raw;
+    }
+
+    return raw;
+  }
+
+  function refreshAdminImagePreviews(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    var imgs = scope.querySelectorAll ? scope.querySelectorAll('img') : [];
+
+    Array.prototype.forEach.call(imgs, function (img) {
+      try {
+        var currentSrcAttr = img.getAttribute('src') || '';
+        var currentResolved = img.src || '';
+        var nextAttr = normalizeAdminAssetPreviewUrl(currentSrcAttr);
+        var nextResolved = normalizeAdminAssetPreviewUrl(currentResolved);
+        var next = nextAttr || nextResolved;
+
+        if (next && next !== currentSrcAttr && /\/assets\//.test(next)) {
+          img.setAttribute('src', next);
+        }
+      } catch (_) {}
+    });
+  }
+
+  function installAdminImagePreviewFix() {
+    refreshAdminImagePreviews(document);
+
+    if (typeof MutationObserver === 'undefined') return;
+
+    var observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        if (mutation.type === 'attributes' && mutation.target && mutation.target.tagName === 'IMG') {
+          refreshAdminImagePreviews(mutation.target.parentNode || document);
+          return;
+        }
+
+        Array.prototype.forEach.call(mutation.addedNodes || [], function (node) {
+          if (node && node.nodeType === 1) {
+            refreshAdminImagePreviews(node);
+          }
+        });
+      });
+    });
+
+    observer.observe(document.documentElement || document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['src']
+    });
+  }
+
   /**
    * Get roster for a given team + category.
    * team = "muzi" | "mladez"
@@ -1078,17 +1144,7 @@
                   })
                 : [];
 
-              var bulk = String(albumObj.bulkPhotos || "").trim();
-              if (bulk) {
-                bulk.split(/\r?\n/).map(function (line) {
-                  return String(line || "").trim();
-                }).filter(Boolean).forEach(function (line) {
-                  normalizedPhotos.push({ photo: line });
-                });
-              }
-
               var nextAlbum = Object.assign({}, albumObj, { photos: normalizedPhotos });
-              delete nextAlbum.bulkPhotos;
 
               if (IGallery && IGallery.fromJS) return IGallery.fromJS(nextAlbum);
               return albumItem;
@@ -1192,6 +1248,7 @@
   function boot() {
     // Start fetching data immediately
     refreshCaches();
+    installAdminImagePreviewFix();
 
     // Register custom widgets BEFORE CMS.init()
     window.CMS.registerWidget("match-selector", MatchSelectorControl);
