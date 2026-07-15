@@ -97,6 +97,23 @@ layout: layouts/base.njk
     return d.innerHTML;
   }
 
+  function initials(name) {
+    return String(name || '?')
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(function(part) { return part.charAt(0).toUpperCase(); })
+      .join('') || '?';
+  }
+
+  function avatarHtml(src, name, cls) {
+    var safeCls = cls || 'chat-avatar-sm';
+    if (src) {
+      return '<img src="' + escapeHtml(src) + '" alt="" class="' + safeCls + '" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
+    }
+    return '<div class="' + safeCls + ' chat-avatar-sm--fallback" aria-hidden="true">' + escapeHtml(initials(name)) + '</div>';
+  }
+
   function setWelcomeHtml(html) {
     var msgEl = document.getElementById('chatWelcome');
     if (!msgEl) return;
@@ -131,7 +148,7 @@ layout: layouts/base.njk
     if (ia) ia.style.display = 'flex';
     if (ue) {
       ue.innerHTML =
-        '<img src="' + escapeHtml((user && user.photoURL) || '') + '" alt="" class="chat-avatar-sm">' +
+        avatarHtml((user && user.photoURL) || '', (user && user.displayName) || 'Přihlášený uživatel', 'chat-avatar-sm') +
         '<span class="chat-username">' + escapeHtml((user && user.displayName) || 'Přihlášený uživatel') + '</span>' +
         '<button type="button" id="chatLogout" class="chat-logout-btn" title="Odhlásit">✕</button>';
       var logoutBtn = document.getElementById('chatLogout');
@@ -236,7 +253,7 @@ layout: layouts/base.njk
           var div = document.createElement('div');
           div.className = 'chat-msg' + (isOwn ? ' chat-msg--own' : '');
           div.innerHTML =
-            '<img src="' + escapeHtml(d.userPhoto || '') + '" alt="" class="chat-msg__avatar">' +
+            avatarHtml(d.userPhoto || '', d.userName || 'Uživatel', 'chat-msg__avatar') +
             '<div class="chat-msg__body">' +
               '<div class="chat-msg__meta">' +
                 '<strong>' + escapeHtml(d.userName) + '</strong>' +

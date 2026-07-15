@@ -244,20 +244,85 @@ module.exports = function (eleventyConfig) {
 
   // Image shortcode: responsive images using @11ty/eleventy-img when available
   (function () {
+    const fs = require("fs");
     const path = require("path");
+    const pathPrefix = (process.env.ELEVENTY_PATH_PREFIX || "/").replace(/\/?$/, "/");
+
+    function isRemoteOrDataUrl(value) {
+      return typeof value === "string" && (/^data:/i.test(value) || /^https?:\/\//i.test(value) || /^\/\//.test(value));
+    }
+
+    function isSvgLike(value) {
+      return typeof value === "string" && /\.svg(?:[?#].*)?$/i.test(value);
+    }
+
+    function isOptimizableRaster(value) {
+      return typeof value === "string" && /\.(png|jpe?g|webp|avif|gif)(?:[?#].*)?$/i.test(value);
+    }
+
+    function publicUrl(value) {
+      if (!value) return "";
+      if (isRemoteOrDataUrl(value)) return value;
+      if (value.startsWith("/")) return pathPrefix + value.replace(/^\//, "");
+      return pathPrefix + value;
+    }
+
+    function placeholderDataUrl(label, cls) {
+      const safeLabel = String(label || "Bez fotky").replace(/[<>&"]/g, "").slice(0, 28);
+      const short = safeLabel ? safeLabel.slice(0, 2).toUpperCase() : "?";
+      const fill = cls && /gallery/i.test(cls) ? "#f3f4f6" : "#e8f5ec";
+      const color = "#1f2937";
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="${safeLabel}">
+          <rect width="800" height="600" fill="${fill}"/>
+          <g fill="none" stroke="${color}" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" opacity="0.22">
+            <rect x="120" y="96" width="560" height="408" rx="32"/>
+            <path d="M210 394l95-95 77 77 63-63 145 145"/>
+            <circle cx="316" cy="244" r="42"/>
+          </g>
+          <text x="400" y="520" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" fill="${color}" opacity="0.65">${short}</text>
+        </svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg.trim())}`;
+    }
+
+    function resolveLocalCandidate(src) {
+      if (typeof src !== "string") return null;
+      const normalized = src.replace(/^\//, "");
+      const candidates = [];
+
+      if (normalized.startsWith("assets/uploads/")) {
+        candidates.push(path.join(__dirname, "src", normalized));
+        candidates.push(path.join(__dirname, "src", normalized.replace(/^assets\/uploads\//, "assets/img/uploads/")));
+      } else if (normalized.startsWith("assets/img/uploads/")) {
+        candidates.push(path.join(__dirname, "src", normalized));
+        candidates.push(path.join(__dirname, "src", normalized.replace(/^assets\/img\/uploads\//, "assets/uploads/")));
+      } else {
+        candidates.push(path.join(__dirname, "src", normalized));
+      }
+
+      const existing = candidates.find((candidate) => fs.existsSync(candidate));
+      return existing || candidates[0];
+    }
 
     async function imageShortcode(src, alt = "", sizes = "(max-width: 600px) 100vw, 600px", cls = "") {
-      if (!src) return "";
+      if (!src) {
+        return `<img src="${placeholderDataUrl(alt, cls)}" alt="${alt || "Bez fotky"}" class="${cls}" loading="lazy" decoding="async">`;
+      }
+
+      if (isRemoteOrDataUrl(src) || isSvgLike(src) || !isOptimizableRaster(src)) {
+        return `<img src="${src}" alt="${alt || ""}" class="${cls}" loading="lazy" decoding="async">`;
+      }
 
       // resolve local files that start with '/'
-      let input = src;
-      if (typeof input === "string" && input.startsWith("/")) {
-        input = path.join(__dirname, "src", input.replace(/^\//, ""));
+      const input = resolveLocalCandidate(src);
+
+      if (!input || !fs.existsSync(input)) {
+        return `<img src="${placeholderDataUrl(alt, cls)}" alt="${alt || "Bez fotky"}" class="${cls}" loading="lazy" decoding="async">`;
       }
 
       if (!Image) {
         // fallback: return simple img tag
-        return `<img src="${src}" alt="${alt || ""}" class="${cls}" loading="lazy" decoding="async">`;
+        return `<img src="${publicUrl(src)}" alt="${alt || ""}" class="${cls}" loading="lazy" decoding="async">`;
       }
 
       try {
@@ -265,7 +330,7 @@ module.exports = function (eleventyConfig) {
           widths: [300, 600, 1200],
           formats: ["webp", "jpeg"],
           outputDir: "_site/assets/img",
-          urlPath: "/assets/img/"
+          urlPath: `${pathPrefix}assets/img/`
         });
 
         const toSrcset = (arr) => arr.map((i) => `${i.url} ${i.width}w`).join(", ");
@@ -284,7 +349,7 @@ module.exports = function (eleventyConfig) {
         return `<picture>${picture.join("")}</picture>`;
       } catch (err) {
         console.error("Image generation failed for", src, err);
-        return `<img src="${src}" alt="${alt || ""}" class="${cls}" loading="lazy" decoding="async">`;
+        return `<img src="${publicUrl(src)}" alt="${alt || ""}" class="${cls}" loading="lazy" decoding="async">`;
       }
     }
 
@@ -292,6 +357,21 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addNunjucksAsyncShortcode("image", imageShortcode);
     eleventyConfig.addLiquidShortcode("image", imageShortcode);
     eleventyConfig.addShortcode("image", imageShortcode);
+  })();
+
+  // Ensure legacy root-relative asset URLs keep working on the GitHub Pages subpath.
+  (function () {
+    const pathPrefix = (process.env.ELEVENTY_PATH_PREFIX || "/").replace(/\/?$/, "/");
+
+    if (!pathPrefix || pathPrefix === "/") return;
+
+    eleventyConfig.addTransform("prefix-root-relative-assets", function (content, outputPath) {
+      if (!outputPath || !outputPath.endsWith(".html")) return content;
+
+      return content.replace(/\b(src|href|poster)=(['"])\/(assets\/[^'"]+)\2/g, function (_match, attr, quote, assetPath) {
+        return `${attr}=${quote}${pathPrefix}${assetPath}${quote}`;
+      });
+    });
   })();
 
   return {

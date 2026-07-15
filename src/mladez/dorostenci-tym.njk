@@ -24,13 +24,11 @@ layout: layouts/page.njk
       <div class="grid cards" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
         {% for p in dorostenciPlayers %}
           <article class="card">
-            <div class="card__media">
+            <div class="card__media" style="--media-aspect: 1 / 1; --media-radius: 4px 4px 0 0;">
               {% if p.photo %}
-                <img src="{{ p.photo }}" alt="Fotka hráče {{ p.name }}" loading="lazy" decoding="async" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px 4px 0 0;">
+                {% image p.photo, "Fotka hráče " ~ p.name, "(max-width: 280px) 100vw, 280px", "player-photo" %}
               {% else %}
-                <div style="width: 100%; aspect-ratio: 1; background: var(--bg-alt); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
-                  Bez fotky
-                </div>
+                <div class="media-frame__placeholder media-frame__placeholder--compact">Bez fotky</div>
               {% endif %}
             </div>
 

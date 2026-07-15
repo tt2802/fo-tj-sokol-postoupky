@@ -21,13 +21,11 @@ layout: layouts/page.njk
       <div class="grid albums" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
         {% for album in albumsList %}
           <article class="card" style="cursor: pointer;">
-            <div class="card__media">
+            <div class="card__media" style="--media-aspect: 16 / 9; --media-radius: 0;">
               {% if album.cover %}
-                <img src="{{ album.cover }}" alt="{{ album.title }}" loading="lazy" decoding="async" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px 4px 0 0;">
+                {% image album.cover, album.title, "(max-width: 600px) 100vw, 360px", "gallery-cover" %}
               {% else %}
-                <div style="width: 100%; aspect-ratio: 16/9; background: var(--bg-alt); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center;">
-                  <span style="color: var(--text-muted);">Bez fotky</span>
-                </div>
+                <div class="media-frame__placeholder media-frame__placeholder--compact">Bez fotky</div>
               {% endif %}
             </div>
 
@@ -35,6 +33,16 @@ layout: layouts/page.njk
               <h3 class="card__title">{{ album.title }}</h3>
               <p class="muted">{{ album.date | czDate }}</p>
               <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">{{ album.photos | length }} fotek</p>
+
+              {% if album.photos and album.photos | length > 0 %}
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px;">
+                  {% for photo in album.photos | slice(0, 4) %}
+                    <div class="card__media" style="--media-aspect: 1 / 1; --media-radius: 8px; --media-fit: cover;">
+                      {% image photo.photo, album.title ~ ' – fotka ' ~ loop.index, "(max-width: 400px) 25vw, 70px", "gallery-thumb" %}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
             </div>
           </article>
         {% endfor %}

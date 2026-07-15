@@ -74,14 +74,12 @@ layout: layouts/page.njk
       <div class="grid cards" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
         {% for p in menPlayers %}
           <article class="card">
-            <div class="card__media">
+            <div class="card__media" style="--media-aspect: 1 / 1; --media-radius: 4px 4px 0 0;">
               {% if p.photo %}
                 {% set __alt = "Fotka hráče " ~ p.name %}
-                <img src="{{ p.photo }}" alt="{{ __alt }}" loading="lazy" decoding="async" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px 4px 0 0;">
+                {% image p.photo, __alt, "(max-width: 280px) 100vw, 280px", "player-photo" %}
               {% else %}
-                <div style="width: 100%; aspect-ratio: 1; background: var(--bg-alt); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
-                  Bez fotky
-                </div>
+                <div class="media-frame__placeholder media-frame__placeholder--compact">Bez fotky</div>
               {% endif %}
             </div>
 
@@ -156,6 +154,13 @@ layout: layouts/page.njk
       <div class="grid staff" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
         {% for s in staffList %}
           <article class="card">
+            <div class="card__media" style="--media-aspect: 1 / 1; --media-radius: 4px 4px 0 0;">
+              {% if s.photo %}
+                {% image s.photo, "Fotka " ~ s.name, "(max-width: 280px) 100vw, 280px", "staff-photo" %}
+              {% else %}
+                <div class="media-frame__placeholder media-frame__placeholder--compact">Bez fotky</div>
+              {% endif %}
+            </div>
             <div class="card__body">
               <h3 class="card__title">{{ s.name }}</h3>
               <p class="muted"><strong>{{ s.role }}</strong></p>
@@ -193,6 +198,13 @@ layout: layouts/page.njk
       <div class="grid staff" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
         {% for m in boardList %}
           <article class="card">
+            <div class="card__media" style="--media-aspect: 1 / 1; --media-radius: 4px 4px 0 0;">
+              {% if m.photo %}
+                {% image m.photo, "Fotka " ~ m.name, "(max-width: 280px) 100vw, 280px", "board-photo" %}
+              {% else %}
+                <div class="media-frame__placeholder media-frame__placeholder--compact">Bez fotky</div>
+              {% endif %}
+            </div>
             <div class="card__body">
               <h3 class="card__title">{{ m.name }}</h3>
               <p class="muted"><strong>{{ m.role }}</strong></p>

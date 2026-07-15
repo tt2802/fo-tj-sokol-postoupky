@@ -135,7 +135,7 @@ layout: layouts/base.njk
       authEl.style.display = 'none';
       formEl.style.display = 'block';
       userEl.innerHTML =
-        '<img src="' + escapeHtml(user.photoURL || '') + '" alt="" class="chat-avatar-sm">' +
+        avatarHtml(user.photoURL || '', user.displayName || 'Uživatel', 'chat-avatar-sm') +
         '<span>' + escapeHtml(user.displayName) + '</span>' +
         '<button type="button" id="commentLogout" class="chat-logout-btn" title="Odhlásit">✕</button>';
       document.getElementById('commentLogout').addEventListener('click', function() {
@@ -184,7 +184,7 @@ layout: layouts/base.njk
         var div = document.createElement('div');
         div.className = 'comment';
         div.innerHTML =
-          '<img src="' + (d.userPhoto || '') + '" alt="" class="comment__avatar">' +
+          avatarHtml(d.userPhoto || '', d.userName || 'Uživatel', 'comment__avatar') +
           '<div class="comment__body">' +
             '<div class="comment__meta">' +
               '<strong>' + escapeHtml(d.userName) + '</strong>' +
@@ -222,7 +222,7 @@ layout: layouts/base.njk
               var div = document.createElement('div');
               div.className = 'comment';
               div.innerHTML =
-                '<img src="' + (d.userPhoto || '') + '" alt="" class="comment__avatar">' +
+                avatarHtml(d.userPhoto || '', d.userName || 'Uživatel', 'comment__avatar') +
                 '<div class="comment__body"><div class="comment__meta"><strong>' + escapeHtml(d.userName) + '</strong>' +
                 '<span class="comment__time">' + dd + '.' + mo + '.' + yyyy + ' ' + hh + ':' + mm + '</span></div>' +
                 '<div class="comment__text">' + escapeHtml(d.text) + '</div></div>';
@@ -237,6 +237,23 @@ layout: layouts/base.njk
     var d = document.createElement('div');
     d.textContent = str;
     return d.innerHTML;
+  }
+
+  function initials(name) {
+    return String(name || '?')
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(function(part) { return part.charAt(0).toUpperCase(); })
+      .join('') || '?';
+  }
+
+  function avatarHtml(src, name, cls) {
+    var safeCls = cls || 'comment__avatar';
+    if (src) {
+      return '<img src="' + escapeHtml(src) + '" alt="" class="' + safeCls + '" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
+    }
+    return '<div class="' + safeCls + ' comment__avatar--fallback" aria-hidden="true">' + escapeHtml(initials(name)) + '</div>';
   }
 })();
 </script>
