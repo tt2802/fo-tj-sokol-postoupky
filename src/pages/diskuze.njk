@@ -169,7 +169,12 @@ layout: layouts/base.njk
       })
       .catch(function(err) {
         var code = err && err.code;
-        if (code === 'auth/popup-blocked' || code === 'auth/cancelled-popup-request') {
+        if (
+          code === 'auth/popup-blocked' ||
+          code === 'auth/cancelled-popup-request' ||
+          code === 'auth/popup-closed-by-user'
+        ) {
+          setWelcomeHtml('<p style="color:#b45309;font-weight:600;">Pokračuji přihlášením přes přesměrování…</p>');
           auth.signInWithRedirect(provider).catch(handleAuthError);
           return;
         }
