@@ -606,7 +606,7 @@ collections:
       - name: "gallery"
         label: "Galerie"
         file: "src/_data/gallery.yml"
-        preview_url: "{{site_url}}/galerie/"
+        preview: false
         fields:
           - label: "Alba"
             name: "albums"
