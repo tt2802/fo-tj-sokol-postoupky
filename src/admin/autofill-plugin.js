@@ -14,6 +14,7 @@
   var bc = null;
   var upcomingMatches = [];
   var playedMatches = [];
+  var calendarEvents = [];
   var playersData = null; // { men: [...], youth: { dorostenci: [...], ... } }
 
   function log() { console.log.apply(console, [LOG].concat([].slice.call(arguments))); }
@@ -124,6 +125,35 @@
     return chainFetch(urls);
   }
 
+  function extractCalendarItems(payload) {
+    if (!payload || typeof payload !== "object") return [];
+
+    if (Array.isArray(payload.items)) return payload.items;
+    if (payload.data && Array.isArray(payload.data.items)) return payload.data.items;
+
+    if (typeof payload.raw === "string") {
+      try {
+        var parsed = JSON.parse(payload.raw);
+        if (parsed && Array.isArray(parsed.items)) return parsed.items;
+      } catch (_) {}
+    }
+
+    return [];
+  }
+
+  function fetchCalendarEvents() {
+    var prefix = getPathPrefix();
+    var urls = [
+      "https://raw.githubusercontent.com/tt2802/fo-tj-sokol-postoupky/main/src/_data/calendar_events.json",
+      prefix ? prefix + "/_data/calendar_events.json" : null,
+      "../_data/calendar_events.json",
+      "/_data/calendar_events.json"
+    ].filter(Boolean);
+    return chainFetchRaw(urls).then(function (data) {
+      return extractCalendarItems(data);
+    });
+  }
+
   function listSize(listLike) {
     if (!listLike) return 0;
     if (typeof listLike.size === "number") return listLike.size;
@@ -154,6 +184,9 @@
       }).catch(function () {}),
       fetchPlayedMatches().then(function (items) {
         playedMatches = items || [];
+      }).catch(function () {}),
+      fetchCalendarEvents().then(function (items) {
+        calendarEvents = items || [];
       }).catch(function () {}),
       fetchPlayers().then(function (d) {
         playersData = d || playersData;
@@ -971,6 +1004,14 @@
           if (p.indexOf("calendar_events") >= 0) {
             var cItems = entry.getIn(["data", "items"]) || entry.getIn(["data", "data", "items"]);
             if (!cItems || !cItems.map) return entry;
+
+            var cCount = listSize(cItems);
+            if (cCount === 0 && calendarEvents.length > 0) {
+              var okCalendar = confirmDangerousEmptySave("Kalendář akcí", calendarEvents.length);
+              if (!okCalendar) {
+                throw new Error("Uložení zrušeno: seznam kalendářových akcí by byl prázdný.");
+              }
+            }
 
             // Prefer replacing entire data object with clean shape
             try {
