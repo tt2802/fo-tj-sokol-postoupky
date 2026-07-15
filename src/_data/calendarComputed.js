@@ -38,8 +38,25 @@ module.exports = function () {
     other: ""
   };
 
+  function getCalendarItems(src) {
+    if (!src || typeof src !== "object") return [];
+    if (Array.isArray(src.items)) return src.items;
+    if (src.data && Array.isArray(src.data.items)) return src.data.items;
+
+    if (typeof src.raw === "string") {
+      try {
+        const parsed = JSON.parse(src.raw);
+        if (Array.isArray(parsed.items)) return parsed.items;
+        if (parsed.data && Array.isArray(parsed.data.items)) return parsed.data.items;
+      } catch (_) {
+        // ignore malformed raw payload and fall back to empty list
+      }
+    }
+    return [];
+  }
+
   // Calendar events — expand recurring ones
-  const rawItems = calendarEvents.items || [];
+  const rawItems = getCalendarItems(calendarEvents);
   const events = [];
   for (const e of rawItems) {
     const date = (e.date || "").slice(0, 10);
@@ -102,11 +119,9 @@ module.exports = function () {
     .filter((e) => e._dt)
     .sort((a, b) => a._dt.toMillis() - b._dt.toMillis());
 
-  // Upcoming events: trainings only 7 days ahead, everything else always
-  const weekAhead = now.plus({ days: 7 });
-  const upcomingEvents = all.filter((e) =>
-    e._dt >= now && (e.type !== "training" || e._dt <= weekAhead)
-  );
+  // Upcoming events shown in sidebar: next 30 days for all types
+  const monthAhead = now.plus({ days: 30 });
+  const upcomingEvents = all.filter((e) => e._dt >= now && e._dt <= monthAhead);
 
   // Group by month key "YYYY-MM"
   const eventsByDate = {};

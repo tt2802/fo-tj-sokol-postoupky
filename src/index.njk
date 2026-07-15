@@ -89,7 +89,7 @@ hideTitle: true
 
         {# Upcoming events – side panel #}
         <div class="cal-sidebar">
-          <div class="cal-sidebar__head">Nadcházející akce (7 dní)</div>
+          <div class="cal-sidebar__head">Nadcházející akce (30 dní)</div>
           {% for event in calendarComputed.upcomingEvents %}
           {% if loop.index0 < 8 %}
             <div class="cal-up cal-up--{{ event.type }}">
