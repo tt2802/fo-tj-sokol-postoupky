@@ -1152,7 +1152,7 @@
 
           /* ── gallery: normalize photo items + merge bulk photo input ── */
           if (p.indexOf("gallery") >= 0) {
-            var albums = entry.getIn(["data", "albums"]);
+            var albums = entry.getIn(["data", "albums"]) || entry.getIn(["data", "data", "albums"]);
             if (!albums || !albums.map) return entry;
 
             var IGallery = window.Immutable;
@@ -1199,6 +1199,13 @@
               if (IGallery && IGallery.fromJS) return IGallery.fromJS(nextAlbum);
               return albumItem;
             });
+
+            try {
+              if (IGallery && IGallery.fromJS) {
+                var plainAlbums = updatedAlbums.toJS ? updatedAlbums.toJS() : updatedAlbums;
+                return entry.set("data", IGallery.fromJS({ albums: plainAlbums }));
+              }
+            } catch (_) {}
 
             return entry.setIn(["data", "albums"], updatedAlbums);
           }
