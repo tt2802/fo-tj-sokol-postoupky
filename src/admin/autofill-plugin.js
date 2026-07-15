@@ -1063,6 +1063,40 @@
             return entry.setIn(["data", "items"], uUpdated);
           }
 
+          /* ── gallery: normalize photo items + merge bulk photo input ── */
+          if (p.indexOf("gallery") >= 0) {
+            var albums = entry.getIn(["data", "albums"]);
+            if (!albums || !albums.map) return entry;
+
+            var IGallery = window.Immutable;
+            var updatedAlbums = albums.map(function (albumItem) {
+              var albumObj = albumItem && albumItem.toJS ? albumItem.toJS() : albumItem;
+              var normalizedPhotos = Array.isArray(albumObj.photos)
+                ? albumObj.photos.map(function (photoItem) {
+                    if (typeof photoItem === "string") return { photo: photoItem };
+                    return photoItem || {};
+                  })
+                : [];
+
+              var bulk = String(albumObj.bulkPhotos || "").trim();
+              if (bulk) {
+                bulk.split(/\r?\n/).map(function (line) {
+                  return String(line || "").trim();
+                }).filter(Boolean).forEach(function (line) {
+                  normalizedPhotos.push({ photo: line });
+                });
+              }
+
+              var nextAlbum = Object.assign({}, albumObj, { photos: normalizedPhotos });
+              delete nextAlbum.bulkPhotos;
+
+              if (IGallery && IGallery.fromJS) return IGallery.fromJS(nextAlbum);
+              return albumItem;
+            });
+
+            return entry.setIn(["data", "albums"], updatedAlbums);
+          }
+
           /* ── played matches: fill from related match + auto home/away + auto-slug ── */
           if (p.indexOf("played_matches") < 0) return entry;
 

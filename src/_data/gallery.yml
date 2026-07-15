@@ -6,9 +6,9 @@ albums:
     slug: meziligovy-turnaj-2026
     cover: /assets/img/uploads/20251112_170017.jpg
     photos:
-      - /assets/uploads/1tj.jpg
-      - /assets/uploads/2tj.jpg
-      - /assets/uploads/3tj.jpg
+      - photo: /assets/uploads/1tj.jpg
+      - photo: /assets/uploads/2tj.jpg
+      - photo: /assets/uploads/3tj.jpg
 
   - title: Zápas s Hulínem
     date: "2026-01-19"
@@ -16,5 +16,5 @@ albums:
     slug: zapas-hulinem
     cover: /assets/img/uploads/pavel.png
     photos:
-      - /assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png
-      - /assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png
+      - photo: /assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png
+      - photo: /assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png

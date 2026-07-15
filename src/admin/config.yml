@@ -631,10 +631,15 @@ collections:
                 name: "photos"
                 widget: "list"
                 collapsed: false
-                summary: "{{fields.caption}}"
+                summary: "{{fields.caption}} {{fields.photo}}"
                 fields:
                   - { label: "Fotka", name: "photo", widget: "image" }
                   - { label: "Popisek", name: "caption", widget: "string", required: false, hint: "Volitelný popisek fotky" }
+              - label: "Hromadně přidat fotky"
+                name: "bulkPhotos"
+                widget: "text"
+                required: false
+                hint: "Vlož více cest/URL k fotkám najednou — každou na nový řádek. Při uložení se automaticky přidají do seznamu fotek."
 
       - name: "sponsors"
         label: "Partneři"
