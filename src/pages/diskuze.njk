@@ -66,10 +66,13 @@ layout: layouts/base.njk
     return;
   }
 
-  firebase.initializeApp(cfg);
+  if (!firebase.apps || !firebase.apps.length) {
+    firebase.initializeApp(cfg);
+  }
   var auth = firebase.auth();
   var db = firebase.firestore();
   var currentUser = null;
+  var unsubscribeMessages = null;
 
   var messagesEl = document.getElementById('chatMessages');
   var welcomeEl  = document.getElementById('chatWelcome');
@@ -81,20 +84,11 @@ layout: layouts/base.njk
 
   var provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
-  var authInProgress = false;
 
   function escapeHtml(str) {
     var d = document.createElement('div');
     d.textContent = str || '';
     return d.innerHTML;
-  }
-
-  function setLoginBusyState(busy, sourceBtn) {
-    var btn = sourceBtn || document.getElementById('chatLogin');
-    if (!btn) return;
-    btn.disabled = !!busy;
-    btn.style.opacity = busy ? '0.7' : '';
-    btn.style.cursor = busy ? 'wait' : '';
   }
 
   function setWelcomeHtml(html) {
@@ -104,92 +98,140 @@ layout: layouts/base.njk
     msgEl.style.display = '';
   }
 
-  function showAuthMessage(html) {
-    setWelcomeHtml(html);
-  }
-
   function handleAuthError(err) {
     console.error('Auth error:', err && err.code, err && err.message);
-
     if (!err) {
-      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Neznámá chyba přihlášení.</p>');
+      setWelcomeHtml('<p style="color:#dc2626;font-weight:600;">Neznámá chyba přihlášení.</p>');
       return;
     }
-
     if (err.code === 'auth/unauthorized-domain') {
-      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Doména není povolená ve Firebase Authentication. V konzoli Firebase přidejte doménu tohoto webu do Authorized domains.</p>');
+      setWelcomeHtml('<p style="color:#dc2626;font-weight:600;">Doména není povolená ve Firebase Authentication. Přidejte ji do Authorized domains v konzoli Firebase.</p>');
       return;
     }
-
     if (err.code === 'auth/operation-not-allowed') {
-      showAuthMessage('<p style="color:#dc2626;font-weight:600;">Ve Firebase není povolené přihlášení přes Google provider.</p>');
+      setWelcomeHtml('<p style="color:#dc2626;font-weight:600;">Ve Firebase není povolené přihlášení přes Google.</p>');
       return;
     }
-
-    showAuthMessage('<div style="color:#dc2626;font-weight:600;">Chyba přihlášení: ' + escapeHtml(err.code) + '<br><small>' + escapeHtml(err.message) + '</small></div>');
+    setWelcomeHtml('<div style="color:#dc2626;font-weight:600;">Chyba přihlášení: ' + escapeHtml(err.code) + '<br><small>' + escapeHtml(err.message) + '</small></div>');
   }
 
-  function doLogin(evt) {
-    if (authInProgress) {
-      var waitEl = document.getElementById('chatWelcome');
-      if (waitEl) {
-        waitEl.innerHTML = '<p style="color:#b45309;font-weight:600;">Probíhá přihlášení… dokončete otevřené přihlašovací okno.</p>';
-        waitEl.style.display = '';
-      }
-      return;
+  function renderSignedIn(user) {
+    // re-query elements in case DOM was modified
+    var wa = document.getElementById('chatWelcome');
+    var ia = document.getElementById('chatInputArea');
+    var ue = document.getElementById('chatUser');
+    var ie = document.getElementById('chatInput');
+    if (wa) wa.style.display = 'none';
+    if (ia) ia.style.display = 'flex';
+    if (ue) {
+      ue.innerHTML =
+        '<img src="' + escapeHtml((user && user.photoURL) || '') + '" alt="" class="chat-avatar-sm">' +
+        '<span class="chat-username">' + escapeHtml((user && user.displayName) || 'Přihlášený uživatel') + '</span>' +
+        '<button type="button" id="chatLogout" class="chat-logout-btn" title="Odhlásit">✕</button>';
+      var logoutBtn = document.getElementById('chatLogout');
+      if (logoutBtn) logoutBtn.addEventListener('click', function() { auth.signOut(); });
     }
+    if (ie) ie.focus();
+  }
 
-    authInProgress = true;
-    var clickedBtn = evt && evt.currentTarget ? evt.currentTarget : document.getElementById('chatLogin');
-    setLoginBusyState(true, clickedBtn);
+  function renderSignedOut() {
+    var wa = document.getElementById('chatWelcome');
+    var ia = document.getElementById('chatInputArea');
+    var ue = document.getElementById('chatUser');
+    if (wa) wa.style.display = '';
+    if (ia) ia.style.display = 'none';
+    if (ue) {
+      ue.innerHTML =
+        '<button id="chatLogin" class="chat-google-btn" type="button">' +
+        '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="18" height="18">' +
+        ' Přihlásit se přes Google</button>';
+      var btn = document.getElementById('chatLogin');
+      if (btn) btn.addEventListener('click', doLogin);
+    }
+  }
 
+  function doLogin() {
     setWelcomeHtml('<p style="color:#b45309;font-weight:600;">Přesměrovávám na Google přihlášení…</p>');
-
-    auth.signInWithRedirect(provider).catch(function(err) {
-      handleAuthError(err);
-    }).finally(function() {
-      authInProgress = false;
-      setLoginBusyState(false, clickedBtn);
-    });
+    var btn = document.getElementById('chatLogin');
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
+    auth.signInWithRedirect(provider).catch(handleAuthError);
   }
 
-  /* ── Auth ── */
+  /* ── Auth state ── */
   auth.getRedirectResult().then(function(result) {
-    if (result && result.user) {
-      authInProgress = false;
-      setLoginBusyState(false);
-      return;
-    }
-  }).catch(function(err) {
-    handleAuthError(err);
-  });
+    if (result && result.user) renderSignedIn(result.user);
+  }).catch(handleAuthError);
 
-  loginBtn.addEventListener('click', doLogin);
+  if (loginBtn) loginBtn.addEventListener('click', doLogin);
+
+  function detachMessagesListener() {
+    if (typeof unsubscribeMessages === 'function') {
+      try { unsubscribeMessages(); } catch (_) {}
+      unsubscribeMessages = null;
+    }
+  }
+
+  function clearRenderedMessages() {
+    var msgs = messagesEl.querySelectorAll('.chat-msg');
+    msgs.forEach(function(m) { m.remove(); });
+  }
+
+  function attachMessagesListener() {
+    detachMessagesListener();
+    unsubscribeMessages = db.collection('chat_messages')
+      .orderBy('createdAt', 'asc')
+      .limitToLast(150)
+      .onSnapshot(function(snap) {
+        var wa = document.getElementById('chatWelcome');
+        if (currentUser && wa) wa.style.display = 'none';
+
+        clearRenderedMessages();
+
+        snap.forEach(function(doc) {
+          var d = doc.data();
+          if (!d.createdAt) return; // pending write
+          var isOwn = currentUser && d.userId === currentUser.uid;
+          var time = d.createdAt.toDate();
+          var hh = String(time.getHours()).padStart(2,'0');
+          var mm = String(time.getMinutes()).padStart(2,'0');
+          var dd = time.getDate();
+          var mo = time.getMonth() + 1;
+
+          var div = document.createElement('div');
+          div.className = 'chat-msg' + (isOwn ? ' chat-msg--own' : '');
+          div.innerHTML =
+            '<img src="' + escapeHtml(d.userPhoto || '') + '" alt="" class="chat-msg__avatar">' +
+            '<div class="chat-msg__body">' +
+              '<div class="chat-msg__meta">' +
+                '<strong>' + escapeHtml(d.userName) + '</strong>' +
+                '<span class="chat-msg__time">' + dd + '.' + mo + '. ' + hh + ':' + mm + '</span>' +
+              '</div>' +
+              '<div class="chat-msg__text">' + escapeHtml(d.text) + '</div>' +
+            '</div>';
+          messagesEl.appendChild(div);
+        });
+
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }, function(err) {
+        console.error('Firestore onSnapshot error:', err && err.code, err);
+        if (err && err.code === 'permission-denied') {
+          if (currentUser) {
+            setWelcomeHtml('<p style="color:#dc2626;font-weight:600;">Přihlášení proběhlo, ale chat nemá oprávnění číst zprávy (Firestore rules).</p>');
+          }
+          detachMessagesListener();
+        }
+      });
+  }
 
   auth.onAuthStateChanged(function(user) {
     currentUser = user;
     if (user) {
-      authInProgress = false;
-      welcomeEl.style.display = 'none';
-      inputArea.style.display = 'flex';
-      userEl.innerHTML =
-        '<img src="' + escapeHtml(user.photoURL || '') + '" alt="" class="chat-avatar-sm">' +
-        '<span class="chat-username">' + escapeHtml(user.displayName) + '</span>' +
-        '<button id="chatLogout" class="chat-logout-btn" title="Odhlásit">✕</button>';
-      document.getElementById('chatLogout').addEventListener('click', function() {
-        auth.signOut();
-      });
-      inputEl.focus();
+      renderSignedIn(user);
+      attachMessagesListener();
     } else {
-      welcomeEl.style.display = '';
-      inputArea.style.display = 'none';
-      userEl.innerHTML =
-        '<button id="chatLogin" class="chat-google-btn" type="button">' +
-        '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="18" height="18">' +
-        ' Přihlásit se</button>';
-      var newLoginBtn = document.getElementById('chatLogin');
-      setLoginBusyState(false, newLoginBtn);
-      newLoginBtn.addEventListener('click', doLogin);
+      detachMessagesListener();
+      clearRenderedMessages();
+      renderSignedOut();
     }
   });
 
@@ -212,43 +254,5 @@ layout: layouts/base.njk
     if (e.key === 'Enter') sendMessage();
   });
 
-  /* ── Listen for messages (last 150) ── */
-  db.collection('chat_messages')
-    .orderBy('createdAt', 'asc')
-    .limitToLast(150)
-    .onSnapshot(function(snap) {
-      // keep welcome hidden if user is logged in
-      if (currentUser) welcomeEl.style.display = 'none';
-
-      // clear old messages but keep welcome
-      var msgs = messagesEl.querySelectorAll('.chat-msg');
-      msgs.forEach(function(m) { m.remove(); });
-
-      snap.forEach(function(doc) {
-        var d = doc.data();
-        if (!d.createdAt) return; // pending write
-        var isOwn = currentUser && d.userId === currentUser.uid;
-        var time = d.createdAt.toDate();
-        var hh = String(time.getHours()).padStart(2,'0');
-        var mm = String(time.getMinutes()).padStart(2,'0');
-        var dd = time.getDate();
-        var mo = time.getMonth() + 1;
-
-        var div = document.createElement('div');
-        div.className = 'chat-msg' + (isOwn ? ' chat-msg--own' : '');
-        div.innerHTML =
-          '<img src="' + escapeHtml(d.userPhoto || '') + '" alt="" class="chat-msg__avatar">' +
-          '<div class="chat-msg__body">' +
-            '<div class="chat-msg__meta">' +
-              '<strong>' + escapeHtml(d.userName) + '</strong>' +
-              '<span class="chat-msg__time">' + dd + '.' + mo + '. ' + hh + ':' + mm + '</span>' +
-            '</div>' +
-            '<div class="chat-msg__text">' + escapeHtml(d.text) + '</div>' +
-          '</div>';
-        messagesEl.appendChild(div);
-      });
-
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    });
 })();
 </script>
