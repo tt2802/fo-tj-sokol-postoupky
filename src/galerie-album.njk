@@ -18,6 +18,9 @@ eleventyComputed:
     <p class="muted"><a href="{{ '/galerie/' | url }}">← Zpět do galerie</a></p>
     <h1>{{ album.title }}</h1>
     <p class="muted">{{ album.date | czDate }}</p>
+    {% if album.description %}
+      <p style="max-width: 72ch; line-height: 1.6; margin-top: 0.75rem; color: var(--text);">{{ album.description }}</p>
+    {% endif %}
   </div>
 </section>
 

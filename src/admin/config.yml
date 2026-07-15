@@ -619,14 +619,22 @@ collections:
                 name: "date"
                 widget: "date"
                 format: "YYYY-MM-DD"
+                date_format: "DD.MM.YYYY"
+                time_format: false
+                picker_utc: false
+                required: true
+                hint: "Datum, kdy se akce konala"
+              - { label: "Popis alba", name: "description", widget: "text", required: false, hint: "Krátký popis toho, co je na fotkách" }
               - { label: "Slug", name: "slug", widget: "string", hint: "např. soustredeni-2026", required: true }
               - { label: "Úvodní fotka", name: "cover", widget: "image", required: false }
               - label: "Fotky"
                 name: "photos"
                 widget: "list"
-                collapsed: true
+                collapsed: false
+                summary: "{{fields.caption}}"
                 fields:
                   - { label: "Fotka", name: "photo", widget: "image" }
+                  - { label: "Popisek", name: "caption", widget: "string", required: false, hint: "Volitelný popisek fotky" }
 
       - name: "sponsors"
         label: "Partneři"

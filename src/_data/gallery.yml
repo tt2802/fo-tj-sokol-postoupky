@@ -2,6 +2,7 @@
 albums:
   - title: Meziligový turnaj 2026
     date: "2026-02-15"
+    description: "Nejhezčí momenty z turnaje, kde byly i zápasy, které stálo za to si připomenout."
     slug: meziligovy-turnaj-2026
     cover: /assets/img/uploads/20251112_170017.jpg
     photos:
@@ -11,6 +12,7 @@ albums:
 
   - title: Zápas s Hulínem
     date: "2026-01-19"
+    description: "Fotky z utkání s Hulínem — atmosféra, momentky a pár důležitých detailů ze hřiště."
     slug: zapas-hulinem
     cover: /assets/img/uploads/pavel.png
     photos:

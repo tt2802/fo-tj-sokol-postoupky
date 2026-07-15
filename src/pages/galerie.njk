@@ -33,6 +33,9 @@ layout: layouts/page.njk
               <div class="card__body">
                 <h3 class="card__title">{{ album.title }}</h3>
                 <p class="muted">{{ album.date | czDate }}</p>
+                {% if album.description %}
+                  <p style="margin-top:0.35rem; color: var(--text); line-height: 1.5;">{{ album.description }}</p>
+                {% endif %}
                 <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">{{ album.photos | length }} fotek</p>
 
                 {% if album.photos and album.photos | length > 0 %}
