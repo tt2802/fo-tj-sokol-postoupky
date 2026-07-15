@@ -967,6 +967,24 @@
           if (!entry || !entry.get) return entry;
           var p = String(entry.get("path") || "");
 
+          /* ── calendar events: normalize wrapped payload to { items: [...] } ── */
+          if (p.indexOf("calendar_events") >= 0) {
+            var cItems = entry.getIn(["data", "items"]) || entry.getIn(["data", "data", "items"]);
+            if (!cItems || !cItems.map) return entry;
+
+            // Prefer replacing entire data object with clean shape
+            try {
+              var I = window.Immutable;
+              if (I && I.fromJS) {
+                var plainItems = cItems.toJS ? cItems.toJS() : cItems;
+                return entry.set("data", I.fromJS({ items: plainItems }));
+              }
+            } catch (_) {}
+
+            // Fallback when Immutable is unavailable
+            return entry.setIn(["data", "items"], cItems);
+          }
+
           /* ── upcoming matches: auto-slug + auto-fill home/away ── */
           if (p.indexOf("upcoming_matches") >= 0) {
             var uItems = entry.getIn(["data", "items"]);
