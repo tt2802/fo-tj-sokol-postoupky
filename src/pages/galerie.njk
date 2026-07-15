@@ -20,7 +20,7 @@ layout: layouts/page.njk
     {% else %}
       <div class="grid albums" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
         {% for album in albumsList %}
-          <a href="{{ '/galerie/' ~ album.slug ~ '/' | url }}" style="display:block;color:inherit;text-decoration:none;">
+          <a href="{{ ('/galerie/' ~ album.slug ~ '/') | url }}" style="display:block;color:inherit;text-decoration:none;">
             <article class="card" style="cursor: pointer;">
               <div class="card__media" style="--media-aspect: 16 / 9; --media-radius: 0;">
                 {% if album.cover %}
