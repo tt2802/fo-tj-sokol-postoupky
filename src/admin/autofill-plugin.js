@@ -1166,11 +1166,14 @@
                 : [];
 
               var bulkRaw = Array.isArray(albumObj.bulkPhotos) ? albumObj.bulkPhotos : [];
+              var bulkSelectRaw = albumObj.bulkSelect;
               var bulkPaths = [];
 
               bulkRaw.forEach(function (item) {
                 pushPhotoValue(bulkPaths, item);
               });
+
+              pushPhotoValue(bulkPaths, bulkSelectRaw);
 
               var existingPaths = {};
               normalizedPhotos.forEach(function (photoItem) {
@@ -1188,6 +1191,9 @@
               var nextAlbum = Object.assign({}, albumObj, { photos: normalizedPhotos });
               if (Object.prototype.hasOwnProperty.call(nextAlbum, "bulkPhotos")) {
                 delete nextAlbum.bulkPhotos;
+              }
+              if (Object.prototype.hasOwnProperty.call(nextAlbum, "bulkSelect")) {
+                delete nextAlbum.bulkSelect;
               }
 
               if (IGallery && IGallery.fromJS) return IGallery.fromJS(nextAlbum);

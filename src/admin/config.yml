@@ -628,20 +628,15 @@ collections:
               - { label: "Slug", name: "slug", widget: "string", hint: "např. soustredeni-2026", required: true }
               - { label: "Úvodní fotka", name: "cover", widget: "image", required: false }
               - label: "Rychlé přidání více fotek"
-                name: "bulkPhotos"
-                widget: "list"
+                name: "bulkSelect"
+                widget: "image"
                 required: false
-                collapsed: false
-                hint: "Tady můžeš nahrát více fotek najednou ze souborů. Po uložení se automaticky přidají do seznamu Fotky níže."
-                field:
-                  label: "Fotka"
-                  name: "photo"
-                  widget: "image"
-                  choose_url: false
-                  allow_multiple: true
-                  media_library:
-                    config:
-                      multiple: true
+                choose_url: false
+                allow_multiple: true
+                hint: "Klikni, označ víc fotek najednou a potvrď „Vybrat označené“. Po uložení se automaticky přidají do seznamu Fotky níže."
+                media_library:
+                  config:
+                    multiple: true
               - label: "Fotky"
                 name: "photos"
                 widget: "list"
