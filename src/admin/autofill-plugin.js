@@ -13,6 +13,7 @@
   var BROADCAST_NAME = "cms-data-sync";
   var bc = null;
   var upcomingMatches = [];
+  var playedMatches = [];
   var playersData = null; // { men: [...], youth: { dorostenci: [...], ... } }
 
   function log() { console.log.apply(console, [LOG].concat([].slice.call(arguments))); }
@@ -112,10 +113,47 @@
     return chainFetchRaw(urls);
   }
 
+  function fetchPlayedMatches() {
+    var prefix = getPathPrefix();
+    var urls = [
+      "https://raw.githubusercontent.com/tt2802/fo-tj-sokol-postoupky/main/src/_data/played_matches.json",
+      prefix ? prefix + "/_data/played_matches.json" : null,
+      "../_data/played_matches.json",
+      "/_data/played_matches.json"
+    ].filter(Boolean);
+    return chainFetch(urls);
+  }
+
+  function listSize(listLike) {
+    if (!listLike) return 0;
+    if (typeof listLike.size === "number") return listLike.size;
+    if (Array.isArray(listLike)) return listLike.length;
+    if (listLike.toJS) {
+      var arr = listLike.toJS();
+      return Array.isArray(arr) ? arr.length : 0;
+    }
+    return 0;
+  }
+
+  function confirmDangerousEmptySave(kindLabel, previousCount) {
+    var msg =
+      "Chystáte se uložit PRÁZDNÝ seznam „" + kindLabel + "“.\n\n" +
+      "Původně obsahoval " + previousCount + " položek.\n" +
+      "Pokračovat ve smazání všech položek?";
+    try {
+      return window.confirm(msg);
+    } catch (_) {
+      return false;
+    }
+  }
+
   function refreshCaches() {
     return Promise.all([
       fetchMatches().then(function (items) {
         upcomingMatches = items || [];
+      }).catch(function () {}),
+      fetchPlayedMatches().then(function (items) {
+        playedMatches = items || [];
       }).catch(function () {}),
       fetchPlayers().then(function (d) {
         playersData = d || playersData;
@@ -934,6 +972,14 @@
             var uItems = entry.getIn(["data", "items"]);
             if (!uItems || !uItems.map) return entry;
 
+            var uCount = listSize(uItems);
+            if (uCount === 0 && upcomingMatches.length > 0) {
+              var okUpcoming = confirmDangerousEmptySave("Nadcházející zápasy", upcomingMatches.length);
+              if (!okUpcoming) {
+                throw new Error("Uložení zrušeno: seznam nadcházejících zápasů by byl prázdný.");
+              }
+            }
+
             var uUpdated = uItems.map(function (im) {
               var obj = im && im.toJS ? im.toJS() : im;
               var fills = {};
@@ -963,6 +1009,14 @@
 
           var items = entry.getIn(["data", "items"]);
           if (!items || !items.map) return entry;
+
+          var pCount = listSize(items);
+          if (pCount === 0 && playedMatches.length > 0) {
+            var okPlayed = confirmDangerousEmptySave("Odehrané zápasy", playedMatches.length);
+            if (!okPlayed) {
+              throw new Error("Uložení zrušeno: seznam odehraných zápasů by byl prázdný.");
+            }
+          }
 
           var updated = items.map(function (im) {
             var obj = im && im.toJS ? im.toJS() : im;

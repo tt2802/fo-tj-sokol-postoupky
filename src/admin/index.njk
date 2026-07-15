@@ -597,6 +597,35 @@ permalink: /admin/index.html
       var injected = false;
       var panelOpen = false;
 
+      function isCompactViewport() {
+        return window.innerWidth <= 768 || window.innerHeight <= 700;
+      }
+
+      function applyFloatingLayout(toggle, panel, side) {
+        var compact = isCompactViewport();
+        var edge = compact ? 10 : 20;
+        var bottom = compact ? 8 : 20;
+        var panelBottom = compact ? 46 : 60;
+        var panelWidth = compact ? "min(calc(100vw - 20px), 420px)" : "320px";
+        var panelMaxHeight = compact ? "calc(100dvh - 64px)" : "420px";
+
+        if (toggle) {
+          toggle.style.bottom = bottom + "px";
+          toggle.style.fontSize = compact ? "11px" : "13px";
+          toggle.style.padding = compact ? "7px 10px" : "8px 16px";
+          toggle.style.left = side === "left" ? edge + "px" : "auto";
+          toggle.style.right = side === "right" ? edge + "px" : "auto";
+        }
+
+        if (panel) {
+          panel.style.bottom = panelBottom + "px";
+          panel.style.width = panelWidth;
+          panel.style.maxHeight = panelMaxHeight;
+          panel.style.left = side === "left" ? edge + "px" : "auto";
+          panel.style.right = side === "right" ? edge + "px" : "auto";
+        }
+      }
+
       function timeAgo(iso) {
         var diff = (Date.now() - new Date(iso).getTime()) / 1000;
         if (diff < 60) return "právě teď";
