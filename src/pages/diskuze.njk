@@ -86,9 +86,11 @@ layout: layouts/base.njk
   provider.setCustomParameters({ prompt: 'select_account' });
 
   // Ensure auth session survives redirect/navigation and browser quirks.
-  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(err) {
-    console.warn('Auth persistence setup failed:', err && err.code, err && err.message);
-  });
+  var persistenceReady = auth
+    .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .catch(function(err) {
+      console.warn('Auth persistence setup failed:', err && err.code, err && err.message);
+    });
 
   function escapeHtml(str) {
     var d = document.createElement('div');
@@ -159,32 +161,19 @@ layout: layouts/base.njk
     setWelcomeHtml('<p style="color:#b45309;font-weight:600;">Přesměrovávám na Google přihlášení…</p>');
     var btn = document.getElementById('chatLogin');
     if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
-
-    // Prefer popup (more reliable UX); fallback to redirect when popup is blocked.
-    auth.signInWithPopup(provider)
-      .then(function(result) {
-        if (result && result.user) {
-          renderSignedIn(result.user);
-        }
+    persistenceReady
+      .then(function() {
+        return auth.signInWithRedirect(provider);
       })
-      .catch(function(err) {
-        var code = err && err.code;
-        if (
-          code === 'auth/popup-blocked' ||
-          code === 'auth/cancelled-popup-request' ||
-          code === 'auth/popup-closed-by-user'
-        ) {
-          setWelcomeHtml('<p style="color:#b45309;font-weight:600;">Pokračuji přihlášením přes přesměrování…</p>');
-          auth.signInWithRedirect(provider).catch(handleAuthError);
-          return;
-        }
-        handleAuthError(err);
-      });
+      .catch(handleAuthError);
   }
 
   /* ── Auth state ── */
   auth.getRedirectResult().then(function(result) {
-    if (result && result.user) renderSignedIn(result.user);
+    if (result && result.user) {
+      // onAuthStateChanged is the source of truth; this message only indicates progress.
+      setWelcomeHtml('<p style="color:#0f766e;font-weight:600;">Přihlášení proběhlo, dokončuji relaci…</p>');
+    }
   }).catch(handleAuthError);
 
   if (loginBtn) loginBtn.addEventListener('click', doLogin);
