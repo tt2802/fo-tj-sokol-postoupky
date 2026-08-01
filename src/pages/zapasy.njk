@@ -20,9 +20,14 @@ permalink: /zapasy/
               · {{ m._teamLabel }}
             </p>
             <p class="matchLine"><strong>{{ m.home }}</strong> vs <strong>{{ m.away }}</strong></p>
-            <p>
-              <a class="btn btn--live" href="{{ m.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a>
-            </p>
+            {% set liveEmbedId = 'live-all-' + m.team + '-' + m.slug %}
+            <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem;">
+              <button type="button" class="btn btn--live" data-inline-video-toggle="{{ liveEmbedId }}" data-toggle-label="Sledovat živě">Sledovat živě</button>
+              <a class="btn btn--secondary" href="{{ m.liveUrl }}" target="_blank" rel="noopener">
+                {% if ('youtube.com' in m.liveUrl) or ('youtu.be' in m.liveUrl) %}Otevřít na YouTube{% else %}Otevřít odkaz{% endif %}
+              </a>
+            </div>
+            <div id="{{ liveEmbedId }}" class="video-embed" data-video-url="{{ m.liveUrl | escape }}" hidden></div>
           </div>
         </li>
       {% endfor %}
@@ -59,9 +64,14 @@ permalink: /zapasy/
             {% endif %}
 
             {% if m.liveUrl %}
-              <p>
-                <a class="btn btn--live" href="{{ m.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a>
-              </p>
+              {% set liveEmbedId = 'live-upcoming-' + m.team + '-' + m.slug %}
+              <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem;">
+                <button type="button" class="btn btn--live" data-inline-video-toggle="{{ liveEmbedId }}" data-toggle-label="Sledovat živě">Sledovat živě</button>
+                <a class="btn btn--secondary" href="{{ m.liveUrl }}" target="_blank" rel="noopener">
+                  {% if ('youtube.com' in m.liveUrl) or ('youtu.be' in m.liveUrl) %}Otevřít na YouTube{% else %}Otevřít odkaz{% endif %}
+                </a>
+              </div>
+              <div id="{{ liveEmbedId }}" class="video-embed" data-video-url="{{ m.liveUrl | escape }}" hidden></div>
             {% endif %}
 
             {% if m.team == 'muzi' %}
@@ -104,9 +114,12 @@ permalink: /zapasy/
 
             {% if m.videoUrl %}
               {% set videoEmbedId = 'video-' + m.team + '-' + m.slug %}
-              <p>
-                <button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ videoEmbedId }}">Přehrát video</button>
-              </p>
+              <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem;">
+                <button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ videoEmbedId }}" data-toggle-label="Přehrát video">Přehrát video</button>
+                <a class="btn btn--secondary" href="{{ m.videoUrl }}" target="_blank" rel="noopener">
+                  {% if ('youtube.com' in m.videoUrl) or ('youtu.be' in m.videoUrl) %}Otevřít na YouTube{% else %}Otevřít video{% endif %}
+                </a>
+              </div>
               <div id="{{ videoEmbedId }}" class="video-embed" data-video-url="{{ m.videoUrl | escape }}" hidden></div>
             {% endif %}
 

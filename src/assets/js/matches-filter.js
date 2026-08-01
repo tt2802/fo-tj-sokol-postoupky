@@ -165,6 +165,9 @@
     toggles.forEach((btn) => {
       if (btn.dataset.bound === "1") return;
       btn.dataset.bound = "1";
+      if (!btn.dataset.toggleLabel) {
+        btn.dataset.toggleLabel = (btn.textContent || "Přehrát video").trim();
+      }
 
       btn.addEventListener("click", function () {
         const targetId = btn.getAttribute("data-inline-video-toggle");
@@ -177,11 +180,11 @@
         if (isHidden) {
           target.removeAttribute("hidden");
           target.style.marginTop = "0.75rem";
-          btn.textContent = "Skrýt video";
+          btn.textContent = btn.getAttribute("data-hide-label") || "Skrýt přehrávač";
           renderVideoEmbeds();
         } else {
           target.setAttribute("hidden", "hidden");
-          btn.textContent = "Přehrát video";
+          btn.textContent = btn.dataset.toggleLabel || "Přehrát video";
         }
       });
     });

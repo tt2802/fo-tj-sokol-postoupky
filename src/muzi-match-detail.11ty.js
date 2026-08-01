@@ -44,6 +44,10 @@ module.exports = class {
       const ytId = getYouTubeId(url);
       const isVideoFile = lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.endsWith('.ogg');
 
+      function renderDirectLink(label) {
+        return `<p style="margin-top:.5rem;"><a href="${escapeAttr(url)}" target="_blank" rel="noopener" class="btn btn--secondary">${label}</a></p>`;
+      }
+
       if (ytId) {
         return `
 <h2>${heading}</h2>
@@ -56,7 +60,8 @@ module.exports = class {
     allowfullscreen
     title="${heading}">
   </iframe>
-</div>`;
+</div>
+${renderDirectLink('Otevřít na YouTube')}`;
       }
 
       if (isVideoFile) {
@@ -65,7 +70,8 @@ module.exports = class {
 <video controls preload="metadata" style="width: 100%; max-width: 900px; margin: 1rem 0 2rem; border-radius: 12px; background: #000;">
   <source src="${escapeAttr(url)}" type="video/${lower.endsWith('.webm') ? 'webm' : lower.endsWith('.ogg') ? 'ogg' : 'mp4'}">
   Váš prohlížeč nepodporuje video element.
-</video>`;
+</video>
+${renderDirectLink('Otevřít video')}`;
       }
 
       if (lower.includes('facebook.com')) {
@@ -81,7 +87,8 @@ module.exports = class {
     allowfullscreen
     title="${heading}">
   </iframe>
-</div>`;
+</div>
+${renderDirectLink('Otevřít video')}`;
       }
 
       if (lower.includes('veo.co')) {
@@ -97,7 +104,7 @@ module.exports = class {
     }
     
     const liveHtml = !hasScore && m.liveUrl
-      ? `<h2>Živý přenos</h2><div class="card" style="margin: 1rem 0 2rem; padding: 1rem 1.25rem; border-left: 4px solid #ef4444;"><p class="muted" style="margin:0 0 .75rem;">Přenos otevřete přes oficiální odkaz.</p><p style="margin:0;"><a href="${escapeAttr(m.liveUrl)}" target="_blank" rel="noopener" class="btn btn--live">Sledovat živě</a></p></div>`
+      ? renderMediaEmbed(m.liveUrl, 'Živý přenos')
       : '';
     const videoHtml = m.videoUrl ? renderMediaEmbed(m.videoUrl, 'Video ze zápasu') : '';
 

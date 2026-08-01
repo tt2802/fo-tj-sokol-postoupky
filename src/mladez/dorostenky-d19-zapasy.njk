@@ -28,7 +28,12 @@ layout: layouts/page.njk
               <p class="muted">{{ m.venue }} · {{ m.competition }}</p>
               {% if m.liveUrl %}
                 {% set liveEmbedId = 'live-dorostenky-d19-' ~ m.slug %}
-                <p><button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ liveEmbedId }}">Sledovat živě</button></p>
+                <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem;">
+                  <button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ liveEmbedId }}" data-toggle-label="Sledovat živě">Sledovat živě</button>
+                  <a class="btn btn--secondary" href="{{ m.liveUrl }}" target="_blank" rel="noopener">
+                    {% if ('youtube.com' in m.liveUrl) or ('youtu.be' in m.liveUrl) %}Otevřít na YouTube{% else %}Otevřít odkaz{% endif %}
+                  </a>
+                </div>
                 <div id="{{ liveEmbedId }}" class="video-embed" data-video-url="{{ m.liveUrl | escape }}" hidden></div>
               {% endif %}
               <p style="margin-top: 0.5rem;"><a href="{{ ('/mladez/dorostenky-d19/zapasy/' ~ m.slug ~ '/') | url }}">Detail zápasu</a></p>
@@ -55,7 +60,12 @@ layout: layouts/page.njk
               <p class="muted">{{ m.competition }}</p>
               {% if m.videoUrl %}
                 {% set videoEmbedId = 'video-dorostenky-d19-' ~ m.slug %}
-                <p><button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ videoEmbedId }}">Přehrát video</button></p>
+                <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem;">
+                  <button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ videoEmbedId }}" data-toggle-label="Přehrát video">Přehrát video</button>
+                  <a class="btn btn--secondary" href="{{ m.videoUrl }}" target="_blank" rel="noopener">
+                    {% if ('youtube.com' in m.videoUrl) or ('youtu.be' in m.videoUrl) %}Otevřít na YouTube{% else %}Otevřít video{% endif %}
+                  </a>
+                </div>
                 <div id="{{ videoEmbedId }}" class="video-embed" data-video-url="{{ m.videoUrl | escape }}" hidden></div>
               {% endif %}
               <p style="margin-top: 0.5rem;"><a href="{{ ('/mladez/dorostenky-d19/zapasy/' ~ m.slug ~ '/') | url }}">Detail zápasu</a></p>
