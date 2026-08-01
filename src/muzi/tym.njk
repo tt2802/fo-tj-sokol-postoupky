@@ -44,19 +44,32 @@ layout: layouts/page.njk
       {% endfor %}
     </div>
 
-    {# Bench / sideline roles #}
+    {# Coach separated from substitutes #}
     {% if formationComputed.bench | length %}
-    <div class="pitch-bench">
-      {% for b in formationComputed.bench %}
-        <div class="pitch-bench__item">
-          <div class="pitch-bench__icon">{% if b.slot == 'TRENER' %}T{% else %}F{% endif %}</div>
-          <div class="pitch-bench__info">
-            <span class="pitch-bench__role">{{ b.roleLabel }}</span>
-            <span class="pitch-bench__name">{{ b.name if b.name else '—' }}</span>
-          </div>
+      <div class="pitch-sideline">
+        <div class="pitch-sideline__coach">
+          <h3 class="pitch-sideline__title">Trenér</h3>
+          {% for b in formationComputed.bench %}
+            {% if b.slot == 'TRENER' %}
+              <div class="pitch-coach-card">
+                <div class="pitch-coach-card__icon">T</div>
+                <div class="pitch-coach-card__name">{{ b.name if b.name else '—' }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
-      {% endfor %}
-    </div>
+
+        <div class="pitch-sideline__bench">
+          <h3 class="pitch-sideline__title">Střídačka</h3>
+          <ul class="pitch-bench-list">
+            {% for b in formationComputed.bench %}
+              {% if b.slot == 'TRIDACKA' and b.name %}
+                <li class="pitch-bench-list__item">{{ b.name }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     {% endif %}
   </div>
 </section>
