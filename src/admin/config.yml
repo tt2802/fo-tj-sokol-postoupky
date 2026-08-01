@@ -516,7 +516,8 @@ collections:
             name: "positions"
             widget: "list"
             collapsed: true
-            max: 13
+            max: 30
+            hint: "Slot „Třídačka" můžete přidat vícekrát (1 položka = 1 hráč na lavičce)."
             summary: "{{fields.slot}} → {{fields.player}}"
             fields:
               - label: "Slot"
@@ -544,7 +545,7 @@ collections:
                   - { label: "ST1 (Útočník 1)", value: "ST1" }
                   - { label: "ST2 (Útočník 2)", value: "ST2" }
                   - { label: "CF (Střední útočník)", value: "CF" }
-                  - { label: "Třídačka", value: "TRIDACKA" }
+                  - { label: "Třídačka (opakovatelná)", value: "TRIDACKA" }
                   - { label: "Trenér", value: "TRENER" }
               - { label: "Hráč", name: "player", widget: "player-select", required: false, hint: "Vyberte hráče ze seznamu" }
 
