@@ -1,173 +1,282 @@
 {
-  "men": [
-    {
-      "name": "VY Jakub",
-      "number": 1,
-      "position": "Brankář"
-    },
-    {
-      "name": "McEvoy Thomas James ",
-      "number": 4,
-      "position": "Záložník"
-    },
-    {
-      "name": "Šimčák Marek ",
-      "number": 19,
-      "position": "Obránce"
-    },
-    {
-      "name": "Vrzal Filip ",
-      "number": 6,
-      "position": "Obránce",
-      "photo": ""
-    },
-    {
-      "name": " Jeník Branislav",
-      "number": 14,
-      "position": "Obránce",
-      "photo": ""
-    },
-    {
-      "name": "Sklenář David",
-      "number": 7,
-      "position": "Záložník"
-    },
-    {
-      "name": "Kubín Tomáš",
-      "number": 8,
-      "position": "Obránce",
-      "photo": ""
-    },
-    {
-      "name": "Červenák David ",
-      "number": 9,
-      "position": "Útočník"
-    },
-    {
-      "name": "Pernorio Nicholas ",
-      "number": 10,
-      "position": "Útočník"
-    },
-    {
-      "name": " Opluštil Pavel",
-      "number": 11,
-      "position": "Záložník",
-      "photo": ""
-    },
-    {
-      "name": "Strážnický Patrik ",
-      "number": 12,
-      "position": "Obránce"
-    },
-    {
-      "name": "Morkus Matyáš ",
-      "number": 13,
-      "position": "Obránce"
-    },
-    {
-      "name": "Pernorio Francessco",
-      "number": 16,
-      "position": "Záložník"
-    },
-    {
-      "name": "Ghothim Hesham ",
-      "number": 17,
-      "position": "Záložník",
-      "photo": ""
-    },
-    {
-      "name": "Španiel Štěpán ",
-      "number": 24,
-      "position": "Útočník"
-    },
-    {
-      "name": "Sklenář Vojtěch",
-      "position": "Útočník",
-      "number": 15
-    },
-    {
-      "name": "Majtner Jan",
-      "number": 18,
-      "position": "Záložník"
-    },
-    {
-      "name": "Lutonský Libor",
-      "number": 2,
-      "position": "Obránce"
-    },
-    {
-      "name": "Kytlica Richard",
-      "position": "Záložník",
-      "number": 20
-    },
-    {
-      "name": "Kunčar Martin",
-      "number": 21,
-      "position": "Záložník"
-    },
-    {
-      "name": "Handl Marek",
-      "number": 22,
-      "position": "Záložník"
-    },
-    {
-      "name": "Gabrhelík Lukáš",
-      "number": 3,
-      "position": "Obránce"
-    },
-    {
-      "name": "Čureja Patrik",
-      "number": 5,
-      "position": "Útočník"
-    },
-    {
-      "name": "Merli Mathias",
-      "number": 23,
-      "position": "Útočník"
-    }
-  ],
-  "youth": {
-    "dorostenci": [],
-    "dorostenky-d19": [],
-    "starsi-zaci": [],
-    "mlads-zaci": [],
-    "mlads-zaci-b": [],
-    "skolicka": [
+  "partial": false,
+  "path": "src/_data/players.json",
+  "meta": {
+    "path": "src/_data/players.json"
+  },
+  "isModification": null,
+  "raw": "{\n  \"men\": [\n    {\n      \"name\": \"VY Jakub\",\n      \"number\": 1,\n      \"position\": \"Brankář\"\n    },\n    {\n      \"name\": \"McEvoy Thomas James \",\n      \"number\": 4,\n      \"position\": \"Záložník\"\n    },\n    {\n      \"name\": \"Šimčák Marek \",\n      \"number\": 19,\n      \"position\": \"Obránce\"\n    },\n    {\n      \"name\": \"Vrzal Filip \",\n      \"number\": 6,\n      \"position\": \"Obránce\",\n      \"photo\": \"\"\n    },\n    {\n      \"name\": \" Jeník Branislav\",\n      \"number\": 14,\n      \"position\": \"Obránce\",\n      \"photo\": \"\"\n    },\n    {\n      \"name\": \"Sklenář David\",\n      \"number\": 7,\n      \"position\": \"Záložník\"\n    },\n    {\n      \"name\": \"Kubín Tomáš\",\n      \"number\": 8,\n      \"position\": \"Obránce\",\n      \"photo\": \"\"\n    },\n    {\n      \"name\": \"Červenák David \",\n      \"number\": 9,\n      \"position\": \"Útočník\"\n    },\n    {\n      \"name\": \"Pernorio Nicholas \",\n      \"number\": 10,\n      \"position\": \"Útočník\"\n    },\n    {\n      \"name\": \" Opluštil Pavel\",\n      \"number\": 11,\n      \"position\": \"Záložník\",\n      \"photo\": \"\"\n    },\n    {\n      \"name\": \"Strážnický Patrik \",\n      \"number\": 12,\n      \"position\": \"Obránce\"\n    },\n    {\n      \"name\": \"Morkus Matyáš \",\n      \"number\": 13,\n      \"position\": \"Obránce\"\n    },\n    {\n      \"name\": \"Pernorio Francessco\",\n      \"number\": 16,\n      \"position\": \"Záložník\"\n    },\n    {\n      \"name\": \"Ghothim Hesham \",\n      \"number\": 17,\n      \"position\": \"Záložník\",\n      \"photo\": \"\"\n    },\n    {\n      \"name\": \"Španiel Štěpán \",\n      \"number\": 24,\n      \"position\": \"Útočník\"\n    },\n    {\n      \"name\": \"Sklenář Vojtěch\",\n      \"position\": \"Útočník\",\n      \"number\": 15\n    },\n    {\n      \"name\": \"Majtner Jan\",\n      \"number\": 18,\n      \"position\": \"Záložník\"\n    },\n    {\n      \"name\": \"Lutonský Libor\",\n      \"number\": 2,\n      \"position\": \"Obránce\"\n    },\n    {\n      \"name\": \"Kytlica Richard\",\n      \"position\": \"Záložník\",\n      \"number\": 20\n    },\n    {\n      \"name\": \"Kunčar Martin\",\n      \"number\": 21,\n      \"position\": \"Záložník\"\n    },\n    {\n      \"name\": \"Handl Marek\",\n      \"number\": 22,\n      \"position\": \"Záložník\"\n    },\n    {\n      \"name\": \"Gabrhelík Lukáš\",\n      \"number\": 3,\n      \"position\": \"Obránce\"\n    },\n    {\n      \"name\": \"Čureja Patrik\",\n      \"number\": 5,\n      \"position\": \"Útočník\"\n    },\n    {\n      \"name\": \"Merli Mathias\",\n      \"number\": 23,\n      \"position\": \"Útočník\"\n    }\n  ],\n  \"youth\": {\n    \"dorostenci\": [],\n    \"dorostenky-d19\": [],\n    \"starsi-zaci\": [],\n    \"mlads-zaci\": [],\n    \"mlads-zaci-b\": [],\n    \"skolicka\": [\n      {\n        \"name\": \"Filip Navrátil\",\n        \"number\": 2020,\n        \"position\": \"Útočník\"\n      },\n      {\n        \"name\": \"Daniel Puna\",\n        \"number\": 2019,\n        \"position\": \"Útočník\"\n      },\n      {\n        \"name\": \"Dominik Kovář\",\n        \"number\": 2019,\n        \"position\": \"Útočník\"\n      },\n      {\n        \"name\": \"Emma Maria Bukovan\",\n        \"number\": 2018,\n        \"position\": \"Útočník\"\n      },\n      {\n        \"name\": \"Jolana Večerková\",\n        \"number\": 2017,\n        \"position\": \"Útočník\"\n      },\n      {\n        \"name\": \"Eliška Pospíšilová\",\n        \"number\": 2018,\n        \"position\": \"Útočník\"\n      },\n      {\n        \"name\": \"Mia Závodská\",\n        \"number\": 2019,\n        \"position\": \"Útočník\"\n      }\n    ]\n  }\n}\n",
+  "data": {
+    "men": [
       {
-        "name": "Filip Navrátil",
-        "number": 2020,
+        "name": "VY Jakub",
+        "number": 1,
+        "position": "Brankář"
+      },
+      {
+        "name": "McEvoy Thomas James ",
+        "number": 4,
+        "position": "Záložník"
+      },
+      {
+        "name": "Šimčák Marek ",
+        "number": 19,
+        "position": "Obránce"
+      },
+      {
+        "name": "Vrzal Filip ",
+        "number": 6,
+        "position": "Obránce",
+        "photo": ""
+      },
+      {
+        "name": " Jeník Branislav",
+        "number": 14,
+        "position": "Obránce",
+        "photo": ""
+      },
+      {
+        "name": "Sklenář David",
+        "number": 7,
+        "position": "Záložník"
+      },
+      {
+        "name": "Kubín Tomáš",
+        "number": 8,
+        "position": "Obránce",
+        "photo": ""
+      },
+      {
+        "name": "Červenák David ",
+        "number": 9,
         "position": "Útočník"
       },
       {
-        "name": "Daniel Puna",
-        "number": 2019,
+        "name": "Pernorio Nicholas ",
+        "number": 10,
         "position": "Útočník"
       },
       {
-        "name": "Dominik Kovář",
-        "number": 2019,
+        "name": " Opluštil Pavel",
+        "number": 11,
+        "position": "Záložník",
+        "photo": "/assets/img/uploads/pavel.jpg"
+      },
+      {
+        "name": "Strážnický Patrik ",
+        "number": 12,
+        "position": "Obránce"
+      },
+      {
+        "name": "Morkus Matyáš ",
+        "number": 13,
+        "position": "Obránce"
+      },
+      {
+        "name": "Pernorio Francessco",
+        "number": 16,
+        "position": "Záložník"
+      },
+      {
+        "name": "Ghothim Hesham ",
+        "number": 17,
+        "position": "Záložník",
+        "photo": ""
+      },
+      {
+        "name": "Španiel Štěpán ",
+        "number": 24,
         "position": "Útočník"
       },
       {
-        "name": "Emma Maria Bukovan",
-        "number": 2018,
+        "name": "Sklenář Vojtěch",
+        "position": "Útočník",
+        "number": 15
+      },
+      {
+        "name": "Majtner Jan",
+        "number": 18,
+        "position": "Záložník"
+      },
+      {
+        "name": "Lutonský Libor",
+        "number": 2,
+        "position": "Obránce"
+      },
+      {
+        "name": "Kytlica Richard",
+        "position": "Záložník",
+        "number": 20
+      },
+      {
+        "name": "Kunčar Martin",
+        "number": 21,
+        "position": "Záložník"
+      },
+      {
+        "name": "Handl Marek",
+        "number": 22,
+        "position": "Záložník"
+      },
+      {
+        "name": "Gabrhelík Lukáš",
+        "number": 3,
+        "position": "Obránce"
+      },
+      {
+        "name": "Čureja Patrik",
+        "number": 5,
         "position": "Útočník"
       },
       {
-        "name": "Jolana Večerková",
-        "number": 2017,
-        "position": "Útočník"
-      },
-      {
-        "name": "Eliška Pospíšilová",
-        "number": 2018,
-        "position": "Útočník"
-      },
-      {
-        "name": "Mia Závodská",
-        "number": 2019,
+        "name": "Merli Mathias",
+        "number": 23,
         "position": "Útočník"
       }
-    ]
-  }
+    ],
+    "youth": {
+      "dorostenci": [],
+      "dorostenky-d19": [],
+      "starsi-zaci": [],
+      "mlads-zaci": [],
+      "mlads-zaci-b": [],
+      "skolicka": [
+        {
+          "name": "Filip Navrátil",
+          "number": 2020,
+          "position": "Útočník"
+        },
+        {
+          "name": "Daniel Puna",
+          "number": 2019,
+          "position": "Útočník"
+        },
+        {
+          "name": "Dominik Kovář",
+          "number": 2019,
+          "position": "Útočník"
+        },
+        {
+          "name": "Emma Maria Bukovan",
+          "number": 2018,
+          "position": "Útočník"
+        },
+        {
+          "name": "Jolana Večerková",
+          "number": 2017,
+          "position": "Útočník"
+        },
+        {
+          "name": "Eliška Pospíšilová",
+          "number": 2018,
+          "position": "Útočník"
+        },
+        {
+          "name": "Mia Závodská",
+          "number": 2019,
+          "position": "Útočník"
+        }
+      ]
+    }
+  },
+  "author": "",
+  "slug": "players",
+  "newRecord": false,
+  "status": "",
+  "mediaFiles": [
+    {
+      "id": "955e074335052cafc26d5fbb8d319dc183435152",
+      "name": "20251112_170017.jpg",
+      "size": 4250024,
+      "displayURL": {
+        "id": "955e074335052cafc26d5fbb8d319dc183435152",
+        "path": "src/assets/img/uploads/20251112_170017.jpg"
+      },
+      "path": "src/assets/img/uploads/20251112_170017.jpg"
+    },
+    {
+      "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
+      "name": "a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png",
+      "size": 2088619,
+      "displayURL": {
+        "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
+        "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
+      },
+      "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
+    },
+    {
+      "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
+      "name": "logo-facr.svg",
+      "size": 21614,
+      "displayURL": {
+        "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
+        "path": "src/assets/img/uploads/logo-facr.svg"
+      },
+      "path": "src/assets/img/uploads/logo-facr.svg"
+    },
+    {
+      "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
+      "name": "logo-fotbalového-oddílu-tj-sokol.png",
+      "size": 1435105,
+      "displayURL": {
+        "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
+        "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+      },
+      "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+    },
+    {
+      "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
+      "name": "logo_km.png",
+      "size": 20972,
+      "displayURL": {
+        "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
+        "path": "src/assets/img/uploads/logo_km.png"
+      },
+      "path": "src/assets/img/uploads/logo_km.png"
+    },
+    {
+      "id": "a921105701efd00b9d99dab71794a5effaba460c",
+      "name": "logo_zk2.png",
+      "size": 17777,
+      "displayURL": {
+        "id": "a921105701efd00b9d99dab71794a5effaba460c",
+        "path": "src/assets/img/uploads/logo_zk2.png"
+      },
+      "path": "src/assets/img/uploads/logo_zk2.png"
+    },
+    {
+      "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
+      "name": "ofs-kroměříž-logo-černá-0.webp",
+      "size": 55478,
+      "displayURL": {
+        "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
+        "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
+      },
+      "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
+    },
+    {
+      "id": "5a8fd9f7da561aec777a92254c498ab75c27297c",
+      "name": "pavel.jpg",
+      "size": 97211,
+      "displayURL": {
+        "id": "5a8fd9f7da561aec777a92254c498ab75c27297c",
+        "path": "src/assets/img/uploads/pavel.jpg"
+      },
+      "path": "src/assets/img/uploads/pavel.jpg"
+    },
+    {
+      "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
+      "name": "pavel.png",
+      "size": 28591,
+      "displayURL": {
+        "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
+        "path": "src/assets/img/uploads/pavel.png"
+      },
+      "path": "src/assets/img/uploads/pavel.png"
+    }
+  ],
+  "label": "Hráči",
+  "updatedOn": "",
+  "i18n": {},
+  "collection": "team"
 }
