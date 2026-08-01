@@ -23,87 +23,20 @@ module.exports = class {
     const escapeAttr = (value) => String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const normalizeUrl = (value) => String(value || '').trim();
 
-    function getYouTubeId(url) {
-      if (!url) return '';
-      if (url.includes('youtu.be/')) return url.split('youtu.be/')[1].split('?')[0].split('&')[0].trim();
-      if (url.includes('youtube.com/shorts/')) return url.split('youtube.com/shorts/')[1].split('?')[0].split('&')[0].trim();
-      if (url.includes('v=')) return url.split('v=')[1].split('&')[0].trim();
-      if (url.includes('/embed/')) return url.split('/embed/')[1].split('?')[0].split('&')[0].trim();
-      return '';
-    }
-
-    function renderMediaEmbed(urlRaw, heading) {
+    function renderMediaLink(urlRaw, heading) {
       const url = normalizeUrl(urlRaw);
       if (!url) return '';
 
-      const lower = url.toLowerCase();
-      const ytId = getYouTubeId(url);
-      const isVideoFile = lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.endsWith('.ogg');
-
-      function renderDirectLink(label) {
-        return `<p style="margin-top:.5rem;"><a href="${escapeAttr(url)}" target="_blank" rel="noopener" class="btn btn--secondary">${label}</a></p>`;
-      }
-
-      if (ytId) {
-        return `
+      return `
 <h2>${heading}</h2>
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1rem 0 2rem; border-radius: 12px;">
-  <iframe
-    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-    src="https://www.youtube-nocookie.com/embed/${escapeAttr(ytId)}"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen
-    title="${heading}">
-  </iframe>
-</div>
-${renderDirectLink('Otevřít na YouTube')}`;
-      }
-
-      if (isVideoFile) {
-        return `
-<h2>${heading}</h2>
-<video controls preload="metadata" style="width: 100%; max-width: 900px; margin: 1rem 0 2rem; border-radius: 12px; background: #000;">
-  <source src="${escapeAttr(url)}" type="video/${lower.endsWith('.webm') ? 'webm' : lower.endsWith('.ogg') ? 'ogg' : 'mp4'}">
-  Váš prohlížeč nepodporuje video element.
-</video>
-${renderDirectLink('Otevřít video')}`;
-      }
-
-      if (lower.includes('facebook.com')) {
-        const pluginUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&width=1280`;
-        return `
-<h2>${heading}</h2>
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1rem 0 2rem; border-radius: 12px;">
-  <iframe
-    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-    src="${escapeAttr(pluginUrl)}"
-    loading="lazy"
-    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-    allowfullscreen
-    title="${heading}">
-  </iframe>
-</div>
-${renderDirectLink('Otevřít video')}`;
-      }
-
-      if (lower.includes('veo.co')) {
-        return `
-<h2>${heading}</h2>
-<div class="card" style="margin: 1rem 0 2rem; padding: 1rem 1.25rem; border-left: 4px solid var(--primary);">
-  <p class="muted" style="margin: 0 0 .75rem;">Veo na některých webech blokuje vložené přehrávání (CSP).</p>
-  <p style="margin:0;"><a href="${escapeAttr(url)}" target="_blank" rel="noopener" class="btn btn--secondary">Otevřít ve Veo</a></p>
-</div>`;
-      }
-
-      return `<h2>${heading}</h2><p><a href="${escapeAttr(url)}" target="_blank" rel="noopener">Otevřít přenos/video</a></p>`;
+<p><a href="${escapeAttr(url)}" target="_blank" rel="noopener" class="btn btn--secondary">Otevřít na YouTube</a></p>`;
     }
     
     const hasScore = m.homeScore !== null && m.homeScore !== undefined && m.awayScore !== null && m.awayScore !== undefined;
     const liveHtml = !hasScore && m.liveUrl
-      ? renderMediaEmbed(m.liveUrl, 'Živý přenos')
+      ? renderMediaLink(m.liveUrl, 'Živý přenos')
       : '';
-    const videoHtml = m.videoUrl ? renderMediaEmbed(m.videoUrl, 'Video ze zápasu') : '';
+    const videoHtml = m.videoUrl ? renderMediaLink(m.videoUrl, 'Video ze zápasu') : '';
 
     const categoryNames = {
       'dorostenci': 'Dorostenci',

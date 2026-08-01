@@ -234,30 +234,6 @@ hideTitle: true
 
       <article class="card">
         <div class="card__body">
-          <h2 class="card__title">Živé přenosy</h2>
-
-          {% if matchesComputed.liveMatches.length %}
-            <ol class="homeNewsList">
-              {% for m in matchesComputed.liveMatches | slice(0, 3) %}
-                <li>
-                  <strong>{{ m.home }}</strong> vs <strong>{{ m.away }}</strong>
-                  <span class="muted"> · {{ m._dateStr | czDate }}{% if m.time %} {{ m.time }}{% endif %}</span>
-                  <div style="margin-top:.35rem;">
-                    <a class="btn btn--live" href="{{ m.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a>
-                  </div>
-                </li>
-              {% endfor %}
-            </ol>
-            <p><a href="{{ '/zapasy/' | url }}">Všechny zápasy a přenosy</a></p>
-          {% else %}
-            <p class="muted">Teď není vypsaný žádný živý přenos.</p>
-            <p><a href="{{ '/zapasy/' | url }}">Zobrazit zápasy</a></p>
-          {% endif %}
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card__body">
           <h2 class="card__title">Poslední novinky</h2>
 
           {% set latest = collections.news | slice(0, 3) %}
