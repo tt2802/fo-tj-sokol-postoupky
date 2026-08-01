@@ -100,6 +100,24 @@ function main() {
 		ok("Duplicitní galleries.json neexistuje");
 	}
 
+	const invalidJsonFiles = adminFiles
+		.filter((rel) => rel.startsWith("src/_data/") && /\.json$/i.test(rel))
+		.filter((rel) => {
+			try {
+				JSON.parse(readText(path.join(root, rel)));
+				return false;
+			} catch (_) {
+				return true;
+			}
+		});
+
+	if (invalidJsonFiles.length) {
+		fail(
+			"Některé admin JSON soubory nejsou validní JSON",
+			invalidJsonFiles.map((x) => toPosix(x))
+		);
+	}
+
 	const wrappedJsonFiles = adminFiles
 		.filter((rel) => rel.startsWith("src/_data/") && /\.json$/i.test(rel))
 		.filter((rel) => {
