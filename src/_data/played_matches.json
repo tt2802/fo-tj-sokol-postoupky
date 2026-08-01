@@ -7,7 +7,43 @@
   "isModification": null,
   "raw": "{\n  \"items\": [\n    {\n      \"season\": \"2025/2026\",\n      \"cards\": [\n        {\n          \"player\": \"Francessco\",\n          \"cardType\": \"yellow\"\n        }\n      ],\n      \"awayScore\": 0,\n      \"isHome\": true,\n      \"assists\": [\n        {\n          \"player\": \"David Sklenář\"\n        }\n      ],\n      \"slug\": \"2026-04-05-postoupky-nemcice\",\n      \"time\": \"15.00\",\n      \"round\": \"1\",\n      \"away\": \"Němčice\",\n      \"date\": \"2026-04-05\",\n      \"lineup\": [\n        {\n          \"player\": \"Tomáš Kubín\"\n        },\n        {\n          \"player\": \"Pavel Opluštil\"\n        },\n        {\n          \"player\": \"Branko Jeník\"\n        },\n        {\n          \"player\": \"Matyáš Morkus\"\n        },\n        {\n          \"player\": \"David Sklenář\"\n        },\n        {\n          \"player\": \"Jakub Svačina\"\n        },\n        {\n          \"player\": \"Filip Vrzal\"\n        },\n        {\n          \"player\": \"Hesham Gothim\"\n        },\n        {\n          \"player\": \"Brankář\"\n        },\n        {\n          \"player\": \"Francessco\"\n        },\n        {\n          \"player\": \"Marek Šimčák\"\n        }\n      ],\n      \"venue\": \"Postoupky\",\n      \"scorers\": [\n        {\n          \"scorer\": \"Francessco\"\n        }\n      ],\n      \"homeScore\": 2,\n      \"team\": \"muzi\",\n      \"home\": \"Postoupky\",\n      \"competition\": \"OP\"\n    },\n    {\n      \"referee\": \"McEvoy Thomas James\",\n      \"season\": \"2025/2026\",\n      \"awayScore\": 1,\n      \"isHome\": true,\n      \"slug\": \"2026-05-02-postoupky-bezmerov\",\n      \"time\": \"12:30\",\n      \"round\": \"1\",\n      \"away\": \"Bezměrov\",\n      \"date\": \"2026-05-02\",\n      \"lineup\": [\n        {\n          \"player\": \"Tomáš Kubín\"\n        },\n        {\n          \"player\": \"Pavel Opluštil\"\n        },\n        {\n          \"player\": \"Branko Jeník\"\n        },\n        {\n          \"player\": \"Matyáš Morkus\"\n        },\n        {\n          \"player\": \"David Sklenář\"\n        },\n        {\n          \"player\": \"Jakub Svačina\"\n        },\n        {\n          \"player\": \"Filip Vrzal\"\n        },\n        {\n          \"player\": \"Hesham Gothim\"\n        },\n        {\n          \"player\": \"Brankář\"\n        },\n        {\n          \"player\": \"Francessco\"\n        },\n        {\n          \"player\": \"Marek Šimčák\"\n        }\n      ],\n      \"venue\": \"Postoupky\",\n      \"scorers\": [\n        {\n          \"scorer\": \"Jakub Svačina\"\n        },\n        {\n          \"scorer\": \"Branko Jeník\"\n        },\n        {\n          \"scorer\": \"Brankář\"\n        }\n      ],\n      \"homeScore\": 3,\n      \"videoUrl\": \"https://www.youtube.com/watch?v=VRqfJwruKmM\",\n      \"team\": \"muzi\",\n      \"home\": \"Postoupky\",\n      \"competition\": \"9.liga\"\n    },\n    {\n      \"season\": \"2025/2026\",\n      \"relatedUpcoming\": \"postoupky-bezmerov\",\n      \"isHome\": true,\n      \"slug\": \"postoupky-bezmerov\",\n      \"round\": \"1\",\n      \"away\": \"Bezměrov\",\n      \"date\": \"2026-05-02\",\n      \"venue\": \"Postoupky\",\n      \"team\": \"mladez\",\n      \"home\": \"Postoupky\",\n      \"competition\": \"9.liga\"\n    }\n  ]\n}\n",
   "data": {
-    "items": []
+    "items": [
+      {
+        "season": "2025/2026",
+        "awayScore": 4,
+        "isHome": false,
+        "slug": "pratelak-martinice-postoupky",
+        "time": "17.30",
+        "away": "Postoupky",
+        "date": "2026-07-26",
+        "lineup": [
+          {
+            "player": "VY Jakub"
+          },
+          {
+            "player": "Tomáš Kubín"
+          },
+          {
+            "player": "Nicholas Pernorio"
+          },
+          {
+            "player": "Francessco Pernorio"
+          },
+          {
+            "player": "David Sklenář"
+          },
+          {
+            "player": "Pavel Opluštil"
+          }
+        ],
+        "venue": "Martinice",
+        "homeScore": 4,
+        "videoUrl": "https://app.veo.co/matches/20260726-a-tym-vs-martinice-vd9043ca/",
+        "team": "muzi",
+        "home": "Martinice",
+        "competition": "pratelak"
+      }
+    ]
   },
   "author": "",
   "slug": "played_matches",
