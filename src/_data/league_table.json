@@ -1,305 +1,116 @@
 {
-  "partial": false,
-  "path": "src/_data/league_table.json",
-  "meta": {
-    "path": "src/_data/league_table.json"
-  },
-  "isModification": null,
-  "raw": "{\n  \"season\": \"2026/2027\",\n  \"competition\": \"9.liga skupina C\",\n  \"teams\": [\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"TJ Troubky-Zdislavice z.s.\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 0,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"TJ Sokol Dřínov, spolek\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 1,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"Tělocvičná jednota Sokol Litenčice\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 3,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"TJ Sokol Zlobice z.s.\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 3,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"Tělovýchovná jednota Lutopecny-Měrůtky, z.s.\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 4,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"SK Haná Záříčí z.s.\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 5,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"TJ Slavoj Šelešovice, z.s.\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 6,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"TJ Bivoj Bařice, z.s.\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 7,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"FC Koryčany z.s.\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 9,\n      \"wins\": 0\n    },\n    {\n      \"goalsAgainst\": 0,\n      \"points\": 0,\n      \"goalsFor\": 0,\n      \"name\": \"Tělocvičná jednota Sokol Postoupky\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 0,\n      \"pos\": 8,\n      \"wins\": 0\n    }\n  ]\n}\n",
-  "data": {
-    "season": "2026/2027",
-    "competition": "9.liga skupina C",
-    "teams": [
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "TJ Troubky-Zdislavice z.s.",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 1,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "TJ Sokol Dřínov, spolek",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 2,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "Tělocvičná jednota Sokol Litenčice",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 3,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "TJ Sokol Zlobice z.s.",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 4,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "Tělovýchovná jednota Lutopecny-Měrůtky, z.s.",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 5,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "SK Haná Záříčí z.s.",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 6,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "TJ Slavoj Šelešovice, z.s.",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 7,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "TJ Bivoj Bařice, z.s.",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 8,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "FC Koryčany z.s.",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 9,
-        "wins": 0
-      },
-      {
-        "goalsAgainst": 0,
-        "points": 0,
-        "goalsFor": 0,
-        "name": "Tělocvičná jednota Sokol Postoupky",
-        "draws": 0,
-        "losses": 0,
-        "played": 0,
-        "pos": 10,
-        "wins": 0
-      }
-    ]
-  },
-  "author": "",
-  "slug": "league_table",
-  "newRecord": false,
-  "status": "",
-  "mediaFiles": [
+  "season": "2026/2027",
+  "competition": "9.liga skupina C",
+  "teams": [
     {
-      "id": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-      "name": ".gitkeep",
-      "size": 0,
-      "displayURL": {
-        "id": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-        "path": "src/assets/img/uploads/.gitkeep"
-      },
-      "path": "src/assets/img/uploads/.gitkeep"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "TJ Troubky-Zdislavice z.s.",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 1,
+      "wins": 0
     },
     {
-      "id": "955e074335052cafc26d5fbb8d319dc183435152",
-      "name": "20251112_170017.jpg",
-      "size": 4250024,
-      "displayURL": {
-        "id": "955e074335052cafc26d5fbb8d319dc183435152",
-        "path": "src/assets/img/uploads/20251112_170017.jpg"
-      },
-      "path": "src/assets/img/uploads/20251112_170017.jpg"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "TJ Sokol Dřínov, spolek",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 2,
+      "wins": 0
     },
     {
-      "id": "b7b0f1766c71ac3cf903140609aa3dd875e0acaa",
-      "name": "9.jpg",
-      "size": 85612,
-      "displayURL": {
-        "id": "b7b0f1766c71ac3cf903140609aa3dd875e0acaa",
-        "path": "src/assets/img/uploads/9.jpg"
-      },
-      "path": "src/assets/img/uploads/9.jpg"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "Tělocvičná jednota Sokol Litenčice",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 3,
+      "wins": 0
     },
     {
-      "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
-      "name": "a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png",
-      "size": 2088619,
-      "displayURL": {
-        "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
-        "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
-      },
-      "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "TJ Sokol Zlobice z.s.",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 4,
+      "wins": 0
     },
     {
-      "id": "a75585e20d9d615669b8911f4d66cefc26400a0a",
-      "name": "david-hork-5.svg",
-      "size": 1230,
-      "displayURL": {
-        "id": "a75585e20d9d615669b8911f4d66cefc26400a0a",
-        "path": "src/assets/img/uploads/david-hork-5.svg"
-      },
-      "path": "src/assets/img/uploads/david-hork-5.svg"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "Tělovýchovná jednota Lutopecny-Měrůtky, z.s.",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 5,
+      "wins": 0
     },
     {
-      "id": "935c4e17e8dc5630a697a5b60a8c61c413294f82",
-      "name": "filip-dvok-6.svg",
-      "size": 1229,
-      "displayURL": {
-        "id": "935c4e17e8dc5630a697a5b60a8c61c413294f82",
-        "path": "src/assets/img/uploads/filip-dvok-6.svg"
-      },
-      "path": "src/assets/img/uploads/filip-dvok-6.svg"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "SK Haná Záříčí z.s.",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 6,
+      "wins": 0
     },
     {
-      "id": "fedc633f98996f2a4c7286b984b2b534d662324d",
-      "name": "jan-novk-1.svg",
-      "size": 1228,
-      "displayURL": {
-        "id": "fedc633f98996f2a4c7286b984b2b534d662324d",
-        "path": "src/assets/img/uploads/jan-novk-1.svg"
-      },
-      "path": "src/assets/img/uploads/jan-novk-1.svg"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "TJ Slavoj Šelešovice, z.s.",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 7,
+      "wins": 0
     },
     {
-      "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
-      "name": "logo-facr.svg",
-      "size": 21614,
-      "displayURL": {
-        "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
-        "path": "src/assets/img/uploads/logo-facr.svg"
-      },
-      "path": "src/assets/img/uploads/logo-facr.svg"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "TJ Bivoj Bařice, z.s.",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 8,
+      "wins": 0
     },
     {
-      "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
-      "name": "logo-fotbalového-oddílu-tj-sokol.png",
-      "size": 1435105,
-      "displayURL": {
-        "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
-        "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
-      },
-      "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "FC Koryčany z.s.",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 9,
+      "wins": 0
     },
     {
-      "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
-      "name": "logo_km.png",
-      "size": 20972,
-      "displayURL": {
-        "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
-        "path": "src/assets/img/uploads/logo_km.png"
-      },
-      "path": "src/assets/img/uploads/logo_km.png"
-    },
-    {
-      "id": "a921105701efd00b9d99dab71794a5effaba460c",
-      "name": "logo_zk2.png",
-      "size": 17777,
-      "displayURL": {
-        "id": "a921105701efd00b9d99dab71794a5effaba460c",
-        "path": "src/assets/img/uploads/logo_zk2.png"
-      },
-      "path": "src/assets/img/uploads/logo_zk2.png"
-    },
-    {
-      "id": "b83ce528c3a2c454c46daee44cf0e5eb684868cd",
-      "name": "martin-novk-4.svg",
-      "size": 1228,
-      "displayURL": {
-        "id": "b83ce528c3a2c454c46daee44cf0e5eb684868cd",
-        "path": "src/assets/img/uploads/martin-novk-4.svg"
-      },
-      "path": "src/assets/img/uploads/martin-novk-4.svg"
-    },
-    {
-      "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
-      "name": "ofs-kroměříž-logo-černá-0.webp",
-      "size": 55478,
-      "displayURL": {
-        "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
-        "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
-      },
-      "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
-    },
-    {
-      "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
-      "name": "pavel.png",
-      "size": 28591,
-      "displayURL": {
-        "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
-        "path": "src/assets/img/uploads/pavel.png"
-      },
-      "path": "src/assets/img/uploads/pavel.png"
-    },
-    {
-      "id": "73011e383232e03dd1f61351c056ad96adef8922",
-      "name": "petr-svoboda-3.svg",
-      "size": 1231,
-      "displayURL": {
-        "id": "73011e383232e03dd1f61351c056ad96adef8922",
-        "path": "src/assets/img/uploads/petr-svoboda-3.svg"
-      },
-      "path": "src/assets/img/uploads/petr-svoboda-3.svg"
-    },
-    {
-      "id": "447def3edf67e6cdaf52a7fd1a8e6fa2c4e38ec6",
-      "name": "tom-kuera-2.svg",
-      "size": 1231,
-      "displayURL": {
-        "id": "447def3edf67e6cdaf52a7fd1a8e6fa2c4e38ec6",
-        "path": "src/assets/img/uploads/tom-kuera-2.svg"
-      },
-      "path": "src/assets/img/uploads/tom-kuera-2.svg"
-    },
-    {
-      "id": "663e740d3afd6c117e66c508f4ccd235f43dcad6",
-      "name": "šachový-pěšec-stojí-před-zrcadlem-a-dívá-se-do-svého-odrazu.-v-odrazu-zrcadla-není-pěšec-ale-šachová-dáma.-detailní-šachové-figurky-realistické-provedení-jemné-dramatické-světlo-čisté-pozadí.-symbolická-kompoz.jpg",
-      "size": 142671,
-      "displayURL": {
-        "id": "663e740d3afd6c117e66c508f4ccd235f43dcad6",
-        "path": "src/assets/img/uploads/šachový-pěšec-stojí-před-zrcadlem-a-dívá-se-do-svého-odrazu.-v-odrazu-zrcadla-není-pěšec-ale-šachová-dáma.-detailní-šachové-figurky-realistické-provedení-jemné-dramatické-světlo-čisté-pozadí.-symbolická-kompoz.jpg"
-      },
-      "path": "src/assets/img/uploads/šachový-pěšec-stojí-před-zrcadlem-a-dívá-se-do-svého-odrazu.-v-odrazu-zrcadla-není-pěšec-ale-šachová-dáma.-detailní-šachové-figurky-realistické-provedení-jemné-dramatické-světlo-čisté-pozadí.-symbolická-kompoz.jpg"
+      "goalsAgainst": 0,
+      "points": 0,
+      "goalsFor": 0,
+      "name": "Tělocvičná jednota Sokol Postoupky",
+      "draws": 0,
+      "losses": 0,
+      "played": 0,
+      "pos": 10,
+      "wins": 0
     }
-  ],
-  "label": "Tabulka soutěže",
-  "updatedOn": "",
-  "i18n": {},
-  "collection": "matches"
+  ]
 }
