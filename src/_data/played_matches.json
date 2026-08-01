@@ -12,6 +12,17 @@
         "season": "2025/2026",
         "awayScore": 4,
         "isHome": false,
+        "assists": [
+          {
+            "player": "Kubín Tomáš"
+          },
+          {
+            "player": "Hrdlička Ondřej"
+          },
+          {
+            "player": "Pernorio Nicholas "
+          }
+        ],
         "slug": "pratelak-martinice-postoupky",
         "time": "17.30",
         "away": "Postoupky",
