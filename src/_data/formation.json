@@ -205,6 +205,7 @@
       "path": "src/assets/img/uploads/martin-novk-4.svg"
     },
     {
+<<<<<<< HEAD
       "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
       "name": "ofs-kroměříž-logo-černá-0.webp",
       "size": 55478,
@@ -253,6 +254,26 @@
         "path": "src/assets/img/uploads/šachový-pěšec-stojí-před-zrcadlem-a-dívá-se-do-svého-odrazu.-v-odrazu-zrcadla-není-pěšec-ale-šachová-dáma.-detailní-šachové-figurky-realistické-provedení-jemné-dramatické-světlo-čisté-pozadí.-symbolická-kompoz.jpg"
       },
       "path": "src/assets/img/uploads/šachový-pěšec-stojí-před-zrcadlem-a-dívá-se-do-svého-odrazu.-v-odrazu-zrcadla-není-pěšec-ale-šachová-dáma.-detailní-šachové-figurky-realistické-provedení-jemné-dramatické-světlo-čisté-pozadí.-symbolická-kompoz.jpg"
+=======
+      "slot": "TRENER",
+      "player": "Vladimír Opluštil"
+    },
+    {
+      "slot": "TRIDACKA",
+      "player": "Šimčák Marek "
+    },
+    {
+      "slot": "TRIDACKA",
+      "player": "Handl Marek"
+    },
+    {
+      "slot": "TRIDACKA",
+      "player": "Merli Mathias"
+    },
+    {
+      "slot": "TRIDACKA",
+      "player": "Kytlica Richard"
+>>>>>>> 62ee461 (fix(data): normalize wrapped formation payload)
     }
   ],
   "label": "Sestava (formace)",
