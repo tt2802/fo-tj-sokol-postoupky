@@ -64,13 +64,14 @@ collections:
       - name: "upcoming_matches"
         label: "Nadcházející zápasy"
         file: "src/_data/upcoming_matches.json"
+        description: "Tip: pole pro živý přenos najdete po otevření konkrétního zápasu jako „🔴 LIVE URL / Živý přenos URL“"
         preview_url: "{{site_url}}/zapasy/"
         fields:
           - label: "Nadcházející zápasy"
             name: "items"
             widget: "list"
             collapsed: true
-            summary: "{{fields.date}} · {{fields.home}} vs {{fields.away}} ({{fields.competition}})"
+            summary: "{{fields.date}} · {{fields.home}} vs {{fields.away}} · LIVE: {{fields.liveUrl}}"
             fields:
               - label: "Slug (URL)"
                 name: "slug"
@@ -131,7 +132,7 @@ collections:
                 widget: "string"
                 required: false
                 hint: "Napr. 15:00"
-              - label: "Živý přenos URL"
+              - label: "🔴 LIVE URL (Živý přenos)"
                 name: "liveUrl"
                 widget: "string"
                 required: false
