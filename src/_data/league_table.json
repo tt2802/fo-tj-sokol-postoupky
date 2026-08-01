@@ -8,7 +8,7 @@
   "raw": "{\n  \"season\": \"2026/2027\",\n  \"competition\": \"9.liga skupina B\",\n  \"teams\": [\n    {\n      \"goalsAgainst\": 2,\n      \"points\": 9,\n      \"goalsFor\": 9,\n      \"name\": \"Šelešovice\",\n      \"draws\": 0,\n      \"losses\": 0,\n      \"played\": 3,\n      \"pos\": 1,\n      \"wins\": 3\n    },\n    {\n      \"goalsAgainst\": 3,\n      \"points\": 7,\n      \"goalsFor\": 7,\n      \"name\": \"Bařice\",\n      \"draws\": 1,\n      \"losses\": 0,\n      \"played\": 3,\n      \"pos\": 2,\n      \"wins\": 2\n    },\n    {\n      \"goalsAgainst\": 4,\n      \"points\": 4,\n      \"goalsFor\": 5,\n      \"name\": \"Postoupky\",\n      \"draws\": 1,\n      \"losses\": 1,\n      \"played\": 3,\n      \"pos\": 3,\n      \"wins\": 1\n    },\n    {\n      \"goalsAgainst\": 6,\n      \"points\": 3,\n      \"goalsFor\": 4,\n      \"name\": \"Dřínov\",\n      \"draws\": 0,\n      \"losses\": 2,\n      \"played\": 3,\n      \"pos\": 4,\n      \"wins\": 1\n    },\n    {\n      \"goalsAgainst\": 8,\n      \"points\": 0,\n      \"goalsFor\": 2,\n      \"name\": \"Troubky\",\n      \"draws\": 0,\n      \"losses\": 3,\n      \"played\": 3,\n      \"pos\": 5,\n      \"wins\": 0\n    }\n  ]\n}\n",
   "data": {
     "season": "2026/2027",
-    "competition": "9.liga skupina A",
+    "competition": "9.liga skupina C",
     "teams": [
       {
         "goalsAgainst": 0,
