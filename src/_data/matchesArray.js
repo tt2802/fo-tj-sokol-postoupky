@@ -1,5 +1,6 @@
 const upcomingMatches = require('./upcoming_matches.json');
 const playedMatches = require('./played_matches.json');
+const { extractArrayPayload } = require('./adminPayload.js');
 
 const normalizeDate = (value) => String(value || '').slice(0, 10);
 
@@ -76,7 +77,7 @@ const generateSlug = (m) => {
 };
 
 // Combine upcoming and played matches with matchType
-const upcomingItems = upcomingMatches.items || [];
+const upcomingItems = extractArrayPayload(upcomingMatches, 'items');
 const upcomingLookup = getMatchLookup(upcomingItems);
 
 const allMatches = [
@@ -84,7 +85,7 @@ const allMatches = [
     ...m,
     matchType: 'upcoming'
   })),
-  ...(playedMatches.items || []).map(m => fillPlayedFromRelatedUpcoming(m, upcomingLookup)).map(m => ({
+  ...extractArrayPayload(playedMatches, 'items').map(m => fillPlayedFromRelatedUpcoming(m, upcomingLookup)).map(m => ({
     ...m,
     matchType: 'played'
   }))

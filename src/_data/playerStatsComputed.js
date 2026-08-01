@@ -2,11 +2,13 @@
  * Computed player statistics — aggregates goals, assists, cards, appearances
  * from played_matches.json automatically. No manual entry needed.
  */
+const { extractArrayPayload } = require("./adminPayload.js");
+
 module.exports = function () {
   const playedMatches = require("./played_matches.json");
   const playersData = require("./players.json");
   const players = playersData.men || [];
-  const matches = (playedMatches && playedMatches.items) || [];
+  const matches = extractArrayPayload(playedMatches, "items");
 
   // Normalise name for matching (strip diacritics, lowercase)
   function norm(s) {

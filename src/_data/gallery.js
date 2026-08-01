@@ -3,7 +3,6 @@ const path = require('path');
 const yaml = require('js-yaml');
 
 const filePath = path.join(__dirname, 'gallery.yml');
-const raw = fs.readFileSync(filePath, 'utf8');
 
 function normalizeGalleryShape(input) {
 	const data = input && typeof input === 'object' ? input : {};
@@ -24,6 +23,13 @@ function normalizeGalleryShape(input) {
 }
 
 try {
+	if (!fs.existsSync(filePath)) {
+		console.warn('[gallery.js] Soubor gallery.yml neexistuje, používám prázdný seznam alb.');
+		module.exports = { albums: [] };
+		return;
+	}
+
+	const raw = fs.readFileSync(filePath, 'utf8');
 	const parsed = yaml.load(raw);
 	module.exports = normalizeGalleryShape(parsed);
 } catch (error) {

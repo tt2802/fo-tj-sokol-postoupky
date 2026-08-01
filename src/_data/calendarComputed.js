@@ -1,5 +1,6 @@
 // file: src/_data/calendarComputed.js
 const { DateTime } = require("luxon");
+const { extractArrayPayload } = require("./adminPayload.js");
 
 module.exports = function () {
   const calendarEvents = require("./calendar_events.json");
@@ -10,7 +11,7 @@ module.exports = function () {
 
   // Slugs of already played matches — exclude from upcoming
   const playedSlugs = new Set(
-    (playedMatches.items || []).map((m) => m.slug).filter(Boolean)
+    extractArrayPayload(playedMatches, "items").map((m) => m.slug).filter(Boolean)
   );
 
   const czMonths = [
@@ -38,25 +39,8 @@ module.exports = function () {
     other: ""
   };
 
-  function getCalendarItems(src) {
-    if (!src || typeof src !== "object") return [];
-    if (Array.isArray(src.items)) return src.items;
-    if (src.data && Array.isArray(src.data.items)) return src.data.items;
-
-    if (typeof src.raw === "string") {
-      try {
-        const parsed = JSON.parse(src.raw);
-        if (Array.isArray(parsed.items)) return parsed.items;
-        if (parsed.data && Array.isArray(parsed.data.items)) return parsed.data.items;
-      } catch (_) {
-        // ignore malformed raw payload and fall back to empty list
-      }
-    }
-    return [];
-  }
-
   // Calendar events — expand recurring ones
-  const rawItems = getCalendarItems(calendarEvents);
+  const rawItems = extractArrayPayload(calendarEvents, "items");
   const events = [];
   for (const e of rawItems) {
     const date = (e.date || "").slice(0, 10);
@@ -93,7 +77,7 @@ module.exports = function () {
   }
 
   // Upcoming matches as calendar items (exclude already played)
-  const matches = (upcomingMatches.items || [])
+  const matches = extractArrayPayload(upcomingMatches, "items")
     .filter((m) => !playedSlugs.has(m.slug))
     .map((m) => {
     const date = (m.date || "").slice(0, 10);

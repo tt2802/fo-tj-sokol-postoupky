@@ -1081,10 +1081,13 @@
     window.CMS.registerEventListener({
       name: "preSave",
       handler: function (arg) {
+        var entry = null;
         try {
           bumpDataVersion("preSave");
-          var entry = arg.entry;
-          if (!entry || !entry.get) return entry;
+          entry = (arg && arg.entry && arg.entry.get) ? arg.entry : arg;
+          if (!entry || !entry.get) {
+            return (arg && arg.entry) ? arg.entry : arg;
+          }
           var p = String(entry.get("path") || "");
 
           /* ── calendar events: normalize wrapped payload to { items: [...] } ── */
@@ -1115,7 +1118,7 @@
 
           /* ── upcoming matches: auto-slug + auto-fill home/away ── */
           if (p.indexOf("upcoming_matches") >= 0) {
-            var uItems = entry.getIn(["data", "items"]);
+            var uItems = entry.getIn(["data", "items"]) || entry.getIn(["data", "data", "items"]);
             if (!uItems || !uItems.map) return entry;
 
             var uCount = listSize(uItems);
@@ -1147,6 +1150,14 @@
               return im;
             });
 
+            try {
+              var IUpcoming = window.Immutable;
+              if (IUpcoming && IUpcoming.fromJS) {
+                var plainUpcoming = uUpdated.toJS ? uUpdated.toJS() : uUpdated;
+                return entry.set("data", IUpcoming.fromJS({ items: plainUpcoming }));
+              }
+            } catch (_) {}
+
             return entry.setIn(["data", "items"], uUpdated);
           }
 
@@ -1154,6 +1165,14 @@
           if (p.indexOf("gallery") >= 0) {
             var albums = entry.getIn(["data", "albums"]) || entry.getIn(["data", "data", "albums"]);
             if (!albums || !albums.map) return entry;
+
+            var gCount = listSize(albums);
+            if (gCount === 0) {
+              var okGallery = confirmDangerousEmptySave("Galerie", 1);
+              if (!okGallery) {
+                throw new Error("Uložení zrušeno: galerie alb by byla prázdná.");
+              }
+            }
 
             var IGallery = window.Immutable;
             var updatedAlbums = albums.map(function (albumItem) {
@@ -1213,7 +1232,7 @@
           /* ── played matches: fill from related match + auto home/away + auto-slug ── */
           if (p.indexOf("played_matches") < 0) return entry;
 
-          var items = entry.getIn(["data", "items"]);
+          var items = entry.getIn(["data", "items"]) || entry.getIn(["data", "data", "items"]);
           if (!items || !items.map) return entry;
 
           var pCount = listSize(items);
@@ -1269,10 +1288,19 @@
             return im;
           });
 
+          try {
+            var IPlayed = window.Immutable;
+            if (IPlayed && IPlayed.fromJS) {
+              var plainPlayed = updated.toJS ? updated.toJS() : updated;
+              return entry.set("data", IPlayed.fromJS({ items: plainPlayed }));
+            }
+          } catch (_) {}
+
           return entry.setIn(["data", "items"], updated);
         } catch (e) {
           warn("preSave error:", e);
-          return arg.entry;
+          if (entry && entry.get) return entry;
+          return (arg && arg.entry) ? arg.entry : arg;
         }
       }
     });
