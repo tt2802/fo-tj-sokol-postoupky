@@ -116,6 +116,101 @@
     return data;
   }
 
+  function isImmutableEntry(entry) {
+    return !!(entry && typeof entry.get === "function" && typeof entry.set === "function");
+  }
+
+  function getPlainDataFromUnknownEntry(entryLike) {
+    if (isImmutableEntry(entryLike)) return getEntryPlainData(entryLike);
+
+    if (isObject(entryLike) && isObject(entryLike.data)) {
+      return entryLike.data;
+    }
+
+    if (isObject(entryLike) && typeof entryLike.raw === "string") {
+      var parsedRaw = safeParseJson(entryLike.raw);
+      if (isObject(parsedRaw)) return parsedRaw;
+    }
+
+    return isObject(entryLike) ? entryLike : {};
+  }
+
+  function extractObjectPayload(payload, requiredKeys) {
+    var keys = Array.isArray(requiredKeys) ? requiredKeys : [];
+    var seen = [];
+    var queue = [payload];
+    var firstCandidate = null;
+
+    while (queue.length) {
+      var current = queue.shift();
+      if (!isObject(current) || seen.indexOf(current) >= 0) continue;
+      seen.push(current);
+
+      var presentCount = keys.filter(function (k) {
+        return Object.prototype.hasOwnProperty.call(current, k);
+      }).length;
+
+      if (presentCount === keys.length && keys.length > 0) return current;
+      if (presentCount > 0 && !firstCandidate) firstCandidate = current;
+
+      if (isObject(current.data)) queue.push(current.data);
+
+      var parsed = safeParseJson(current.raw);
+      if (parsed) queue.push(parsed);
+    }
+
+    return firstCandidate || {};
+  }
+
+  function normalizePlainDataByPath(pathValue, plainData) {
+    var p = String(pathValue || "");
+    var data = plainData || {};
+
+    if (p.indexOf("players.json") >= 0) {
+      var cleanPlayers = extractPlayersPayload(data);
+      return {
+        men: Array.isArray(cleanPlayers.men) ? cleanPlayers.men : [],
+        youth: isObject(cleanPlayers.youth) ? cleanPlayers.youth : {}
+      };
+    }
+
+    if (p.indexOf("formation.json") >= 0) {
+      var cleanFormation = extractObjectPayload(data, ["formation", "positions"]);
+      return {
+        formation: cleanFormation.formation || "4-4-2",
+        positions: Array.isArray(cleanFormation.positions) ? cleanFormation.positions : []
+      };
+    }
+
+    if (p.indexOf("league_table.json") >= 0) {
+      var cleanTable = extractObjectPayload(data, ["season", "competition", "teams"]);
+      return {
+        season: cleanTable.season || "",
+        competition: cleanTable.competition || "",
+        teams: Array.isArray(cleanTable.teams) ? cleanTable.teams : []
+      };
+    }
+
+    if (
+      p.indexOf("upcoming_matches") >= 0 ||
+      p.indexOf("played_matches") >= 0 ||
+      p.indexOf("calendar_events") >= 0 ||
+      p.indexOf("staff.json") >= 0 ||
+      p.indexOf("executive_board.json") >= 0 ||
+      p.indexOf("sponsors.json") >= 0 ||
+      p.indexOf("categories.json") >= 0
+    ) {
+      return { items: extractItemsPayload(data) };
+    }
+
+    if (p.indexOf("site.json") >= 0 || p.indexOf("nabor_content.json") >= 0) {
+      if (isObject(data.data)) return data.data;
+      return data;
+    }
+
+    return data;
+  }
+
   function resolveEntryPath(entry, arg, plainData) {
     var direct = "";
     try {
@@ -1200,14 +1295,25 @@
       name: "preSave",
       handler: function (arg) {
         var entry = null;
+        var sourceEntry = null;
+        var plainData = {};
+        var immutableMode = false;
         try {
           bumpDataVersion("preSave");
-          entry = (arg && arg.entry && arg.entry.get) ? arg.entry : arg;
-          if (!entry || !entry.get) {
-            return (arg && arg.entry) ? arg.entry : arg;
+          sourceEntry = (arg && arg.entry) ? arg.entry : arg;
+          immutableMode = isImmutableEntry(sourceEntry);
+          plainData = getPlainDataFromUnknownEntry(sourceEntry);
+
+          var p = resolveEntryPath(sourceEntry, arg, plainData);
+
+          if (!immutableMode) {
+            // Defensive path: some Decap versions pass a plain JS entry-like object.
+            // Returning that object writes wrapper metadata to JSON files.
+            // Always return clean data payload only.
+            return normalizePlainDataByPath(p, plainData);
           }
-          var plainData = getEntryPlainData(entry);
-          var p = resolveEntryPath(entry, arg, plainData);
+
+          entry = sourceEntry;
 
           /* ── generic JSON file normalization ── */
           if (p.indexOf("players.json") >= 0) {
@@ -1464,8 +1570,9 @@
           return entry.setIn(["data", "items"], updated);
         } catch (e) {
           warn("preSave error:", e);
-          if (entry && entry.get) return entry;
-          return (arg && arg.entry) ? arg.entry : arg;
+          if (isImmutableEntry(entry)) return entry;
+          if (plainData && typeof plainData === "object") return plainData;
+          return {};
         }
       }
     });
