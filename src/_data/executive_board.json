@@ -1,19 +1,122 @@
 {
-  "items": [
+  "partial": false,
+  "path": "src/_data/executive_board.json",
+  "meta": {
+    "path": "src/_data/executive_board.json"
+  },
+  "isModification": null,
+  "raw": "{\n  \"items\": [\n    {\n      \"name\": \"Vladimír Opluštil\",\n      \"role\": \"Prezident klubu\",\n      \"contact\": \"oplustil.v@seznam.cz\",\n      \"phone\": \"+420 730 592 021\",\n      \"email\": \"OPLUSTIL.V@SEZNAM.CZ\"\n    },\n    {\n      \"name\": \"Ing. Marek Šimčák\",\n      \"role\": \"Generální manažer\"\n    },\n    {\n      \"name\": \"Pavel Opluštil\",\n      \"role\": \"Člen VV\"\n    }\n  ]\n}\n",
+  "data": {
+    "items": [
+      {
+        "name": "Vladimír Opluštil",
+        "role": "Prezident klubu",
+        "contact": "oplustil.v@seznam.cz",
+        "phone": "+420 730 592 021",
+        "email": "OPLUSTIL.V@SEZNAM.CZ"
+      },
+      {
+        "name": "Ing. Marek Šimčák",
+        "role": "Generální manažer"
+      },
+      {
+        "name": "Pavel Opluštil",
+        "role": "Člen VV"
+      },
+      {
+        "name": "Matyáš Morkus",
+        "role": "Zástupce hráčů"
+      }
+    ]
+  },
+  "author": "",
+  "slug": "executive_board",
+  "newRecord": false,
+  "status": "",
+  "mediaFiles": [
     {
-      "name": "Vladimír Opluštil",
-      "role": "Prezident klubu",
-      "contact": "oplustil.v@seznam.cz",
-      "phone": "+420 730 592 021",
-      "email": "OPLUSTIL.V@SEZNAM.CZ"
+      "id": "955e074335052cafc26d5fbb8d319dc183435152",
+      "name": "20251112_170017.jpg",
+      "size": 4250024,
+      "displayURL": {
+        "id": "955e074335052cafc26d5fbb8d319dc183435152",
+        "path": "src/assets/img/uploads/20251112_170017.jpg"
+      },
+      "path": "src/assets/img/uploads/20251112_170017.jpg"
     },
     {
-      "name": "Ing. Marek Šimčák",
-      "role": "Generální manažer"
+      "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
+      "name": "a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png",
+      "size": 2088619,
+      "displayURL": {
+        "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
+        "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
+      },
+      "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
     },
     {
-      "name": "Pavel Opluštil",
-      "role": "Člen VV"
+      "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
+      "name": "logo-facr.svg",
+      "size": 21614,
+      "displayURL": {
+        "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
+        "path": "src/assets/img/uploads/logo-facr.svg"
+      },
+      "path": "src/assets/img/uploads/logo-facr.svg"
+    },
+    {
+      "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
+      "name": "logo-fotbalového-oddílu-tj-sokol.png",
+      "size": 1435105,
+      "displayURL": {
+        "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
+        "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+      },
+      "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+    },
+    {
+      "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
+      "name": "logo_km.png",
+      "size": 20972,
+      "displayURL": {
+        "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
+        "path": "src/assets/img/uploads/logo_km.png"
+      },
+      "path": "src/assets/img/uploads/logo_km.png"
+    },
+    {
+      "id": "a921105701efd00b9d99dab71794a5effaba460c",
+      "name": "logo_zk2.png",
+      "size": 17777,
+      "displayURL": {
+        "id": "a921105701efd00b9d99dab71794a5effaba460c",
+        "path": "src/assets/img/uploads/logo_zk2.png"
+      },
+      "path": "src/assets/img/uploads/logo_zk2.png"
+    },
+    {
+      "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
+      "name": "ofs-kroměříž-logo-černá-0.webp",
+      "size": 55478,
+      "displayURL": {
+        "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
+        "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
+      },
+      "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
+    },
+    {
+      "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
+      "name": "pavel.png",
+      "size": 28591,
+      "displayURL": {
+        "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
+        "path": "src/assets/img/uploads/pavel.png"
+      },
+      "path": "src/assets/img/uploads/pavel.png"
     }
-  ]
+  ],
+  "label": "Výkonný výbor",
+  "updatedOn": "",
+  "i18n": {},
+  "collection": "team"
 }
