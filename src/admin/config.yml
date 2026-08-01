@@ -135,7 +135,7 @@ collections:
                 name: "liveUrl"
                 widget: "string"
                 required: false
-                hint: "Vložte přímý odkaz na stream. Na webu se zobrazí výrazné tlačítko „Sledovat živě“."
+                hint: "🔴 LIVE: vložte přímý odkaz na stream. Na webu se zobrazí výrazné tlačítko „Sledovat živě“."
 
       - name: "played_matches"
         label: "Odehrané zápasy"
@@ -212,6 +212,12 @@ collections:
                 widget: "string"
                 required: false
                 hint: "Napr. 15:00"
+
+              - label: "Živý přenos URL"
+                name: "liveUrl"
+                widget: "string"
+                required: false
+                hint: "🔴 LIVE: volitelné. Hodí se, když chcete mít odkaz i u odehraného zápasu bez přepisu dat."
 
               - label: "Skóre domácích"
                 name: "homeScore"
