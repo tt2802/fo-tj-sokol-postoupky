@@ -102,7 +102,43 @@
         return entry.set("data", I.fromJS(plainData));
       }
     } catch (_) {}
+    try {
+      return entry.set("data", plainData);
+    } catch (_) {}
     return entry;
+  }
+
+  function getEntryPlainData(entry) {
+    if (!entry || !entry.get) return {};
+    var data = entry.get("data");
+    if (!data) return {};
+    if (data.toJS) return data.toJS();
+    return data;
+  }
+
+  function resolveEntryPath(entry, arg, plainData) {
+    var direct = "";
+    try {
+      direct = String((entry && entry.get && entry.get("path")) || "");
+    } catch (_) {}
+    if (direct) return direct;
+
+    var fromArg = String((arg && arg.path) || (arg && arg.entryPath) || "");
+    if (fromArg) return fromArg;
+
+    if (plainData && typeof plainData === "object") {
+      var candidates = [
+        plainData.path,
+        plainData.meta && plainData.meta.path,
+        plainData.data && plainData.data.path
+      ];
+      for (var i = 0; i < candidates.length; i++) {
+        var c = String(candidates[i] || "");
+        if (c) return c;
+      }
+    }
+
+    return "";
   }
 
   function getListData(entry, key) {
@@ -1170,15 +1206,17 @@
           if (!entry || !entry.get) {
             return (arg && arg.entry) ? arg.entry : arg;
           }
-          var p = String(entry.get("path") || "");
+          var plainData = getEntryPlainData(entry);
+          var p = resolveEntryPath(entry, arg, plainData);
 
           /* ── generic JSON file normalization ── */
           if (p.indexOf("players.json") >= 0) {
-            var men = entry.getIn(["data", "men"]) || entry.getIn(["data", "data", "men"]);
-            var youth = entry.getIn(["data", "youth"]) || entry.getIn(["data", "data", "youth"]);
+            var cleanPlayers = extractPlayersPayload(plainData || {});
+            var men = cleanPlayers && Array.isArray(cleanPlayers.men) ? cleanPlayers.men : [];
+            var youth = cleanPlayers && isObject(cleanPlayers.youth) ? cleanPlayers.youth : {};
             return setCleanData(entry, {
-              men: men && men.toJS ? men.toJS() : (men || []),
-              youth: youth && youth.toJS ? youth.toJS() : (youth || {})
+              men: men,
+              youth: youth
             });
           }
 

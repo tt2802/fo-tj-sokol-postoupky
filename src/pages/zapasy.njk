@@ -33,6 +33,14 @@ permalink: /zapasy/
               <p class="muted">Místo: {{ m.venue }}</p>
             {% endif %}
 
+            {% if m.liveUrl %}
+              {% set liveEmbedId = 'live-' + m.team + '-' + m.slug %}
+              <p>
+                <button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ liveEmbedId }}">Sledovat živě</button>
+              </p>
+              <div id="{{ liveEmbedId }}" class="video-embed" data-video-url="{{ m.liveUrl | escape }}" hidden></div>
+            {% endif %}
+
             {% if m.team == 'muzi' %}
               <p><a href="{{ ('/muzi/zapasy/' + m.slug + '/') | url }}">Detail zápasu</a></p>
             {% elseif m.team == 'mladez' and m.category %}
@@ -72,7 +80,11 @@ permalink: /zapasy/
             </p>
 
             {% if m.videoUrl %}
-              <p class="muted">🎥 Video je k dispozici</p>
+              {% set videoEmbedId = 'video-' + m.team + '-' + m.slug %}
+              <p>
+                <button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ videoEmbedId }}">Přehrát video</button>
+              </p>
+              <div id="{{ videoEmbedId }}" class="video-embed" data-video-url="{{ m.videoUrl | escape }}" hidden></div>
             {% endif %}
 
             {% if m.team == 'muzi' %}
@@ -90,3 +102,5 @@ permalink: /zapasy/
     <p class="muted">Zatím nemáme zapsaný žádný výsledek.</p>
   {% endif %}
 </section>
+
+<script defer src="{{ '/assets/js/matches-filter.js' | url }}"></script>

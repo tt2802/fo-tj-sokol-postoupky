@@ -62,24 +62,32 @@
     if (!boxes.length) return;
 
     boxes.forEach((box) => {
+      if (box.dataset.embedReady === "1") return;
+
       const url = (box.getAttribute("data-video-url") || "").trim();
       if (!url) return;
 
       const lower = url.toLowerCase();
 
+      box.innerHTML = "";
+
       // MP4 / WEBM
-      if (lower.endsWith(".mp4") || lower.endsWith(".webm")) {
+      if (lower.endsWith(".mp4") || lower.endsWith(".webm") || lower.endsWith(".ogg")) {
         const video = document.createElement("video");
         video.controls = true;
         video.preload = "metadata";
         video.style.width = "100%";
+        video.style.borderRadius = "10px";
         video.src = url;
         box.appendChild(video);
+        box.dataset.embedReady = "1";
         return;
       }
 
       // YouTube
       const ytMatch =
+        url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/) ||
+        url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/) ||
         url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/) ||
         url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
 
@@ -96,6 +104,23 @@
         iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
         iframe.allowFullscreen = true;
         box.appendChild(iframe);
+        box.dataset.embedReady = "1";
+        return;
+      }
+
+      // Veo
+      if (lower.includes("veo.co")) {
+        const iframe = document.createElement("iframe");
+        iframe.style.width = "100%";
+        iframe.style.aspectRatio = "16 / 9";
+        iframe.style.border = "0";
+        iframe.loading = "lazy";
+        iframe.allow = "autoplay; fullscreen; picture-in-picture";
+        iframe.allowFullscreen = true;
+        iframe.src = lower.includes("/embed") ? url : url.replace(/\/+$/, "") + "/embed";
+        iframe.title = "Video ze zápasu (Veo)";
+        box.appendChild(iframe);
+        box.dataset.embedReady = "1";
         return;
       }
 
@@ -113,6 +138,7 @@
           "&show_text=false&width=560";
         iframe.title = "Video ze zápasu (Facebook)";
         box.appendChild(iframe);
+        box.dataset.embedReady = "1";
         return;
       }
 
@@ -125,11 +151,42 @@
       a.target = "_blank";
       p.appendChild(a);
       box.appendChild(p);
+      box.dataset.embedReady = "1";
+    });
+  }
+
+  function initInlineVideoToggles() {
+    const toggles = Array.from(document.querySelectorAll("[data-inline-video-toggle]"));
+    if (!toggles.length) return;
+
+    toggles.forEach((btn) => {
+      if (btn.dataset.bound === "1") return;
+      btn.dataset.bound = "1";
+
+      btn.addEventListener("click", function () {
+        const targetId = btn.getAttribute("data-inline-video-toggle");
+        if (!targetId) return;
+
+        const target = document.getElementById(targetId);
+        if (!target) return;
+
+        const isHidden = target.hasAttribute("hidden");
+        if (isHidden) {
+          target.removeAttribute("hidden");
+          target.style.marginTop = "0.75rem";
+          btn.textContent = "Skrýt video";
+          renderVideoEmbeds();
+        } else {
+          target.setAttribute("hidden", "hidden");
+          btn.textContent = "Přehrát video";
+        }
+      });
     });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     initFilters();
+    initInlineVideoToggles();
     renderVideoEmbeds();
   });
 })();

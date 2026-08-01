@@ -131,6 +131,11 @@ collections:
                 widget: "string"
                 required: false
                 hint: "Napr. 15:00"
+              - label: "Živý přenos URL"
+                name: "liveUrl"
+                widget: "string"
+                required: false
+                hint: "Odkaz na živé vysílání (YouTube, Facebook, Veo apod.)"
 
       - name: "played_matches"
         label: "Odehrané zápasy"
@@ -238,7 +243,7 @@ collections:
                 name: "videoUrl"
                 widget: "string"
                 required: false
-                hint: "Odkaz na video ze zapasu (YouTube apod.)"
+                hint: "Odkaz na záznam/video ze zápasu (YouTube, Facebook, Veo apod.)"
 
               - label: "Sestava"
                 name: "lineup"

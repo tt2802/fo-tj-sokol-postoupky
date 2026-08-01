@@ -23,41 +23,89 @@ module.exports = class {
     const players = (data.players && data.players.men) || [];
     const playerNames = players.map(p => p.name);
     const hasScore = m.homeScore !== null && m.homeScore !== undefined && m.awayScore !== null && m.awayScore !== undefined;
-    
-    let videoHtml = '';
-    if (m.videoUrl) {
-      const url = m.videoUrl.trim();
-      if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        let ytId = '';
-        if (url.includes('youtu.be/')) ytId = url.split('youtu.be/')[1].split('?')[0];
-        else if (url.includes('v=')) ytId = url.split('v=')[1].split('&')[0];
-        else if (url.includes('/embed/')) ytId = url.split('/embed/')[1].split('?')[0];
-        
-        if (ytId) {
-          videoHtml = `
-<h2>Video ze zápasu</h2>
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+
+    const escapeAttr = (value) => String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const normalizeUrl = (value) => String(value || '').trim();
+
+    function getYouTubeId(url) {
+      if (!url) return '';
+      if (url.includes('youtu.be/')) return url.split('youtu.be/')[1].split('?')[0].split('&')[0].trim();
+      if (url.includes('youtube.com/shorts/')) return url.split('youtube.com/shorts/')[1].split('?')[0].split('&')[0].trim();
+      if (url.includes('v=')) return url.split('v=')[1].split('&')[0].trim();
+      if (url.includes('/embed/')) return url.split('/embed/')[1].split('?')[0].split('&')[0].trim();
+      return '';
+    }
+
+    function renderMediaEmbed(urlRaw, heading) {
+      const url = normalizeUrl(urlRaw);
+      if (!url) return '';
+
+      const lower = url.toLowerCase();
+      const ytId = getYouTubeId(url);
+      const isVideoFile = lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.endsWith('.ogg');
+
+      if (ytId) {
+        return `
+<h2>${heading}</h2>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1rem 0 2rem; border-radius: 12px;">
   <iframe
     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-    src="https://www.youtube-nocookie.com/embed/${ytId}"
+    src="https://www.youtube-nocookie.com/embed/${escapeAttr(ytId)}"
     frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen
-    title="Video ze zápasu">
+    title="${heading}">
   </iframe>
 </div>`;
-        }
-      } else if (url.endsWith('.mp4')) {
-        videoHtml = `
-<h2>Video ze zápasu</h2>
-<video controls style="width: 100%; max-width: 800px; margin: 2rem 0;">
-  <source src="${url}" type="video/mp4">
+      }
+
+      if (isVideoFile) {
+        return `
+<h2>${heading}</h2>
+<video controls preload="metadata" style="width: 100%; max-width: 900px; margin: 1rem 0 2rem; border-radius: 12px; background: #000;">
+  <source src="${escapeAttr(url)}" type="video/${lower.endsWith('.webm') ? 'webm' : lower.endsWith('.ogg') ? 'ogg' : 'mp4'}">
   Váš prohlížeč nepodporuje video element.
 </video>`;
-      } else {
-        videoHtml = `<h2>Video ze zápasu</h2><p><a href="${url}" target="_blank" rel="noopener">Otevřít video</a></p>`;
       }
+
+      if (lower.includes('facebook.com')) {
+        const pluginUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&width=1280`;
+        return `
+<h2>${heading}</h2>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1rem 0 2rem; border-radius: 12px;">
+  <iframe
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+    src="${escapeAttr(pluginUrl)}"
+    loading="lazy"
+    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+    allowfullscreen
+    title="${heading}">
+  </iframe>
+</div>`;
+      }
+
+      if (lower.includes('veo.co')) {
+        const veoEmbed = lower.includes('/embed') ? url : `${url.replace(/\/+$/, '')}/embed`;
+        return `
+<h2>${heading}</h2>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1rem 0 2rem; border-radius: 12px;">
+  <iframe
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+    src="${escapeAttr(veoEmbed)}"
+    loading="lazy"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen
+    title="${heading}">
+  </iframe>
+</div>
+<p class="muted" style="margin-top:-1rem;">Pokud se přehrávač Veo nenačte, <a href="${escapeAttr(url)}" target="_blank" rel="noopener">otevřete přenos v nové kartě</a>.</p>`;
+      }
+
+      return `<h2>${heading}</h2><p><a href="${escapeAttr(url)}" target="_blank" rel="noopener">Otevřít přenos/video</a></p>`;
     }
+    
+    const liveHtml = !hasScore && m.liveUrl ? renderMediaEmbed(m.liveUrl, 'Živý přenos') : '';
+    const videoHtml = m.videoUrl ? renderMediaEmbed(m.videoUrl, 'Video ze zápasu') : '';
 
     // Build voting section HTML (only for played matches with a score)
     let votingHtml = '';
@@ -214,6 +262,8 @@ ${hasScore ? `
     ${m.homeScore} : ${m.awayScore}
   </h2>
 </div>` : '<p class="muted">Výsledek zatím není k dispozici</p>'}
+
+${liveHtml}
 
 ${videoHtml}
 

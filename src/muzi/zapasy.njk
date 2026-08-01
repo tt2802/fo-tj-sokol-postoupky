@@ -32,7 +32,7 @@ layout: layouts/page.njk
       <h2>Nadcházející zápasy</h2>
       <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
         {% for m in menMatches %}
-          <a href="{{ ('/muzi/zapasy/' ~ m.slug ~ '/') | url }}" class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi" style="text-decoration: none; color: inherit; cursor: pointer;">
+          <article class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi">
             <div class="card__body">
               <p class="muted">{{ m._dt | czDate }}{% if m.time %} · {{ m.time }}{% endif %}</p>
               <h3>
@@ -41,9 +41,14 @@ layout: layouts/page.njk
                 <strong>{{ m.away }}</strong>
               </h3>
               <p class="muted">{{ m.venue }} · {{ m.competition }}</p>
-              {% if m.videoUrl %}<p style="margin-top: 0.5rem; font-size: 0.9rem;">🎥 Video dostupné</p>{% endif %}
+              {% if m.liveUrl %}
+                {% set liveEmbedId = 'live-muzi-' ~ m.slug %}
+                <p><button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ liveEmbedId }}">Sledovat živě</button></p>
+                <div id="{{ liveEmbedId }}" class="video-embed" data-video-url="{{ m.liveUrl | escape }}" hidden></div>
+              {% endif %}
+              <p style="margin-top: 0.5rem;"><a href="{{ ('/muzi/zapasy/' ~ m.slug ~ '/') | url }}">Detail zápasu</a></p>
             </div>
-          </a>
+          </article>
         {% endfor %}
       </div>
     {% endif %}
@@ -52,7 +57,7 @@ layout: layouts/page.njk
       <h2>Odehrané zápasy</h2>
       <div style="display: grid; gap: 1rem;">
         {% for m in menPlayed %}
-          <a href="{{ ('/muzi/zapasy/' ~ m.slug ~ '/') | url }}" class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi" style="text-decoration: none; color: inherit; cursor: pointer;">
+          <article class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi">
             <div class="card__body">
               <p class="muted">{{ m._dt | czDate }}</p>
               <h3>
@@ -64,10 +69,13 @@ layout: layouts/page.njk
               </h3>
               <p class="muted">{{ m.competition }} · {{ m.season }}</p>
               {% if m.videoUrl %}
-                <p style="margin-top: 0.5rem; font-size: 0.9rem;">🎥 Video dostupné</p>
+                {% set videoEmbedId = 'video-muzi-' ~ m.slug %}
+                <p><button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ videoEmbedId }}">Přehrát video</button></p>
+                <div id="{{ videoEmbedId }}" class="video-embed" data-video-url="{{ m.videoUrl | escape }}" hidden></div>
               {% endif %}
+              <p style="margin-top: 0.5rem;"><a href="{{ ('/muzi/zapasy/' ~ m.slug ~ '/') | url }}">Detail zápasu</a></p>
             </div>
-          </a>
+          </article>
         {% endfor %}
       </div>
     {% endif %}
