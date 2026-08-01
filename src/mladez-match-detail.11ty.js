@@ -93,7 +93,9 @@ module.exports = class {
     }
     
     const hasScore = m.homeScore !== null && m.homeScore !== undefined && m.awayScore !== null && m.awayScore !== undefined;
-    const liveHtml = !hasScore && m.liveUrl ? renderMediaEmbed(m.liveUrl, 'Živý přenos') : '';
+    const liveHtml = !hasScore && m.liveUrl
+      ? `<h2>Živý přenos</h2><div class="card" style="margin: 1rem 0 2rem; padding: 1rem 1.25rem; border-left: 4px solid #ef4444;"><p class="muted" style="margin:0 0 .75rem;">Přenos otevřete přes oficiální odkaz.</p><p style="margin:0;"><a href="${escapeAttr(m.liveUrl)}" target="_blank" rel="noopener" class="btn btn--live">Sledovat živě</a></p></div>`
+      : '';
     const videoHtml = m.videoUrl ? renderMediaEmbed(m.videoUrl, 'Video ze zápasu') : '';
 
     const categoryNames = {

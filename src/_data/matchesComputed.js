@@ -34,12 +34,16 @@ module.exports = function () {
     .sort((a, b) => b._dt.toMillis() - a._dt.toMillis());
 
   const nextMatch = upcoming[0] || null;
+  const liveMatches = upcoming.filter((m) => String(m.liveUrl || "").trim().length > 0);
+  const nextLiveMatch = liveMatches[0] || null;
   const lastResult = played[0] || null;
 
   const seasons = Array.from(new Set(normalized.map((m) => m.season).filter(Boolean))).sort().reverse();
 
   return {
     nextMatch,
+    nextLiveMatch,
+    liveMatches,
     lastResult,
     upcoming,
     played,

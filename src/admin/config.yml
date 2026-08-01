@@ -135,7 +135,7 @@ collections:
                 name: "liveUrl"
                 widget: "string"
                 required: false
-                hint: "Odkaz na živé vysílání (YouTube, Facebook, Veo apod.)"
+                hint: "Vložte přímý odkaz na stream. Na webu se zobrazí výrazné tlačítko „Sledovat živě“."
 
       - name: "played_matches"
         label: "Odehrané zápasy"

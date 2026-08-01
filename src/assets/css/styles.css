@@ -585,6 +585,22 @@ html.is-lightbox-open {
   border: 2px solid var(--primary);
 }
 
+.btn--secondary {
+  background: #eef2ff;
+  color: #312e81;
+  border: 1px solid #c7d2fe;
+}
+
+.btn--live {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(220, 38, 38, 0.25);
+}
+
+.btn--live:hover {
+  filter: brightness(1.04);
+}
+
 .hero__badgeInner {
   width: 84px;
   height: 84px;

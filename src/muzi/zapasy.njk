@@ -27,6 +27,23 @@ layout: layouts/page.njk
 
     {% set menMatches = matchesComputed.upcoming | where('team', 'muzi') %}
     {% set menPlayed = matchesComputed.played | where('team', 'muzi') %}
+    {% set menLiveMatches = matchesComputed.liveMatches | where('team', 'muzi') %}
+
+    {% if menLiveMatches | length > 0 %}
+      <h2>Živě teď</h2>
+      <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
+        {% for m in menLiveMatches %}
+          <article class="card match-card" data-season="{{ m.season }}" data-competition="{{ m.competition }}" data-team="muzi" style="border-left: 4px solid #ef4444;">
+            <div class="card__body">
+              <p class="muted">🔴 {{ m._dt | czDate }}{% if m.time %} · {{ m.time }}{% endif %}</p>
+              <h3><strong>{{ m.home }}</strong> vs <strong>{{ m.away }}</strong></h3>
+              <p class="muted">{{ m.venue }} · {{ m.competition }}</p>
+              <p><a class="btn btn--live" href="{{ m.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a></p>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
 
     {% if menMatches | length > 0 %}
       <h2>Nadcházející zápasy</h2>
@@ -42,9 +59,7 @@ layout: layouts/page.njk
               </h3>
               <p class="muted">{{ m.venue }} · {{ m.competition }}</p>
               {% if m.liveUrl %}
-                {% set liveEmbedId = 'live-muzi-' ~ m.slug %}
-                <p><button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ liveEmbedId }}">Sledovat živě</button></p>
-                <div id="{{ liveEmbedId }}" class="video-embed" data-video-url="{{ m.liveUrl | escape }}" hidden></div>
+                <p><a class="btn btn--live" href="{{ m.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a></p>
               {% endif %}
               <p style="margin-top: 0.5rem;"><a href="{{ ('/muzi/zapasy/' ~ m.slug ~ '/') | url }}">Detail zápasu</a></p>
             </div>

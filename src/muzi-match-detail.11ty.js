@@ -96,7 +96,9 @@ module.exports = class {
       return `<h2>${heading}</h2><p><a href="${escapeAttr(url)}" target="_blank" rel="noopener">Otevřít přenos/video</a></p>`;
     }
     
-    const liveHtml = !hasScore && m.liveUrl ? renderMediaEmbed(m.liveUrl, 'Živý přenos') : '';
+    const liveHtml = !hasScore && m.liveUrl
+      ? `<h2>Živý přenos</h2><div class="card" style="margin: 1rem 0 2rem; padding: 1rem 1.25rem; border-left: 4px solid #ef4444;"><p class="muted" style="margin:0 0 .75rem;">Přenos otevřete přes oficiální odkaz.</p><p style="margin:0;"><a href="${escapeAttr(m.liveUrl)}" target="_blank" rel="noopener" class="btn btn--live">Sledovat živě</a></p></div>`
+      : '';
     const videoHtml = m.videoUrl ? renderMediaEmbed(m.videoUrl, 'Video ze zápasu') : '';
 
     // Build voting section HTML (only for played matches with a score)

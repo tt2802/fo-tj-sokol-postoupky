@@ -7,6 +7,31 @@ permalink: /zapasy/
 
 <h1>Zápasy a výsledky</h1>
 
+<section class="section" style="padding-top: .5rem;">
+  <h2>Živě teď</h2>
+  {% if matchesComputed.liveMatches.length %}
+    <ol class="cardsList">
+      {% for m in matchesComputed.liveMatches %}
+        <li class="card" style="border-left: 4px solid #ef4444;">
+          <div class="card__body">
+            <p class="muted">
+              🔴 {{ m._dateStr | czDate }}{% if m.time %} · {{ m.time }}{% endif %}
+              {% if m.competition %} · {{ m.competition }}{% endif %}
+              · {{ m._teamLabel }}
+            </p>
+            <p class="matchLine"><strong>{{ m.home }}</strong> vs <strong>{{ m.away }}</strong></p>
+            <p>
+              <a class="btn btn--live" href="{{ m.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a>
+            </p>
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p class="muted">Aktuálně není vypsaný žádný živý přenos.</p>
+  {% endif %}
+</section>
+
 <section class="section">
   <h2>Čeká nás</h2>
 
@@ -34,11 +59,9 @@ permalink: /zapasy/
             {% endif %}
 
             {% if m.liveUrl %}
-              {% set liveEmbedId = 'live-' + m.team + '-' + m.slug %}
               <p>
-                <button type="button" class="btn btn--secondary" data-inline-video-toggle="{{ liveEmbedId }}">Sledovat živě</button>
+                <a class="btn btn--live" href="{{ m.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a>
               </p>
-              <div id="{{ liveEmbedId }}" class="video-embed" data-video-url="{{ m.liveUrl | escape }}" hidden></div>
             {% endif %}
 
             {% if m.team == 'muzi' %}
