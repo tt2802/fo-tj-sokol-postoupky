@@ -517,7 +517,7 @@ collections:
             widget: "list"
             collapsed: true
             max: 30
-            hint: "Slot „Třídačka" můžete přidat vícekrát (1 položka = 1 hráč na lavičce)."
+            hint: "Slot Třídačka můžete přidat vícekrát (1 položka = 1 hráč na lavičce)."
             summary: "{{fields.slot}} → {{fields.player}}"
             fields:
               - label: "Slot"
