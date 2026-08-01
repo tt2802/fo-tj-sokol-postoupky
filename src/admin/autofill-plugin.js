@@ -485,19 +485,55 @@
     var raw = String(url || "").trim();
     if (!raw) return raw;
     if (/^data:/i.test(raw)) return raw;
+    if (/^blob:/i.test(raw)) return raw;
 
     var origin = window.location.origin || "";
     var prefix = getPathPrefix();
+    var normalized = raw.replace(/\\/g, "/");
 
-    if (raw.indexOf(origin + "/assets/") === 0 && prefix) {
-      return origin + prefix + raw.slice(origin.length);
+    // Keep external URLs unchanged.
+    if (/^https?:\/\//i.test(normalized) && origin && normalized.indexOf(origin) !== 0) {
+      return normalized;
     }
 
-    if (raw.indexOf("/assets/") === 0 && prefix) {
-      return prefix + raw;
+    function withPrefix(pathValue) {
+      var p = String(pathValue || "");
+      if (!p) return p;
+      if (p.charAt(0) !== "/") p = "/" + p;
+      if (!prefix) return p;
+      if (p.indexOf(prefix + "/") === 0 || p === prefix) return p;
+      return prefix + p;
     }
 
-    return raw;
+    var pathPart = normalized;
+    if (origin && pathPart.indexOf(origin) === 0) {
+      pathPart = pathPart.slice(origin.length);
+    }
+
+    // Admin sometimes resolves relative paths as /admin/src/assets/... — rewrite to /assets/...
+    pathPart = pathPart.replace(/\/admin\/src\/assets\//g, "/assets/");
+    pathPart = pathPart.replace(/\/admin\/assets\//g, "/assets/");
+
+    // Handle stored values like src/assets/... or /src/assets/...
+    if (pathPart.indexOf("src/assets/") === 0) {
+      pathPart = "/assets/" + pathPart.slice("src/assets/".length);
+    } else if (pathPart.indexOf("/src/assets/") === 0) {
+      pathPart = "/assets/" + pathPart.slice("/src/assets/".length);
+    } else if (pathPart.indexOf("assets/") === 0) {
+      pathPart = "/assets/" + pathPart.slice("assets/".length);
+    }
+
+    // Absolute same-origin /assets/... without GH Pages prefix.
+    if (origin && normalized.indexOf(origin + "/assets/") === 0) {
+      return origin + withPrefix(pathPart);
+    }
+
+    // Relative/absolute assets path.
+    if (pathPart.indexOf("/assets/") === 0) {
+      return withPrefix(pathPart);
+    }
+
+    return normalized;
   }
 
   function refreshAdminImagePreviews(root) {
