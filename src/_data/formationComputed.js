@@ -2,12 +2,16 @@
  * Computed formation data – maps slots to % positions on pitch
  * and merges player info from players.json.
  */
+const { extractObjectPayload } = require("./adminPayload.js");
+
 module.exports = function () {
   const formation = require("./formation.json");
   const playersData = require("./players.json");
-  const players = playersData.men || [];
-  const formationName = formation.formation || "4-4-2";
-  const slots = formation.positions || [];
+  const cleanFormation = extractObjectPayload(formation, ["formation", "positions"]);
+  const cleanPlayersData = extractObjectPayload(playersData, ["men", "youth"]);
+  const players = cleanPlayersData.men || [];
+  const formationName = cleanFormation.formation || "4-4-2";
+  const slots = cleanFormation.positions || [];
 
   // Slot → {top%, left%} for each formation
   // Pitch is oriented vertically: GK at bottom, attackers at top

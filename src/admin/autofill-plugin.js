@@ -27,6 +27,88 @@
     return s.length >= 10 ? s.slice(0, 10) : s;
   }
 
+  function isObject(value) {
+    return !!value && typeof value === "object" && !Array.isArray(value);
+  }
+
+  function safeParseJson(raw) {
+    if (typeof raw !== "string" || !raw.trim()) return null;
+    try {
+      return JSON.parse(raw);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function extractItemsPayload(payload) {
+    var seen = [];
+    var queue = [payload];
+    var firstEmpty = null;
+
+    while (queue.length) {
+      var current = queue.shift();
+      if (!isObject(current) || seen.indexOf(current) >= 0) continue;
+      seen.push(current);
+
+      if (Array.isArray(current.items)) {
+        if (current.items.length) return current.items;
+        if (!firstEmpty) firstEmpty = current.items;
+      }
+
+      if (isObject(current.data)) {
+        queue.push(current.data);
+      }
+
+      var parsed = safeParseJson(current.raw);
+      if (parsed) queue.push(parsed);
+    }
+
+    return firstEmpty || [];
+  }
+
+  function extractPlayersPayload(payload) {
+    var seen = [];
+    var queue = [payload];
+    var firstCandidate = null;
+
+    while (queue.length) {
+      var current = queue.shift();
+      if (!isObject(current) || seen.indexOf(current) >= 0) continue;
+      seen.push(current);
+
+      var hasMen = Array.isArray(current.men);
+      var hasYouth = isObject(current.youth);
+      if (hasMen || hasYouth) {
+        if (hasMen && current.men.length) return current;
+        if (hasYouth && Object.keys(current.youth).length) return current;
+        if (!firstCandidate) firstCandidate = current;
+      }
+
+      if (isObject(current.data)) {
+        queue.push(current.data);
+      }
+
+      var parsed = safeParseJson(current.raw);
+      if (parsed) queue.push(parsed);
+    }
+
+    return firstCandidate || { men: [], youth: {} };
+  }
+
+  function setCleanData(entry, plainData) {
+    try {
+      var I = window.Immutable;
+      if (I && I.fromJS) {
+        return entry.set("data", I.fromJS(plainData));
+      }
+    } catch (_) {}
+    return entry;
+  }
+
+  function getListData(entry, key) {
+    return entry.getIn(["data", key]) || entry.getIn(["data", "data", key]);
+  }
+
   function pushPhotoValue(target, rawValue) {
     if (!rawValue) return;
 
@@ -117,7 +199,7 @@
     return fetch(currentUrl, { cache: "no-store" })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (d) {
-        var items = Array.isArray(d && d.items) ? d.items : [];
+        var items = extractItemsPayload(d);
         log("Loaded", items.length, "upcoming matches from", currentUrl);
         return items;
       })
@@ -171,7 +253,7 @@
       "/_data/calendar_events.json"
     ].filter(Boolean);
     return chainFetchRaw(urls).then(function (data) {
-      return extractCalendarItems(data);
+      return extractItemsPayload(data);
     });
   }
 
@@ -210,7 +292,7 @@
         calendarEvents = items || [];
       }).catch(function () {}),
       fetchPlayers().then(function (d) {
-        playersData = d || playersData;
+        playersData = extractPlayersPayload(d || {}) || playersData;
       }).catch(function () {})
     ]);
   }
@@ -1090,9 +1172,54 @@
           }
           var p = String(entry.get("path") || "");
 
+          /* ── generic JSON file normalization ── */
+          if (p.indexOf("players.json") >= 0) {
+            var men = entry.getIn(["data", "men"]) || entry.getIn(["data", "data", "men"]);
+            var youth = entry.getIn(["data", "youth"]) || entry.getIn(["data", "data", "youth"]);
+            return setCleanData(entry, {
+              men: men && men.toJS ? men.toJS() : (men || []),
+              youth: youth && youth.toJS ? youth.toJS() : (youth || {})
+            });
+          }
+
+          if (p.indexOf("staff.json") >= 0 || p.indexOf("executive_board.json") >= 0 || p.indexOf("sponsors.json") >= 0 || p.indexOf("categories.json") >= 0) {
+            var genericItems = getListData(entry, "items");
+            if (!genericItems || !genericItems.map) return entry;
+            return setCleanData(entry, {
+              items: genericItems.toJS ? genericItems.toJS() : genericItems
+            });
+          }
+
+          if (p.indexOf("formation.json") >= 0) {
+            var formationName = entry.getIn(["data", "formation"]) || entry.getIn(["data", "data", "formation"]);
+            var positions = entry.getIn(["data", "positions"]) || entry.getIn(["data", "data", "positions"]);
+            return setCleanData(entry, {
+              formation: formationName || "4-4-2",
+              positions: positions && positions.toJS ? positions.toJS() : (positions || [])
+            });
+          }
+
+          if (p.indexOf("league_table.json") >= 0) {
+            var season = entry.getIn(["data", "season"]) || entry.getIn(["data", "data", "season"]);
+            var competition = entry.getIn(["data", "competition"]) || entry.getIn(["data", "data", "competition"]);
+            var teams = entry.getIn(["data", "teams"]) || entry.getIn(["data", "data", "teams"]);
+            return setCleanData(entry, {
+              season: season || "",
+              competition: competition || "",
+              teams: teams && teams.toJS ? teams.toJS() : (teams || [])
+            });
+          }
+
+          if (p.indexOf("site.json") >= 0 || p.indexOf("nabor_content.json") >= 0) {
+            var nestedData = entry.get("data");
+            if (nestedData && nestedData.get && nestedData.get("data") && nestedData.get("data").toJS) {
+              return setCleanData(entry, nestedData.get("data").toJS());
+            }
+          }
+
           /* ── calendar events: normalize wrapped payload to { items: [...] } ── */
           if (p.indexOf("calendar_events") >= 0) {
-            var cItems = entry.getIn(["data", "items"]) || entry.getIn(["data", "data", "items"]);
+            var cItems = getListData(entry, "items");
             if (!cItems || !cItems.map) return entry;
 
             var cCount = listSize(cItems);
@@ -1118,7 +1245,7 @@
 
           /* ── upcoming matches: auto-slug + auto-fill home/away ── */
           if (p.indexOf("upcoming_matches") >= 0) {
-            var uItems = entry.getIn(["data", "items"]) || entry.getIn(["data", "data", "items"]);
+            var uItems = getListData(entry, "items");
             if (!uItems || !uItems.map) return entry;
 
             var uCount = listSize(uItems);
@@ -1232,7 +1359,7 @@
           /* ── played matches: fill from related match + auto home/away + auto-slug ── */
           if (p.indexOf("played_matches") < 0) return entry;
 
-          var items = entry.getIn(["data", "items"]) || entry.getIn(["data", "data", "items"]);
+          var items = getListData(entry, "items");
           if (!items || !items.map) return entry;
 
           var pCount = listSize(items);

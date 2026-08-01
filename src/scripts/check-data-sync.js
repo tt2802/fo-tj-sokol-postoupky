@@ -24,6 +24,15 @@ function toPosix(p) {
 	return String(p || "").replace(/\\/g, "/");
 }
 
+function looksLikeWrappedAdminPayload(value) {
+	if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+	return (
+		Object.prototype.hasOwnProperty.call(value, "partial") ||
+		Object.prototype.hasOwnProperty.call(value, "raw") ||
+		(Object.prototype.hasOwnProperty.call(value, "data") && Object.prototype.hasOwnProperty.call(value, "path"))
+	);
+}
+
 function fail(message, details = []) {
 	console.error("❌ [data-sync-check] " + message);
 	details.forEach((d) => console.error("   - " + d));
@@ -89,6 +98,26 @@ function main() {
 		fail("Nalezen zakázaný duplicitní zdroj galerie", ["src/_data/galleries.json"]);
 	} else {
 		ok("Duplicitní galleries.json neexistuje");
+	}
+
+	const wrappedJsonFiles = adminFiles
+		.filter((rel) => rel.startsWith("src/_data/") && /\.json$/i.test(rel))
+		.filter((rel) => {
+			try {
+				const parsed = JSON.parse(readText(path.join(root, rel)));
+				return looksLikeWrappedAdminPayload(parsed);
+			} catch (_) {
+				return false;
+			}
+		});
+
+	if (wrappedJsonFiles.length) {
+		fail(
+			"Některé admin JSON soubory jsou uložené jako zabalený CMS payload místo čistých dat",
+			wrappedJsonFiles.map((x) => toPosix(x))
+		);
+	} else {
+		ok("Admin JSON soubory mají čistý datový tvar");
 	}
 
 	if (!process.exitCode) {
