@@ -85,20 +85,12 @@ module.exports = class {
       }
 
       if (lower.includes('veo.co')) {
-        const veoEmbed = lower.includes('/embed') ? url : `${url.replace(/\/+$/, '')}/embed`;
         return `
 <h2>${heading}</h2>
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1rem 0 2rem; border-radius: 12px;">
-  <iframe
-    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-    src="${escapeAttr(veoEmbed)}"
-    loading="lazy"
-    allow="autoplay; fullscreen; picture-in-picture"
-    allowfullscreen
-    title="${heading}">
-  </iframe>
-</div>
-<p class="muted" style="margin-top:-1rem;">Pokud se přehrávač Veo nenačte, <a href="${escapeAttr(url)}" target="_blank" rel="noopener">otevřete přenos v nové kartě</a>.</p>`;
+<div class="card" style="margin: 1rem 0 2rem; padding: 1rem 1.25rem; border-left: 4px solid var(--primary);">
+  <p class="muted" style="margin: 0 0 .75rem;">Veo na některých webech blokuje vložené přehrávání (CSP).</p>
+  <p style="margin:0;"><a href="${escapeAttr(url)}" target="_blank" rel="noopener" class="btn btn--secondary">Otevřít ve Veo</a></p>
+</div>`;
       }
 
       return `<h2>${heading}</h2><p><a href="${escapeAttr(url)}" target="_blank" rel="noopener">Otevřít přenos/video</a></p>`;

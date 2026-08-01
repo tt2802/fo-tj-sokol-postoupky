@@ -110,16 +110,19 @@
 
       // Veo
       if (lower.includes("veo.co")) {
-        const iframe = document.createElement("iframe");
-        iframe.style.width = "100%";
-        iframe.style.aspectRatio = "16 / 9";
-        iframe.style.border = "0";
-        iframe.loading = "lazy";
-        iframe.allow = "autoplay; fullscreen; picture-in-picture";
-        iframe.allowFullscreen = true;
-        iframe.src = lower.includes("/embed") ? url : url.replace(/\/+$/, "") + "/embed";
-        iframe.title = "Video ze zápasu (Veo)";
-        box.appendChild(iframe);
+        const note = document.createElement("p");
+        note.className = "muted";
+        note.textContent = "Veo na některých webech blokuje vložené přehrávání (CSP).";
+        note.style.margin = "0 0 .5rem";
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.textContent = "Otevřít ve Veo";
+        link.rel = "noopener";
+        link.target = "_blank";
+
+        box.appendChild(note);
+        box.appendChild(link);
         box.dataset.embedReady = "1";
         return;
       }
