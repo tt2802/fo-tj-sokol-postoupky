@@ -21,6 +21,7 @@ permalink: /admin/index.html
         --radius: 12px;
         --shadow: 0 8px 24px rgba(15, 23, 42, .08);
         --space: 12px;
+        --mobile-safe-bottom: env(safe-area-inset-bottom, 0px);
       }
 
       html { box-sizing: border-box; }
@@ -45,11 +46,20 @@ permalink: /admin/index.html
           width: 100%;
           max-width: 100%;
           overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        body {
+          padding-bottom: calc(96px + var(--mobile-safe-bottom)) !important;
         }
 
         #nc-root,
         #nc-root * {
           max-width: 100%;
+        }
+
+        #nc-root {
+          padding-bottom: calc(92px + var(--mobile-safe-bottom)) !important;
         }
 
         /* Hlavní wrappers – sloupec na mobilu */
@@ -172,6 +182,7 @@ permalink: /admin/index.html
           min-width: 0 !important;
           width: 100% !important;
           padding: var(--space) !important;
+          padding-bottom: calc(104px + var(--mobile-safe-bottom)) !important;
           overflow-x: hidden !important;
           overflow-y: visible !important;
         }
@@ -221,6 +232,7 @@ permalink: /admin/index.html
           padding: 10px !important;
           border-radius: 10px !important;
           overflow: hidden !important;
+          margin-bottom: 8px !important;
         }
 
         #nc-root [class*="ListControlItem"] [class*="TopBar"],
@@ -377,19 +389,21 @@ permalink: /admin/index.html
         #status-dot {
           font-size: 12px !important;
           padding: 9px 12px !important;
-          bottom: 14px !important;
+          bottom: calc(10px + var(--mobile-safe-bottom)) !important;
+          z-index: 1600 !important;
         }
-        #recent-changes-toggle { right: 14px !important; }
-        #status-dot { left: 14px !important; }
+        #recent-changes-toggle { right: 10px !important; }
+        #status-dot { left: 10px !important; }
 
         #recent-changes-panel,
         #status-panel {
-          width: calc(100vw - 16px) !important;
-          max-height: 56vh !important;
-          bottom: 62px !important;
+          width: calc(100vw - 20px) !important;
+          max-width: calc(100vw - 20px) !important;
+          max-height: min(70dvh, 520px) !important;
+          bottom: calc(54px + var(--mobile-safe-bottom)) !important;
+          left: 10px !important;
+          right: 10px !important;
         }
-        #recent-changes-panel { right: 8px !important; }
-        #status-panel { left: 8px !important; }
 
       } /* konec @media (max-width: 768px) */
 
@@ -489,24 +503,24 @@ permalink: /admin/index.html
         var compact = isCompactViewport();
         var edge = compact ? 10 : 20;
         var bottom = compact ? 8 : 20;
-        var panelBottom = compact ? 46 : 60;
-        var panelWidth = compact ? "min(calc(100vw - 20px), 420px)" : "320px";
-        var panelMaxHeight = compact ? "calc(100dvh - 64px)" : "420px";
+        var panelBottom = compact ? 54 : 60;
+        var panelWidth = compact ? "calc(100vw - 20px)" : "320px";
+        var panelMaxHeight = compact ? "min(70dvh, 520px)" : "420px";
 
         if (toggle) {
           toggle.style.bottom = bottom + "px";
           toggle.style.fontSize = compact ? "11px" : "13px";
           toggle.style.padding = compact ? "7px 10px" : "8px 16px";
-          toggle.style.left = side === "left" ? edge + "px" : "auto";
-          toggle.style.right = side === "right" ? edge + "px" : "auto";
+          toggle.style.left = compact ? "auto" : (side === "left" ? edge + "px" : "auto");
+          toggle.style.right = compact ? (side === "right" ? edge + "px" : "10px") : (side === "right" ? edge + "px" : "auto");
         }
 
         if (panel) {
           panel.style.bottom = panelBottom + "px";
           panel.style.width = panelWidth;
           panel.style.maxHeight = panelMaxHeight;
-          panel.style.left = side === "left" ? edge + "px" : "auto";
-          panel.style.right = side === "right" ? edge + "px" : "auto";
+          panel.style.left = compact ? "10px" : (side === "left" ? edge + "px" : "auto");
+          panel.style.right = compact ? "10px" : (side === "right" ? edge + "px" : "auto");
         }
       }
 
@@ -524,9 +538,13 @@ permalink: /admin/index.html
         toggle.onmouseleave = function () { toggle.style.transform = "scale(1)"; };
         toggle.onclick = function () {
           var p = document.getElementById(PANEL_ID);
+          var statusPanel = document.getElementById("status-panel");
           if (p) {
             panelOpen = !panelOpen;
             p.style.display = panelOpen ? "block" : "none";
+            if (panelOpen && statusPanel) {
+              statusPanel.style.display = "none";
+            }
           }
         };
         document.body.appendChild(toggle);
@@ -605,24 +623,24 @@ permalink: /admin/index.html
         var compact = isCompactViewport();
         var edge = compact ? 10 : 20;
         var bottom = compact ? 8 : 20;
-        var panelBottom = compact ? 46 : 60;
-        var panelWidth = compact ? "min(calc(100vw - 20px), 420px)" : "320px";
-        var panelMaxHeight = compact ? "calc(100dvh - 64px)" : "420px";
+        var panelBottom = compact ? 54 : 60;
+        var panelWidth = compact ? "calc(100vw - 20px)" : "320px";
+        var panelMaxHeight = compact ? "min(70dvh, 520px)" : "420px";
 
         if (toggle) {
           toggle.style.bottom = bottom + "px";
           toggle.style.fontSize = compact ? "11px" : "13px";
           toggle.style.padding = compact ? "7px 10px" : "8px 16px";
-          toggle.style.left = side === "left" ? edge + "px" : "auto";
-          toggle.style.right = side === "right" ? edge + "px" : "auto";
+          toggle.style.left = compact ? "auto" : (side === "left" ? edge + "px" : "auto");
+          toggle.style.right = compact ? (side === "right" ? edge + "px" : "10px") : (side === "right" ? edge + "px" : "auto");
         }
 
         if (panel) {
           panel.style.bottom = panelBottom + "px";
           panel.style.width = panelWidth;
           panel.style.maxHeight = panelMaxHeight;
-          panel.style.left = side === "left" ? edge + "px" : "auto";
-          panel.style.right = side === "right" ? edge + "px" : "auto";
+          panel.style.left = compact ? "10px" : (side === "left" ? edge + "px" : "auto");
+          panel.style.right = compact ? "10px" : (side === "right" ? edge + "px" : "auto");
         }
       }
 
@@ -663,7 +681,14 @@ permalink: /admin/index.html
         dot.onmouseleave = function () { dot.style.transform = "scale(1)"; };
         dot.onclick = function () {
           var p = document.getElementById(STATUS_ID);
-          if (p) { panelOpen = !panelOpen; p.style.display = panelOpen ? "block" : "none"; }
+          var recentChangesPanel = document.getElementById("recent-changes-panel");
+          if (p) {
+            panelOpen = !panelOpen;
+            p.style.display = panelOpen ? "block" : "none";
+            if (panelOpen && recentChangesPanel) {
+              recentChangesPanel.style.display = "none";
+            }
+          }
         };
         document.body.appendChild(dot);
 
