@@ -209,6 +209,9 @@ permalink: /admin/index.html
           flex-direction: column !important;
           min-width: 0 !important;
           width: 100% !important;
+          position: relative !important;
+          z-index: auto !important;
+          overflow: visible !important;
         }
 
         #nc-root [class*="ListControl"],
@@ -231,8 +234,10 @@ permalink: /admin/index.html
         #nc-root [class*="CardGrid"] > * {
           padding: 10px !important;
           border-radius: 10px !important;
-          overflow: hidden !important;
+          overflow: visible !important;
           margin-bottom: 12px !important;
+          position: relative !important;
+          z-index: auto !important;
         }
 
         #nc-root [class*="ListControlItem"] [class*="TopBar"],
@@ -259,6 +264,9 @@ permalink: /admin/index.html
         #nc-root [class*="EditorContainer"] > * {
           min-width: 0 !important;
           max-width: 100% !important;
+          position: relative !important;
+          z-index: auto !important;
+          overflow: visible !important;
         }
 
         /* Formuláře */
@@ -272,9 +280,34 @@ permalink: /admin/index.html
           padding: 12px 14px !important;
           font-size: 16px !important;
           border-radius: 10px !important;
+          position: relative !important;
+          z-index: 1 !important;
         }
 
         #nc-root textarea { min-height: 120px !important; }
+
+        /* Labels a field wrappers */
+        #nc-root label,
+        #nc-root [class*="label"],
+        #nc-root [class*="Label"],
+        #nc-root [class*="field"] label,
+        #nc-root [class*="Field"] label {
+          position: relative !important;
+          z-index: 2 !important;
+          display: block !important;
+          margin-bottom: 6px !important;
+        }
+
+        /* Field groups */
+        #nc-root [class*="field"],
+        #nc-root [class*="Field"],
+        #nc-root [class*="Widget"],
+        #nc-root [class*="widget"] {
+          position: relative !important;
+          z-index: auto !important;
+          margin-bottom: 16px !important;
+          overflow: visible !important;
+        }
 
         /* Dotykové cíle */
         #nc-root button,
@@ -283,10 +316,17 @@ permalink: /admin/index.html
           min-height: 44px !important;
         }
 
-        #nc-root button,
-        #nc-root [role="button"] {
-          min-width: 44px !important;
-          border-radius: 10px !important;
+        #nc-root select,
+        #nc-root [class*="Select"],
+        #nc-root [class*="Dropdown"],
+        #nc-root [class*="dropdown"] {
+          position: relative !important;
+          z-index: 10 !important;
+        }
+
+        #nc-root select:focus,
+        #nc-root [class*="Select"]:focus {
+          z-index: 100 !important;
         }
 
         /* Tlačítka akcí – sloupec */
@@ -315,6 +355,24 @@ permalink: /admin/index.html
           width: 100% !important;
         }
 
+        /* Dialogy a modály */
+        #nc-root [class*="Modal"],
+        #nc-root [class*="Dialog"],
+        #nc-root [class*="Popup"],
+        #nc-root [role="dialog"],
+        #nc-root [class*="ReactModalPortal"] {
+          position: fixed !important;
+          z-index: 9999 !important;
+          pointer-events: auto !important;
+        }
+
+        #nc-root [class*="Modal"] > *,
+        #nc-root [class*="Dialog"] > * {
+          position: relative !important;
+          z-index: auto !important;
+          overflow: visible !important;
+        }
+
         /* Tabulky → karty */
         #nc-root table {
           width: 100% !important;
@@ -335,6 +393,8 @@ permalink: /admin/index.html
         #nc-root td {
           display: block !important;
           width: 100% !important;
+          position: relative !important;
+          z-index: auto !important;
         }
 
         #nc-root tr {
@@ -344,6 +404,7 @@ permalink: /admin/index.html
           border-radius: var(--radius) !important;
           background: var(--surface) !important;
           box-shadow: var(--shadow) !important;
+          overflow: visible !important;
         }
 
         #nc-root td {
@@ -353,6 +414,9 @@ permalink: /admin/index.html
           gap: 10px !important;
           border: 0 !important;
           padding: 8px 0 !important;
+          position: relative !important;
+          z-index: auto !important;
+          overflow: visible !important;
         }
 
         #nc-root td[data-label]::before {
@@ -366,6 +430,9 @@ permalink: /admin/index.html
         #nc-root td > * {
           min-width: 0 !important;
           max-width: 100% !important;
+          position: relative !important;
+          z-index: auto !important;
+          overflow: visible !important;
         }
 
         /* Nadpisy */
