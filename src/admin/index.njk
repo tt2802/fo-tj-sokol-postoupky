@@ -77,6 +77,27 @@ permalink: /admin/index.html
           overflow-y: visible !important;
         }
 
+        /* Skrýt canvas/gradient pozadí které se překrývá s obsahem */
+        #nc-root canvas,
+        #nc-root [class*="AuthenticationPage"] canvas {
+          display: none !important;
+        }
+
+        /* Skrýt profil/avatar v navigaci */
+        #nc-root [class*="Avatar"],
+        #nc-root [class*="avatar"],
+        #nc-root [class*="UserIcon"],
+        #nc-root [class*="userIcon"],
+        #nc-root aside [class*="User"],
+        #nc-root aside [class*="user"],
+        #nc-root aside img[alt*="avatar"],
+        #nc-root aside img[alt*="Avatar"],
+        #nc-root aside img[alt*="user"],
+        #nc-root aside [class*="Profile"],
+        #nc-root aside [class*="profile"] {
+          display: none !important;
+        }
+
         /* Postranní panel → horizontální proužek nahoře */
         #nc-root aside,
         #nc-root [class*="SidebarContainer"] {
@@ -88,15 +109,15 @@ permalink: /admin/index.html
           margin: 0 !important;
           border-radius: 0 !important;
           border: 0 !important;
-          border-bottom: 1px solid rgba(148, 163, 184, .2) !important;
-          background: #0f172a !important;
-          box-shadow: var(--shadow) !important;
+          border-bottom: 2px solid #2d4a2d !important;
+          background: #1a2e1a !important;
+          box-shadow: 0 2px 12px rgba(0,0,0,.35) !important;
           overflow-x: hidden !important;
           overflow-y: visible !important;
           -webkit-overflow-scrolling: touch !important;
           min-height: 0 !important;
           max-height: none !important;
-          padding: 4px 6px !important;
+          padding: 6px 8px !important;
           pointer-events: auto !important;
           touch-action: pan-x pan-y !important;
         }
@@ -115,20 +136,22 @@ permalink: /admin/index.html
           flex-direction: row !important;
           flex-wrap: nowrap !important;
           align-items: center !important;
-          gap: 6px !important;
+          gap: 4px !important;
           list-style: none !important;
           margin: 0 !important;
-          padding: 4px 0 !important;
+          padding: 2px 0 !important;
           width: 100% !important;
           max-width: 100% !important;
           overflow-x: auto !important;
           overflow-y: hidden !important;
           -webkit-overflow-scrolling: touch !important;
-          scrollbar-width: thin;
+          scrollbar-width: none !important;
           position: relative !important;
           z-index: 121 !important;
           pointer-events: auto !important;
         }
+
+        #nc-root aside ul::-webkit-scrollbar { display: none !important; }
 
         #nc-root aside li,
         #nc-root [class*="SidebarContainer"] li,
@@ -147,27 +170,40 @@ permalink: /admin/index.html
         #nc-root [class*="navItem"] {
           display: inline-flex !important;
           align-items: center !important;
-          gap: 8px !important;
+          gap: 6px !important;
           width: auto !important;
-          min-height: 40px !important;
-          padding: 8px 12px !important;
-          border-radius: 999px !important;
-          color: #e2e8f0 !important;
-          font-size: 13px !important;
+          min-height: 36px !important;
+          padding: 6px 14px !important;
+          border-radius: 6px !important;
+          color: #a3c4a3 !important;
+          font-size: 12px !important;
+          font-weight: 500 !important;
+          letter-spacing: 0.02em !important;
+          text-transform: uppercase !important;
           text-decoration: none !important;
           border-bottom: 0 !important;
+          border: 1px solid transparent !important;
           white-space: nowrap !important;
           position: relative !important;
           z-index: 123 !important;
           pointer-events: auto !important;
           touch-action: manipulation !important;
+          transition: all 0.15s ease !important;
+        }
+
+        #nc-root aside a:hover,
+        #nc-root [class*="SidebarContainer"] a:hover {
+          color: #d4edda !important;
+          background: rgba(255,255,255,.06) !important;
+          border-color: rgba(255,255,255,.1) !important;
         }
 
         #nc-root aside a[aria-current="page"],
         #nc-root [class*="SidebarContainer"] a[aria-current="page"] {
-          color: #fff !important;
+          color: #e8f5e9 !important;
           font-weight: 700 !important;
-          background: linear-gradient(135deg, rgba(109,40,217,.35), rgba(59,130,246,.22)) !important;
+          background: #2d5a2d !important;
+          border-color: #4a8a4a !important;
           border-left: 0 !important;
         }
 
