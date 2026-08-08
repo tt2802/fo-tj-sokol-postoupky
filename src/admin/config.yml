@@ -765,7 +765,18 @@ collections:
             collapsed: true
             summary: "{{fields.name}} ({{fields.shortName}})"
             fields:
-              - { label: "ID", name: "id", widget: "string", required: true, hint: "např. dorostenci", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "ID může obsahovat jen malá písmena, čísla a pomlčky."] }
+              - label: "ID"
+                name: "id"
+                widget: "select"
+                required: true
+                hint: "Musí odpovídat existující stránce v /mladez/"
+                options:
+                  - { label: "Školička", value: "skolicka" }
+                  - { label: "Mladší žáci", value: "mlads-zaci" }
+                  - { label: "Mladší žáci B", value: "mlads-zaci-b" }
+                  - { label: "Starší žáci", value: "starsi-zaci" }
+                  - { label: "Dorostenci", value: "dorostenci" }
+                  - { label: "Dorostenky D19", value: "dorostenky-d19" }
               - { label: "Název", name: "name", widget: "string", required: true }
               - { label: "Zkratka", name: "shortName", widget: "string", required: true, hint: "např. U19" }
 

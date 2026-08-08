@@ -96,6 +96,30 @@ const targets = [
 
 let changed = 0;
 
+// ── JSON normalization ─────────────────────────────────────────────────────
+for (const target of targets) {
+  const filePath = path.join(root, target.file);
+  if (!fs.existsSync(filePath)) continue;
+
+  const raw = fs.readFileSync(filePath, "utf8");
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    console.warn(`Skipping ${target.file}: invalid JSON (${error.message})`);
+    continue;
+  }
+
+  const normalized = target.normalize(parsed);
+  const next = `${JSON.stringify(normalized, null, 2)}\n`;
+
+  if (next !== raw) {
+    fs.writeFileSync(filePath, next, "utf8");
+    changed += 1;
+    console.log(`Normalized ${target.file}`);
+  }
+}
+
 // ── YAML normalization (contacts.yml) ─────────────────────────────────────
 function extractContactsData(parsed) {
   if (!parsed || typeof parsed !== "object") return null;
