@@ -2,6 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const { extractArrayPayload, extractObjectPayload } = require("../_data/adminPayload.js");
+const yaml = require("js-yaml");
 
 const root = path.join(__dirname, "..", "_data");
 
@@ -95,27 +96,39 @@ const targets = [
 
 let changed = 0;
 
-for (const target of targets) {
-  const filePath = path.join(root, target.file);
-  if (!fs.existsSync(filePath)) continue;
-
-  const raw = fs.readFileSync(filePath, "utf8");
-  let parsed;
-  try {
-    parsed = JSON.parse(raw);
-  } catch (error) {
-    console.warn(`Skipping ${target.file}: invalid JSON (${error.message})`);
-    continue;
+// ── YAML normalization (contacts.yml) ─────────────────────────────────────
+function extractContactsData(parsed) {
+  if (!parsed || typeof parsed !== "object") return null;
+  if (parsed.data && typeof parsed.data === "object" && !Array.isArray(parsed.data)) return parsed.data;
+  if (typeof parsed.raw === "string") {
+    const inner = yaml.load(parsed.raw);
+    if (inner && typeof inner === "object") return extractContactsData(inner) || inner;
   }
+  if (parsed.address !== undefined || parsed.people !== undefined) return parsed;
+  return null;
+}
 
-  const normalized = target.normalize(parsed);
-  const next = `${JSON.stringify(normalized, null, 2)}\n`;
-
-  if (next !== raw) {
-    fs.writeFileSync(filePath, next, "utf8");
-    changed += 1;
-    console.log(`Normalized ${target.file}`);
+const contactsPath = path.join(root, "contacts.yml");
+if (fs.existsSync(contactsPath)) {
+  const rawYml = fs.readFileSync(contactsPath, "utf8");
+  if (!rawYml.trimStart().startsWith("address:")) {
+    try {
+      let data = extractContactsData(yaml.load(rawYml));
+      if (!data) data = {};
+      const clean = {
+        address:   data.address   || "",
+        mapUrl:    data.mapUrl    || "",
+        people:    Array.isArray(data.people)    ? data.people    : [],
+        trainings: Array.isArray(data.trainings) ? data.trainings : [],
+      };
+      fs.writeFileSync(contactsPath, yaml.dump(clean, { allowUnicode: true, lineWidth: 120 }), "utf8");
+      changed += 1;
+      console.log("Normalized contacts.yml");
+    } catch (e) {
+      console.warn("Skipping contacts.yml:", e.message);
+    }
   }
 }
 
 console.log(`Done. Updated ${changed} file(s).`);
+
