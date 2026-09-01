@@ -63,7 +63,7 @@ hideTitle: true
                   {% if cell.empty %}
                     <td class="cal-empty"></td>
                   {% else %}
-                    <td class="cal-day{% if cell.isToday %} cal-today{% endif %}{% if cell.isPast %} cal-past{% endif %}{% if cell.isWeekend %} cal-weekend{% endif %}{% if cell.events.length %} cal-has-ev{% endif %}"{% if cell.events.length %} title="{% for ev in cell.events %}{{ ev.icon }} {{ ev.title }}{% if ev.time %} · {{ ev.time }}{% endif %}{% if not loop.last %}&#10;{% endif %}{% endfor %}"{% endif %}>
+                    <td class="cal-day{% if cell.isToday %} cal-today is-selected{% endif %}{% if cell.isPast %} cal-past{% endif %}{% if cell.isWeekend %} cal-weekend{% endif %}{% if cell.events.length %} cal-has-ev{% endif %}" data-cal-date="{{ cell.date }}" role="button" tabindex="0" aria-label="Zobrazit akce od {{ cell.day }}. dne na 30 dní"{% if cell.events.length %} title="{% for ev in cell.events %}{{ ev.icon }} {{ ev.title }}{% if ev.time %} · {{ ev.time }}{% endif %}{% if not loop.last %}&#10;{% endif %}{% endfor %}"{% endif %}>
                       <span class="cal-num">{{ cell.day }}</span>
                       {% if cell.events.length %}
                         <span class="cal-dots">{% for ev in cell.events %}<i class="cal-dot cal-dot--{{ ev.type }}"></i>{% endfor %}</span>
@@ -89,10 +89,10 @@ hideTitle: true
 
         {# Upcoming events – side panel #}
         <div class="cal-sidebar">
-          <div class="cal-sidebar__head">Nadcházející akce (30 dní)</div>
-          {% for event in calendarComputed.upcomingEvents %}
-          {% if loop.index0 < 8 %}
-            <div class="cal-up cal-up--{{ event.type }}">
+          <div class="cal-sidebar__head" id="calEventsTitle">Akce na následujících 30 dní</div>
+          <div id="calEventsList">
+          {% for event in calendarComputed.allEvents %}
+            <div class="cal-up cal-up--{{ event.type }}" data-cal-event-date="{{ event.date }}">
               <div class="cal-up__date">
                 <span class="cal-up__day">{{ event.date | czDateDay }}</span>
                 <span class="cal-up__mon">{{ event.date | czDateMonth }}</span>
@@ -103,8 +103,9 @@ hideTitle: true
               </div>
               <i class="cal-dot cal-dot--{{ event.type }}"></i>
             </div>
-          {% endif %}
           {% endfor %}
+            <p class="muted cal-events-empty" id="calEventsEmpty" hidden>V tomto období nejsou naplánovány žádné akce.</p>
+          </div>
         </div>
 
       </div>
@@ -114,7 +115,32 @@ hideTitle: true
         var tables=document.querySelectorAll('.cal-table');
         var navs=document.querySelectorAll('.cal-nav');
         var title=document.getElementById('calTitle');
+        var eventTitle=document.getElementById('calEventsTitle');
+        var eventItems=document.querySelectorAll('[data-cal-event-date]');
+        var emptyMessage=document.getElementById('calEventsEmpty');
+        var days=document.querySelectorAll('[data-cal-date]');
         var cur=0;
+        var dayFormatter=new Intl.DateTimeFormat('cs-CZ',{day:'numeric',month:'long',year:'numeric'});
+        function parseDate(value){ return new Date(value+'T00:00:00'); }
+        function selectDate(value){
+          var start=parseDate(value);
+          var end=parseDate(value);
+          end.setDate(end.getDate()+30);
+          var visible=0;
+          eventItems.forEach(function(item){
+            var date=parseDate(item.getAttribute('data-cal-event-date'));
+            var show=date>=start&&date<=end;
+            item.hidden=!show;
+            if(show) visible++;
+          });
+          emptyMessage.hidden=visible>0;
+          eventTitle.textContent='Akce od '+dayFormatter.format(start)+' na 30 dní';
+          days.forEach(function(day){
+            var selected=day.getAttribute('data-cal-date')===value;
+            day.classList.toggle('is-selected',selected);
+            day.setAttribute('aria-pressed',selected?'true':'false');
+          });
+        }
         function show(i){
           if(i<0||i>=tables.length) return;
           tables[cur].classList.remove('is-active');
@@ -127,6 +153,15 @@ hideTitle: true
             show(cur+(b.getAttribute('data-cal-dir')==='prev'?-1:1));
           });
         });
+        days.forEach(function(day){
+          function activate(){ selectDate(day.getAttribute('data-cal-date')); }
+          day.addEventListener('click',activate);
+          day.addEventListener('keydown',function(event){
+            if(event.key==='Enter'||event.key===' '){ event.preventDefault(); activate(); }
+          });
+        });
+        var selected=document.querySelector('[data-cal-date].cal-today')||days[0];
+        if(selected) selectDate(selected.getAttribute('data-cal-date'));
       })();
       </script>
 

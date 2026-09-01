@@ -2025,7 +2025,18 @@ body::before {
 }
 
 .cal-day {
-  cursor: default;
+  cursor: pointer;
+}
+
+.cal-day:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.cal-day.is-selected .cal-num {
+  background: rgba(255,255,255,0.22);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.55);
 }
 
 .cal-num {
