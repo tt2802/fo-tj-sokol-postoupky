@@ -1,355 +1,687 @@
 {
-  "items": [
+  "partial": false,
+  "path": "src/_data/played_matches.json",
+  "meta": {
+    "path": "src/_data/played_matches.json"
+  },
+  "isModification": null,
+  "raw": "{\n  \"items\": [\n    {\n      \"season\": \"2025/2026\",\n      \"awayScore\": 4,\n      \"isHome\": false,\n      \"assists\": [\n        {\n          \"player\": \"Kubín Tomáš\"\n        },\n        {\n          \"player\": \"Hrdlička Ondřej\"\n        },\n        {\n          \"player\": \"Pernorio Nicholas \"\n        }\n      ],\n      \"slug\": \"pratelak-martinice-postoupky\",\n      \"time\": \"17.30\",\n      \"away\": \"Postoupky\",\n      \"date\": \"2026-07-26\",\n      \"lineup\": [\n        {\n          \"player\": \"VY Jakub\"\n        },\n        {\n          \"player\": \"Pernorio Nicholas \"\n        },\n        {\n          \"player\": \"Majtner Jan\"\n        },\n        {\n          \"player\": \"Kytlica Richard\"\n        },\n        {\n          \"player\": \"Handl Marek\"\n        },\n        {\n          \"player\": \"Čureja Patrik\"\n        },\n        {\n          \"player\": \"Sklenář David\"\n        },\n        {\n          \"player\": \" Opluštil Pavel\"\n        },\n        {\n          \"player\": \"Sklenář Vojtěch\"\n        },\n        {\n          \"player\": \"Lutonský Libor\"\n        },\n        {\n          \"player\": \"Gabrhelík Lukáš\"\n        },\n        {\n          \"player\": \"Hrdlička Ondřej\"\n        },\n        {\n          \"player\": \"Merli Mathias\"\n        },\n        {\n          \"player\": \"Pernorio Francessco\"\n        },\n        {\n          \"player\": \"Kubín Tomáš\"\n        }\n      ],\n      \"venue\": \"Martinice\",\n      \"scorers\": [\n        {\n          \"scorer\": \"Majtner Jan\"\n        },\n        {\n          \"scorer\": \"Majtner Jan\"\n        },\n        {\n          \"scorer\": \"Pernorio Francessco\"\n        },\n        {\n          \"scorer\": \"Hrdlička Odnřej\"\n        }\n      ],\n      \"homeScore\": 4,\n      \"videoUrl\": \"https://app.veo.co/matches/20260726-a-tym-vs-martinice-vd9043ca/\",\n      \"team\": \"muzi\",\n      \"home\": \"Martinice\",\n      \"competition\": \"pratelak\"\n    },\n    {\n      \"season\": \"2025/2026\",\n      \"awayScore\": 2,\n      \"relatedUpcoming\": \"pratelak-prusinovice-postoupky\",\n      \"isHome\": false,\n      \"assists\": [\n        {\n          \"player\": \"Majtner Jan\"\n        },\n        {\n          \"player\": \"Bulička Dominik\"\n        }\n      ],\n      \"slug\": \"pratelak-prusinovice-postoupky\",\n      \"time\": \"17:00\",\n      \"away\": \"Postoupky\",\n      \"date\": \"2026-08-02\",\n      \"lineup\": [\n        {\n          \"player\": \"VY Jakub\"\n        },\n        {\n          \"player\": \"Šimčák Marek \"\n        },\n        {\n          \"player\": \"Kubín Tomáš\"\n        },\n        {\n          \"player\": \"Pernorio Nicholas \"\n        },\n        {\n          \"player\": \"Vrzal Filip \"\n        },\n        {\n          \"player\": \" Opluštil Pavel\"\n        },\n        {\n          \"player\": \"Sklenář Vojtěch\"\n        },\n        {\n          \"player\": \"Majtner Jan\"\n        },\n        {\n          \"player\": \"Lutonský Libor\"\n        },\n        {\n          \"player\": \"Gabrhelík Lukáš\"\n        },\n        {\n          \"player\": \"Kytlica Richard\"\n        },\n        {\n          \"player\": \"Handl Marek\"\n        },\n        {\n          \"player\": \"Merli Mathias\"\n        }\n      ],\n      \"venue\": \"Prusinovice\",\n      \"scorers\": [\n        {\n          \"scorer\": \"Pernorio Nicholas \"\n        },\n        {\n          \"scorer\": \" Opluštil Pavel\"\n        }\n      ],\n      \"homeScore\": 13,\n      \"videoUrl\": \"https://app.veo.co/matches/20260802-match-a-tym-vc85ebc7/\",\n      \"team\": \"muzi\",\n      \"home\": \"Prusinovice\",\n      \"competition\": \"Přátelák\"\n    },\n    {\n      \"referee\": \"Jan Coufal\",\n      \"season\": \"2025/2026\",\n      \"awayScore\": 1,\n      \"relatedUpcoming\": \"postoupky-zarici\",\n      \"isHome\": true,\n      \"assists\": [\n        {\n          \"player\": \"Pernorio Nicholas \"\n        }\n      ],\n      \"slug\": \"postoupky-zarici\",\n      \"time\": \"15:30\",\n      \"round\": \"1\",\n      \"away\": \"Zářičí\",\n      \"date\": \"2026-08-09\",\n      \"lineup\": [\n        {\n          \"player\": \"McEvoy Thomas James \"\n        },\n        {\n          \"player\": \"Šimčák Marek \"\n        },\n        {\n          \"player\": \"Vrzal Filip \"\n        },\n        {\n          \"player\": \" Jeník Branislav\"\n        },\n        {\n          \"player\": \"Sklenář David\"\n        },\n        {\n          \"player\": \"Kubín Tomáš\"\n        },\n        {\n          \"player\": \"Pernorio Nicholas \"\n        },\n        {\n          \"player\": \" Opluštil Pavel\"\n        },\n        {\n          \"player\": \"Pernorio Francessco\"\n        },\n        {\n          \"player\": \"Majtner Jan\"\n        },\n        {\n          \"player\": \"Lutonský Libor\"\n        },\n        {\n          \"player\": \"Handl Marek\"\n        },\n        {\n          \"player\": \"Gabrhelík Lukáš\"\n        },\n        {\n          \"player\": \"Čureja Patrik\"\n        },\n        {\n          \"player\": \"Merli Mathias\"\n        },\n        {\n          \"player\": \"Bulička Vojtěch\"\n        }\n      ],\n      \"venue\": \"Slavia Kroměříž umělá tráva\",\n      \"scorers\": [\n        {\n          \"scorer\": \"Bulička Vojtěch\"\n        }\n      ],\n      \"homeScore\": 1,\n      \"videoUrl\": \"https://app.veo.co/matches/20260809-a-tym-vs-zarici-v54bff40/\",\n      \"team\": \"muzi\",\n      \"home\": \"Postoupky\",\n      \"competition\": \"9.liga C\"\n    },\n    {\n      \"season\": \"2025/2026\",\n      \"awayScore\": 2,\n      \"relatedUpcoming\": \"postoupky-selesovice\",\n      \"isHome\": true,\n      \"slug\": \"postoupky-selesovice\",\n      \"time\": \"18:00\",\n      \"round\": \"3\",\n      \"away\": \"Šelešovice\",\n      \"date\": \"2026-08-23\",\n      \"lineup\": [\n        {\n          \"player\": \"McEvoy Thomas James \"\n        },\n        {\n          \"player\": \"Šimčák Marek \"\n        },\n        {\n          \"player\": \"Vrzal Filip \"\n        },\n        {\n          \"player\": \" Jeník Branislav\"\n        },\n        {\n          \"player\": \"Sklenář David\"\n        },\n        {\n          \"player\": \"Kubín Tomáš\"\n        },\n        {\n          \"player\": \"Pernorio Nicholas \"\n        },\n        {\n          \"player\": \" Opluštil Pavel\"\n        },\n        {\n          \"player\": \"Pernorio Francessco\"\n        },\n        {\n          \"player\": \"Čureja Patrik\"\n        },\n        {\n          \"player\": \"Merli Mathias\"\n        },\n        {\n          \"player\": \"Bulička Vojtěch\"\n        }\n      ],\n      \"venue\": \"UMT Slavia Kroměříž \",\n      \"scorers\": [\n        {\n          \"scorer\": \"Pernorio Francessco\"\n        },\n        {\n          \"scorer\": \" Opluštil Pavel\"\n        }\n      ],\n      \"homeScore\": 2,\n      \"team\": \"muzi\",\n      \"home\": \"Postoupky \",\n      \"competition\": \"9.liga C\"\n    },\n    {\n      \"season\": \"2025/2026\",\n      \"awayScore\": 0,\n      \"relatedUpcoming\": \"litencice-postoupky\",\n      \"isHome\": false,\n      \"slug\": \"litencice-postoupky\",\n      \"time\": \"13:30\",\n      \"round\": \"4\",\n      \"away\": \"Postoupky\",\n      \"date\": \"2026-08-30\",\n      \"lineup\": [\n        {\n          \"player\": \"VY Jakub\"\n        },\n        {\n          \"player\": \"Kubín Tomáš\"\n        },\n        {\n          \"player\": \"Pernorio Nicholas \"\n        },\n        {\n          \"player\": \"McEvoy Thomas James \"\n        },\n        {\n          \"player\": \" Opluštil Pavel\"\n        },\n        {\n          \"player\": \"Lutonský Libor\"\n        },\n        {\n          \"player\": \"Handl Marek\"\n        },\n        {\n          \"player\": \"Potočný Matěj\"\n        },\n        {\n          \"player\": \"Žigmund Michal\"\n        },\n        {\n          \"player\": \"Benedík Adam\"\n        },\n        {\n          \"player\": \"Pěnička Michal\"\n        }\n      ],\n      \"venue\": \"Litenčice\",\n      \"homeScore\": 5,\n      \"team\": \"muzi\",\n      \"home\": \"Litenčice\",\n      \"competition\": \"9.liga C\"\n    }\n  ]\n}\n",
+  "data": {
+    "items": [
+      {
+        "season": "2025/2026",
+        "awayScore": 4,
+        "isHome": false,
+        "assists": [
+          {
+            "player": "Kubín Tomáš"
+          },
+          {
+            "player": "Hrdlička Ondřej"
+          },
+          {
+            "player": "Pernorio Nicholas "
+          }
+        ],
+        "slug": "pratelak-martinice-postoupky",
+        "time": "17.30",
+        "away": "Postoupky",
+        "date": "2026-07-26",
+        "lineup": [
+          {
+            "player": "VY Jakub"
+          },
+          {
+            "player": "Pernorio Nicholas "
+          },
+          {
+            "player": "Majtner Jan"
+          },
+          {
+            "player": "Kytlica Richard"
+          },
+          {
+            "player": "Handl Marek"
+          },
+          {
+            "player": "Čureja Patrik"
+          },
+          {
+            "player": "Sklenář David"
+          },
+          {
+            "player": " Opluštil Pavel"
+          },
+          {
+            "player": "Sklenář Vojtěch"
+          },
+          {
+            "player": "Lutonský Libor"
+          },
+          {
+            "player": "Gabrhelík Lukáš"
+          },
+          {
+            "player": "Hrdlička Ondřej"
+          },
+          {
+            "player": "Merli Mathias"
+          },
+          {
+            "player": "Pernorio Francessco"
+          },
+          {
+            "player": "Kubín Tomáš"
+          }
+        ],
+        "venue": "Martinice",
+        "scorers": [
+          {
+            "scorer": "Majtner Jan"
+          },
+          {
+            "scorer": "Majtner Jan"
+          },
+          {
+            "scorer": "Pernorio Francessco"
+          },
+          {
+            "scorer": "Hrdlička Odnřej"
+          }
+        ],
+        "homeScore": 4,
+        "videoUrl": "https://app.veo.co/matches/20260726-a-tym-vs-martinice-vd9043ca/",
+        "team": "muzi",
+        "home": "Martinice",
+        "competition": "pratelak"
+      },
+      {
+        "season": "2025/2026",
+        "awayScore": 2,
+        "relatedUpcoming": "pratelak-prusinovice-postoupky",
+        "isHome": false,
+        "assists": [
+          {
+            "player": "Majtner Jan"
+          },
+          {
+            "player": "Bulička Dominik"
+          }
+        ],
+        "slug": "pratelak-prusinovice-postoupky",
+        "time": "17:00",
+        "away": "Postoupky",
+        "date": "2026-08-02",
+        "lineup": [
+          {
+            "player": "VY Jakub"
+          },
+          {
+            "player": "Šimčák Marek "
+          },
+          {
+            "player": "Kubín Tomáš"
+          },
+          {
+            "player": "Pernorio Nicholas "
+          },
+          {
+            "player": "Vrzal Filip "
+          },
+          {
+            "player": " Opluštil Pavel"
+          },
+          {
+            "player": "Sklenář Vojtěch"
+          },
+          {
+            "player": "Majtner Jan"
+          },
+          {
+            "player": "Lutonský Libor"
+          },
+          {
+            "player": "Gabrhelík Lukáš"
+          },
+          {
+            "player": "Kytlica Richard"
+          },
+          {
+            "player": "Handl Marek"
+          },
+          {
+            "player": "Merli Mathias"
+          }
+        ],
+        "venue": "Prusinovice",
+        "scorers": [
+          {
+            "scorer": "Pernorio Nicholas "
+          },
+          {
+            "scorer": " Opluštil Pavel"
+          }
+        ],
+        "homeScore": 13,
+        "videoUrl": "https://app.veo.co/matches/20260802-match-a-tym-vc85ebc7/",
+        "team": "muzi",
+        "home": "Prusinovice",
+        "competition": "Přátelák"
+      },
+      {
+        "referee": "Jan Coufal",
+        "season": "2025/2026",
+        "awayScore": 1,
+        "relatedUpcoming": "postoupky-zarici",
+        "isHome": true,
+        "assists": [
+          {
+            "player": "Pernorio Nicholas "
+          }
+        ],
+        "slug": "postoupky-zarici",
+        "time": "15:30",
+        "round": "1",
+        "away": "Zářičí",
+        "date": "2026-08-09",
+        "lineup": [
+          {
+            "player": "McEvoy Thomas James "
+          },
+          {
+            "player": "Šimčák Marek "
+          },
+          {
+            "player": "Vrzal Filip "
+          },
+          {
+            "player": " Jeník Branislav"
+          },
+          {
+            "player": "Sklenář David"
+          },
+          {
+            "player": "Kubín Tomáš"
+          },
+          {
+            "player": "Pernorio Nicholas "
+          },
+          {
+            "player": " Opluštil Pavel"
+          },
+          {
+            "player": "Pernorio Francessco"
+          },
+          {
+            "player": "Majtner Jan"
+          },
+          {
+            "player": "Lutonský Libor"
+          },
+          {
+            "player": "Handl Marek"
+          },
+          {
+            "player": "Gabrhelík Lukáš"
+          },
+          {
+            "player": "Čureja Patrik"
+          },
+          {
+            "player": "Merli Mathias"
+          },
+          {
+            "player": "Bulička Vojtěch"
+          }
+        ],
+        "venue": "Slavia Kroměříž umělá tráva",
+        "scorers": [
+          {
+            "scorer": "Bulička Vojtěch"
+          }
+        ],
+        "homeScore": 1,
+        "videoUrl": "https://app.veo.co/matches/20260809-a-tym-vs-zarici-v54bff40/",
+        "team": "muzi",
+        "home": "Postoupky",
+        "competition": "9.liga C"
+      },
+      {
+        "season": "2025/2026",
+        "awayScore": 2,
+        "relatedUpcoming": "postoupky-selesovice",
+        "isHome": true,
+        "slug": "postoupky-selesovice",
+        "time": "18:00",
+        "round": "3",
+        "away": "Šelešovice",
+        "date": "2026-08-23",
+        "lineup": [
+          {
+            "player": "McEvoy Thomas James "
+          },
+          {
+            "player": "Šimčák Marek "
+          },
+          {
+            "player": "Vrzal Filip "
+          },
+          {
+            "player": " Jeník Branislav"
+          },
+          {
+            "player": "Sklenář David"
+          },
+          {
+            "player": "Kubín Tomáš"
+          },
+          {
+            "player": "Pernorio Nicholas "
+          },
+          {
+            "player": " Opluštil Pavel"
+          },
+          {
+            "player": "Pernorio Francessco"
+          },
+          {
+            "player": "Čureja Patrik"
+          },
+          {
+            "player": "Merli Mathias"
+          },
+          {
+            "player": "Bulička Vojtěch"
+          },
+          {
+            "player": "Žigmund Michal"
+          }
+        ],
+        "venue": "UMT Slavia Kroměříž ",
+        "scorers": [
+          {
+            "scorer": "Pernorio Francessco"
+          },
+          {
+            "scorer": " Opluštil Pavel"
+          }
+        ],
+        "homeScore": 2,
+        "team": "muzi",
+        "home": "Postoupky ",
+        "competition": "9.liga C"
+      },
+      {
+        "season": "2025/2026",
+        "awayScore": 0,
+        "relatedUpcoming": "litencice-postoupky",
+        "isHome": false,
+        "slug": "litencice-postoupky",
+        "time": "13:30",
+        "round": "4",
+        "away": "Postoupky",
+        "date": "2026-08-30",
+        "lineup": [
+          {
+            "player": "VY Jakub"
+          },
+          {
+            "player": "Kubín Tomáš"
+          },
+          {
+            "player": "Pernorio Nicholas "
+          },
+          {
+            "player": "McEvoy Thomas James "
+          },
+          {
+            "player": " Opluštil Pavel"
+          },
+          {
+            "player": "Lutonský Libor"
+          },
+          {
+            "player": "Handl Marek"
+          },
+          {
+            "player": "Potočný Matěj"
+          },
+          {
+            "player": "Žigmund Michal"
+          },
+          {
+            "player": "Benedík Adam"
+          },
+          {
+            "player": "Pěnička Michal"
+          }
+        ],
+        "venue": "Litenčice",
+        "homeScore": 5,
+        "team": "muzi",
+        "home": "Litenčice",
+        "competition": "9.liga C"
+      }
+    ]
+  },
+  "author": "",
+  "slug": "played_matches",
+  "newRecord": false,
+  "status": "",
+  "mediaFiles": [
     {
-      "season": "2025/2026",
-      "awayScore": 4,
-      "isHome": false,
-      "assists": [
-        {
-          "player": "Kubín Tomáš"
-        },
-        {
-          "player": "Hrdlička Ondřej"
-        },
-        {
-          "player": "Pernorio Nicholas "
-        }
-      ],
-      "slug": "pratelak-martinice-postoupky",
-      "time": "17.30",
-      "away": "Postoupky",
-      "date": "2026-07-26",
-      "lineup": [
-        {
-          "player": "VY Jakub"
-        },
-        {
-          "player": "Pernorio Nicholas "
-        },
-        {
-          "player": "Majtner Jan"
-        },
-        {
-          "player": "Kytlica Richard"
-        },
-        {
-          "player": "Handl Marek"
-        },
-        {
-          "player": "Čureja Patrik"
-        },
-        {
-          "player": "Sklenář David"
-        },
-        {
-          "player": " Opluštil Pavel"
-        },
-        {
-          "player": "Sklenář Vojtěch"
-        },
-        {
-          "player": "Lutonský Libor"
-        },
-        {
-          "player": "Gabrhelík Lukáš"
-        },
-        {
-          "player": "Hrdlička Ondřej"
-        },
-        {
-          "player": "Merli Mathias"
-        },
-        {
-          "player": "Pernorio Francessco"
-        },
-        {
-          "player": "Kubín Tomáš"
-        }
-      ],
-      "venue": "Martinice",
-      "scorers": [
-        {
-          "scorer": "Majtner Jan"
-        },
-        {
-          "scorer": "Majtner Jan"
-        },
-        {
-          "scorer": "Pernorio Francessco"
-        },
-        {
-          "scorer": "Hrdlička Odnřej"
-        }
-      ],
-      "homeScore": 4,
-      "videoUrl": "https://app.veo.co/matches/20260726-a-tym-vs-martinice-vd9043ca/",
-      "team": "muzi",
-      "home": "Martinice",
-      "competition": "pratelak"
+      "id": "955e074335052cafc26d5fbb8d319dc183435152",
+      "name": "20251112_170017.jpg",
+      "size": 4250024,
+      "displayURL": {
+        "id": "955e074335052cafc26d5fbb8d319dc183435152",
+        "path": "src/assets/img/uploads/20251112_170017.jpg"
+      },
+      "path": "src/assets/img/uploads/20251112_170017.jpg"
     },
     {
-      "season": "2025/2026",
-      "awayScore": 2,
-      "relatedUpcoming": "pratelak-prusinovice-postoupky",
-      "isHome": false,
-      "assists": [
-        {
-          "player": "Majtner Jan"
-        },
-        {
-          "player": "Bulička Dominik"
-        }
-      ],
-      "slug": "pratelak-prusinovice-postoupky",
-      "time": "17:00",
-      "away": "Postoupky",
-      "date": "2026-08-02",
-      "lineup": [
-        {
-          "player": "VY Jakub"
-        },
-        {
-          "player": "Šimčák Marek "
-        },
-        {
-          "player": "Kubín Tomáš"
-        },
-        {
-          "player": "Pernorio Nicholas "
-        },
-        {
-          "player": "Vrzal Filip "
-        },
-        {
-          "player": " Opluštil Pavel"
-        },
-        {
-          "player": "Sklenář Vojtěch"
-        },
-        {
-          "player": "Majtner Jan"
-        },
-        {
-          "player": "Lutonský Libor"
-        },
-        {
-          "player": "Gabrhelík Lukáš"
-        },
-        {
-          "player": "Kytlica Richard"
-        },
-        {
-          "player": "Handl Marek"
-        },
-        {
-          "player": "Merli Mathias"
-        }
-      ],
-      "venue": "Prusinovice",
-      "scorers": [
-        {
-          "scorer": "Pernorio Nicholas "
-        },
-        {
-          "scorer": " Opluštil Pavel"
-        }
-      ],
-      "homeScore": 13,
-      "videoUrl": "https://app.veo.co/matches/20260802-match-a-tym-vc85ebc7/",
-      "team": "muzi",
-      "home": "Prusinovice",
-      "competition": "Přátelák"
+      "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
+      "name": "a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png",
+      "size": 2088619,
+      "displayURL": {
+        "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
+        "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
+      },
+      "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
     },
     {
-      "referee": "Jan Coufal",
-      "season": "2025/2026",
-      "awayScore": 1,
-      "relatedUpcoming": "postoupky-zarici",
-      "isHome": true,
-      "assists": [
-        {
-          "player": "Pernorio Nicholas "
-        }
-      ],
-      "slug": "postoupky-zarici",
-      "time": "15:30",
-      "round": "1",
-      "away": "Zářičí",
-      "date": "2026-08-09",
-      "lineup": [
-        {
-          "player": "McEvoy Thomas James "
-        },
-        {
-          "player": "Šimčák Marek "
-        },
-        {
-          "player": "Vrzal Filip "
-        },
-        {
-          "player": " Jeník Branislav"
-        },
-        {
-          "player": "Sklenář David"
-        },
-        {
-          "player": "Kubín Tomáš"
-        },
-        {
-          "player": "Pernorio Nicholas "
-        },
-        {
-          "player": " Opluštil Pavel"
-        },
-        {
-          "player": "Pernorio Francessco"
-        },
-        {
-          "player": "Majtner Jan"
-        },
-        {
-          "player": "Lutonský Libor"
-        },
-        {
-          "player": "Handl Marek"
-        },
-        {
-          "player": "Gabrhelík Lukáš"
-        },
-        {
-          "player": "Čureja Patrik"
-        },
-        {
-          "player": "Merli Mathias"
-        },
-        {
-          "player": "Bulička Vojtěch"
-        }
-      ],
-      "venue": "Slavia Kroměříž umělá tráva",
-      "scorers": [
-        {
-          "scorer": "Bulička Vojtěch"
-        }
-      ],
-      "homeScore": 1,
-      "videoUrl": "https://app.veo.co/matches/20260809-a-tym-vs-zarici-v54bff40/",
-      "team": "muzi",
-      "home": "Postoupky",
-      "competition": "9.liga C"
+      "id": "4ac08f3d3fcb5854110ec24bf2b36b4b5b7b4a93",
+      "name": "benedik_adam.jpg",
+      "size": 149910,
+      "displayURL": {
+        "id": "4ac08f3d3fcb5854110ec24bf2b36b4b5b7b4a93",
+        "path": "src/assets/img/uploads/benedik_adam.jpg"
+      },
+      "path": "src/assets/img/uploads/benedik_adam.jpg"
     },
     {
-      "season": "2025/2026",
-      "awayScore": 2,
-      "relatedUpcoming": "postoupky-selesovice",
-      "isHome": true,
-      "slug": "postoupky-selesovice",
-      "time": "18:00",
-      "round": "3",
-      "away": "Šelešovice",
-      "date": "2026-08-23",
-      "lineup": [
-        {
-          "player": "McEvoy Thomas James "
-        },
-        {
-          "player": "Šimčák Marek "
-        },
-        {
-          "player": "Vrzal Filip "
-        },
-        {
-          "player": " Jeník Branislav"
-        },
-        {
-          "player": "Sklenář David"
-        },
-        {
-          "player": "Kubín Tomáš"
-        },
-        {
-          "player": "Pernorio Nicholas "
-        },
-        {
-          "player": " Opluštil Pavel"
-        },
-        {
-          "player": "Pernorio Francessco"
-        },
-        {
-          "player": "Čureja Patrik"
-        },
-        {
-          "player": "Merli Mathias"
-        },
-        {
-          "player": "Bulička Vojtěch"
-        }
-      ],
-      "venue": "UMT Slavia Kroměříž ",
-      "scorers": [
-        {
-          "scorer": "Pernorio Francessco"
-        },
-        {
-          "scorer": " Opluštil Pavel"
-        }
-      ],
-      "homeScore": 2,
-      "team": "muzi",
-      "home": "Postoupky ",
-      "competition": "9.liga C"
+      "id": "785ef90103780fbb870a0fbfce552f4c794152ef",
+      "name": "branko.jpg",
+      "size": 106452,
+      "displayURL": {
+        "id": "785ef90103780fbb870a0fbfce552f4c794152ef",
+        "path": "src/assets/img/uploads/branko.jpg"
+      },
+      "path": "src/assets/img/uploads/branko.jpg"
     },
     {
-      "season": "2025/2026",
-      "awayScore": 0,
-      "relatedUpcoming": "litencice-postoupky",
-      "isHome": false,
-      "slug": "litencice-postoupky",
-      "time": "13:30",
-      "round": "4",
-      "away": "Postoupky",
-      "date": "2026-08-30",
-      "lineup": [
-        {
-          "player": "VY Jakub"
-        },
-        {
-          "player": "Kubín Tomáš"
-        },
-        {
-          "player": "Pernorio Nicholas "
-        },
-        {
-          "player": "McEvoy Thomas James "
-        },
-        {
-          "player": " Opluštil Pavel"
-        },
-        {
-          "player": "Lutonský Libor"
-        },
-        {
-          "player": "Handl Marek"
-        },
-        {
-          "player": "Potočný Matěj"
-        },
-        {
-          "player": "Žigmund Michal"
-        },
-        {
-          "player": "Benedík Adam"
-        },
-        {
-          "player": "Pěnička Michal"
-        }
-      ],
-      "venue": "Litenčice",
-      "homeScore": 5,
-      "team": "muzi",
-      "home": "Litenčice",
-      "competition": "9.liga C"
+      "id": "cc798e4c34d9d6055c37e82f1b59fd521219eae1",
+      "name": "bulička.jpg",
+      "size": 3201085,
+      "displayURL": {
+        "id": "cc798e4c34d9d6055c37e82f1b59fd521219eae1",
+        "path": "src/assets/img/uploads/bulička.jpg"
+      },
+      "path": "src/assets/img/uploads/bulička.jpg"
+    },
+    {
+      "id": "5be76eabb5556c9be0d8321395fdb97c3e9aac4d",
+      "name": "cureja_patrik.jpg",
+      "size": 133125,
+      "displayURL": {
+        "id": "5be76eabb5556c9be0d8321395fdb97c3e9aac4d",
+        "path": "src/assets/img/uploads/cureja_patrik.jpg"
+      },
+      "path": "src/assets/img/uploads/cureja_patrik.jpg"
+    },
+    {
+      "id": "f6e05168027ade83a68703f760db159baf9f2d98",
+      "name": "david_sklenar.jpg",
+      "size": 120654,
+      "displayURL": {
+        "id": "f6e05168027ade83a68703f760db159baf9f2d98",
+        "path": "src/assets/img/uploads/david_sklenar.jpg"
+      },
+      "path": "src/assets/img/uploads/david_sklenar.jpg"
+    },
+    {
+      "id": "c1d11637111b282abf721e6e1ba8df6d2d6c4536",
+      "name": "filda.jpg",
+      "size": 114520,
+      "displayURL": {
+        "id": "c1d11637111b282abf721e6e1ba8df6d2d6c4536",
+        "path": "src/assets/img/uploads/filda.jpg"
+      },
+      "path": "src/assets/img/uploads/filda.jpg"
+    },
+    {
+      "id": "9efc73e6e9372d834dfbe5d380012184c322f32d",
+      "name": "francesco.jpg",
+      "size": 144860,
+      "displayURL": {
+        "id": "9efc73e6e9372d834dfbe5d380012184c322f32d",
+        "path": "src/assets/img/uploads/francesco.jpg"
+      },
+      "path": "src/assets/img/uploads/francesco.jpg"
+    },
+    {
+      "id": "3422a5b2c27890744b569153f20dab558b31ef65",
+      "name": "kytlica_richard.jpg",
+      "size": 88993,
+      "displayURL": {
+        "id": "3422a5b2c27890744b569153f20dab558b31ef65",
+        "path": "src/assets/img/uploads/kytlica_richard.jpg"
+      },
+      "path": "src/assets/img/uploads/kytlica_richard.jpg"
+    },
+    {
+      "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
+      "name": "logo-facr.svg",
+      "size": 21614,
+      "displayURL": {
+        "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
+        "path": "src/assets/img/uploads/logo-facr.svg"
+      },
+      "path": "src/assets/img/uploads/logo-facr.svg"
+    },
+    {
+      "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
+      "name": "logo-fotbalového-oddílu-tj-sokol.png",
+      "size": 1435105,
+      "displayURL": {
+        "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
+        "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+      },
+      "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+    },
+    {
+      "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
+      "name": "logo_km.png",
+      "size": 20972,
+      "displayURL": {
+        "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
+        "path": "src/assets/img/uploads/logo_km.png"
+      },
+      "path": "src/assets/img/uploads/logo_km.png"
+    },
+    {
+      "id": "a921105701efd00b9d99dab71794a5effaba460c",
+      "name": "logo_zk2.png",
+      "size": 17777,
+      "displayURL": {
+        "id": "a921105701efd00b9d99dab71794a5effaba460c",
+        "path": "src/assets/img/uploads/logo_zk2.png"
+      },
+      "path": "src/assets/img/uploads/logo_zk2.png"
+    },
+    {
+      "id": "70cf8a167ed4041a5fbb38b8ae9808c5257f65a5",
+      "name": "luky_gabrhelik.jpg",
+      "size": 109487,
+      "displayURL": {
+        "id": "70cf8a167ed4041a5fbb38b8ae9808c5257f65a5",
+        "path": "src/assets/img/uploads/luky_gabrhelik.jpg"
+      },
+      "path": "src/assets/img/uploads/luky_gabrhelik.jpg"
+    },
+    {
+      "id": "124ffeb8fbacdc7031f19be5a3514bdc6287d804",
+      "name": "lutonsky_libor.jpg",
+      "size": 114543,
+      "displayURL": {
+        "id": "124ffeb8fbacdc7031f19be5a3514bdc6287d804",
+        "path": "src/assets/img/uploads/lutonsky_libor.jpg"
+      },
+      "path": "src/assets/img/uploads/lutonsky_libor.jpg"
+    },
+    {
+      "id": "fe200182403f7cbd0c8986ef6dfc7d1d73ce354e",
+      "name": "majtner_jan.jpg",
+      "size": 105447,
+      "displayURL": {
+        "id": "fe200182403f7cbd0c8986ef6dfc7d1d73ce354e",
+        "path": "src/assets/img/uploads/majtner_jan.jpg"
+      },
+      "path": "src/assets/img/uploads/majtner_jan.jpg"
+    },
+    {
+      "id": "80df93bd49f116bdc9336179cb4f1eb1ae049519",
+      "name": "mara_simcak.jpg",
+      "size": 145795,
+      "displayURL": {
+        "id": "80df93bd49f116bdc9336179cb4f1eb1ae049519",
+        "path": "src/assets/img/uploads/mara_simcak.jpg"
+      },
+      "path": "src/assets/img/uploads/mara_simcak.jpg"
+    },
+    {
+      "id": "759b347a1e54e1d4ae067129ee17aa4f1e93acc3",
+      "name": "maty_morkus.jpg",
+      "size": 106357,
+      "displayURL": {
+        "id": "759b347a1e54e1d4ae067129ee17aa4f1e93acc3",
+        "path": "src/assets/img/uploads/maty_morkus.jpg"
+      },
+      "path": "src/assets/img/uploads/maty_morkus.jpg"
+    },
+    {
+      "id": "b914bb57e526b97f8a13a32c0072e38dc56a98b4",
+      "name": "meky.jpg",
+      "size": 110627,
+      "displayURL": {
+        "id": "b914bb57e526b97f8a13a32c0072e38dc56a98b4",
+        "path": "src/assets/img/uploads/meky.jpg"
+      },
+      "path": "src/assets/img/uploads/meky.jpg"
+    },
+    {
+      "id": "01d1f831002a84a332b4b32bf392acd8ba29f20d",
+      "name": "merli_mathias.jpg",
+      "size": 104099,
+      "displayURL": {
+        "id": "01d1f831002a84a332b4b32bf392acd8ba29f20d",
+        "path": "src/assets/img/uploads/merli_mathias.jpg"
+      },
+      "path": "src/assets/img/uploads/merli_mathias.jpg"
+    },
+    {
+      "id": "b8782f09695d3b0adaff8b5b5f4085eb1172d4ce",
+      "name": "nicholas.jpg",
+      "size": 143907,
+      "displayURL": {
+        "id": "b8782f09695d3b0adaff8b5b5f4085eb1172d4ce",
+        "path": "src/assets/img/uploads/nicholas.jpg"
+      },
+      "path": "src/assets/img/uploads/nicholas.jpg"
+    },
+    {
+      "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
+      "name": "ofs-kroměříž-logo-černá-0.webp",
+      "size": 55478,
+      "displayURL": {
+        "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
+        "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
+      },
+      "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
+    },
+    {
+      "id": "5a8fd9f7da561aec777a92254c498ab75c27297c",
+      "name": "pavel.jpg",
+      "size": 97211,
+      "displayURL": {
+        "id": "5a8fd9f7da561aec777a92254c498ab75c27297c",
+        "path": "src/assets/img/uploads/pavel.jpg"
+      },
+      "path": "src/assets/img/uploads/pavel.jpg"
+    },
+    {
+      "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
+      "name": "pavel.png",
+      "size": 28591,
+      "displayURL": {
+        "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
+        "path": "src/assets/img/uploads/pavel.png"
+      },
+      "path": "src/assets/img/uploads/pavel.png"
+    },
+    {
+      "id": "ffe1f45801d1803fb797d64bc931ca0392fd1d12",
+      "name": "penicka_michal.jpg",
+      "size": 90575,
+      "displayURL": {
+        "id": "ffe1f45801d1803fb797d64bc931ca0392fd1d12",
+        "path": "src/assets/img/uploads/penicka_michal.jpg"
+      },
+      "path": "src/assets/img/uploads/penicka_michal.jpg"
+    },
+    {
+      "id": "50040996cb45921370982ed31bae81302c177503",
+      "name": "potocny_matej.jpg",
+      "size": 98216,
+      "displayURL": {
+        "id": "50040996cb45921370982ed31bae81302c177503",
+        "path": "src/assets/img/uploads/potocny_matej.jpg"
+      },
+      "path": "src/assets/img/uploads/potocny_matej.jpg"
+    },
+    {
+      "id": "dc343914664c58be1987b28c1a003288aa3778a2",
+      "name": "tomas_kubin.jpg",
+      "size": 105923,
+      "displayURL": {
+        "id": "dc343914664c58be1987b28c1a003288aa3778a2",
+        "path": "src/assets/img/uploads/tomas_kubin.jpg"
+      },
+      "path": "src/assets/img/uploads/tomas_kubin.jpg"
+    },
+    {
+      "id": "f8f62c13ff9a638242d967cf0f955f6931298f85",
+      "name": "vy_jakub.jpg",
+      "size": 137040,
+      "displayURL": {
+        "id": "f8f62c13ff9a638242d967cf0f955f6931298f85",
+        "path": "src/assets/img/uploads/vy_jakub.jpg"
+      },
+      "path": "src/assets/img/uploads/vy_jakub.jpg"
+    },
+    {
+      "id": "9c415e00aa4bc022de8eb3fe8014609354483fc5",
+      "name": "zigmund-p.jpg",
+      "size": 60871,
+      "displayURL": {
+        "id": "9c415e00aa4bc022de8eb3fe8014609354483fc5",
+        "path": "src/assets/img/uploads/zigmund-p.jpg"
+      },
+      "path": "src/assets/img/uploads/zigmund-p.jpg"
+    },
+    {
+      "id": "28e800f8eb71f60bd97ea94e042c11520020b5f9",
+      "name": "zigmund_michal.jpg",
+      "size": 97497,
+      "displayURL": {
+        "id": "28e800f8eb71f60bd97ea94e042c11520020b5f9",
+        "path": "src/assets/img/uploads/zigmund_michal.jpg"
+      },
+      "path": "src/assets/img/uploads/zigmund_michal.jpg"
     }
-  ]
+  ],
+  "label": "Odehrané zápasy",
+  "updatedOn": "",
+  "i18n": {},
+  "collection": "matches"
 }
