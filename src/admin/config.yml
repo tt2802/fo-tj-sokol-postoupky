@@ -304,17 +304,15 @@ collections:
             name: "teams"
             widget: "list"
             collapsed: true
-            summary: "{{fields.pos}}. {{fields.name}} — {{fields.points}} b."
+            hint: "Zadejte výhry, remízy, prohry a skóre. Zápasy, body i pořadí se na webu spočítají automaticky. Při shodě bodů rozhoduje rozdíl skóre a poté více vstřelených gólů."
+            summary: "{{fields.name}} — {{fields.wins}} výher, {{fields.draws}} remíz, {{fields.losses}} proher"
             fields:
-              - { label: "Pořadí", name: "pos", widget: "number", value_type: "int" }
               - { label: "Název týmu", name: "name", widget: "string" }
-              - { label: "Zápasy", name: "played", widget: "number", value_type: "int", default: 0 }
-              - { label: "Výhry", name: "wins", widget: "number", value_type: "int", default: 0 }
-              - { label: "Remízy", name: "draws", widget: "number", value_type: "int", default: 0 }
-              - { label: "Prohry", name: "losses", widget: "number", value_type: "int", default: 0 }
-              - { label: "Skóre +", name: "goalsFor", widget: "number", value_type: "int", default: 0 }
-              - { label: "Skóre −", name: "goalsAgainst", widget: "number", value_type: "int", default: 0 }
-              - { label: "Body", name: "points", widget: "number", value_type: "int", default: 0 }
+              - { label: "Výhry", name: "wins", widget: "number", value_type: "int", min: 0, default: 0 }
+              - { label: "Remízy", name: "draws", widget: "number", value_type: "int", min: 0, default: 0 }
+              - { label: "Prohry", name: "losses", widget: "number", value_type: "int", min: 0, default: 0 }
+              - { label: "Vstřelené góly", name: "goalsFor", widget: "number", value_type: "int", min: 0, default: 0 }
+              - { label: "Obdržené góly", name: "goalsAgainst", widget: "number", value_type: "int", min: 0, default: 0 }
 
   # ────────────────────────────────────────────────
   # TÝM

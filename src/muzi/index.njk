@@ -31,10 +31,10 @@ layout: layouts/page.njk
   </div>
 </section>
 
-{% if league_table.teams | length > 0 %}
+{% if leagueTableComputed.teams | length > 0 %}
   <section class="section">
     <div class="container">
-      <h2>Tabulka – {{ league_table.competition }} {{ league_table.season }}</h2>
+      <h2>Tabulka – {{ leagueTableComputed.competition }} {{ leagueTableComputed.season }}</h2>
       <div class="stats-table-wrap">
         <table class="stats-table league-table">
           <thead>
@@ -50,7 +50,7 @@ layout: layouts/page.njk
             </tr>
           </thead>
           <tbody>
-            {% for team in league_table.teams %}
+            {% for team in leagueTableComputed.teams %}
               <tr{% if team.name == "Postoupky" or team.name == "Sokol Postoupky" or team.name == "TJ Sokol Postoupky" %} class="league-table__highlight"{% endif %}>
                 <td>{{ team.pos }}</td>
                 <td>{{ team.name }}</td>
