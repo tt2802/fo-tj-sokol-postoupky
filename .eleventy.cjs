@@ -160,7 +160,7 @@ module.exports = function (eleventyConfig) {
   }
 
   eleventyConfig.addCollection("news", (api) => {
-    return api.getFilteredByGlob("src/news/*.md").sort((a, b) => b.date - a.date);
+    return api.getFilteredByGlob("./src/news/*.md").sort((a, b) => b.date - a.date);
   });
 
   // production-only HTML minification (if plugin available)
