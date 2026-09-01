@@ -126,43 +126,39 @@ main {
 }
 
 /* ===== ODKAZY V OBSAHU ===== */
-/* Navigace, tlačítka, celé karty a galerie mají vlastní vzhled. */
-main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand) {
+/* Všechny obsahové prokliky používají jednotný vzhled hlavního tlačítka. */
+main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand) {
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
-  padding: 0.15em 0.45em;
-  border: 1px solid rgba(109, 40, 217, 0.35);
-  border-radius: 7px;
-  background-color: var(--primary-faint);
-  color: var(--primary);
+  padding: 0.65rem 0.95rem;
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  background-color: var(--primary);
+  color: #fff;
   font-weight: 600;
   text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-position: 0 calc(100% - 0.15em);
-  background-repeat: no-repeat;
-  background-size: 0 2px;
-  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, background-size 0.16s ease, transform 0.16s ease;
+  transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand)::after {
+main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand)::after {
   content: "→";
   font-weight: 700;
   transition: transform 0.16s ease;
 }
 
-main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):hover {
-  background-color: var(--primary-light);
-  border-color: var(--primary);
-  background-size: 100% 2px;
+main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  box-shadow: 0 8px 18px var(--shadow);
   transform: translateY(-1px);
 }
 
-main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):hover::after {
+main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):hover::after {
   transform: translateX(2px);
 }
 
-main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):focus-visible {
+main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):focus-visible {
   outline: 3px solid rgba(109, 40, 217, 0.35);
   outline-offset: 3px;
   border-radius: 3px;
