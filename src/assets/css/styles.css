@@ -2033,12 +2033,6 @@ body::before {
   outline-offset: 2px;
 }
 
-.cal-day.is-selected .cal-num {
-  background: rgba(255,255,255,0.22);
-  color: #fff;
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.55);
-}
-
 .cal-num {
   display: inline-flex;
   align-items: center;
@@ -2065,6 +2059,13 @@ body::before {
   color: #fff;
   font-weight: 800;
   box-shadow: 0 0 0 3px rgba(109,40,217,0.4);
+}
+
+/* Musí být až za .cal-today, aby se kruh přesunul na vybraný den. */
+.cal-day.is-selected .cal-num {
+  background: rgba(255,255,255,0.22);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.55);
 }
 
 .cal-has-ev .cal-num {
