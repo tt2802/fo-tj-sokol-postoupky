@@ -131,6 +131,7 @@ hideTitle: true
             var date=parseDate(item.getAttribute('data-cal-event-date'));
             var show=date>=start&&date<=end;
             item.hidden=!show;
+            item.style.display=show?'flex':'none';
             if(show) visible++;
           });
           emptyMessage.hidden=visible>0;
