@@ -13,17 +13,14 @@ permalink: /novinky/
         {% for post in collections.news %}
           <article class="card">
             <div class="card__body">
-              <h2 class="card__title">
-                <a href="{{ post.url | url }}">{{ post.data.title }}</a>
-              </h2>
-
-              <p class="muted">
-                {{ post.date | czDate }}
-              </p>
-
-              <p>
-                {{ post.templateContent | striptags | truncate(120) }}
-              </p>
+              <p class="muted">{{ post.date | czDate }}</p>
+              <h2 class="card__title">{{ post.data.title }}</h2>
+              {% if post.data.excerpt %}
+                <p>{{ post.data.excerpt }}</p>
+              {% else %}
+                <p>{{ post.templateContent | striptags | truncate(120) }}</p>
+              {% endif %}
+              <p><a class="btn" href="{{ post.url | url }}">Přečíst novinku</a></p>
             </div>
           </article>
         {% endfor %}
