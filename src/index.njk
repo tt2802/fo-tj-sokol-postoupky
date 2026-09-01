@@ -276,15 +276,12 @@ hideTitle: true
 
           {% if latest %}
             <p class="muted">{{ latest.date | czDate }}</p>
-            <h3><a href="{{ latest.url | url }}">{{ latest.data.title }}</a></h3>
+            <h3>{{ latest.data.title }}</h3>
             {% if latest.data.excerpt %}
               <p>{{ latest.data.excerpt }}</p>
             {% endif %}
-
-            <p><a href="{{ '/novinky/' | url }}">Všechny novinky</a></p>
           {% else %}
             <p class="muted">Zatím tu nejsou žádné novinky.</p>
-            <p><a href="{{ '/novinky/' | url }}">Zobrazit novinky</a></p>
           {% endif %}
         </div>
       </article>
