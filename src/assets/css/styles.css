@@ -178,6 +178,37 @@ main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-vie
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
+.news-cards {
+  grid-auto-rows: 1fr;
+}
+
+.news-cards .card,
+.news-cards .card__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.news-cards .card__body {
+  height: 100%;
+}
+
+.news-cards .card__title {
+  min-height: 2.9em;
+}
+
+.news-card__excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.news-card__excerpt + p {
+  margin-top: auto;
+  margin-bottom: 0;
+  padding-top: 0.75rem;
+}
+
 .grid.staff {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }

@@ -9,16 +9,16 @@ permalink: /novinky/
     <h1>Novinky</h1>
 
     {% if collections.news.length %}
-      <div class="grid cards">
+      <div class="grid cards news-cards">
         {% for post in collections.news %}
           <article class="card">
             <div class="card__body">
               <p class="muted">{{ post.date | czDate }}</p>
               <h2 class="card__title">{{ post.data.title }}</h2>
               {% if post.data.excerpt %}
-                <p>{{ post.data.excerpt }}</p>
+                <p class="news-card__excerpt">{{ post.data.excerpt }}</p>
               {% else %}
-                <p>{{ post.templateContent | striptags | truncate(120) }}</p>
+                <p class="news-card__excerpt">{{ post.templateContent | striptags | truncate(120) }}</p>
               {% endif %}
               <p><a class="btn" href="{{ post.url | url }}">Přečíst novinku</a></p>
             </div>
