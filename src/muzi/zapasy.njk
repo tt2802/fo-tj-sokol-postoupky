@@ -84,7 +84,7 @@ layout: layouts/page.njk
               </h3>
               <p class="muted">{{ m.competition }} · {{ m.season }}</p>
               {% if m.videoUrl %}
-                <p><a class="btn btn--secondary" href="{{ m.videoUrl }}" target="_blank" rel="noopener">Otevřít na YouTube</a></p>
+                <p><a class="btn btn--secondary" href="{{ m.videoUrl }}" target="_blank" rel="noopener">Přehrát video zápasu</a></p>
               {% endif %}
               <p style="margin-top: 0.5rem;"><a href="{{ ('/muzi/zapasy/' ~ m.slug ~ '/') | url }}">Detail zápasu</a></p>
             </div>

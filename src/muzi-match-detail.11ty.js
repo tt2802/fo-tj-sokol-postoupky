@@ -27,19 +27,19 @@ module.exports = class {
     const escapeAttr = (value) => String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const normalizeUrl = (value) => String(value || '').trim();
 
-    function renderMediaLink(urlRaw, heading) {
+    function renderMediaLink(urlRaw, heading, buttonLabel) {
       const url = normalizeUrl(urlRaw);
       if (!url) return '';
 
       return `
 <h2>${heading}</h2>
-<p><a href="${escapeAttr(url)}" target="_blank" rel="noopener" class="btn btn--secondary">Otevřít na YouTube</a></p>`;
+<p><a href="${escapeAttr(url)}" target="_blank" rel="noopener" class="btn btn--secondary">${buttonLabel}</a></p>`;
     }
     
     const liveHtml = !hasScore && m.liveUrl
-      ? renderMediaLink(m.liveUrl, 'Živý přenos')
+      ? renderMediaLink(m.liveUrl, 'Živý přenos', 'Otevřít na YouTube')
       : '';
-    const videoHtml = m.videoUrl ? renderMediaLink(m.videoUrl, 'Video ze zápasu') : '';
+    const videoHtml = m.videoUrl ? renderMediaLink(m.videoUrl, 'Video ze zápasu', 'Přehrát video zápasu') : '';
 
     // Build voting section HTML (only for played matches with a score)
     let votingHtml = '';
