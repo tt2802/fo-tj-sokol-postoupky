@@ -125,6 +125,29 @@ main {
   margin-bottom: 1.5rem;
 }
 
+/* ===== ODKAZY V OBSAHU ===== */
+/* Navigace, tlačítka, celé karty a galerie mají vlastní vzhled. */
+main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand) {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0 2px;
+  transition: color 0.16s ease, background-size 0.16s ease;
+}
+
+main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):hover {
+  background-size: 100% 2px;
+}
+
+main a:not(.btn):not(.card):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):focus-visible {
+  outline: 3px solid rgba(109, 40, 217, 0.35);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
 /* ===== GRID ===== */
 .grid {
   display: grid;
