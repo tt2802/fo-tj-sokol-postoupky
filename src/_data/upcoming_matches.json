@@ -1,56 +1,386 @@
 {
-  "items": [
+  "partial": false,
+  "path": "src/_data/upcoming_matches.json",
+  "meta": {
+    "path": "src/_data/upcoming_matches.json"
+  },
+  "isModification": null,
+  "raw": "{\n  \"items\": [\n    {\n      \"season\": \"2026/2027\",\n      \"isHome\": true,\n      \"slug\": \"postoupky-barice\",\n      \"time\": \"13:30\",\n      \"round\": \"5\",\n      \"away\": \"Bařice\",\n      \"date\": \"2026-09-06\",\n      \"venue\": \"UMT Slavia Kroměříž\",\n      \"team\": \"muzi\",\n      \"home\": \"Postoupky\",\n      \"competition\": \"9.liga C\"\n    },\n    {\n      \"season\": \"2026/2027\",\n      \"isHome\": true,\n      \"slug\": \"zlobice-postoupky\",\n      \"time\": \"16:00\",\n      \"round\": \"6\",\n      \"away\": \"Postoupky\",\n      \"date\": \"2026-09-13\",\n      \"venue\": \"Zlobice\",\n      \"team\": \"muzi\",\n      \"home\": \"Zlobice\",\n      \"competition\": \"9.liga C\"\n    },\n    {\n      \"season\": \"2026/2027\",\n      \"isHome\": true,\n      \"slug\": \"postoupky-korycanyb\",\n      \"time\": \"13:30\",\n      \"round\": \"7\",\n      \"away\": \"Koryčany B\",\n      \"date\": \"2026-09-20\",\n      \"venue\": \"UMT Slavia Kroměříž\",\n      \"team\": \"muzi\",\n      \"home\": \"Postoupky\",\n      \"competition\": \"9.liga C\"\n    },\n    {\n      \"season\": \"2026/2027\",\n      \"isHome\": false,\n      \"slug\": \"lutopecny-postoupky\",\n      \"time\": \"15:30\",\n      \"round\": \"8\",\n      \"away\": \"Posotupky\",\n      \"date\": \"2026-09-27\",\n      \"venue\": \"Lutopecny\",\n      \"team\": \"muzi\",\n      \"home\": \"Lutopecny\",\n      \"competition\": \"9.liga C\"\n    }\n  ]\n}\n",
+  "data": {
+    "items": [
+      {
+        "liveUrl": "https://www.youtube.com/live/yubc4NzcrrE?feature=shared",
+        "season": "2026/2027",
+        "isHome": true,
+        "slug": "postoupky-barice",
+        "time": "13:30",
+        "round": "5",
+        "away": "Bařice",
+        "date": "2026-09-06",
+        "venue": "UMT Slavia Kroměříž",
+        "team": "muzi",
+        "home": "Postoupky",
+        "competition": "9.liga C"
+      },
+      {
+        "season": "2026/2027",
+        "isHome": true,
+        "slug": "zlobice-postoupky",
+        "time": "16:00",
+        "round": "6",
+        "away": "Postoupky",
+        "date": "2026-09-13",
+        "venue": "Zlobice",
+        "team": "muzi",
+        "home": "Zlobice",
+        "competition": "9.liga C"
+      },
+      {
+        "season": "2026/2027",
+        "isHome": true,
+        "slug": "postoupky-korycanyb",
+        "time": "13:30",
+        "round": "7",
+        "away": "Koryčany B",
+        "date": "2026-09-20",
+        "venue": "UMT Slavia Kroměříž",
+        "team": "muzi",
+        "home": "Postoupky",
+        "competition": "9.liga C"
+      },
+      {
+        "season": "2026/2027",
+        "isHome": false,
+        "slug": "lutopecny-postoupky",
+        "time": "15:30",
+        "round": "8",
+        "away": "Posotupky",
+        "date": "2026-09-27",
+        "venue": "Lutopecny",
+        "team": "muzi",
+        "home": "Lutopecny",
+        "competition": "9.liga C"
+      }
+    ]
+  },
+  "author": "",
+  "slug": "upcoming_matches",
+  "newRecord": false,
+  "status": "",
+  "mediaFiles": [
     {
-      "season": "2026/2027",
-      "isHome": true,
-      "slug": "postoupky-barice",
-      "time": "13:30",
-      "round": "5",
-      "away": "Bařice",
-      "date": "2026-09-06",
-      "venue": "UMT Slavia Kroměříž",
-      "team": "muzi",
-      "home": "Postoupky",
-      "competition": "9.liga C"
+      "id": "955e074335052cafc26d5fbb8d319dc183435152",
+      "name": "20251112_170017.jpg",
+      "size": 4250024,
+      "displayURL": {
+        "id": "955e074335052cafc26d5fbb8d319dc183435152",
+        "path": "src/assets/img/uploads/20251112_170017.jpg"
+      },
+      "path": "src/assets/img/uploads/20251112_170017.jpg"
     },
     {
-      "season": "2026/2027",
-      "isHome": true,
-      "slug": "zlobice-postoupky",
-      "time": "16:00",
-      "round": "6",
-      "away": "Postoupky",
-      "date": "2026-09-13",
-      "venue": "Zlobice",
-      "team": "muzi",
-      "home": "Zlobice",
-      "competition": "9.liga C"
+      "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
+      "name": "a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png",
+      "size": 2088619,
+      "displayURL": {
+        "id": "10fa82f2950d81bc79b4986d2f0be00578da0a34",
+        "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
+      },
+      "path": "src/assets/img/uploads/a65fb08adf35ff94f394bdb5270ded427ab16198f74657447c682f817687cf1a.png"
     },
     {
-      "season": "2026/2027",
-      "isHome": true,
-      "slug": "postoupky-korycanyb",
-      "time": "13:30",
-      "round": "7",
-      "away": "Koryčany B",
-      "date": "2026-09-20",
-      "venue": "UMT Slavia Kroměříž",
-      "team": "muzi",
-      "home": "Postoupky",
-      "competition": "9.liga C"
+      "id": "4ac08f3d3fcb5854110ec24bf2b36b4b5b7b4a93",
+      "name": "benedik_adam.jpg",
+      "size": 149910,
+      "displayURL": {
+        "id": "4ac08f3d3fcb5854110ec24bf2b36b4b5b7b4a93",
+        "path": "src/assets/img/uploads/benedik_adam.jpg"
+      },
+      "path": "src/assets/img/uploads/benedik_adam.jpg"
     },
     {
-      "season": "2026/2027",
-      "isHome": false,
-      "slug": "lutopecny-postoupky",
-      "time": "15:30",
-      "round": "8",
-      "away": "Posotupky",
-      "date": "2026-09-27",
-      "venue": "Lutopecny",
-      "team": "muzi",
-      "home": "Lutopecny",
-      "competition": "9.liga C"
+      "id": "785ef90103780fbb870a0fbfce552f4c794152ef",
+      "name": "branko.jpg",
+      "size": 106452,
+      "displayURL": {
+        "id": "785ef90103780fbb870a0fbfce552f4c794152ef",
+        "path": "src/assets/img/uploads/branko.jpg"
+      },
+      "path": "src/assets/img/uploads/branko.jpg"
+    },
+    {
+      "id": "cc798e4c34d9d6055c37e82f1b59fd521219eae1",
+      "name": "bulička.jpg",
+      "size": 3201085,
+      "displayURL": {
+        "id": "cc798e4c34d9d6055c37e82f1b59fd521219eae1",
+        "path": "src/assets/img/uploads/bulička.jpg"
+      },
+      "path": "src/assets/img/uploads/bulička.jpg"
+    },
+    {
+      "id": "5be76eabb5556c9be0d8321395fdb97c3e9aac4d",
+      "name": "cureja_patrik.jpg",
+      "size": 133125,
+      "displayURL": {
+        "id": "5be76eabb5556c9be0d8321395fdb97c3e9aac4d",
+        "path": "src/assets/img/uploads/cureja_patrik.jpg"
+      },
+      "path": "src/assets/img/uploads/cureja_patrik.jpg"
+    },
+    {
+      "id": "f6e05168027ade83a68703f760db159baf9f2d98",
+      "name": "david_sklenar.jpg",
+      "size": 120654,
+      "displayURL": {
+        "id": "f6e05168027ade83a68703f760db159baf9f2d98",
+        "path": "src/assets/img/uploads/david_sklenar.jpg"
+      },
+      "path": "src/assets/img/uploads/david_sklenar.jpg"
+    },
+    {
+      "id": "c1d11637111b282abf721e6e1ba8df6d2d6c4536",
+      "name": "filda.jpg",
+      "size": 114520,
+      "displayURL": {
+        "id": "c1d11637111b282abf721e6e1ba8df6d2d6c4536",
+        "path": "src/assets/img/uploads/filda.jpg"
+      },
+      "path": "src/assets/img/uploads/filda.jpg"
+    },
+    {
+      "id": "9efc73e6e9372d834dfbe5d380012184c322f32d",
+      "name": "francesco.jpg",
+      "size": 144860,
+      "displayURL": {
+        "id": "9efc73e6e9372d834dfbe5d380012184c322f32d",
+        "path": "src/assets/img/uploads/francesco.jpg"
+      },
+      "path": "src/assets/img/uploads/francesco.jpg"
+    },
+    {
+      "id": "3422a5b2c27890744b569153f20dab558b31ef65",
+      "name": "kytlica_richard.jpg",
+      "size": 88993,
+      "displayURL": {
+        "id": "3422a5b2c27890744b569153f20dab558b31ef65",
+        "path": "src/assets/img/uploads/kytlica_richard.jpg"
+      },
+      "path": "src/assets/img/uploads/kytlica_richard.jpg"
+    },
+    {
+      "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
+      "name": "logo-facr.svg",
+      "size": 21614,
+      "displayURL": {
+        "id": "6871367c23373dbcc44f8b464a585c9c7f193907",
+        "path": "src/assets/img/uploads/logo-facr.svg"
+      },
+      "path": "src/assets/img/uploads/logo-facr.svg"
+    },
+    {
+      "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
+      "name": "logo-fotbalového-oddílu-tj-sokol.png",
+      "size": 1435105,
+      "displayURL": {
+        "id": "a66574dbb9a268f90dc9a51591f3829d8db1f5ac",
+        "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+      },
+      "path": "src/assets/img/uploads/logo-fotbalového-oddílu-tj-sokol.png"
+    },
+    {
+      "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
+      "name": "logo_km.png",
+      "size": 20972,
+      "displayURL": {
+        "id": "3748409b09cdfd99e70ee08c06e1668e337e8ca4",
+        "path": "src/assets/img/uploads/logo_km.png"
+      },
+      "path": "src/assets/img/uploads/logo_km.png"
+    },
+    {
+      "id": "a921105701efd00b9d99dab71794a5effaba460c",
+      "name": "logo_zk2.png",
+      "size": 17777,
+      "displayURL": {
+        "id": "a921105701efd00b9d99dab71794a5effaba460c",
+        "path": "src/assets/img/uploads/logo_zk2.png"
+      },
+      "path": "src/assets/img/uploads/logo_zk2.png"
+    },
+    {
+      "id": "70cf8a167ed4041a5fbb38b8ae9808c5257f65a5",
+      "name": "luky_gabrhelik.jpg",
+      "size": 109487,
+      "displayURL": {
+        "id": "70cf8a167ed4041a5fbb38b8ae9808c5257f65a5",
+        "path": "src/assets/img/uploads/luky_gabrhelik.jpg"
+      },
+      "path": "src/assets/img/uploads/luky_gabrhelik.jpg"
+    },
+    {
+      "id": "124ffeb8fbacdc7031f19be5a3514bdc6287d804",
+      "name": "lutonsky_libor.jpg",
+      "size": 114543,
+      "displayURL": {
+        "id": "124ffeb8fbacdc7031f19be5a3514bdc6287d804",
+        "path": "src/assets/img/uploads/lutonsky_libor.jpg"
+      },
+      "path": "src/assets/img/uploads/lutonsky_libor.jpg"
+    },
+    {
+      "id": "fe200182403f7cbd0c8986ef6dfc7d1d73ce354e",
+      "name": "majtner_jan.jpg",
+      "size": 105447,
+      "displayURL": {
+        "id": "fe200182403f7cbd0c8986ef6dfc7d1d73ce354e",
+        "path": "src/assets/img/uploads/majtner_jan.jpg"
+      },
+      "path": "src/assets/img/uploads/majtner_jan.jpg"
+    },
+    {
+      "id": "80df93bd49f116bdc9336179cb4f1eb1ae049519",
+      "name": "mara_simcak.jpg",
+      "size": 145795,
+      "displayURL": {
+        "id": "80df93bd49f116bdc9336179cb4f1eb1ae049519",
+        "path": "src/assets/img/uploads/mara_simcak.jpg"
+      },
+      "path": "src/assets/img/uploads/mara_simcak.jpg"
+    },
+    {
+      "id": "759b347a1e54e1d4ae067129ee17aa4f1e93acc3",
+      "name": "maty_morkus.jpg",
+      "size": 106357,
+      "displayURL": {
+        "id": "759b347a1e54e1d4ae067129ee17aa4f1e93acc3",
+        "path": "src/assets/img/uploads/maty_morkus.jpg"
+      },
+      "path": "src/assets/img/uploads/maty_morkus.jpg"
+    },
+    {
+      "id": "b914bb57e526b97f8a13a32c0072e38dc56a98b4",
+      "name": "meky.jpg",
+      "size": 110627,
+      "displayURL": {
+        "id": "b914bb57e526b97f8a13a32c0072e38dc56a98b4",
+        "path": "src/assets/img/uploads/meky.jpg"
+      },
+      "path": "src/assets/img/uploads/meky.jpg"
+    },
+    {
+      "id": "01d1f831002a84a332b4b32bf392acd8ba29f20d",
+      "name": "merli_mathias.jpg",
+      "size": 104099,
+      "displayURL": {
+        "id": "01d1f831002a84a332b4b32bf392acd8ba29f20d",
+        "path": "src/assets/img/uploads/merli_mathias.jpg"
+      },
+      "path": "src/assets/img/uploads/merli_mathias.jpg"
+    },
+    {
+      "id": "b8782f09695d3b0adaff8b5b5f4085eb1172d4ce",
+      "name": "nicholas.jpg",
+      "size": 143907,
+      "displayURL": {
+        "id": "b8782f09695d3b0adaff8b5b5f4085eb1172d4ce",
+        "path": "src/assets/img/uploads/nicholas.jpg"
+      },
+      "path": "src/assets/img/uploads/nicholas.jpg"
+    },
+    {
+      "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
+      "name": "ofs-kroměříž-logo-černá-0.webp",
+      "size": 55478,
+      "displayURL": {
+        "id": "3503c008d5fa07cd0df819b818fa97aac972f8eb",
+        "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
+      },
+      "path": "src/assets/img/uploads/ofs-kroměříž-logo-černá-0.webp"
+    },
+    {
+      "id": "5a8fd9f7da561aec777a92254c498ab75c27297c",
+      "name": "pavel.jpg",
+      "size": 97211,
+      "displayURL": {
+        "id": "5a8fd9f7da561aec777a92254c498ab75c27297c",
+        "path": "src/assets/img/uploads/pavel.jpg"
+      },
+      "path": "src/assets/img/uploads/pavel.jpg"
+    },
+    {
+      "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
+      "name": "pavel.png",
+      "size": 28591,
+      "displayURL": {
+        "id": "7fba161e74fef18bc2210b06628872b402e1bfc2",
+        "path": "src/assets/img/uploads/pavel.png"
+      },
+      "path": "src/assets/img/uploads/pavel.png"
+    },
+    {
+      "id": "ffe1f45801d1803fb797d64bc931ca0392fd1d12",
+      "name": "penicka_michal.jpg",
+      "size": 90575,
+      "displayURL": {
+        "id": "ffe1f45801d1803fb797d64bc931ca0392fd1d12",
+        "path": "src/assets/img/uploads/penicka_michal.jpg"
+      },
+      "path": "src/assets/img/uploads/penicka_michal.jpg"
+    },
+    {
+      "id": "50040996cb45921370982ed31bae81302c177503",
+      "name": "potocny_matej.jpg",
+      "size": 98216,
+      "displayURL": {
+        "id": "50040996cb45921370982ed31bae81302c177503",
+        "path": "src/assets/img/uploads/potocny_matej.jpg"
+      },
+      "path": "src/assets/img/uploads/potocny_matej.jpg"
+    },
+    {
+      "id": "dc343914664c58be1987b28c1a003288aa3778a2",
+      "name": "tomas_kubin.jpg",
+      "size": 105923,
+      "displayURL": {
+        "id": "dc343914664c58be1987b28c1a003288aa3778a2",
+        "path": "src/assets/img/uploads/tomas_kubin.jpg"
+      },
+      "path": "src/assets/img/uploads/tomas_kubin.jpg"
+    },
+    {
+      "id": "f8f62c13ff9a638242d967cf0f955f6931298f85",
+      "name": "vy_jakub.jpg",
+      "size": 137040,
+      "displayURL": {
+        "id": "f8f62c13ff9a638242d967cf0f955f6931298f85",
+        "path": "src/assets/img/uploads/vy_jakub.jpg"
+      },
+      "path": "src/assets/img/uploads/vy_jakub.jpg"
+    },
+    {
+      "id": "9c415e00aa4bc022de8eb3fe8014609354483fc5",
+      "name": "zigmund-p.jpg",
+      "size": 60871,
+      "displayURL": {
+        "id": "9c415e00aa4bc022de8eb3fe8014609354483fc5",
+        "path": "src/assets/img/uploads/zigmund-p.jpg"
+      },
+      "path": "src/assets/img/uploads/zigmund-p.jpg"
+    },
+    {
+      "id": "28e800f8eb71f60bd97ea94e042c11520020b5f9",
+      "name": "zigmund_michal.jpg",
+      "size": 97497,
+      "displayURL": {
+        "id": "28e800f8eb71f60bd97ea94e042c11520020b5f9",
+        "path": "src/assets/img/uploads/zigmund_michal.jpg"
+      },
+      "path": "src/assets/img/uploads/zigmund_michal.jpg"
     }
-  ]
+  ],
+  "label": "Nadcházející zápasy",
+  "updatedOn": "",
+  "i18n": {},
+  "collection": "matches"
 }
