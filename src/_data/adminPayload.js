@@ -82,7 +82,9 @@ function scoreObjectCandidate(payload, preferredKeys = []) {
 
     const value = payload[key];
     if (Array.isArray(value)) {
-      score += value.length > 0 ? 800 + Math.min(value.length, 25) : 10;
+      // Do not prefer a wrapped, older payload merely because it contains
+      // more items than the current payload. Deletions must be preserved.
+      score += value.length > 0 ? 50 : 10;
       return;
     }
 
