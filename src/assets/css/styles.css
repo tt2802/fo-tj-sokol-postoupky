@@ -186,6 +186,7 @@ main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.galle
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
 }
 
@@ -1172,9 +1173,6 @@ body {
 }
 
 /* ===== FORMATION PITCH (FIFA style) ===== */
-.formation-section {
-}
-
 .pitch {
   position: relative;
   max-width: 520px;
@@ -1964,9 +1962,6 @@ body::before {
 }
 
 /* ===== KALENDÁŘ WIDGET ===== */
-.calendar-section {
-}
-
 /* Side-by-side layout: calendar + upcoming */
 .cal-layout {
   display: flex;
@@ -2078,10 +2073,6 @@ body::before {
   padding: 0;
   height: 44px;
   position: relative;
-}
-
-.cal-empty {
-  /* blank */
 }
 
 .cal-day {
