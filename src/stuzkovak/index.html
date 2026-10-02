@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#006b73">
-<title>Stužkovací večírek 8.A — náhled</title>
+<title>Stužkovací večírek 8.A — Back to the 90s</title>
 <style>
 :root{--silver:#c0c0c0;--navy:#000080;--pink:#ff43b4;--cyan:#60efff;--yellow:#fff56a;--violet:#7b38d8;font-family:"MS Sans Serif",Tahoma,Arial,sans-serif}
 *{box-sizing:border-box}html,body{height:100%;margin:0}body{overflow:hidden;background:#00131d;color:#000;font-size:15px}button,textarea{font-family:inherit}
@@ -30,12 +30,29 @@
 .window{position:fixed;background:var(--silver);border:2px solid;border-color:#fff #000 #000 #fff;box-shadow:3px 3px 0 rgba(0,0,0,.35);display:none;z-index:20;min-width:300px}.window.open{display:block}.invite{width:min(650px,calc(100vw - 24px));left:50%;top:49%;transform:translate(-50%,-50%)}.confirm{width:min(570px,calc(100vw - 24px));left:50%;top:50%;transform:translate(-50%,-50%)}.smallwin{width:min(470px,calc(100vw - 24px));left:23%;top:20%}
 .titlebar{background:linear-gradient(90deg,var(--navy),#0f54af);color:#fff;padding:4px 5px;display:flex;align-items:center;font-weight:700}.titlebar .title{flex:1}.close{font:700 13px Arial;width:24px;height:22px;padding:0;background:var(--silver);border:2px solid;border-color:#fff #000 #000 #fff;cursor:pointer}.body{padding:18px;background:#fff;margin:3px;border:2px solid;border-color:#808080 #fff #fff #808080}.body h1{font-size:26px;margin:0 0 8px}.lead{font-size:16px;line-height:1.45}.banner{background:linear-gradient(90deg,#090319,#51127d,#ff3eac);color:#fff;border:2px solid #000;padding:16px;margin-bottom:17px;box-shadow:4px 4px 0 var(--yellow)}.banner .over{font:900 12px/1 monospace;color:var(--cyan);letter-spacing:.12em}.banner .mega{font:900 clamp(36px,6vw,60px)/.82 Impact,Arial Black,sans-serif;margin-top:8px;text-shadow:3px 3px #000}.banner .retro{font:900 19px/1 Arial Black;color:var(--yellow);margin-top:10px}.personal{background:#ffffe1;border:1px solid #000;padding:9px 10px;margin:14px 0}.meta{display:grid;grid-template-columns:115px 1fr;gap:8px 12px;margin:17px 0}.winbtn{background:var(--silver);border:2px solid;border-color:#fff #000 #000 #fff;padding:8px 15px;min-width:100px;font-weight:700;cursor:pointer}.winbtn:active{border-color:#000 #fff #fff #000}.primary{font-size:16px;padding:11px 18px!important;box-shadow:0 0 0 2px #000}.actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.choice button{min-height:56px}.choice button.selected{outline:3px dotted #000;outline-offset:-7px}.note{width:100%;min-height:96px;resize:vertical;padding:7px;border:2px solid;border-color:#808080 #fff #fff #808080}.status{display:none;margin-top:13px;padding:10px;background:#ffffe1;border:1px solid #000}.status.show{display:block}.easy{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:11px}.easy span{background:#efefef;border:1px solid #777;padding:5px 7px}
 .taskbar{position:fixed;left:0;right:0;bottom:0;height:42px;background:var(--silver);border-top:2px solid #fff;display:flex;align-items:center;padding:4px;gap:6px;z-index:80}.start{height:32px;padding:0 10px;background:var(--silver);border:2px solid;border-color:#fff #000 #000 #fff;font-weight:700}.taskitem{height:32px;min-width:230px;padding:6px 10px;background:#d0d0d0;border:2px solid;border-color:#808080 #fff #fff #808080}.clock{margin-left:auto;height:32px;padding:6px 10px;border:2px solid;border-color:#808080 #fff #fff #808080}.sound{height:32px;min-width:38px;background:var(--silver);border:2px solid;border-color:#fff #000 #000 #fff;cursor:pointer}
-.preview{position:fixed;left:50%;top:8px;transform:translateX(-50%);z-index:120;background:#fff56a;border:2px solid #000;box-shadow:4px 4px 0 #ff43b4;padding:6px 10px;font:900 12px/1 monospace}
-@media(max-width:720px){.wallTitle{right:14px;top:20px}.wallTitle .big{font-size:44px}.wallTitle .small,.stamp,.help{display:none}.icons{display:grid;grid-template-columns:repeat(2,112px);width:240px;gap:8px}.window{left:50%!important;right:auto!important;top:50%!important;transform:translate(-50%,-50%)!important}.taskitem{display:none}.sun{width:155px}.choice{grid-template-columns:1fr}.preview{max-width:90%;text-align:center}}
+
+@media(max-width:720px){.wallTitle{right:14px;top:20px}.wallTitle .big{font-size:44px}.wallTitle .small,.stamp,.help{display:none}.icons{display:grid;grid-template-columns:repeat(2,112px);width:240px;gap:8px}.window{left:50%!important;right:auto!important;top:50%!important;transform:translate(-50%,-50%)!important}.taskitem{display:none}.sun{width:155px}.choice{grid-template-columns:1fr}}
+
+.codeGate{position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:18px}
+.codeGate.hidden{display:none}.gateWindow{width:min(470px,94vw);background:var(--silver);border:2px solid;border-color:#fff #000 #000 #fff;box-shadow:6px 6px 0 rgba(0,0,0,.45)}
+.gateBody{background:#fff;margin:3px;border:2px solid;border-color:#808080 #fff #fff #808080;padding:22px}.gateBody h1{margin:0 0 8px;font-size:27px}.gateBody p{line-height:1.45}.codeRow{display:flex;gap:8px;margin-top:15px}.codeInput{flex:1;min-width:0;font:900 26px/1 Consolas,monospace;letter-spacing:.18em;padding:8px 10px;border:2px solid;border-color:#808080 #fff #fff #808080}.gateError{display:none;margin-top:12px;padding:9px;background:#ffffe1;border:1px solid #000}.gateError.show{display:block}
+.replyBox{display:none;margin-top:14px;background:#e8fff0;border:1px solid #166b2b;padding:10px}.replyBox.show{display:block}.saving{opacity:.65;pointer-events:none}
+.mapLink{display:inline-block;color:#000;text-decoration:none}.subjectLine{font-size:12px;color:#444;margin-top:4px}
+@media(max-width:720px){.codeRow{flex-direction:column}.codeInput{width:100%}}
 </style>
 </head>
 <body>
-<div class="preview">NÁHLED PRO 8.A — zatím se nic neposílá učitelům</div>
+<div class="codeGate" id="codeGate">
+  <div class="gateWindow">
+    <div class="titlebar"><span class="title">Vstup do STUŽKOVÁNÍ 95</span></div>
+    <div class="gateBody">
+      <h1>Zadejte čtyřmístný kód</h1>
+      <p>Kód získáte vyřešením šifry na fyzické pozvánce.</p>
+      <div class="codeRow"><input id="codeInput" class="codeInput" inputmode="numeric" maxlength="4" placeholder="0000"><button class="winbtn primary" id="codeOpen">OTEVŘÍT</button></div>
+      <div class="gateError" id="gateError"></div>
+    </div>
+  </div>
+</div>
 <div class="boot" id="boot"><div class="bootbox"><div class="bootLogo">STUŽKOVÁNÍ <span>95</span></div><pre>Starting 8.A Party System...
 Loading invitation......... OK
 Loading Sladovna........... OK
@@ -55,19 +72,20 @@ Loading maturity.exe....... WARNING</pre><div class="bootbar"><i></i></div><butt
 
 <section class="window invite" id="invite"><div class="titlebar"><span class="title">Pozvánka na stužkovací večírek 8.A</span><button class="close" data-close="invite">×</button></div><div class="body">
 <div class="banner"><div class="over">8.A PRESENTS // ONE NIGHT ONLY</div><div class="mega">STUŽKOVACÍ<br>VEČÍREK</div><div class="retro">★ BACK TO THE 90s ★</div></div>
-<div class="personal"><strong>Vítejte!</strong> Finální verze bude každého učitele oslovovat jménem podle jeho čtyřmístného kódu.</div>
+<div class="personal"><strong>Vítejte, <span data-salutation>vážený hoste</span>.</strong> Tato pozvánka je určena právě Vám.<div class="subjectLine" data-subject></div></div>
 <p class="lead"><strong>Třída 8.A Gymnázia Kroměříž Vás srdečně zve na svůj stužkovací večírek.</strong> Přijďte s námi na jeden večer zpět do devadesátek — retro atmosféra, hudba, barvy a společný večer před maturitou.</p>
-<div class="meta"><b>Datum:</b><span>13. listopadu 2026</span><b>Čas:</b><span>od 18:00</span><b>Místo:</b><span>Sladovna Kroměříž</span><b>Téma:</b><span>Back to the 90s</span></div>
+<div class="meta"><b>Datum:</b><span>13. listopadu 2026</span><b>Čas:</b><span>od 18:00</span><b>Místo:</b><span>Sladovna Kroměříž</span><b>Téma:</b><span>Back to the 90s</span><b>Vstupní kód:</b><span data-code>----</span></div>
+<div class="replyBox" id="replyBox"><strong>📨 Zpráva od 8.A</strong><div id="adminReply" style="margin-top:6px"></div></div>
 <div class="easy"><span>1 ✓ Pozvánka</span><b>→</b><span>2 Potvrdit účast</span></div>
 <div class="actions" style="margin-top:16px"><button class="winbtn primary" data-open="confirm">POTVRDIT ÚČAST →</button><button class="winbtn" data-close="invite">Zavřít</button></div></div></section>
 
 <section class="window confirm" id="confirm"><div class="titlebar"><span class="title">Potvrzení účasti — Stužkovací večírek Setup</span><button class="close" data-close="confirm">×</button></div><div class="body">
-<h1>Potvrdíte účast?</h1><p class="lead">Ve finální verzi se tato odpověď uloží do administrace 8.A. V tomto náhledu se ukládá pouze do vašeho prohlížeče.</p>
+<h1>Potvrdíte účast?</h1><p class="lead"><strong><span data-salutation>vážený hoste</span></strong>, stačí vybrat jednu možnost. Odpověď se uloží přímo třídě 8.A.</p>
 <div class="choice"><button class="winbtn" data-status="Přijdu">✓ PŘIJDU</button><button class="winbtn" data-status="Nepřijdu">✕ NEPŘIJDU</button></div>
 <label><strong>Poznámka nebo dotaz:</strong></label><textarea class="note" id="note" placeholder="Nepovinné..."></textarea>
 <div class="actions" style="margin-top:11px"><button class="winbtn primary" id="send">ODESLAT ODPOVĚĎ</button></div><div class="status" id="status"></div></div></section>
 
-<section class="window smallwin" id="mapwin"><div class="titlebar"><span class="title">Kde to je? — Sladovna.map</span><button class="close" data-close="mapwin">×</button></div><div class="body"><h1>📍 Sladovna Kroměříž</h1><p><strong>13. 11. 2026 · od 18:00</strong></p><p>Ve finální verzi bude tlačítko do map a případně informace k parkování.</p><div class="actions"><button class="winbtn" data-close="mapwin">OK</button></div></div></section>
+<section class="window smallwin" id="mapwin"><div class="titlebar"><span class="title">Kde to je? — Sladovna.map</span><button class="close" data-close="mapwin">×</button></div><div class="body"><h1>📍 Sladovna Kroměříž</h1><p><strong>13. 11. 2026 · od 18:00</strong></p><p>Po kliknutí se otevře vyhledání Sladovny v mapách.</p><div class="actions"><a class="winbtn mapLink" href="https://www.google.com/maps/search/?api=1&query=Sladovna%20Krom%C4%9B%C5%99%C3%AD%C5%BE" target="_blank" rel="noopener">OTEVŘÍT V MAPÁCH</a><button class="winbtn" data-close="mapwin">OK</button></div></div></section>
 
 <section class="window smallwin" id="partywin"><div class="titlebar"><span class="title">PARTY.EXE</span><button class="close" data-close="partywin">×</button></div><div class="body"><h1>💿 PARTY MODE: ON</h1><p>Retro dress code / atmosféra, hudba a světla, stužkování 8.A a večer před maturitou.</p><div class="actions"><button class="winbtn" data-open="confirm">Potvrdit účast</button><button class="winbtn" data-close="partywin">OK</button></div></div></section>
 
@@ -75,22 +93,72 @@ Loading maturity.exe....... WARNING</pre><div class="bootbar"><i></i></div><butt
 
 <div class="taskbar"><button class="start" id="start">▣ Start</button><div class="taskitem">Stužkovací večírek 8.A — náhled</div><button class="sound" id="sound" title="Vypnout zvuk">🔊</button><div class="clock" id="clock">--:--</div></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-let soundOn=true,ctx=null,selected='';
+const SUPABASE_URL='https://jchkwsrgdcmqfwcugzgc.supabase.co';
+const SUPABASE_KEY='sb_publishable_2tGID4zKyJ2qEkbXbrVeog_GnrhqGUr';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let soundOn=true,ctx=null,selected='',currentCode='',teacher=null;
 function audio(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(A)ctx=new A()}if(ctx&&ctx.state==='suspended')ctx.resume();return ctx}
 function tone(f,d=.05,v=.012,delay=0){if(!soundOn)return;const c=audio();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type='square';o.frequency.value=f;o.connect(g);g.connect(c.destination);const t=c.currentTime+delay;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d+.02)}
-function clickS(){tone(520,.04)} function openS(){tone(640,.05);tone(860,.06,.01,.05)} function okS(){tone(523,.07);tone(659,.08,.012,.07);tone(784,.1,.012,.14)}
-const boot=document.getElementById('boot');let done=false;
-function endBoot(){if(done)return;done=true;boot.style.display='none';setTimeout(()=>openWin('invite'),100)}
-document.getElementById('skip').onclick=endBoot;boot.onclick=e=>{if(e.target.id!=='skip')endBoot()};setTimeout(endBoot,1500);
+function clickS(){tone(520,.04)} function openS(){tone(640,.05);tone(860,.06,.01,.05)} function okS(){tone(523,.07);tone(659,.08,.012,.07);tone(784,.1,.012,.14)} function errorS(){tone(180,.09,.014);tone(150,.11,.012,.09)}
+function cleanCode(v){return String(v||'').replace(/\D/g,'').slice(0,4)}
+function fillTeacher(t){
+  teacher=t;
+  document.querySelectorAll('[data-salutation]').forEach(e=>e.textContent=t.salutation||t.name||'vážený hoste');
+  document.querySelectorAll('[data-subject]').forEach(e=>e.textContent=t.subject?('Předmět: '+t.subject):'');
+  document.querySelectorAll('[data-code]').forEach(e=>e.textContent=currentCode);
+  selected=t.rsvp_status||'';
+  document.getElementById('note').value=t.note||'';
+  document.querySelectorAll('[data-status]').forEach(b=>b.classList.toggle('selected',b.dataset.status===selected));
+  const box=document.getElementById('replyBox');
+  if(t.admin_reply){document.getElementById('adminReply').textContent=t.admin_reply;box.classList.add('show')}else box.classList.remove('show');
+}
+async function loadCode(code){
+  code=cleanCode(code);
+  const err=document.getElementById('gateError');
+  err.classList.remove('show');
+  if(code.length!==4){err.textContent='Kód musí mít přesně 4 číslice.';err.classList.add('show');errorS();return false}
+  document.getElementById('codeOpen').classList.add('saving');
+  const {data,error}=await db.rpc('get_invitation',{p_code:code});
+  document.getElementById('codeOpen').classList.remove('saving');
+  const row=Array.isArray(data)?data[0]:data;
+  if(error||!row||row.active===false){err.textContent='Tento kód není platný.';err.classList.add('show');errorS();return false}
+  currentCode=code;fillTeacher(row);
+  history.replaceState(null,'','?code='+encodeURIComponent(code));
+  document.getElementById('codeGate').classList.add('hidden');
+  startExperience();
+  return true;
+}
+document.getElementById('codeInput').addEventListener('input',e=>e.target.value=cleanCode(e.target.value));
+document.getElementById('codeInput').addEventListener('keydown',e=>{if(e.key==='Enter')loadCode(e.target.value)});
+document.getElementById('codeOpen').onclick=()=>loadCode(document.getElementById('codeInput').value);
+
+const boot=document.getElementById('boot');let bootDone=false,experienceStarted=false;
+function endBoot(){if(bootDone)return;bootDone=true;boot.style.display='none';setTimeout(()=>openWin('invite'),100)}
+function startExperience(){if(experienceStarted)return;experienceStarted=true;document.getElementById('skip').onclick=endBoot;boot.onclick=e=>{if(e.target.id!=='skip')endBoot()};setTimeout(endBoot,1500)}
 function openWin(id){openS();document.querySelectorAll('.window').forEach(w=>w.style.zIndex=20);const e=document.getElementById(id);e.classList.add('open');e.style.zIndex=40}
 document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openWin(b.dataset.open));
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{clickS();document.getElementById(b.dataset.close).classList.remove('open')});
 document.querySelectorAll('[data-status]').forEach(b=>b.onclick=()=>{clickS();selected=b.dataset.status;document.querySelectorAll('[data-status]').forEach(x=>x.classList.toggle('selected',x===b))});
-document.getElementById('send').onclick=()=>{const s=document.getElementById('status');if(!selected){s.textContent='Nejdřív vyberte PŘIJDU nebo NEPŘIJDU.';s.classList.add('show');return}localStorage.setItem('stuzkovak-preview',JSON.stringify({status:selected,note:document.getElementById('note').value}));s.innerHTML='<strong>✓ NÁHLED: odpověď byla uložena jen v tomto prohlížeči.</strong><br>Volba: '+selected;s.classList.add('show');okS()};
+document.getElementById('send').onclick=async()=>{
+  const st=document.getElementById('status');
+  if(!selected){st.textContent='Nejdřív vyberte PŘIJDU nebo NEPŘIJDU.';st.classList.add('show');errorS();return}
+  const btn=document.getElementById('send');btn.classList.add('saving');st.classList.remove('show');
+  const {data,error}=await db.rpc('submit_rsvp',{p_code:currentCode,p_status:selected,p_note:document.getElementById('note').value});
+  btn.classList.remove('saving');
+  if(error||data!==true){st.textContent='Odpověď se nepodařilo uložit. Zkuste to prosím znovu.';st.classList.add('show');errorS();return}
+  st.innerHTML='<strong>✓ Odpověď byla uložena.</strong><br>Vaše volba: '+selected+'<br><small>Odpověď můžete později změnit otevřením stejného odkazu.</small>';st.classList.add('show');okS();
+};
 document.getElementById('sound').onclick=()=>{audio();soundOn=!soundOn;document.getElementById('sound').textContent=soundOn?'🔊':'🔇'};
 document.addEventListener('pointerdown',()=>{if(soundOn)audio()},{once:true});
 function tick(){const d=new Date();document.getElementById('clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}tick();setInterval(tick,1000);
+
+(async()=>{
+  const code=cleanCode(new URLSearchParams(location.search).get('code'));
+  if(code){document.getElementById('codeInput').value=code;await loadCode(code)}
+})();
 </script>
 </body>
 </html>
