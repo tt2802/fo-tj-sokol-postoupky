@@ -43,6 +43,10 @@ module.exports = function () {
     for (const p of players) {
       if (norm(p.name) === input) return p.name;
     }
+    // Historical names follow the current roster entry.
+    for (const p of players) {
+      if ((Array.isArray(p.aliases) ? p.aliases : []).some((alias) => norm(alias) === input)) return p.name;
+    }
     // contains match
     for (const p of players) {
       const pn = norm(p.name);

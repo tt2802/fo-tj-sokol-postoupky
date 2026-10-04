@@ -145,9 +145,19 @@ module.exports = function () {
 
   // Build player lookup by full name AND by last-name / partial match
   const byName = {};
+  const normalizeName = (value) => String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
   for (const p of players) {
     if (!p.name) continue;
     byName[p.name] = p;                          // full name
+    byName[normalizeName(p.name)] = p;
+    for (const alias of Array.isArray(p.aliases) ? p.aliases : []) {
+      const aliasKey = normalizeName(alias);
+      if (aliasKey && !byName[aliasKey]) byName[aliasKey] = p;
+    }
     const parts = p.name.trim().split(/\s+/);
     if (parts.length > 1) {
       byName[parts[parts.length - 1]] = p;       // last name
@@ -173,7 +183,7 @@ module.exports = function () {
   /**  Find player by exact, partial, or approximate match  */
   function findPlayer(name) {
     if (!name) return null;
-    if (byName[name]) return byName[name];
+    if (byName[name] || byName[normalizeName(name)]) return byName[name] || byName[normalizeName(name)];
     const lower = name.toLowerCase();
     // contains check
     for (const p of players) {

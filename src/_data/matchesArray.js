@@ -1,6 +1,75 @@
 const upcomingMatches = require('./upcoming_matches.json');
 const playedMatches = require('./played_matches.json');
-const { extractArrayPayload } = require('./adminPayload.js');
+const playersData = require('./players.json');
+const { extractArrayPayload, extractObjectPayload } = require('./adminPayload.js');
+
+const cleanPlayers = extractObjectPayload(playersData, ['men', 'youth']);
+
+const normalizePlayerName = (value) =>
+  String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+
+const getPlayerNameLookup = (match) => {
+  const roster = match?.team === 'muzi'
+    ? cleanPlayers.men || []
+    : (cleanPlayers.youth?.[match?.category] || []);
+  const lookup = new Map();
+
+  // Current roster names take precedence over aliases in case a name is reused.
+  roster.forEach((player) => {
+    const key = normalizePlayerName(player?.name);
+    if (key) lookup.set(key, player.name);
+  });
+  roster.forEach((player) => {
+    (Array.isArray(player?.aliases) ? player.aliases : []).forEach((alias) => {
+      const key = normalizePlayerName(alias);
+      if (key && !lookup.has(key)) lookup.set(key, player.name);
+    });
+  });
+
+  return lookup;
+};
+
+const canonicalizeMatchPlayerNames = (match) => {
+  const lookup = getPlayerNameLookup(match);
+  const canonicalName = (value) => lookup.get(normalizePlayerName(value)) || value;
+  const mapPlayerField = (items, field) => Array.isArray(items)
+    ? items.map((item) => {
+        if (typeof item === 'string') return canonicalName(item);
+        if (!item || typeof item !== 'object' || !item[field]) return item;
+        return { ...item, [field]: canonicalName(item[field]) };
+      })
+    : items;
+  const mvpCandidates = mapPlayerField(match.mvpCandidates, 'player');
+
+  return {
+    ...match,
+    lineup: mapPlayerField(match.lineup, 'player'),
+    scorers: mapPlayerField(match.scorers, 'scorer'),
+    assists: mapPlayerField(match.assists, 'player'),
+    cards: mapPlayerField(match.cards, 'player'),
+    substitutions: Array.isArray(match.substitutions)
+      ? match.substitutions.map((item) => item && typeof item === 'object'
+          ? {
+              ...item,
+              playerOut: canonicalName(item.playerOut),
+              playerIn: canonicalName(item.playerIn)
+            }
+          : item)
+      : match.substitutions,
+    mvpCandidates: Array.isArray(mvpCandidates)
+      ? mvpCandidates.map((item) => {
+          if (item && typeof item === 'object' && item.name) {
+            return { ...item, name: canonicalName(item.name) };
+          }
+          return item;
+        })
+      : match.mvpCandidates
+  };
+};
 
 const normalizeDate = (value) => String(value || '').slice(0, 10);
 
@@ -120,4 +189,4 @@ allMatches.forEach((m) => {
   }
 });
 
-module.exports = dedupedMatches;
+module.exports = dedupedMatches.map(canonicalizeMatchPlayerNames);

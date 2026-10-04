@@ -24,6 +24,22 @@ module.exports = class {
     const fb = data.firebase || {};
     const players = (data.players && data.players.men) || [];
     const playerNames = players.map(p => p.name).filter(Boolean);
+    const normalizePlayerName = (value) => String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim();
+    const playerNameAliases = {};
+    players.forEach((player) => {
+      const key = normalizePlayerName(player.name);
+      if (key) playerNameAliases[key] = player.name;
+    });
+    players.forEach((player) => {
+      (Array.isArray(player.aliases) ? player.aliases : []).forEach((alias) => {
+        const key = normalizePlayerName(alias);
+        if (key && !playerNameAliases[key]) playerNameAliases[key] = player.name;
+      });
+    });
     const hasScore = m.homeScore !== null && m.homeScore !== undefined && m.awayScore !== null && m.awayScore !== undefined;
     const mvpCandidates = (Array.isArray(m.mvpCandidates) ? m.mvpCandidates : [])
       .map((candidate) => {
@@ -114,6 +130,7 @@ module.exports = class {
   var matchSlug = "${slug}";
   var votingDeadline = ${votingDeadline ? JSON.stringify(votingDeadline) : 'null'};
   var votingCandidates = ${JSON.stringify(votingCandidates)};
+  var playerNameAliases = ${JSON.stringify(playerNameAliases)};
   var currentUser = null;
 
   var loginBtn = document.getElementById('motmLogin');
@@ -157,6 +174,11 @@ module.exports = class {
     return d.innerHTML;
   }
 
+  function canonicalPlayerName(name) {
+    var key = String(name || '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().trim();
+    return playerNameAliases[key] || name;
+  }
+
   loginBtn.addEventListener('click', function() {
     auth.signInWithPopup(provider).catch(function(err) {
       authEl.innerHTML = '<div style="color:#dc2626;">Chyba: ' + escapeHtml(err.message) + '</div>';
@@ -172,7 +194,7 @@ module.exports = class {
         .collection('votes').doc(user.uid).get()
         .then(function(doc) {
           if (doc.exists) {
-            statusEl.textContent = 'Hlasoval/a jsi za: ' + doc.data().player;
+            statusEl.textContent = 'Hlasoval/a jsi za: ' + canonicalPlayerName(doc.data().player);
             selectEl.disabled = true;
             voteBtn.disabled = true;
             voteBtn.style.opacity = '0.5';
@@ -216,7 +238,7 @@ module.exports = class {
         votingCandidates.forEach(function(player) { counts[player] = 0; });
       }
       snap.forEach(function(doc) {
-        var p = doc.data().player;
+        var p = canonicalPlayerName(doc.data().player);
         counts[p] = (counts[p] || 0) + 1;
         total++;
       });

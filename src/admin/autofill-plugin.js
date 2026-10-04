@@ -95,6 +95,101 @@
     return firstCandidate || { men: [], youth: {} };
   }
 
+  function normalizePlayerName(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  }
+
+  function mergePreviousPlayerAliases(previousPlayers, nextRoster) {
+    if (!Array.isArray(nextRoster)) return nextRoster;
+    var previousRoster = Array.isArray(previousPlayers) ? previousPlayers : [];
+    var previousNumberCounts = {};
+    var nextNumberCounts = {};
+
+    previousRoster.forEach(function (player) {
+      if (player && player.number !== undefined && player.number !== null && player.number !== "") {
+        var key = String(player.number).trim();
+        previousNumberCounts[key] = (previousNumberCounts[key] || 0) + 1;
+      }
+    });
+    nextRoster.forEach(function (player) {
+      if (player && player.number !== undefined && player.number !== null && player.number !== "") {
+        var key = String(player.number).trim();
+        nextNumberCounts[key] = (nextNumberCounts[key] || 0) + 1;
+      }
+    });
+
+    return nextRoster.map(function (player) {
+      if (!player || typeof player !== "object") return player;
+      var previous = null;
+      var number = player.number === undefined || player.number === null ? "" : String(player.number).trim();
+
+      if (number && previousNumberCounts[number] === 1 && nextNumberCounts[number] === 1) {
+        previous = previousRoster.find(function (candidate) {
+          return candidate && String(candidate.number).trim() === number;
+        }) || null;
+      }
+
+      if (!previous) {
+        var nameKey = normalizePlayerName(player.name);
+        if (nameKey) {
+          var sameName = previousRoster.filter(function (candidate) {
+            return candidate && normalizePlayerName(candidate.name) === nameKey;
+          });
+          if (sameName.length === 1) previous = sameName[0];
+        }
+      }
+
+      var aliases = [];
+      [player.aliases, previous && previous.aliases].forEach(function (list) {
+        (Array.isArray(list) ? list : []).forEach(function (alias) {
+          var cleanAlias = String(alias || "").trim();
+          if (cleanAlias && cleanAlias !== player.name && aliases.indexOf(cleanAlias) < 0) aliases.push(cleanAlias);
+        });
+      });
+
+      var oldName = String((previous && previous.name) || "").trim();
+      if (oldName && oldName !== player.name && aliases.indexOf(oldName) < 0) aliases.push(oldName);
+
+      if (aliases.length) return Object.assign({}, player, { aliases: aliases });
+      return player;
+    });
+  }
+
+  function addPreviousPlayerAliases(nextPlayers) {
+    var next = extractPlayersPayload(nextPlayers || {});
+    var previous = extractPlayersPayload(playersData || {});
+    var nextYouth = isObject(next.youth) ? Object.assign({}, next.youth) : {};
+    var previousYouth = isObject(previous.youth) ? previous.youth : {};
+
+    Object.keys(nextYouth).forEach(function (category) {
+      nextYouth[category] = mergePreviousPlayerAliases(previousYouth[category], nextYouth[category]);
+    });
+
+    return {
+      men: mergePreviousPlayerAliases(previous.men, next.men),
+      youth: nextYouth
+    };
+  }
+
+  function resolveCurrentPlayerName(value, roster) {
+    var key = normalizePlayerName(value);
+    if (!key) return value;
+    var players = Array.isArray(roster) ? roster : [];
+
+    for (var i = 0; i < players.length; i++) {
+      if (normalizePlayerName(players[i] && players[i].name) === key) return players[i].name;
+    }
+    for (var j = 0; j < players.length; j++) {
+      var aliases = players[j] && Array.isArray(players[j].aliases) ? players[j].aliases : [];
+      if (aliases.some(function (alias) { return normalizePlayerName(alias) === key; })) return players[j].name;
+    }
+    return value;
+  }
+
   function setCleanData(entry, plainData) {
     try {
       var I = window.Immutable;
@@ -168,9 +263,10 @@
 
     if (p.indexOf("players.json") >= 0) {
       var cleanPlayers = extractPlayersPayload(data);
+      var playersWithAliases = addPreviousPlayerAliases(cleanPlayers);
       return {
-        men: Array.isArray(cleanPlayers.men) ? cleanPlayers.men : [],
-        youth: isObject(cleanPlayers.youth) ? cleanPlayers.youth : {}
+        men: Array.isArray(playersWithAliases.men) ? playersWithAliases.men : [],
+        youth: isObject(playersWithAliases.youth) ? playersWithAliases.youth : {}
       };
     }
 
@@ -971,6 +1067,11 @@
         "mlads-zaci-b": "Mladší žáci B", "skolicka": "Školička"
       };
       var tl = info.team === "muzi" ? "Muži" : (catNames[info.category] || "Mládež");
+      var selectedNames = this._getSelected();
+      var currentNames = selectedNames.map(function (name) { return resolveCurrentPlayerName(name, roster); });
+      if (currentNames.some(function (name, index) { return name !== selectedNames[index]; })) {
+        this._setSelected(currentNames);
+      }
       this.setState({ players: roster, loaded: true, teamLabel: tl });
     },
 
@@ -1219,6 +1320,11 @@
 
       // Check if current value is a custom entry not in roster
       var currentVal = this.props.value || "";
+      var canonicalVal = resolveCurrentPlayerName(currentVal, roster);
+      if (canonicalVal !== currentVal) {
+        currentVal = canonicalVal;
+        this.props.onChange(currentVal);
+      }
       var inRoster = !currentVal || roster.some(function (p) { return p.name === currentVal; });
 
       this.setState({
@@ -1354,8 +1460,9 @@
           /* ── generic JSON file normalization ── */
           if (p.indexOf("players.json") >= 0) {
             var cleanPlayers = extractPlayersPayload(plainData || {});
-            var men = cleanPlayers && Array.isArray(cleanPlayers.men) ? cleanPlayers.men : [];
-            var youth = cleanPlayers && isObject(cleanPlayers.youth) ? cleanPlayers.youth : {};
+            var playersWithAliases = addPreviousPlayerAliases(cleanPlayers);
+            var men = playersWithAliases && Array.isArray(playersWithAliases.men) ? playersWithAliases.men : [];
+            var youth = playersWithAliases && isObject(playersWithAliases.youth) ? playersWithAliases.youth : {};
             return setCleanData(entry, {
               men: men,
               youth: youth
