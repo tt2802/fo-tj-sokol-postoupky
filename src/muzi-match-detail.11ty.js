@@ -176,7 +176,7 @@ module.exports = class {
 
   function canonicalPlayerName(name) {
     var key = String(name || '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().trim();
-    return playerNameAliases[key] || name;
+    return String(playerNameAliases[key] || name || '').trim();
   }
 
   loginBtn.addEventListener('click', function() {
@@ -235,7 +235,7 @@ module.exports = class {
       var counts = {};
       var total = 0;
       if (votingDeadline !== null) {
-        votingCandidates.forEach(function(player) { counts[player] = 0; });
+        votingCandidates.forEach(function(player) { counts[canonicalPlayerName(player)] = 0; });
       }
       snap.forEach(function(doc) {
         var p = canonicalPlayerName(doc.data().player);
