@@ -258,6 +258,17 @@ collections:
                 required: false
                 hint: "--- SESTAVA A STATISTIKY ---"
 
+              - label: "Kandidáti na hráče zápasu (MVP)"
+                name: "mvpCandidates"
+                widget: "list"
+                required: false
+                min: 5
+                max: 5
+                summary: "{{fields.player}}"
+                hint: "Vyberte přesně 5 hráčů. Z těchto 5 se pak bude hlasovat o hráče zápasu."
+                fields:
+                  - { label: "Hráč", name: "player", widget: "player-select" }
+
               - label: "Střelci gólů"
                 name: "scorers"
                 widget: "list"

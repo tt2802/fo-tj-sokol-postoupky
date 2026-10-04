@@ -75,6 +75,7 @@ const newPlayedMatch = {
   report: '',
   videoUrl: '',
   lineup: [],
+  mvpCandidates: [],
   scorers: [],
   cards: [],
   substitutions: []

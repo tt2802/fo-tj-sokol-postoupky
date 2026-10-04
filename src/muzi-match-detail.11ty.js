@@ -1,3 +1,5 @@
+const { DateTime } = require('luxon');
+
 // Match detail pages for Muži team
 module.exports = class {
   data() {
@@ -21,8 +23,30 @@ module.exports = class {
     const pathPrefix = process.env.ELEVENTY_PATH_PREFIX || '/';
     const fb = data.firebase || {};
     const players = (data.players && data.players.men) || [];
-    const playerNames = players.map(p => p.name);
+    const playerNames = players.map(p => p.name).filter(Boolean);
     const hasScore = m.homeScore !== null && m.homeScore !== undefined && m.awayScore !== null && m.awayScore !== undefined;
+    const mvpCandidates = (Array.isArray(m.mvpCandidates) ? m.mvpCandidates : [])
+      .map((candidate) => {
+        if (typeof candidate === 'string') return candidate.trim();
+        if (candidate && typeof candidate === 'object') {
+          const fromPlayer = String(candidate.player || '').trim();
+          if (fromPlayer) return fromPlayer;
+          const fromName = String(candidate.name || '').trim();
+          if (fromName) return fromName;
+        }
+        return '';
+      })
+      .filter(Boolean)
+      .slice(0, 5);
+    const hasSelectedMvpCandidates = mvpCandidates.length > 0;
+    // Legacy matches without selected candidates keep the original all-player,
+    // permanently open voting. New matches close on Friday at 23:59 in Prague.
+    const votingCandidates = hasSelectedMvpCandidates ? mvpCandidates : playerNames;
+    const matchDate = DateTime.fromISO(String(m.date || '').slice(0, 10), { zone: 'Europe/Prague' });
+    const daysUntilFriday = matchDate.isValid ? (5 - matchDate.weekday + 7) % 7 : 0;
+    const votingDeadline = hasSelectedMvpCandidates && matchDate.isValid
+      ? matchDate.plus({ days: daysUntilFriday }).set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).toMillis()
+      : null;
 
     const escapeAttr = (value) => String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const normalizeUrl = (value) => String(value || '').trim();
@@ -41,18 +65,23 @@ module.exports = class {
       : '';
     const videoHtml = m.videoUrl ? renderMediaLink(m.videoUrl, 'Video ze zápasu', 'Přehrát video zápasu') : '';
 
-    // Build voting section HTML (only for played matches with a score)
+    // Build the original voting section for all scored matches. Only matches
+    // with coach-selected candidates get the new Friday closing behavior.
     let votingHtml = '';
-    if (hasScore && fb.apiKey && fb.apiKey !== 'FIREBASE_API_KEY') {
-      const optionsHtml = playerNames.map(n => {
-        const escaped = n.replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    if (hasScore && votingCandidates.length > 0 && fb.apiKey && fb.apiKey !== 'FIREBASE_API_KEY') {
+      const optionsHtml = votingCandidates.map(n => {
+        const escaped = String(n).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return `<option value="${escaped}">${escaped}</option>`;
       }).join('');
       const slug = (m.slug || '').replace(/"/g, '');
+      const deadlineMessage = votingDeadline
+        ? `Hlasovat lze do pátku ${DateTime.fromMillis(votingDeadline, { zone: 'Europe/Prague' }).setLocale('cs').toLocaleString({ day: 'numeric', month: 'long' })} 23:59.`
+        : '';
 
       votingHtml = `
 <section class="motm-section" id="motmSection">
   <h2>Hráč zápasu — hlasování</h2>
+  ${votingDeadline ? `<p id="motmDeadline" class="muted">${deadlineMessage}</p><p id="motmClosedNotice" class="muted" style="display:none;"></p>` : ''}
 
   <div id="motmAuth">
     <button id="motmLogin" class="chat-google-btn">
@@ -83,6 +112,8 @@ module.exports = class {
   var auth = firebase.auth();
   var db = firebase.firestore();
   var matchSlug = "${slug}";
+  var votingDeadline = ${votingDeadline ? JSON.stringify(votingDeadline) : 'null'};
+  var votingCandidates = ${JSON.stringify(votingCandidates)};
   var currentUser = null;
 
   var loginBtn = document.getElementById('motmLogin');
@@ -92,7 +123,33 @@ module.exports = class {
   var voteBtn = document.getElementById('motmVoteBtn');
   var statusEl = document.getElementById('motmStatus');
   var resultsEl = document.getElementById('motmResults');
+  var deadlineEl = document.getElementById('motmDeadline');
+  var closedNoticeEl = document.getElementById('motmClosedNotice');
   var provider = new firebase.auth.GoogleAuthProvider();
+
+  function isVotingClosed() {
+    return votingDeadline !== null && Date.now() > votingDeadline;
+  }
+
+  function updateVotingAvailability() {
+    var closed = isVotingClosed();
+    if (closed) {
+      authEl.style.display = 'none';
+      formEl.style.display = 'none';
+      if (deadlineEl) deadlineEl.style.display = 'none';
+      if (closedNoticeEl) {
+        closedNoticeEl.style.display = '';
+        closedNoticeEl.textContent = 'Hlasování je uzavřeno. Výsledky jsou konečné.';
+      }
+    } else if (currentUser) {
+      authEl.style.display = 'none';
+      formEl.style.display = 'flex';
+    } else {
+      authEl.style.display = '';
+      formEl.style.display = 'none';
+    }
+    return !closed;
+  }
 
   function escapeHtml(s) {
     var d = document.createElement('div');
@@ -109,8 +166,7 @@ module.exports = class {
   auth.onAuthStateChanged(function(user) {
     currentUser = user;
     if (user) {
-      authEl.style.display = 'none';
-      formEl.style.display = 'flex';
+      updateVotingAvailability();
       // Check if already voted
       db.collection('matchVotes').doc(matchSlug)
         .collection('votes').doc(user.uid).get()
@@ -123,14 +179,18 @@ module.exports = class {
           }
         });
     } else {
-      authEl.style.display = '';
-      formEl.style.display = 'none';
+      updateVotingAvailability();
     }
   });
 
+  if (votingDeadline !== null) {
+    updateVotingAvailability();
+    window.setInterval(updateVotingAvailability, 15000);
+  }
+
   voteBtn.addEventListener('click', function() {
     var player = selectEl.value;
-    if (!player || !currentUser) return;
+    if (!player || !currentUser || !updateVotingAvailability()) return;
     voteBtn.disabled = true;
     db.collection('matchVotes').doc(matchSlug)
       .collection('votes').doc(currentUser.uid).set({
@@ -152,6 +212,9 @@ module.exports = class {
     .collection('votes').onSnapshot(function(snap) {
       var counts = {};
       var total = 0;
+      if (votingDeadline !== null) {
+        votingCandidates.forEach(function(player) { counts[player] = 0; });
+      }
       snap.forEach(function(doc) {
         var p = doc.data().player;
         counts[p] = (counts[p] || 0) + 1;
@@ -162,6 +225,14 @@ module.exports = class {
         return;
       }
       var sorted = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
+      if (isVotingClosed() && total > 0) {
+        var winningVotes = sorted[0][1];
+        var winners = sorted.filter(function(item) { return item[1] === winningVotes; }).map(function(item) { return item[0]; });
+        var announcement = winners.length > 1
+          ? 'Hráči zápasu jsou: ' + winners.map(escapeHtml).join(', ') + ' (remíza).'
+          : 'Hráčem zápasu se stává ' + escapeHtml(winners[0]) + '!';
+        resultsEl.innerHTML = '<p class="motm-winner"><strong>Vyhlášení MVP:</strong> ' + announcement + '</p>';
+      }
       var html = '<div class="motm-bars">';
       sorted.forEach(function(item, i) {
         var pct = Math.round(item[1] / total * 100);
@@ -172,7 +243,7 @@ module.exports = class {
           '</div>';
       });
       html += '<p class="muted" style="margin-top:0.5rem;">Celkem hlasů: ' + total + '</p></div>';
-      resultsEl.innerHTML = html;
+      resultsEl.innerHTML = (isVotingClosed() && total > 0 ? resultsEl.innerHTML : '') + html;
     });
 })();
 </script>`;

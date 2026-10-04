@@ -90,6 +90,7 @@ async function main() {
       report: '',
       videoUrl: '',
       lineup: [],
+      mvpCandidates: [],
       scorers: [],
       cards: [],
       substitutions: []
