@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://tt2802.github.io/fo-tj-sokol-postoupky/sitemap.xml
+Sitemap: https://www.fotbalpostoupky.cz/sitemap.xml

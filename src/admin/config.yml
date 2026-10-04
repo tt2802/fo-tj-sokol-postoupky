@@ -11,8 +11,8 @@ local_backend: true
 
 locale: 'cs'
 
-site_url: https://tt2802.github.io/fo-tj-sokol-postoupky
-display_url: https://tt2802.github.io/fo-tj-sokol-postoupky
+site_url: https://www.fotbalpostoupky.cz
+display_url: https://www.fotbalpostoupky.cz
 
 # Store uploaded images inside the site's source assets so Eleventy can pick them up
 media_folder: "src/assets/img/uploads"
@@ -784,7 +784,7 @@ collections:
         label: "Nastavení webu"
         file: "src/_data/site.json"
         fields:
-          - { label: "URL webu", name: "url", widget: "string", required: true, hint: "Např. https://tt2802.github.io/fo-tj-sokol-postoupky" }
+          - { label: "URL webu", name: "url", widget: "string", required: true, hint: "Např. https://www.fotbalpostoupky.cz" }
           - { label: "OG obrázek", name: "ogImage", widget: "string", required: false, hint: "Např. /assets/img/og-image.png" }
           - { label: "Název klubu", name: "clubName", widget: "string", required: true, hint: "Plny nazev: TJ Sokol Postoupky" }
           - { label: "Krátký název klubu", name: "clubShort", widget: "string", required: true, hint: "Napr. Postoupky" }

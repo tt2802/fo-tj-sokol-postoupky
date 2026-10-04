@@ -2,12 +2,6 @@
 const { DateTime } = require("luxon");
 const markdownIt = require("markdown-it");
 const mdLib = markdownIt({ html: true, linkify: true });
-let pluginSitemap;
-try {
-  pluginSitemap = require("@quasibit/eleventy-plugin-sitemap");
-} catch (e) {
-  console.warn("Sitemap plugin not installed, skipping");
-}
 let htmlmin;
 try {
   htmlmin = require("html-minifier");
@@ -69,6 +63,7 @@ function videoKind(url) {
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
+  eleventyConfig.addPassthroughCopy({ "src/CNAME": "CNAME" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/_data/upcoming_matches.json": "_data/upcoming_matches.json" });
   eleventyConfig.addPassthroughCopy({ "src/_data/played_matches.json": "_data/played_matches.json" });
@@ -149,15 +144,6 @@ module.exports = function (eleventyConfig) {
     if (js.isValid) return js.setLocale("cs").toFormat("H:mm");
     return "";
   });
-
-  // sitemap plugin (optional, requires SITE_URL env or fallback)
-  if (pluginSitemap) {
-    eleventyConfig.addPlugin(pluginSitemap, {
-      sitemap: {
-        hostname: process.env.SITE_URL || "https://tt2802.github.io/fo-tj-sokol-postoupky"
-      }
-    });
-  }
 
   eleventyConfig.addCollection("news", (api) => {
     return api.getFilteredByGlob("./src/news/*.md").sort((a, b) => b.date - a.date);

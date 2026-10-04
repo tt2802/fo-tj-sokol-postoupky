@@ -7,13 +7,13 @@
 <meta name="description" content="{{ description }}">
 {% endif %}
 
-{# canonical URL: override via frontmatter else use page url (with site.url prefix) #}
-{% set canon = canonical or url %}
-<link rel="canonical" href="{{ site.url | default("") }}{{ canon | url }}">
+{# canonical URL: override via frontmatter else use the current page URL #}
+{% set canon = canonical or page.url or "/" %}
+<link rel="canonical" href="{{ site.url | default("") }}{{ canon }}">
 
 {# Open Graph defaults #}
 <meta property="og:locale" content="cs_CZ">
-<meta property="og:url" content="{{ site.url | default("") }}{{ url | url }}">
+<meta property="og:url" content="{{ site.url | default("") }}{{ page.url or "/" }}">
 <meta property="og:type" content="website">
 
 {% if ogTitle %}
