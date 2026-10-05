@@ -1644,7 +1644,9 @@
           }
 
           /* ── played matches: fill from related match + auto home/away + auto-slug ── */
-          if (p.indexOf("played_matches") < 0) return entry;
+          // Decap uses the handler's return value as entry data, so collections
+          // handled elsewhere (e.g. news) must get their data back unchanged.
+          if (p.indexOf("played_matches") < 0) return plainData;
 
           var items = getListData(entry, "items");
           if (!items || !items.map) return entry;
