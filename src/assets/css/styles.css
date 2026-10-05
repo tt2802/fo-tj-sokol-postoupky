@@ -127,7 +127,7 @@ main {
 
 /* ===== ODKAZY V OBSAHU ===== */
 /* Všechny obsahové prokliky používají jednotný vzhled hlavního tlačítka. */
-main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand) {
+main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):not(.shop-banner__btn) {
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
@@ -141,14 +141,14 @@ main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.galle
   transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):hover {
+main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):not(.shop-banner__btn):hover {
   background-color: var(--primary-dark);
   border-color: var(--primary-dark);
   box-shadow: 0 8px 18px var(--shadow);
   transform: translateY(-1px);
 }
 
-main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):focus-visible {
+main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.gallery-viewer__expand):not(.shop-banner__btn):focus-visible {
   outline: 3px solid rgba(109, 40, 217, 0.35);
   outline-offset: 3px;
   border-radius: 3px;
@@ -795,6 +795,84 @@ html.is-lightbox-open {
 
 .homeNewsList li {
   margin: 0.35rem 0;
+}
+
+/* ===== DOMŮ: E-SHOP BANNER ===== */
+.shop-section {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.shop-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2rem 2.25rem;
+  border-radius: 20px;
+  color: #fff;
+  background: linear-gradient(135deg, #4c1d95, #6d28d9 55%, #8b5cf6);
+  box-shadow: 0 16px 32px rgba(109, 40, 217, 0.25);
+}
+
+.shop-banner__text {
+  max-width: 640px;
+}
+
+.shop-banner__tag {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.shop-banner h2 {
+  margin: 0 0 0.5rem;
+  color: #fff;
+}
+
+.shop-banner p {
+  margin: 0;
+  opacity: 0.92;
+}
+
+main a.shop-banner__btn,
+[data-theme="dark"] .section a.shop-banner__btn {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 0.85rem 1.4rem;
+  border: 0;
+  border-radius: 12px;
+  background: #fff;
+  color: #4c1d95;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+main a.shop-banner__btn:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 700px) {
+  .shop-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+  }
+
+  .shop-banner__btn,
+  main a.shop-banner__btn {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 /* ===== RESPONSIVE ===== */
