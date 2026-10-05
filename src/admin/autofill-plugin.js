@@ -1644,9 +1644,9 @@
           }
 
           /* ── played matches: fill from related match + auto home/away + auto-slug ── */
-          // Decap uses the handler's return value as entry data, so collections
-          // handled elsewhere (e.g. news) must get their data back unchanged.
-          if (p.indexOf("played_matches") < 0) return plainData;
+          // Decap sets the handler's return value as the entry data, so
+          // returning nothing leaves collections handled elsewhere (e.g. news) untouched.
+          if (p.indexOf("played_matches") < 0) return undefined;
 
           var items = getListData(entry, "items");
           if (!items || !items.map) return entry;
@@ -1715,7 +1715,8 @@
           return entry.setIn(["data", "items"], updated);
         } catch (e) {
           warn("preSave error:", e);
-          if (isImmutableEntry(entry)) return entry;
+          if (e && /^Uložení zrušeno/.test(String(e.message))) throw e;
+          if (isImmutableEntry(entry)) return undefined;
           if (plainData && typeof plainData === "object") return plainData;
           return {};
         }
