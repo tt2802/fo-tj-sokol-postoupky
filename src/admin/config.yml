@@ -37,6 +37,7 @@ collections:
     description: "Články a aktuality na webu"
     folder: "src/news"
     create: true
+    identifier_field: "title"
     slug: "{{slug}}"
     summary: "{{date}} — {{title}}"
     sortable_fields: ["date", "title"]
