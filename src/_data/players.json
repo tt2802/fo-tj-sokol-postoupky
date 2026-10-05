@@ -116,13 +116,19 @@
         "name": "Gabrhelík Lukáš",
         "number": 5,
         "position": "Obránce",
-        "photo": "/assets/img/uploads/luky_gabrhelik.jpg"
+        "photo": "/assets/img/uploads/luky_gabrhelik.jpg",
+        "aliases": [
+          "Čureja Patrik"
+        ]
       },
       {
         "name": "Čureja Patrik",
-        "number": 5,
+        "number": 2,
         "position": "Útočník",
-        "photo": "/assets/img/uploads/cureja_patrik.jpg"
+        "photo": "/assets/img/uploads/cureja_patrik.jpg",
+        "aliases": [
+          "Lutonský Libor"
+        ]
       },
       {
         "name": "Merli Mathias",
