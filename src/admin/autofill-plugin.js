@@ -1436,6 +1436,8 @@
     window.CMS.registerEventListener({
       name: "preSave",
       handler: function (arg) {
+        // Decap uses the return value as the entry DATA, so a returned entry must be unwrapped.
+        var result = (function (arg) {
         var entry = null;
         var sourceEntry = null;
         var plainData = {};
@@ -1720,6 +1722,11 @@
           if (plainData && typeof plainData === "object") return plainData;
           return {};
         }
+        })(arg);
+        if (isImmutableEntry(result) && result.has("data") && (result.has("path") || result.has("slug") || result.has("collection"))) {
+          return result.get("data");
+        }
+        return result;
       }
     });
 
