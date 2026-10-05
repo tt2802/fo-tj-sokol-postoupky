@@ -154,6 +154,34 @@ main a:not(.card):not(.card-link):not(.card__media):not(.hero__badge):not(.galle
   border-radius: 3px;
 }
 
+/* Odkazy uvnitř textu článků: běžné podtržené odkazy místo tlačítek */
+main .news-detail .prose a:not(#x) {
+  display: inline;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+  box-shadow: none;
+  transform: none;
+}
+main .news-detail .prose a:not(#x):hover {
+  background: none;
+  color: var(--primary-dark);
+  box-shadow: none;
+  transform: none;
+}
+[data-theme="dark"] main .news-detail .prose a:not(#x) {
+  color: #c4b5fd;
+}
+[data-theme="dark"] main .news-detail .prose a:not(#x):hover {
+  color: #ddd6fe;
+}
+
 /* ===== GRID ===== */
 .grid {
   display: grid;
