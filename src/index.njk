@@ -255,7 +255,11 @@ hideTitle: true
             {% endif %}
 
             <p>
-              {% if matchesComputed.lastResult.team == "muzi" %}
+              {% if matchesComputed.lastResult.slug and matchesComputed.lastResult.team == "muzi" %}
+                <a href="{{ ('/muzi/zapasy/' + matchesComputed.lastResult.slug + '/') | url }}">Detail zápasu</a>
+              {% elseif matchesComputed.lastResult.slug and matchesComputed.lastResult.team == "mladez" and matchesComputed.lastResult.category %}
+                <a href="{{ ('/mladez/' + matchesComputed.lastResult.category + '/zapasy/' + matchesComputed.lastResult.slug + '/') | url }}">Detail zápasu</a>
+              {% elseif matchesComputed.lastResult.team == "muzi" %}
                 <a href="{{ '/muzi/zapasy/' | url }}">Historie zápasů Mužů</a>
               {% else %}
                 <a href="{{ '/mladez/' | url }}">Historie zápasů Mládeže</a>
