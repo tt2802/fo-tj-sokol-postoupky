@@ -3,6 +3,7 @@ title: Nový E-shop
 date: 2026-10-05
 excerpt: TJ Sokol Postoupky má svůj nový e-shop pro členy, hráče, trenéry,
   rodiče i děti a také pro všechny podporovatele a fanoušky.
+thumbnail: /assets/img/uploads/postoupky-fans.png
 ---
 TJ Sokol Postoupky má svůj nový e-shop pro členy, hráče, trenéry, rodiče i děti a také pro všechny podporovatele a fanoušky.
 
