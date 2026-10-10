@@ -30,6 +30,142 @@ hideTitle: true
   </div>
 </section>
 
+<section class="section shop-section">
+  <div class="container">
+    <div class="shop-banner">
+      <div class="shop-banner__text">
+        <span class="shop-banner__tag">Novinka</span>
+        <h2>Klubový e-shop TJ Sokol Postoupky</h2>
+        <p>Sportovní oblečení s potiskem pro členy, hráče, trenéry, rodiče i fanoušky. Objednejte si svůj dres nebo oblečení s klubovým logem.</p>
+      </div>
+      <a class="shop-banner__btn" href="https://www.klubovyshop.cz/tj-sokol-postoupky/" target="_blank" rel="noopener">Přejít do e-shopu &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="homeCards">
+      <article class="card">
+        <div class="card__body">
+          <h2 class="card__title">Poslední novinka</h2>
+
+          {% set latest = collections.news | first %}
+
+          {% if latest %}
+            <p class="muted">{{ latest.date | czDate }}</p>
+            <h3>{{ latest.data.title }}</h3>
+            {% if latest.data.excerpt %}
+              <p>{{ latest.data.excerpt }}</p>
+            {% endif %}
+            <p><a class="btn" href="{{ latest.url | url }}">Přečíst novinku</a></p>
+          {% else %}
+            <p class="muted">Zatím tu nejsou žádné novinky.</p>
+          {% endif %}
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <h2 class="card__title">Nejbližší zápas</h2>
+
+          {% if matchesComputed.nextMatch %}
+            <p class="muted">
+              {{ matchesComputed.nextMatch._dateStr | czDate }}
+              {% if matchesComputed.nextMatch.time %} · {{ matchesComputed.nextMatch.time }}{% endif %}
+            </p>
+
+            <p class="homeMatchLine">
+              <strong>{{ matchesComputed.nextMatch.home }}</strong>
+              vs
+              <strong>{{ matchesComputed.nextMatch.away }}</strong>
+            </p>
+
+            {% if matchesComputed.nextMatch.venue %}
+              <p class="muted">Místo: {{ matchesComputed.nextMatch.venue }}</p>
+            {% endif %}
+
+            {% if matchesComputed.nextMatch.liveUrl %}
+              <p><a class="btn btn--live" href="{{ matchesComputed.nextMatch.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a></p>
+            {% endif %}
+
+            <p>
+              {% if matchesComputed.nextMatch.team == "muzi" %}
+                <a href="{{ '/muzi/zapasy/' | url }}">Zobrazit všechny zápasy Mužů</a>
+              {% else %}
+                <a href="{{ '/mladez/' | url }}">Zobrazit všechny zápasy Mládeže</a>
+              {% endif %}
+            </p>
+          {% else %}
+            <p class="muted">Zatím nemáme vypsaný žádný další zápas.</p>
+            <p><a href="{{ '/muzi/zapasy/' | url }}">Přejít na zápasy</a></p>
+          {% endif %}
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__body">
+          <h2 class="card__title">Poslední výsledek</h2>
+
+          {% if matchesComputed.lastResult %}
+            <p class="muted">
+              {{ matchesComputed.lastResult._dateStr | czDate }}
+              {% if matchesComputed.lastResult.competition %} · {{ matchesComputed.lastResult.competition }}{% endif %}
+            </p>
+
+            <p class="homeMatchLine">
+              <strong>{{ matchesComputed.lastResult.home }}</strong>
+              {{ matchesComputed.lastResult.homeScore }} : {{ matchesComputed.lastResult.awayScore }}
+              <strong>{{ matchesComputed.lastResult.away }}</strong>
+            </p>
+
+            {% if matchesComputed.lastResult.venue %}
+              <p class="muted">Místo: {{ matchesComputed.lastResult.venue }}</p>
+            {% endif %}
+
+            <p>
+              {% if matchesComputed.lastResult.slug and matchesComputed.lastResult.team == "muzi" %}
+                <a href="{{ ('/muzi/zapasy/' + matchesComputed.lastResult.slug + '/') | url }}">Detail zápasu</a>
+              {% elseif matchesComputed.lastResult.slug and matchesComputed.lastResult.team == "mladez" and matchesComputed.lastResult.category %}
+                <a href="{{ ('/mladez/' + matchesComputed.lastResult.category + '/zapasy/' + matchesComputed.lastResult.slug + '/') | url }}">Detail zápasu</a>
+              {% elseif matchesComputed.lastResult.team == "muzi" %}
+                <a href="{{ '/muzi/zapasy/' | url }}">Historie zápasů Mužů</a>
+              {% else %}
+                <a href="{{ '/mladez/' | url }}">Historie zápasů Mládeže</a>
+              {% endif %}
+            </p>
+          {% else %}
+            <p class="muted">Zatím nemáme zapsaný žádný výsledek.</p>
+            <p><a href="{{ '/muzi/zapasy/' | url }}">Doplnit výsledky</a></p>
+          {% endif %}
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 2rem;">Fotbalové týmy</h2>
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+      <a href="{{ '/muzi/' | url }}" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <div class="card__body" style="text-align: center; padding: 2rem;">
+          <h3 class="card__title">Muži</h3>
+          <p class="muted">Přehled zápasů a týmu</p>
+        </div>
+      </a>
+
+      <a href="{{ '/mladez/' | url }}" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <div class="card__body" style="text-align: center; padding: 2rem;">
+          <h3 class="card__title">Mládež</h3>
+          <p class="muted">Všechny věkové kategorie</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="section calendar-section">
   <div class="container">
 
@@ -172,139 +308,3 @@ hideTitle: true
     {% endif %}
   </div>
 </section>
-
-<section class="section">
-  <div class="container">
-    <h2 style="text-align: center; margin-bottom: 2rem;">Fotbalové týmy</h2>
-    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-      <a href="{{ '/muzi/' | url }}" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
-        <div class="card__body" style="text-align: center; padding: 2rem;">
-          <h3 class="card__title">Muži</h3>
-          <p class="muted">Přehled zápasů a týmu</p>
-        </div>
-      </a>
-
-      <a href="{{ '/mladez/' | url }}" class="card" style="text-decoration: none; color: inherit; cursor: pointer;">
-        <div class="card__body" style="text-align: center; padding: 2rem;">
-          <h3 class="card__title">Mládež</h3>
-          <p class="muted">Všechny věkové kategorie</p>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<section class="section shop-section">
-  <div class="container">
-    <div class="shop-banner">
-      <div class="shop-banner__text">
-        <span class="shop-banner__tag">Novinka</span>
-        <h2>Klubový e-shop TJ Sokol Postoupky</h2>
-        <p>Sportovní oblečení s potiskem pro členy, hráče, trenéry, rodiče i fanoušky. Objednejte si svůj dres nebo oblečení s klubovým logem.</p>
-      </div>
-      <a class="shop-banner__btn" href="https://www.klubovyshop.cz/tj-sokol-postoupky/" target="_blank" rel="noopener">Přejít do e-shopu &rarr;</a>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="homeCards">
-      <article class="card">
-        <div class="card__body">
-          <h2 class="card__title">Nejbližší zápas</h2>
-
-          {% if matchesComputed.nextMatch %}
-            <p class="muted">
-              {{ matchesComputed.nextMatch._dateStr | czDate }}
-              {% if matchesComputed.nextMatch.time %} · {{ matchesComputed.nextMatch.time }}{% endif %}
-            </p>
-
-            <p class="homeMatchLine">
-              <strong>{{ matchesComputed.nextMatch.home }}</strong>
-              vs
-              <strong>{{ matchesComputed.nextMatch.away }}</strong>
-            </p>
-
-            {% if matchesComputed.nextMatch.venue %}
-              <p class="muted">Místo: {{ matchesComputed.nextMatch.venue }}</p>
-            {% endif %}
-
-            {% if matchesComputed.nextMatch.liveUrl %}
-              <p><a class="btn btn--live" href="{{ matchesComputed.nextMatch.liveUrl }}" target="_blank" rel="noopener">Sledovat živě</a></p>
-            {% endif %}
-
-            <p>
-              {% if matchesComputed.nextMatch.team == "muzi" %}
-                <a href="{{ '/muzi/zapasy/' | url }}">Zobrazit všechny zápasy Mužů</a>
-              {% else %}
-                <a href="{{ '/mladez/' | url }}">Zobrazit všechny zápasy Mládeže</a>
-              {% endif %}
-            </p>
-          {% else %}
-            <p class="muted">Zatím nemáme vypsaný žádný další zápas.</p>
-            <p><a href="{{ '/muzi/zapasy/' | url }}">Přejít na zápasy</a></p>
-          {% endif %}
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card__body">
-          <h2 class="card__title">Poslední výsledek</h2>
-
-          {% if matchesComputed.lastResult %}
-            <p class="muted">
-              {{ matchesComputed.lastResult._dateStr | czDate }}
-              {% if matchesComputed.lastResult.competition %} · {{ matchesComputed.lastResult.competition }}{% endif %}
-            </p>
-
-            <p class="homeMatchLine">
-              <strong>{{ matchesComputed.lastResult.home }}</strong>
-              {{ matchesComputed.lastResult.homeScore }} : {{ matchesComputed.lastResult.awayScore }}
-              <strong>{{ matchesComputed.lastResult.away }}</strong>
-            </p>
-
-            {% if matchesComputed.lastResult.venue %}
-              <p class="muted">Místo: {{ matchesComputed.lastResult.venue }}</p>
-            {% endif %}
-
-            <p>
-              {% if matchesComputed.lastResult.slug and matchesComputed.lastResult.team == "muzi" %}
-                <a href="{{ ('/muzi/zapasy/' + matchesComputed.lastResult.slug + '/') | url }}">Detail zápasu</a>
-              {% elseif matchesComputed.lastResult.slug and matchesComputed.lastResult.team == "mladez" and matchesComputed.lastResult.category %}
-                <a href="{{ ('/mladez/' + matchesComputed.lastResult.category + '/zapasy/' + matchesComputed.lastResult.slug + '/') | url }}">Detail zápasu</a>
-              {% elseif matchesComputed.lastResult.team == "muzi" %}
-                <a href="{{ '/muzi/zapasy/' | url }}">Historie zápasů Mužů</a>
-              {% else %}
-                <a href="{{ '/mladez/' | url }}">Historie zápasů Mládeže</a>
-              {% endif %}
-            </p>
-          {% else %}
-            <p class="muted">Zatím nemáme zapsaný žádný výsledek.</p>
-            <p><a href="{{ '/muzi/zapasy/' | url }}">Doplnit výsledky</a></p>
-          {% endif %}
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card__body">
-          <h2 class="card__title">Poslední novinka</h2>
-
-          {% set latest = collections.news | first %}
-
-          {% if latest %}
-            <p class="muted">{{ latest.date | czDate }}</p>
-            <h3>{{ latest.data.title }}</h3>
-            {% if latest.data.excerpt %}
-              <p>{{ latest.data.excerpt }}</p>
-            {% endif %}
-            <p><a class="btn" href="{{ latest.url | url }}">Přečíst novinku</a></p>
-          {% else %}
-            <p class="muted">Zatím tu nejsou žádné novinky.</p>
-          {% endif %}
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
