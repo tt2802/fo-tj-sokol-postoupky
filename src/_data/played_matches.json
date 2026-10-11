@@ -9,7 +9,7 @@
           "player": "Kubín Tomáš"
         },
         {
-          "player": "Hrdlička Ondřej"
+          "player": "Hrdlička Ondřej "
         },
         {
           "player": "Pernorio Nicholas "
@@ -54,7 +54,7 @@
           "player": "Gabrhelík Lukáš"
         },
         {
-          "player": "Hrdlička Ondřej"
+          "player": "Hrdlička Ondřej "
         },
         {
           "player": "Merli Mathias"
@@ -650,7 +650,7 @@
           "player": "Žigmund Michal"
         },
         {
-          "player": "Červeňák David"
+          "player": "Červenák David"
         }
       ],
       "venue": "Lutopecny",
@@ -719,7 +719,7 @@
           "player": "Bulička Vojtěch"
         },
         {
-          "player": "Červeňák David"
+          "player": "Červenák David"
         },
         {
           "player": "Hrdlička Ondřej "
@@ -728,7 +728,7 @@
       "venue": "UMT Slavia Kroměříž",
       "scorers": [
         {
-          "scorer": "Červeňák David"
+          "scorer": "Červenák David"
         }
       ],
       "homeScore": 1,
@@ -745,7 +745,7 @@
           "player": "Hrdlička Ondřej "
         },
         {
-          "player": "Červeňák David"
+          "player": "Červenák David"
         },
         {
           "player": "Pernorio Nicholas "
@@ -753,6 +753,103 @@
       ],
       "team": "muzi",
       "home": "Postoupky",
+      "competition": "9.liga C"
+    },
+    {
+      "season": "2026/2027",
+      "cards": [
+        {
+          "player": "Benedík Adam",
+          "cardType": "yellow"
+        }
+      ],
+      "awayScore": 1,
+      "relatedUpcoming": "zarici-postoupky",
+      "isHome": true,
+      "assists": [
+        {
+          "player": "Hrdlička Ondřej "
+        }
+      ],
+      "slug": "zarici-postoupky",
+      "time": "15:00",
+      "round": "10",
+      "away": "Postoupky",
+      "date": "2026-10-11",
+      "lineup": [
+        {
+          "player": "VY Jakub"
+        },
+        {
+          "player": " Jeník Branislav"
+        },
+        {
+          "player": "Kubín Tomáš"
+        },
+        {
+          "player": " Opluštil Pavel"
+        },
+        {
+          "player": "Majtner Jan"
+        },
+        {
+          "player": "Gabrhelík Lukáš"
+        },
+        {
+          "player": "Benedík Adam"
+        },
+        {
+          "player": "Hrdlička Ondřej "
+        },
+        {
+          "player": "Pinďák Bronislav"
+        },
+        {
+          "player": "McEvoy Thomas James "
+        },
+        {
+          "player": "Vrzal Filip "
+        },
+        {
+          "player": "Pernorio Nicholas "
+        },
+        {
+          "player": "Morkus Matyáš "
+        },
+        {
+          "player": "Ulman Jakub"
+        },
+        {
+          "player": "Potočný Matěj"
+        }
+      ],
+      "venue": "Zářičí",
+      "scorers": [
+        {
+          "scorer": "VY Jakub"
+        }
+      ],
+      "homeScore": 3,
+      "report": "Dnes jsme se vydali k dalšímu venkovnímu utkání do Zářičí. Hned po příjezdu nás však čekala nečekaná zpráva – delegovaný rozhodčí se kvůli komplikacím nemohl dostavit, a zápas tak nakonec odřídil laik.\n\nDo utkání jsme vstoupili velmi slušně. Většinu prvního poločasu jsme předváděli dobrou hru, dokázali si vytvořit několik pohledných akcí a soupeři jsme byli vyrovnaným protivníkem. Štěstí však tentokrát nestálo na naší straně. Ve 40. minutě jsme po zbytečné chybě inkasovali smolný gól, a do šaten jsme tak odcházeli za stavu 1:0 pro domácí.\n\nDo druhého poločasu jsme nastoupili s jasným plánem – zvýšit aktivitu a více napadat soupeřovu rozehrávku. To se nám dařilo, bohužel však v 63. minutě přišla další zbytečná chyba, kterou domácí potrestali druhým gólem. Ani za stavu 2:0 jsme ale nesložili zbraně. Vytvořili jsme si několik vyložených šancí, které bohužel zůstaly neproměněné. Naši střeleckou smůlu prolomil až v 88. minutě Kuba Vy, který po krásné akci přesně uklidil míč k tyči a nedal domácímu brankáři šanci.\n\nZa stavu 2:1 jsme se ještě pokusili vybojovat alespoň bod, ale v nastaveném čase přišel rychlý protiútok domácích. Po faulu našeho brankáře následovala penalta, kterou soupeř ve 92. minutě proměnil a stanovil konečné skóre na 3:1.\n\nI přes porážku si myslím, že jsme na hřišti nechali všechno. Navzdory změnám v sestavě na poslední chvíli měla naše hra velmi slušnou úroveň a rozhodně jsme nebyli horším týmem po celé utkání. Bohužel nás opět srazily zbytečné chyby v obraně a neproměněné šance. Pokud chceme v dalších zápasech bodovat, musíme se právě na tyto dvě věci zaměřit. Výkon jako takový ale hodnotím pozitivně a věřím, že pokud na něj navážeme, výsledky se dostaví.",
+      "mvpCandidates": [
+        {
+          "player": "Kubín Tomáš"
+        },
+        {
+          "player": "Pernorio Nicholas "
+        },
+        {
+          "player": "Hrdlička Ondřej "
+        },
+        {
+          "player": "Gabrhelík Lukáš"
+        },
+        {
+          "player": "Benedík Adam"
+        }
+      ],
+      "team": "muzi",
+      "home": "Zářičí",
       "competition": "9.liga C"
     }
   ]
