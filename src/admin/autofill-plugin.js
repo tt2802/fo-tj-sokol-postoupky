@@ -207,7 +207,7 @@
     if (!entry || !entry.get) return {};
     var data = entry.get("data");
     if (!data) return {};
-    if (data.toJS) return data.toJS();
+    if (typeof data.toJS === "function") return data.toJS();
     return data;
   }
 
