@@ -190,17 +190,16 @@
     return value;
   }
 
+  function toImmutableData(plainData) {
+    var I = window.Immutable;
+    if (!I || typeof I.fromJS !== "function") {
+      throw new Error("Decap Immutable API is unavailable while preparing data to save.");
+    }
+    return I.fromJS(plainData);
+  }
+
   function setCleanData(entry, plainData) {
-    try {
-      var I = window.Immutable;
-      if (I && I.fromJS) {
-        return entry.set("data", I.fromJS(plainData));
-      }
-    } catch (_) {}
-    try {
-      return entry.set("data", plainData);
-    } catch (_) {}
-    return entry;
+    return entry.set("data", toImmutableData(plainData));
   }
 
   function getEntryPlainData(entry) {
@@ -1451,10 +1450,8 @@
           var p = resolveEntryPath(sourceEntry, arg, plainData);
 
           if (!immutableMode) {
-            // Defensive path: some Decap versions pass a plain JS entry-like object.
-            // Returning that object writes wrapper metadata to JSON files.
-            // Always return clean data payload only.
-            return normalizePlainDataByPath(p, plainData);
+            // Decap's preSave contract requires an Immutable data map.
+            return toImmutableData(normalizePlainDataByPath(p, plainData));
           }
 
           entry = sourceEntry;
@@ -1719,8 +1716,8 @@
           warn("preSave error:", e);
           if (e && /^Uložení zrušeno/.test(String(e.message))) throw e;
           if (isImmutableEntry(entry)) return undefined;
-          if (plainData && typeof plainData === "object") return plainData;
-          return {};
+          if (plainData && typeof plainData === "object") return toImmutableData(plainData);
+          return undefined;
         }
         })(arg);
         if (isImmutableEntry(result) && result.has("data") && (result.has("path") || result.has("slug") || result.has("collection"))) {
