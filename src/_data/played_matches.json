@@ -851,6 +851,102 @@
       "team": "muzi",
       "home": "Zářičí",
       "competition": "9.liga C"
+    },
+    {
+      "season": "2025/2026",
+      "cards": [
+        {
+          "player": " Jeník Branislav",
+          "cardType": "yellow"
+        },
+        {
+          "player": "Hrdlička Ondřej ",
+          "cardType": "yellow"
+        }
+      ],
+      "awayScore": 4,
+      "relatedUpcoming": "postoupky-drinov",
+      "isHome": true,
+      "assists": [
+        {
+          "player": "Pernorio Nicholas "
+        }
+      ],
+      "slug": "postoupky-drinov",
+      "time": "16:00",
+      "round": "11",
+      "away": "Dřínov",
+      "date": "2026-10-17",
+      "lineup": [
+        {
+          "player": " Jeník Branislav"
+        },
+        {
+          "player": "Kubín Tomáš"
+        },
+        {
+          "player": " Opluštil Pavel"
+        },
+        {
+          "player": "McEvoy Thomas James "
+        },
+        {
+          "player": "Vrzal Filip "
+        },
+        {
+          "player": "Sklenář David"
+        },
+        {
+          "player": "Pernorio Nicholas "
+        },
+        {
+          "player": "Gabrhelík Lukáš"
+        },
+        {
+          "player": "Benedík Adam"
+        },
+        {
+          "player": "Žigmund Michal"
+        },
+        {
+          "player": "Potočný Matěj"
+        },
+        {
+          "player": "Čureja Patrik"
+        },
+        {
+          "player": "Pěnička Michal"
+        },
+        {
+          "player": "Hrdlička Ondřej "
+        },
+        {
+          "player": "Pinďák Bronislav"
+        }
+      ],
+      "venue": "UMT Slavia Kroměříž",
+      "scorers": [
+        {
+          "scorer": "Vrzal Filip "
+        }
+      ],
+      "homeScore": 1,
+      "report": "Dnes nás čekal zápas proti Dřínovu. Do utkání jsme nastupovali pozitivně naladění, protože jsme se konečně sešli v poměrně dobré sestavě. Soupeř nás ale velmi rychle vyvedl z omylu, když už ve 3. minutě otevřel skóre. Další branku přidal ve 20. minutě po naší zbytečné chybě v obraně.\n\nVe 40. minutě jsme dostali velkou příležitost vrátit se do zápasu, když jsme kopali penaltu. Kapitán ji ale tentokrát bohužel neproměnil. První poločas jsme tak o přestávce hodnotili jako velmi slabý. Nedokázali jsme si vytvořit dostatek šancí a bez nich se góly dávají jen těžko.\n\nDo druhého poločasu jsme chtěli vstoupit lépe, jenže už ve 47. minutě nám nevyšla ofsajdová past a Dřínov toho dokázal využít. V 54. minutě pak soupeř přidal čtvrtou branku. Gól padl z ofsajdové situace, která bohužel zůstala bez povšimnutí, ale na celkovém výsledku by to pravděpodobně nic nezměnilo.\n\nNaše chvíle přišla v 71. minutě. Po pěkné průnikové přihrávce se prosadil Filda a snížil na 1:4. Druhá polovina zápasu už z naší strany vypadala lépe, na obrat ale bylo pozdě.\n\nUtkání tak skončilo vítězstvím Dřínova 4:1. Nezbývá nám než se z dnešního výkonu poučit a v dalších zápasech předvést lepší výkon.",
+      "videoUrl": "https://app.veo.co/matches/20261017-match-mladsi-pripravka-u09-vcb2b71f/",
+      "mvpCandidates": [
+        {
+          "player": "Kubín Tomáš"
+        },
+        {
+          "player": "Benedík Adam"
+        },
+        {
+          "player": " Jeník Branislav"
+        }
+      ],
+      "team": "muzi",
+      "home": "Postoupky",
+      "competition": "9.liga C"
     }
   ]
 }
