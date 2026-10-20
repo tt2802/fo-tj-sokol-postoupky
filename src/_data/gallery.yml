@@ -1,2 +1,7 @@
-# Galerie – alba fotek z akcí a zápasů
-albums: []
+albums:
+  - title: Eshop
+    date: 2026-10-05
+    slug: E shop
+    cover: /assets/img/uploads/postoupky-logo.png
+    bulkSelect:
+      - /assets/img/uploads/postoupky-fans.png
