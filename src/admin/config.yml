@@ -1,4 +1,4 @@
-﻿# file: src/admin/config.yml
+# file: src/admin/config.yml
 backend:
   name: github
   repo: tt2802/fo-tj-sokol-postoupky
@@ -106,7 +106,7 @@ collections:
                   - { label: "Mladší žáci B", value: "mlads-zaci-b" }
                   - { label: "Školička", value: "skolicka" }
 
-              - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026", required: true }
+              - { label: "Sezóna", name: "season", widget: "string", default: "2026/2027", required: true }
               - { label: "Soutěž", name: "competition", widget: "string", required: true, hint: "Napr. OP, 1.A, KP, přátelák" }
               - { label: "Kolo", name: "round", widget: "string", required: false, hint: "Císlo kola v soutěži" }
               - label: "Datum"
@@ -188,7 +188,7 @@ collections:
                   - { label: "Mladší žáci B", value: "mlads-zaci-b" }
                   - { label: "Školička", value: "skolicka" }
 
-              - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026", required: true }
+              - { label: "Sezóna", name: "season", widget: "string", default: "2026/2027", required: true }
               - { label: "Soutěž", name: "competition", widget: "string", required: false, hint: "Napr. OP, 1.A, KP, přátelák" }
               - { label: "Kolo", name: "round", widget: "string", required: false, hint: "Císlo kola v soutěži" }
               - label: "Datum"
@@ -266,9 +266,11 @@ collections:
                 min: 5
                 max: 5
                 summary: "{{fields.player}}"
-                hint: "Vyberte přesně 5 hráčů. Z těchto 5 se pak bude hlasovat o hráče zápasu."
+                hint: "Vyberte přesně 5 hráčů. Z těchto 5 se pak bude hlasovat o hráče zápasu. Hlasování se uzavře 5 dní po prvním uložení kandidátů."
                 fields:
                   - { label: "Hráč", name: "player", widget: "player-select" }
+
+              - { label: "Začátek hlasování o MVP", name: "mvpVotingStart", widget: "hidden", required: false }
 
               - label: "Střelci gólů"
                 name: "scorers"
@@ -310,7 +312,7 @@ collections:
         file: "src/_data/league_table.json"
         preview_url: "{{site_url}}/muzi/"
         fields:
-          - { label: "Sezóna", name: "season", widget: "string", default: "2025/2026" }
+          - { label: "Sezóna", name: "season", widget: "string", default: "2026/2027" }
           - { label: "Soutěž", name: "competition", widget: "string", default: "ZKP" }
           - label: "Týmy"
             name: "teams"

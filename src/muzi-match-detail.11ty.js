@@ -56,13 +56,19 @@ module.exports = class {
       .slice(0, 5);
     const hasSelectedMvpCandidates = mvpCandidates.length > 0;
     // Legacy matches without selected candidates keep the original all-player,
-    // permanently open voting. New matches close on Friday at 23:59 in Prague.
+    // permanently open voting. New matches close 5 days after the candidates
+    // were published (mvpVotingStart); older ones fall back to Friday 23:59.
     const votingCandidates = hasSelectedMvpCandidates ? mvpCandidates : playerNames;
     const matchDate = DateTime.fromISO(String(m.date || '').slice(0, 10), { zone: 'Europe/Prague' });
+    const votingStart = m.mvpVotingStart ? DateTime.fromISO(String(m.mvpVotingStart), { zone: 'Europe/Prague' }) : null;
     const daysUntilFriday = matchDate.isValid ? (5 - matchDate.weekday + 7) % 7 : 0;
-    const votingDeadline = hasSelectedMvpCandidates && matchDate.isValid
-      ? matchDate.plus({ days: daysUntilFriday }).set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).toMillis()
-      : null;
+    const votingDeadline = !hasSelectedMvpCandidates
+      ? null
+      : (votingStart && votingStart.isValid
+          ? votingStart.plus({ days: 5 }).toMillis()
+          : (matchDate.isValid
+              ? matchDate.plus({ days: daysUntilFriday }).set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).toMillis()
+              : null));
 
     const escapeAttr = (value) => String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const normalizeUrl = (value) => String(value || '').trim();
@@ -91,7 +97,7 @@ module.exports = class {
       }).join('');
       const slug = (m.slug || '').replace(/"/g, '');
       const deadlineMessage = votingDeadline
-        ? `Hlasovat lze do pátku ${DateTime.fromMillis(votingDeadline, { zone: 'Europe/Prague' }).setLocale('cs').toLocaleString({ day: 'numeric', month: 'long' })} 23:59.`
+        ? `Hlasovat lze do ${DateTime.fromMillis(votingDeadline, { zone: 'Europe/Prague' }).setLocale('cs').toLocaleString({ day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}.`
         : '';
 
       votingHtml = `

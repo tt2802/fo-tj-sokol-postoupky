@@ -853,7 +853,7 @@
       "competition": "9.liga C"
     },
     {
-      "season": "2025/2026",
+      "season": "2026/2027",
       "cards": [
         {
           "player": " Jeník Branislav",
@@ -949,7 +949,7 @@
       "competition": "9.liga C"
     },
     {
-      "season": "2025/2026",
+      "season": "2026/2027",
       "cards": [
         {
           "player": "Pernorio Nicholas ",
@@ -1151,6 +1151,7 @@
           "player": " Opluštil Pavel"
         }
       ],
+      "mvpVotingStart": "2026-11-02T21:30:00+01:00",
       "team": "muzi",
       "home": "Postoupky",
       "competition": "9.liga C"

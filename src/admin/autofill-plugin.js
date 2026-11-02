@@ -1685,6 +1685,11 @@
               }
             }
 
+            // MVP voting closes 5 days after the candidates were first published.
+            if (Array.isArray(obj.mvpCandidates) && obj.mvpCandidates.length > 0 && !obj.mvpVotingStart) {
+              fills.mvpVotingStart = new Date().toISOString();
+            }
+
             var isHome = fills.isHome !== undefined ? fills.isHome : obj.isHome;
             if (isHome === true && !obj.home && !fills.home) fills.home = "Postoupky";
             if (isHome === false && !obj.away && !fills.away) fills.away = "Postoupky";
