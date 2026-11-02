@@ -1137,6 +1137,64 @@
       "team": "muzi",
       "home": "Postoupky",
       "competition": "9.liga C"
+    },
+    {
+      "season": "2026/2027",
+      "cards": [],
+      "awayScore": 0,
+      "isHome": false,
+      "slug": "troubkyzdislavice-postoupky",
+      "time": "14:00",
+      "round": "13",
+      "away": "Postoupky",
+      "date": "2026-11-01",
+      "lineup": [
+        {
+          "player": "VY Jakub"
+        },
+        {
+          "player": " Jeník Branislav"
+        },
+        {
+          "player": "Kubín Tomáš"
+        },
+        {
+          "player": " Opluštil Pavel"
+        },
+        {
+          "player": "Majtner Jan"
+        },
+        {
+          "player": "Gabrhelík Lukáš"
+        },
+        {
+          "player": "Hrdlička Ondřej "
+        },
+        {
+          "player": "Pinďák Bronislav"
+        },
+        {
+          "player": "Vrzal Filip "
+        },
+        {
+          "player": "Lutonský Libor"
+        },
+        {
+          "player": "Bulička Vojtěch"
+        },
+        {
+          "player": "Potočný Matěj"
+        },
+        {
+          "player": "Červenák David"
+        }
+      ],
+      "venue": "Postoupky",
+      "homeScore": 11,
+      "videoUrl": "https://app.veo.co/matches/20261101-postoupky-vs-troubky-v422f931/",
+      "team": "muzi",
+      "home": "Troubky-Zdislavice",
+      "competition": "9.liga C"
     }
   ]
 }
