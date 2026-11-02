@@ -1024,6 +1024,109 @@
       "team": "muzi",
       "home": "Šelešovice",
       "competition": "9.liga C"
+    },
+    {
+      "season": "2026/2027",
+      "cards": [
+        {
+          "player": " Jeník Branislav",
+          "cardType": "red"
+        },
+        {
+          "player": "Sklenář David",
+          "cardType": "red"
+        },
+        {
+          "player": "Pinďák Bronislav",
+          "cardType": "yellow"
+        }
+      ],
+      "awayScore": 4,
+      "relatedUpcoming": "postoupky-litencice",
+      "isHome": true,
+      "assists": [
+        {
+          "player": "Kubín Tomáš"
+        }
+      ],
+      "slug": "postoupky-litencice",
+      "time": "18:00",
+      "round": "13",
+      "away": "Litenčice",
+      "date": "2026-10-28",
+      "lineup": [
+        {
+          "player": "VY Jakub"
+        },
+        {
+          "player": "McEvoy Thomas James "
+        },
+        {
+          "player": "Vrzal Filip "
+        },
+        {
+          "player": " Jeník Branislav"
+        },
+        {
+          "player": "Sklenář David"
+        },
+        {
+          "player": "Kubín Tomáš"
+        },
+        {
+          "player": "Pernorio Nicholas "
+        },
+        {
+          "player": " Opluštil Pavel"
+        },
+        {
+          "player": "Majtner Jan"
+        },
+        {
+          "player": "Gabrhelík Lukáš"
+        },
+        {
+          "player": "Čureja Patrik"
+        },
+        {
+          "player": "Merli Mathias"
+        },
+        {
+          "player": "Bulička Vojtěch"
+        },
+        {
+          "player": "Potočný Matěj"
+        },
+        {
+          "player": "Pěnička Michal"
+        },
+        {
+          "player": "Hrdlička Ondřej "
+        },
+        {
+          "player": "Pinďák Bronislav"
+        }
+      ],
+      "venue": "UMT Slavia Kroměříž",
+      "scorers": [
+        {
+          "scorer": "Vrzal Filip "
+        },
+        {
+          "scorer": " Opluštil Pavel"
+        },
+        {
+          "scorer": "Čureja Patrik"
+        },
+        {
+          "scorer": "Vrzal Filip "
+        }
+      ],
+      "homeScore": 4,
+      "videoUrl": "https://app.veo.co/matches/20261028-postoupky-vs-litencice-va639846/#/highlights/",
+      "team": "muzi",
+      "home": "Postoupky",
+      "competition": "9.liga C"
     }
   ]
 }
