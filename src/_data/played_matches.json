@@ -947,6 +947,83 @@
       "team": "muzi",
       "home": "Postoupky",
       "competition": "9.liga C"
+    },
+    {
+      "season": "2025/2026",
+      "cards": [
+        {
+          "player": "Pernorio Nicholas ",
+          "cardType": "yellow"
+        },
+        {
+          "player": "Čureja Patrik",
+          "cardType": "yellow"
+        }
+      ],
+      "awayScore": 0,
+      "relatedUpcoming": "selesovice-postoupky",
+      "isHome": false,
+      "slug": "selesovice-postoupky",
+      "time": "10:00",
+      "round": "12",
+      "away": "Postoupky",
+      "date": "2026-10-25",
+      "lineup": [
+        {
+          "player": "VY Jakub"
+        },
+        {
+          "player": "McEvoy Thomas James "
+        },
+        {
+          "player": "Vrzal Filip "
+        },
+        {
+          "player": " Jeník Branislav"
+        },
+        {
+          "player": "Sklenář David"
+        },
+        {
+          "player": "Kubín Tomáš"
+        },
+        {
+          "player": "Pernorio Nicholas "
+        },
+        {
+          "player": " Opluštil Pavel"
+        },
+        {
+          "player": "Majtner Jan"
+        },
+        {
+          "player": "Gabrhelík Lukáš"
+        },
+        {
+          "player": "Čureja Patrik"
+        },
+        {
+          "player": "Benedík Adam"
+        },
+        {
+          "player": "Potočný Matěj"
+        },
+        {
+          "player": "Pěnička Michal"
+        },
+        {
+          "player": "Hrdlička Ondřej "
+        },
+        {
+          "player": "Pinďák Bronislav"
+        }
+      ],
+      "venue": "Šelešovice",
+      "homeScore": 3,
+      "videoUrl": "https://app.veo.co/matches/20261025-postoupky-vs-selesovice-v142e764/#/highlights/",
+      "team": "muzi",
+      "home": "Šelešovice",
+      "competition": "9.liga C"
     }
   ]
 }
